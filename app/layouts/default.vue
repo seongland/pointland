@@ -19,14 +19,7 @@
     <!-- 2. Upper Bar -->
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
-
-      
-      <v-spacer/><v-spacer/><v-spacer/><v-spacer/><v-spacer/>
-      <v-container>
         <v-toolbar-title v-text="title" />
-      </v-container>
-      <v-spacer/><v-spacer/>
-
     </v-app-bar>
 
     <!-- 3. Main Contents -->
@@ -61,7 +54,7 @@ export default {
         {
           icon: 'ETC',
           title: 'Sub Page',
-          to: '/inspire'
+          to: '/sub'
         }
       ],
       miniVariant: false,
