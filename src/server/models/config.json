@@ -1,0 +1,32 @@
+{
+    "development": {
+        "username": "stryx",
+        "password": "15651",
+        "database": "stryx_stpano",
+        "host": "10.0.0.110",
+        "port": "13306",
+        "dialect": "mysql",
+        "define": {
+            "timestamps": false,
+            "underscored": true
+        }
+    },
+    "test": {
+        "username": "stryx",
+        "password": "15651",
+        "database": "stryx_stpano",
+        "host": "10.0.0.110",
+        "port": "13306",
+        "dialect": "mysql",
+        "operatorsAliases": false
+    },
+    "production": {
+        "username": "stryx",
+        "password": "15651",
+        "database": "stryx_stpano",
+        "host": "10.0.0.110",
+        "port": "13306",
+        "dialect": "mysql",
+        "operatorsAliases": false
+    }
+}

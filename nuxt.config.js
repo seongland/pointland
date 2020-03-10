@@ -1,11 +1,17 @@
 const colors = require('vuetify/es5/util/colors').default
 
 module.exports = {
-  srcDir: 'app/',
+  // Root Directory
+  srcDir: 'src/',
+
+  // SSR
   mode: 'universal',
-  /*
-  ** Headers of the page
-  */
+
+  serverMiddleware: {
+   '/server/api': '~/server/api/index.js'
+  },
+
+  // Header
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
@@ -18,35 +24,28 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  /*
-  ** Customize the progress-bar color
-  */
+
+  // Loading Bar 
   loading: { color: '#fff' },
-  /*
-  ** Global CSS
-  */
+  
+  // Global CSS
   css: [
   ],
-  /*
-  ** Plugins to load before mounting the App
-  */
+
+  // Plugins to load before mounting the App
   plugins: [
   ],
-  /*
-  ** Nuxt.js dev-modules
-  */
+  
+  // Nuxt dev-modules
   buildModules: [
     '@nuxtjs/vuetify',
   ],
-  /*
-  ** Nuxt.js modules
-  */
+  
+  // Nuxt modules
   modules: [
   ],
-  /*
-  ** vuetify module configuration
-  ** https://github.com/nuxt-community/vuetify-module
-  */
+  
+  // Vuetify
   vuetify: {
     defaultAssets: {
       icons: 'mdiSvg',
@@ -66,13 +65,10 @@ module.exports = {
       }
     }
   },
-  /*
-  ** Build configuration
-  */
+  
+  // Build configuration
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+    // WebPack
     extend (config, ctx) {
     }
   }
