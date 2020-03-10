@@ -3,6 +3,9 @@
     <h1 v-if="error.statusCode === 404">
       {{ pageNotFound }}
     </h1>
+    <h1 v-else-if="error.statusCode === 500">
+      {{ serverError }}
+    </h1>
     <h1 v-else>
       {{ otherError }}
     </h1>
@@ -24,6 +27,7 @@ export default {
   data () {
     return {
       pageNotFound: '404 Not Found',
+      serverError: 'Internal Server Errro',
       otherError: 'An error occurred'
     }
   },

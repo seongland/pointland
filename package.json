@@ -1,5 +1,5 @@
 {
-  "name": "GeoPano",
+  "name": "geopano",
   "version": "1.0.0",
   "description": "Geology Panorama Street View Map",
   "author": "seonglae",
@@ -12,16 +12,16 @@
     "test": "jest"
   },
   "dependencies": {
-    "nuxt": "^2.0.0",
     "cross-env": "^5.2.0",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "nuxt": "^2.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9",
     "@nuxtjs/vuetify": "^1.0.0",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-jest": "^24.1.0",
     "jest": "^24.1.0",
+    "nodemon": "^1.18.9",
     "vue-jest": "^4.0.0-0"
   }
 }
