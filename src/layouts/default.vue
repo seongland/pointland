@@ -41,13 +41,14 @@
 export default {
   data () {
     return {
+      title: 'GeoPano',
       coor : "Stryx",
       clipped: true,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: 'Geo',
+          icon: 'Mdi',
           title: 'Main Page',
           to: '/'
         },
@@ -58,7 +59,6 @@ export default {
         }
       ],
       miniVariant: false,
-      title: 'Geo Pano'
     }
   }
 }
