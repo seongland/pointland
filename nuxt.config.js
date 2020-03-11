@@ -1,4 +1,5 @@
 const colors = require('vuetify/es5/util/colors').default
+const serveStatic = require('serve-static')
 
 module.exports = {
   // Root Directory
@@ -8,7 +9,8 @@ module.exports = {
   mode: 'universal',
 
   serverMiddleware: {
-   '/server/api': '~/server/api/index.js'
+   '/server/api': '~/server/api/index.js',
+   '/server/static': serveStatic(__dirname + '/src/server/static')
   },
 
   // Header

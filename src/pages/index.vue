@@ -4,8 +4,7 @@
       <br/>
       
       <div class="text-center">
-        <logo />
-        <vuetify-logo />
+        <logo/>
       </div>
 
       <br/>

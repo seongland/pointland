@@ -17,8 +17,7 @@
         "database": "stryx_stpano",
         "host": "10.0.0.110",
         "port": "13306",
-        "dialect": "mysql",
-        "operatorsAliases": false
+        "dialect": "mysql"
     },
     "production": {
         "username": "stryx",
@@ -27,6 +26,9 @@
         "host": "10.0.0.110",
         "port": "13306",
         "dialect": "mysql",
-        "operatorsAliases": false
+        "define": {
+            "timestamps": false,
+            "underscored": true
+        }
     }
 }

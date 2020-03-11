@@ -8,6 +8,7 @@ const fs = require('fs')
 const TILE_FOLDER = 'tiles_recolor/'
 const BACKPACK_FOLDER = 'tiles_rollpitch/'
 const NAS = '\\\\10.0.0.148\\smms_output'
+const API_FOLER = '/server/api'
 var models = require('../../models')
 var xml2js = require('xml2js')
 
@@ -60,8 +61,8 @@ exports.getPanoxml = async(req, res, next) => {
         let builder = new xml2js.Builder()
         const node_id = req.params.node_id
         const serverHost = req.protocol + "://" + req.get("Host")
-        let tilePrepender = serverHost + "/api/pano/tile/" + node_id
-        let previewPrepender = serverHost + "/api/pano/preview/" + node_id
+        let tilePrepender = serverHost + API_FOLER + "/pano/tile/" + node_id
+        let previewPrepender = serverHost + API_FOLER + "/pano/preview/" + node_id
 
         getNodeInfo(node_id)
             .then(row => {
