@@ -1,23 +1,23 @@
 <template>
-  <v-layout>
-    <v-flex xs12 sm8 md6>
-      <v-card>
-        <v-card-title class="headline">
-          POIs
-        </v-card-title>
+  <v-container>
+    <v-layout row wrap>
+      <v-flex xs12 sm12 md6>
+        <v-container>
+          <v-card>
+            <geo-table />
+          </v-card>
+        </v-container>
+      </v-flex>
 
-        <!-- Card Action Part -->
-        <geo-map />
-        <geo-table />
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+      <v-flex xs12 sm12 md6>
+        <v-container>
+          <v-card>
+            <geo-map />
+          </v-card>
+        </v-container>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

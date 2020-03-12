@@ -1,20 +1,22 @@
 <template>
-  <div>
-    <h2>POI</h2>
-    <ul>
-      <li v-for="(poi, index) in poi" :key="index">
-        <input :checked="poi.done" type="checkbox" @change="toggle(poi)" />
-        <span :class="{ done: poi.done }">
-          {{ poi.text }}
-        </span>
-      </li>
-      <li><input placeholder="ADD" @keyup.enter="addpoi" /></li>
-    </ul>
-    <NuxtLink to="/">
-      Home
-    </NuxtLink>
-    <hr class="my-3" />
-  </div>
+  <v-container>
+      <div id='pano'>
+        <h2>POI</h2>
+        <ul>
+          <li v-for="(poi, index) in poi" :key="index">
+            <input :checked="poi.done" type="checkbox" @change="toggle(poi)" />
+            <span :class="{ done: poi.done }">
+              {{ poi.text }}
+            </span>
+          </li>
+          <li><input placeholder="ADD" @keyup.enter="addpoi" /></li>
+        </ul>
+        <NuxtLink to="/">
+          Home
+        </NuxtLink>
+        <hr class="my-3" />
+      </div>
+  </v-container>
 </template>
 
 <script>
@@ -39,4 +41,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+#pano {
+  height: 50em;
+  width: 100%;
+}
+</style>

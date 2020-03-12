@@ -8,6 +8,7 @@ module.exports = {
   // SSR
   mode: 'universal',
 
+  // Vue Config
   vue: {
     config: {
       productionTip: false,
@@ -15,41 +16,25 @@ module.exports = {
     }
   },
 
+  // Middleware Apis
   serverMiddleware: {
-    '/server/api': '~/server/api/index.js',
-    '/server/static': serveStatic(__dirname + '/src/server/static')
-  },
-
-  // Header
-  head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: process.env.npm_package_description || ''
-      }
-    ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    '/server/api': '~/server/api/',
+    '/server/static': serveStatic('~/server/static')
   },
 
   // Loading Bar
   loading: { color: '#fff' },
 
-  // Global CSS
-  css: [],
-
   // Plugins to load before mounting the App
-  plugins: [],
+  plugins: [
+    {
+      src: '~/plugins/map/',
+      ssr: false
+    }
+  ],
 
   // Nuxt dev-modules
   buildModules: ['@nuxtjs/vuetify'],
-
-  // Nuxt modules
-  modules: [],
 
   // Vuetify
   vuetify: {
@@ -75,5 +60,21 @@ module.exports = {
   // WebPack Build configuration
   build: {
     extend () {}
+  },
+
+  // Header
+  head: {
+    titleTemplate: '%s - ' + process.env.npm_package_name,
+    title: process.env.npm_package_name || '',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || ''
+      }
+    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   }
 }

@@ -1,6 +1,16 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
+  <v-layout row wrap align-center>
+    <v-flex xs12 sm12 md6>
+      <v-container>
+        <v-card>
+          <geo-table />
+          <v-card-title>
+            GeoPano
+          </v-card-title>
+        </v-card>
+      </v-container>
+    </v-flex>
+    <v-flex xs12 sm12 md12>
       <br />
       <div class="text-center">
         <logo />
@@ -29,20 +39,6 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-
-      <br />
-
-      <v-card>
-        <v-card-title class="headline">
-          Table
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
     </v-flex>
   </v-layout>
 </template>
@@ -51,6 +47,8 @@
 import { mapState } from 'vuex'
 import Logo from '~/components/Logo.vue'
 import GeoPano from '~/components/index/GeoPano.vue'
+import GeoTable from '~/components/index/GeoTable.vue'
+
 
 export default {
   fetch({ store }) {
@@ -64,7 +62,8 @@ export default {
   },
   components: {
     Logo,
-    GeoPano
+    GeoPano,
+    GeoTable
   }
 }
 </script>
