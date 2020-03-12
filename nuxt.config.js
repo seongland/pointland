@@ -5,7 +5,7 @@ module.exports = {
   // Root Directory
   srcDir: 'src/',
 
-  // SSR
+  // Meta
   mode: 'universal',
 
   // Vue Config
