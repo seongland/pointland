@@ -3,11 +3,11 @@
  */
 
 import { Icon, Style } from 'ol/style'
-import { BASE64_SVG, COMP_RAD, π, COS, SIN, ZINDEX_SEL } from '~/plugins/map/const.js'
+import { BASE64_SVG, COMP_RAD, π, COS, SIN, ZINDEX_SEL } from '~/plugins/map/modules/const.js'
 
 function makeArcStyle(heading, fov) {
   let start = -fov / 2 - 90
-  let arc = arcSVG(COMP_RAD, COMP_RAD, COMP_RAD / 2, COMP_RAD / 2, start, fov, heading)
+  let arc = arcSVG(COMP_RAD, COMP_RAD, COMP_RAD, COMP_RAD, start, fov, heading)
   let svg = makeSVGByPath(arc, COMP_RAD * 2)
 
   let img = new Icon({

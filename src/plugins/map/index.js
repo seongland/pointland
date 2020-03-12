@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import { GeoJSON } from 'ol/format'
 
-import { PVR_URL } from '~/plugins/map/const.js'
-import { pvrIdFilter } from '~/plugins/map/filter.js'
-import { olInit, getDrawLayer } from '~/plugins/map/meta.js'
+import { PVR_URL } from '~/plugins/map/modules/const.js'
+import { pvrIdFilter } from '~/plugins/map/modules/filter.js'
+import { olInit, getDrawLayer } from '~/plugins/map/modules/meta.js'
 
 Vue.mixin({
   methods: {
     olInit() {
-      olInit()
+      return olInit()
     },
 
     changeFeaturebyID(pvrid, map) {

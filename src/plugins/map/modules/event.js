@@ -3,10 +3,10 @@ import { fromLonLat, transform } from 'ol/proj'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import { GeoJSON } from 'ol/format'
-import { getDrawLayer } from '~/plugins/map/meta.js'
-import { makeArcStyle } from '~/plugins/map/draw.js'
-import { roundFilter } from '~/plugins/map/filter.js'
-import { π, ARC_FID, PVR_URL, ATAN } from '~/plugins/map/const.js'
+import { getDrawLayer } from '~/plugins/map/modules/meta.js'
+import { makeArcStyle } from '~/plugins/map/modules/draw.js'
+import { roundFilter } from '~/plugins/map/modules/filter.js'
+import { π, ARC_FID, PVR_URL, ATAN } from '~/plugins/map/modules/const.js'
 
 
 function getArc(drawLayer) { return drawLayer.get('source').getFeatureById(ARC_FID) }
@@ -105,7 +105,7 @@ function drawCompass(heading, coor, drawLayer) {
 
   // round Area
   let feature = new Feature({ geometry: coor })
-  feature.setStyle(drawLayer.styles.circleAlpha)
+  feature.setStyle([drawLayer.styles.circleAlpha, drawLayer.styles.circleWhite])
   drawLayer.getSource().addFeature(feature)
 
   // Compass
