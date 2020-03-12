@@ -1,5 +1,5 @@
 export default {
-  poi (state) {
+  poi(state) {
     return state.list
   }
 }

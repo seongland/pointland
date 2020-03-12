@@ -8,9 +8,16 @@ module.exports = {
   // SSR
   mode: 'universal',
 
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true
+    }
+  },
+
   serverMiddleware: {
-   '/server/api': '~/server/api/index.js',
-   '/server/static': serveStatic(__dirname + '/src/server/static')
+    '/server/api': '~/server/api/index.js',
+    '/server/static': serveStatic(__dirname + '/src/server/static')
   },
 
   // Header
@@ -20,37 +27,34 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      {
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || ''
+      }
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
-  // Loading Bar 
+  // Loading Bar
   loading: { color: '#fff' },
-  
+
   // Global CSS
-  css: [
-  ],
+  css: [],
 
   // Plugins to load before mounting the App
-  plugins: [
-  ],
-  
+  plugins: [],
+
   // Nuxt dev-modules
-  buildModules: [
-    '@nuxtjs/vuetify',
-  ],
-  
+  buildModules: ['@nuxtjs/vuetify'],
+
   // Nuxt modules
-  modules: [
-  ],
-  
+  modules: [],
+
   // Vuetify
   vuetify: {
     defaultAssets: {
-      icons: 'mdiSvg',
+      icons: 'mdiSvg'
     },
     theme: {
       dark: true,
@@ -67,11 +71,10 @@ module.exports = {
       }
     }
   },
-  
+
   // Build configuration
   build: {
     // WebPack
-    extend (config, ctx) {
-    }
+    extend(config, ctx) {}
   }
 }

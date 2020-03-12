@@ -9,7 +9,10 @@
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node src/server/index.js",
     "generate": "nuxt generate",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "format": "prettier --write \"**/*.{js,jsx,json,md,vue}\"  --ignore-path .gitignore"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,6 +20,7 @@
     "express": "^4.16.4",
     "mysql2": "^2.1.0",
     "nuxt": "^2.0.0",
+    "ol": "^6.2.1",
     "sequelize": "^5.21.5",
     "serve-static": "^1.14.1",
     "xml2js": "^0.4.23"
@@ -24,7 +28,11 @@
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",
     "@vue/test-utils": "^1.0.0-beta.27",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^24.1.0",
+    "eslint": "^6.8.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-vue": "^6.2.2",
     "jest": "^24.1.0",
     "nodemon": "^1.18.9",
     "vue-jest": "^4.0.0-0"

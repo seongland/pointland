@@ -1,19 +1,19 @@
 <template>
   <div>
-    <h2>poi</h2>
+    <h2>POI</h2>
     <ul>
-      <li v-for="(todo, index) in poi" :key="index">
-        <input :checked="todo.done" type="checkbox" @change="toggle(todo)">
-        <span :class="{ done: todo.done }">
-          {{ todo.text }}
+      <li v-for="(poi, index) in poi" :key="index">
+        <input :checked="poi.done" type="checkbox" @change="toggle(poi)" />
+        <span :class="{ done: poi.done }">
+          {{ poi.text }}
         </span>
       </li>
-      <li><input placeholder="What needs to be done?" @keyup.enter="addTodo"></li>
+      <li><input placeholder="ADD" @keyup.enter="addpoi" /></li>
     </ul>
     <NuxtLink to="/">
       Home
     </NuxtLink>
-    <hr class="my-3">
+    <hr class="my-3" />
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
     poi: 'poi/poi'
   }),
   methods: {
-    addTodo (e) {
+    addpoi(e) {
       const text = e.target.value
       if (text.trim()) {
         this.$store.commit('poi/add', { text })
@@ -39,8 +39,4 @@ export default {
 }
 </script>
 
-<style>
-.done {
-  text-decoration: line-through;
-}
-</style>
+<style></style>
