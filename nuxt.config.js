@@ -30,6 +30,10 @@ module.exports = {
     {
       src: '~/plugins/map/',
       ssr: false
+    },
+    {
+      src: '~/plugins/pano/',
+      ssr: false
     }
   ],
 
