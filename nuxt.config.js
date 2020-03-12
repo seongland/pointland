@@ -72,9 +72,8 @@ module.exports = {
     }
   },
 
-  // Build configuration
+  // WebPack Build configuration
   build: {
-    // WebPack
-    extend(config, ctx) {}
+    extend () {}
   }
 }

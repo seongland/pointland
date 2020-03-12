@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var models = require('../../models')
 
-router.get('/nearnode/:node_id', function(req, res, next) {
+router.get('/nearnode/:node_id', function(req, res) {
   let from = req.params.node_id
   models.relation
     .findAll({

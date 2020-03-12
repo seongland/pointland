@@ -12,7 +12,7 @@ var models = require('../../models')
 var xml2js = require('xml2js')
 
 function getNodeInfo(node_id) {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     let pvr_row
     models.pvr
       .findAll({
