@@ -1,4 +1,4 @@
-import {  Vector } from 'ol/source'
+import { Vector } from 'ol/source'
 import { fromLonLat, transform } from 'ol/proj'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
@@ -8,9 +8,9 @@ import { makeArcStyle } from '~/plugins/map/modules/draw.js'
 import { roundFilter } from '~/plugins/map/modules/filter.js'
 import { π, ARC_FID, PVR_URL, ATAN } from '~/plugins/map/modules/const.js'
 
-
-function getArc(drawLayer) { return drawLayer.get('source').getFeatureById(ARC_FID) }
-
+function getArc(drawLayer) {
+  return drawLayer.get('source').getFeatureById(ARC_FID)
+}
 
 function eventBind(map) {
   /**
@@ -19,29 +19,26 @@ function eventBind(map) {
   map.on('click', mapClick)
 }
 
-
 function mapClick(e) {
   /**
-  * @summary - When Click Map
-  */
+   * @summary - When Click Map
+   */
   let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
   let extent = e.map.getView().calculateExtent()
   let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
   let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
-  let size = rightTop.map((e, i) => { return e - leftBottom[i] })
+  let size = rightTop.map((e, i) => {
+    return e - leftBottom[i]
+  })
   let drawLayer = getDrawLayer(e.map)
   getNears(coor, size, drawLayer)
 }
 
-
 function getNears(coor, size, drawLayer) {
   /**
-  * @summary - Get Near Features & Get nearest feature
-  */
-  fetch(
-    PVR_URL + roundFilter(coor, size),
-    { method: 'GET', mode: 'cors' }
-  )
+   * @summary - Get Near Features & Get nearest feature
+   */
+  fetch(PVR_URL + roundFilter(coor, size), { method: 'GET', mode: 'cors' })
     .then(response => {
       return response.json()
     })
@@ -57,7 +54,6 @@ function getNears(coor, size, drawLayer) {
       // })
     })
 }
-
 
 function panoMovebyMap(coor, drawLayer) {
   let arc = getArc(drawLayer)
@@ -75,15 +71,14 @@ function panoMovebyMap(coor, drawLayer) {
 
 function getNearest(features, coor) {
   /**
-  * @summary - Get nearest feature
-  */
+   * @summary - Get nearest feature
+   */
   let vectorSource = new Vector({
     format: new GeoJSON()
   })
   vectorSource.addFeatures(features)
   return vectorSource.getClosestFeatureToCoordinate(coor)
 }
-
 
 function drawSelect(feature, drawLayer) {
   let lonlat = [feature.get('lon'), feature.get('lat')]
@@ -96,7 +91,6 @@ function drawSelect(feature, drawLayer) {
   drawLayer.getSource().addFeature(feature)
   drawCompass(heading, coor, drawLayer)
 }
-
 
 function drawCompass(heading, coor, drawLayer) {
   /**
@@ -117,7 +111,6 @@ function drawCompass(heading, coor, drawLayer) {
   drawLayer.getSource().addFeature(feature)
 }
 
-
 function changeArc(heading, fov, map) {
   heading = heading % 360
   let drawLayer = getDrawLayer(map)
@@ -126,8 +119,7 @@ function changeArc(heading, fov, map) {
   arc.setStyle(arcStyle)
 }
 
-
-function cptMapAngle (x_m, y_m, x_w, y_w) {
+function cptMapAngle(x_m, y_m, x_w, y_w) {
   /**
    * Compute angle from +y axis of map by counter-clockwise
    * @todo - TM scope
@@ -138,5 +130,4 @@ function cptMapAngle (x_m, y_m, x_w, y_w) {
   else return (450 - angle) % 360
 }
 
-
-export {eventBind}
+export { eventBind }

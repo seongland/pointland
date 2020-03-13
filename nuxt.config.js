@@ -7,6 +7,7 @@ module.exports = {
 
   // Meta
   mode: 'universal',
+  babelrc: true,
 
   // Vue Config
   vue: {
@@ -63,7 +64,7 @@ module.exports = {
 
   // WebPack Build configuration
   build: {
-    extend () {}
+    extend() {}
   },
 
   // Header
@@ -78,6 +79,9 @@ module.exports = {
         name: 'description',
         content: process.env.npm_package_description || ''
       }
+    ],
+    script: [
+      { src: '/krpano.js' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   }

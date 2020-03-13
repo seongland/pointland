@@ -1,8 +1,10 @@
 import Vue from 'vue'
+import { stpanoInit } from '~/plugins/pano/modules/init.js'
 
 Vue.mixin({
   methods: {
-    panoInit() {
+    async stpanoInit(map) {
+      return await stpanoInit(map)
     }
   }
 })

@@ -7,27 +7,24 @@ import { olInit, getDrawLayer } from '~/plugins/map/modules/meta.js'
 
 Vue.mixin({
   methods: {
-    olInit() {
-      return olInit()
+    async olInit() {
+      return await olInit()
     },
 
     changeFeaturebyID(pvrid, map) {
       let drawLayer = getDrawLayer(map)
-      fetch(
-        PVR_URL + pvrIdFilter(pvrid),
-        { method: 'GET', mode: 'cors' }
-      )
+      fetch(PVR_URL + pvrIdFilter(pvrid), { method: 'GET', mode: 'cors' })
         .then(response => {
           return response.json()
         })
         .then(json => {
           let features = new GeoJSON().readFeatures(json)
-          if (features.length === 0) return alert("No Feature In Geoserver")
+          if (features.length === 0) return alert('No Feature In Geoserver')
           let feature = features[0]
           this.drawSelect(feature, drawLayer)
-          stpano.AvatarMove({
-            nodeid: pvrid
-          })
+          // stpano.AvatarMove({
+          // nodeid: pvrid
+          // })
         })
     }
   }

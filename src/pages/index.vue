@@ -3,42 +3,33 @@
     <v-flex xs12 sm12 md6>
       <v-container>
         <v-card>
-          <geo-table />
+          <geo-pano />
           <v-card-title>
             GeoPano
           </v-card-title>
         </v-card>
       </v-container>
     </v-flex>
-    <v-flex xs12 sm12 md12>
-      <br />
-      <div class="text-center">
-        <logo />
-      </div>
-      <br />
 
-      <v-card>
-        <v-card-title class="headline">
-          GeoMap
-        </v-card-title>
-      </v-card>
-
-      <br />
-
-      <v-card>
-        <v-card-title class="headline">
-          Panorama
-        </v-card-title>
-
-        <!-- Card Action Part -->
-        <geo-pano />
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/sub">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+    <v-flex xs12 sm12 md6>
+      <v-container>
+        <v-card>
+          <geo-map />
+          <v-card-title>
+            GeoMap
+          </v-card-title>
+        </v-card>
+      </v-container>
+    </v-flex>
+    <v-flex xs12 sm12 md6>
+      <v-container>
+        <v-card>
+          <geo-table />
+          <v-card-title>
+            GeoTable
+          </v-card-title>
+        </v-card>
+      </v-container>
     </v-flex>
   </v-layout>
 </template>
@@ -47,10 +38,16 @@
 import { mapState } from 'vuex'
 import Logo from '~/components/Logo.vue'
 import GeoPano from '~/components/index/GeoPano.vue'
+import GeoMap from '~/components/index/GeoMap.vue'
 import GeoTable from '~/components/index/GeoTable.vue'
 
-
 export default {
+  components: {
+    Logo,
+    GeoPano,
+    GeoTable,
+    GeoMap
+  },
   fetch({ store }) {
     store.commit('increment')
   },
@@ -59,11 +56,6 @@ export default {
     increment() {
       this.$store.commit('increment')
     }
-  },
-  components: {
-    Logo,
-    GeoPano,
-    GeoTable
   }
 }
 </script>

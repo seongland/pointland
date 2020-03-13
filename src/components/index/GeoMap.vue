@@ -1,25 +1,18 @@
 <template>
   <v-container>
     <v-layout row wrap>
-      <div id="map"></div>
+      <div id="map" />
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
-  computed: mapGetters({
-    articles: 'articles/get',
-    comments: 'articles/comments/get'
-  }),
-  mounted() {
-    this.olInit()
-  },
-
   data: function() {
     return {}
+  },
+  mounted() {
+    this.olInit()
   }
 }
 </script>

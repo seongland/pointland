@@ -1,14 +1,29 @@
+import 'ol/ol.css'
 import Map from 'ol/Map'
 import View from 'ol/View'
-import { Circle, Fill, Style, Stroke } from 'ol/style'
+import { Circle, Fill, Style } from 'ol/style'
 import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
-
-import 'ol/ol.css'
-
-import { makePvrLayer, makeGoogleLayer, makeRelLayer, makeDrawLayer } from '~/plugins/map/modules/layer.js'
-import { RED,  ALPHA, DFT_RADIUS, ZINDEX_SEL, WHITE, COMP_RAD, STROKE } from '~/plugins/map/modules/const.js'
-import { DRAW_LAYER_ID, START_ZOOM, START_POINT } from '~/plugins/map/modules/const.js'
+import {
+  makePvrLayer,
+  makeGoogleLayer,
+  makeRelLayer,
+  makeDrawLayer
+} from '~/plugins/map/modules/layer.js'
+import {
+  RED,
+  ALPHA,
+  DFT_RADIUS,
+  ZINDEX_SEL,
+  WHITE,
+  COMP_RAD,
+  STROKE
+} from '~/plugins/map/modules/const.js'
+import {
+  DRAW_LAYER_ID,
+  START_ZOOM,
+  START_POINT
+} from '~/plugins/map/modules/const.js'
 import { eventBind } from '~/plugins/map/modules/event.js'
 
 
@@ -44,7 +59,6 @@ function makeStyle() {
   styles.prop = {
     fRed: new Fill({ color: RED }),
     fAlpha: new Fill({ color: ALPHA }),
-    fWhite: new Fill({ color: WHITE }),
     fWhite: new Fill({ color: WHITE })
   }
   let cricleDft = { radius: DFT_RADIUS }
@@ -53,10 +67,13 @@ function makeStyle() {
     radius: COMP_RAD,
     fill: styles.prop.fAlpha
   })
-  let ciWhiteI = new Circle({ radius:DFT_RADIUS + STROKE , fill:styles.prop.fWhite })
+  let ciWhiteI = new Circle({
+    radius: DFT_RADIUS + STROKE,
+    fill: styles.prop.fWhite
+  })
   styles = {
     ...styles,
-    circleWhite: new Style ({ image: ciWhiteI }),
+    circleWhite: new Style({ image: ciWhiteI }),
     circleRed: new Style({ image: ciRedI }),
     circleAlpha: new Style({ image: ciAlphaI })
   }

@@ -26,6 +26,10 @@ import GeoMap from '~/components/index/GeoMap.vue'
 import GeoTable from '~/components/index/GeoTable.vue'
 
 export default {
+  components: {
+    GeoMap,
+    GeoTable
+  },
   fetch({ store }) {
     store.commit('increment')
   },
@@ -34,10 +38,6 @@ export default {
     increment() {
       this.$store.commit('increment')
     }
-  },
-  components: {
-    GeoMap,
-    GeoTable
   }
 }
 </script>
