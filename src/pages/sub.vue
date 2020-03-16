@@ -12,7 +12,7 @@
       <v-flex xs12 sm12 md6>
         <v-container>
           <v-card>
-            <geo-map />
+            <geo-pano />
           </v-card>
         </v-container>
       </v-flex>
@@ -21,23 +21,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import GeoMap from '~/components/index/GeoMap.vue'
-import GeoTable from '~/components/index/GeoTable.vue'
+import GeoPano from '~/components/index/GeoPano.vue'
 
 export default {
   components: {
     GeoMap,
-    GeoTable
+    GeoPano
   },
-  fetch({ store }) {
-    store.commit('increment')
-  },
-  computed: mapState(['counter']),
-  methods: {
-    increment() {
-      this.$store.commit('increment')
-    }
-  }
 }
 </script>

@@ -3,10 +3,10 @@ import { fromLonLat, transform } from 'ol/proj'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import { GeoJSON } from 'ol/format'
-import { getDrawLayer } from '~/plugins/map/modules/meta.js'
-import { makeArcStyle } from '~/plugins/map/modules/draw.js'
-import { roundFilter } from '~/plugins/map/modules/filter.js'
-import { π, ARC_FID, PVR_URL, ATAN } from '~/plugins/map/modules/const.js'
+import { getDrawLayer } from '~/plugins/map/modules/meta'
+import { makeArcStyle } from '~/plugins/map/modules/draw'
+import { roundFilter, pvrIdFilter } from '~/plugins/map/modules/filter'
+import { π, ARC_FID, PVR_URL, ATAN } from '~/plugins/map/modules/const'
 
 function getArc(drawLayer) {
   return drawLayer.get('source').getFeatureById(ARC_FID)
@@ -49,9 +49,10 @@ function getNears(coor, size, drawLayer) {
       if (features.length === 0) return panoMovebyMap(coor, drawLayer)
       let feature = getNearest(features, coor)
       drawSelect(feature, drawLayer)
-      // stpano.AvatarMove({
-      //   nodeid: feature.get('pvrid')
-      // })
+      let pano = drawLayer.map.pano
+      pano.AvatarMove({
+        nodeid: feature.get('pvrid')
+      })
     })
 }
 
@@ -65,8 +66,9 @@ function panoMovebyMap(coor, drawLayer) {
   let heading = 360 - drawLayer.selected.get('heading')
   console.log('angle', angle)
   angle = angle - heading
-  console.log(angle, heading)
-  // stpano.SetHorizontalLookAngle(angle)
+  console.log('heading', heading)
+  let pano = drawLayer.map.pano
+  pano.SetHorizontalLookAngle(angle)
 }
 
 function getNearest(features, coor) {
@@ -130,4 +132,23 @@ function cptMapAngle(x_m, y_m, x_w, y_w) {
   else return (450 - angle) % 360
 }
 
-export { eventBind }
+
+function changeFeaturebyID(pvrid, map) {
+  let drawLayer = getDrawLayer(map)
+  fetch(PVR_URL + pvrIdFilter(pvrid), { method: 'GET', mode: 'cors' })
+    .then(response => {
+      return response.json()
+    })
+    .then(json => {
+      let features = new GeoJSON().readFeatures(json)
+      if (features.length === 0) return alert('No Feature In Geoserver')
+      let feature = features[0]
+      drawSelect(feature, drawLayer)
+      drawLayer.map.pano.AvatarMove({
+      nodeid: pvrid
+      })
+    })
+}
+
+
+export { eventBind, changeArc, changeFeaturebyID }

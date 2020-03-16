@@ -7,7 +7,6 @@ module.exports = {
 
   // Meta
   mode: 'universal',
-  babelrc: true,
 
   // Vue Config
   vue: {
@@ -20,7 +19,7 @@ module.exports = {
   // Middleware Apis
   serverMiddleware: {
     '/server/api': '~/server/api/',
-    '/server/static': serveStatic('~/server/static')
+    '/server/static': serveStatic(`${__dirname}/src/server/static`)
   },
 
   // Loading Bar
@@ -34,6 +33,10 @@ module.exports = {
     },
     {
       src: '~/plugins/pano/',
+      ssr: false
+    },
+    {
+      src: '~/plugins/',
       ssr: false
     }
   ],

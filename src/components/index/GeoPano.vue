@@ -12,7 +12,6 @@ export default {
     return {}
   },
   mounted() {
-    let stpano = this.stpanoInit()
   }
 }
 </script>

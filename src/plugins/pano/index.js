@@ -1,10 +1,16 @@
 import Vue from 'vue'
-import { stpanoInit } from '~/plugins/pano/modules/init.js'
+import { stPanoInit } from '~/plugins/pano/modules/init'
 
 Vue.mixin({
+  data : () => {
+    return {
+      stPano: undefined
+    }
+  },
   methods: {
-    async stpanoInit(map) {
-      return await stpanoInit(map)
+     stPanoInit(map) {
+      this.stPano =  stPanoInit(map)
+      return this.stPano
     }
   }
 })

@@ -42,20 +42,14 @@ import GeoMap from '~/components/index/GeoMap.vue'
 import GeoTable from '~/components/index/GeoTable.vue'
 
 export default {
+  mounted() {
+    this.mapPano()
+  },
   components: {
     Logo,
     GeoPano,
     GeoTable,
     GeoMap
-  },
-  fetch({ store }) {
-    store.commit('increment')
-  },
-  computed: mapState(['counter']),
-  methods: {
-    increment() {
-      this.$store.commit('increment')
-    }
   }
 }
 </script>

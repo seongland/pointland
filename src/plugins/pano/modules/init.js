@@ -1,10 +1,11 @@
-import { StPano } from '~/plugins/pano/modules/class.js'
+import { StPano } from '~/plugins/pano/modules/model'
+import { changeArc } from '~/plugins/map/modules/event'
 
 function krpano_onready_callback(krpano_instance) {
   console.log('KrPano inside StPano is ready')
 }
 
-function stpanoInit(map) {
+function stPanoInit(map) {
   let textEventFromPano = {}
   textEventFromPano.value = ''
   let tmpStpano = new StPano(map, 'pano', krpano_onready_callback)
@@ -26,17 +27,14 @@ function stpanoInit(map) {
     let currentJsonobj = tmpStpano.FetchTrajnodeById(tmpStpano.currentNodeId)
     let angle = tmpStpano.yaw - Number(currentJsonobj.get('heading'))
     changeArc(angle, tmpStpano.GetFovAngle(), map)
-    $('#inputPanoFov')[0].value = fovdeg
   })
 
   // Pano Moveend Event Function
   tmpStpano.SetYawChangeCallback(yawdeg => {
     tmpStpano.yaw = yawdeg
-    $('#inputPanoHeading')[0].value = yawdeg
     if (tmpStpano.currentNodeId) {
       let currentJsonobj = tmpStpano.FetchTrajnodeById(tmpStpano.currentNodeId)
       let angle = Number(yawdeg) - Number(currentJsonobj.get('heading'))
-      console.log(yawdeg, currentJsonobj.get('heading'), angle)
       changeArc(angle, tmpStpano.GetFovAngle(), map)
     }
   })
@@ -45,7 +43,6 @@ function stpanoInit(map) {
   tmpStpano.FetchAllTrajNodeData(function(features) {
     console.log('(simulated) node fetched from server')
     tmpStpano.features = features
-    console.log('features', features)
     // @todo - add to table by vuex
   })
 
@@ -81,12 +78,8 @@ function stpanoInit(map) {
     let markerHeading = currentNodeJsonobj.get('heading')
     if (jsonobj.hlookat) markerHeading += jsonobj.hlookat
     console.log('markerHeading: ', markerHeading)
-
-    //set UIs
-    $('#inputPanoHeading')[0].value = tmpStpano.GetHorizontalLookAngle()
-    $('#inputPanoFov')[0].value = tmpStpano.GetFovAngle()
   })
   return tmpStpano
 }
 
-export { stpanoInit }
+export { stPanoInit }

@@ -7,14 +7,7 @@
 </template>
 
 <script>
-export default {
-  data: function() {
-    return {}
-  },
-  mounted() {
-    this.olInit()
-  }
-}
+export default {}
 </script>
 
 <style>

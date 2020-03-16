@@ -9,7 +9,7 @@ import {
   makeGoogleLayer,
   makeRelLayer,
   makeDrawLayer
-} from '~/plugins/map/modules/layer.js'
+} from '~/plugins/map/modules/layer'
 import {
   RED,
   ALPHA,
@@ -18,13 +18,13 @@ import {
   WHITE,
   COMP_RAD,
   STROKE
-} from '~/plugins/map/modules/const.js'
+} from '~/plugins/map/modules/const'
 import {
   DRAW_LAYER_ID,
   START_ZOOM,
   START_POINT
-} from '~/plugins/map/modules/const.js'
-import { eventBind } from '~/plugins/map/modules/event.js'
+} from '~/plugins/map/modules/const'
+import { eventBind } from '~/plugins/map/modules/event'
 
 
 function olInit() {

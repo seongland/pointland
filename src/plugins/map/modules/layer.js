@@ -1,12 +1,12 @@
 import { Tile, Vector as VectorLayer } from 'ol/layer'
 import { TileWMS, Vector, XYZ, OSM } from 'ol/source'
-import { ZINDEX_PVR } from '~/plugins/map/modules/const.js'
+import { ZINDEX_PVR } from '~/plugins/map/modules/const'
 import {
   DRAW_LAYER_ID,
   PVR_LAYER,
   REL_LAYER
-} from '~/plugins/map/modules/const.js'
-import { GEOSERVER, WORKSPACE } from '~/plugins/map/modules/const.js'
+} from '~/plugins/map/modules/const'
+import { GEOSERVER, WORKSPACE } from '~/plugins/map/modules/const'
 
 function makeDrawLayer(styles) {
   /**

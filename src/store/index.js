@@ -1,9 +1,8 @@
 export const state = () => ({
-  counter: 0
+  stMap: undefined,
+  stPano: undefined
 })
 
 export const mutations = {
-  increment(state) {
-    state.counter++
-  }
+  
 }
