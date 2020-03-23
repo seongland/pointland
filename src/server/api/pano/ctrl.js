@@ -6,7 +6,8 @@
 const fs = require('fs')
 const TILE_FOLDER = 'tiles_recolor/'
 const BACKPACK_FOLDER = 'tiles_rollpitch/'
-const NAS = '\\\\10.0.0.148\\smms_output'
+const NAS = '/media/nas/smms_output'
+const NETWORK = '\\\\10.0.0.148\\smms_output'
 const API_FOLER = '/server/api'
 var models = require('../../models')
 var xml2js = require('xml2js')
@@ -41,8 +42,9 @@ exports.getTileImage = async (req, res, next) => {
 
     getNodeInfo(node_id).then(row => {
       let imagePath = getTileFolder(row.round_path, row.seq) + '/images'
+      imagePath = imagePath.replace(NAS, NETWORK)
       imagePath = imagePath.replace(/\//gi, '\\')
-      imagePath = NAS + imagePath.split(':')[1]
+      // imagePath = NAS + imagePath.split(':')[1]
       let suffixPath = '/' + s + '/' + level + '/' + v + '/' + image_name
       imagePath = imagePath + suffixPath
       let imageBuf = fs.readFileSync(imagePath)
@@ -64,13 +66,14 @@ exports.getPanoxml = async (req, res, next) => {
 
     getNodeInfo(node_id).then(row => {
       let xmlFilePath = getTileFolder(row.round_path, row.seq) + '/pano.xml'
+      xmlFilePath = xmlFilePath.replace(NAS, NETWORK)
       xmlFilePath = xmlFilePath.replace(/\//gi, '\\')
-      xmlFilePath = NAS + xmlFilePath.split(':')[1]
+      // xmlFilePath = NAS + xmlFilePath.split(':')[1]
       console.log(`\n XML path ${xmlFilePath} \n`)
       res.set('Content-Type', 'text/xml')
-      fs.readFile(xmlFilePath, 'utf8', function(err, data) {
+      fs.readFile(xmlFilePath, 'utf8', function (err, data) {
         let strXML = data
-        xml2js.parseString(strXML, function(err, parsedJson) {
+        xml2js.parseString(strXML, function (err, parsedJson) {
           parsedJson.krpano.preview[0].$.url = parsedJson.krpano.preview[0].$.url.replace(
             'images/preview.jpg',
             previewPrepender
@@ -99,8 +102,9 @@ exports.getPreview = async (req, res, next) => {
     getNodeInfo(node_id).then(row => {
       let imagePath =
         getTileFolder(row.round_path, row.seq) + '/images/preview.jpg'
+      imagePath = imagePath.replace(NAS, NETWORK)
       imagePath = imagePath.replace(/\//gi, '\\')
-      imagePath = NAS + imagePath.split(':')[1]
+      // imagePath = NAS + imagePath.split(':')[1]
       let imageBuf = fs.readFileSync(imagePath)
       res.send(imageBuf)
     })

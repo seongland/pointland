@@ -36,7 +36,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import Logo from '~/components/Logo.vue'
 import GeoPano from '~/components/index/GeoPano.vue'
 import GeoMap from '~/components/index/GeoMap.vue'
 import GeoTable from '~/components/index/GeoTable.vue'
@@ -46,7 +45,6 @@ export default {
     this.mapPano()
   },
   components: {
-    Logo,
     GeoPano,
     GeoTable,
     GeoMap
