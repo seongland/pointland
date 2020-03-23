@@ -12,14 +12,14 @@ $ yarn install
 $ yarn dev
 
 # build for production and launch server
-$ yarn build
 $ yarn start
-
-# generate static project
-$ yarn generate
 ```
 
 # Understand Project Structure
 
 1. Read Readme of Each Folder
-2.
+2. 
+
+
+# ResearchNote
+- [Init Research Note](https://www.notion.so/seongland/geopano-front-migration-from-stpan-b3aac3a65be94b7eb11dd34e02115735)
