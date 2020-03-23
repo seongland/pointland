@@ -1,24 +1,31 @@
-# GeoPano
+# Build Setup
+``` bash
+# 1. install dependencies
+$ yarn
 
-> Geology Panorama Street View Map
-
-## Build Setup
-
-```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
+# 2. serve with hot reload at localhost:3333
 $ yarn dev
+```
 
-# build for production and launch server
+
+# Production
+``` bash
+$ yarn build
 $ yarn start
 ```
 
-# Understand Project Structure
 
-1. Read Readme of Each Folder
-2. 
+# Understand Project
+1. nuxt start from server.js
+2. load nuxt.config.js
+3. load front(module, components ...), back(servermiddleware)
+4. read each folder's readme.md
+5. use Vue Devtools chrome extension
+
+
+# Main Concept
+- components <- pages <- layout
+- plugins(mixin), store(vuex) <-> components
 
 
 # ResearchNote
