@@ -1,7 +1,7 @@
-import { PVR_URL } from '~/plugins/map/modules/const'
+import { PVR_URL } from '~/plugins/map/const'
 import { GeoJSON } from 'ol/format'
-import { getDrawLayer } from '~/plugins/map/modules/meta'
-import { changeFeaturebyID } from '~/plugins/map/modules/event'
+import { getDrawLayer } from '~/plugins/map/meta'
+import { changeFeaturebyID } from '~/plugins/map/event'
 
 /**
  * Instantiate StPano instance.

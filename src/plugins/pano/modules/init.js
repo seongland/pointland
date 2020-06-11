@@ -1,5 +1,5 @@
 import { StPano } from '~/plugins/pano/modules/model'
-import { changeArc } from '~/plugins/map/modules/event'
+import { changeArc } from '~/plugins/map/event'
 
 function krpano_onready_callback(krpano_instance) {
   console.log('KrPano inside StPano is ready')

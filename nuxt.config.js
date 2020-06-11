@@ -28,14 +28,6 @@ module.exports = {
   // Plugins to load before mounting the App
   plugins: [
     {
-      src: '~/plugins/map/',
-      ssr: false
-    },
-    {
-      src: '~/plugins/pano/',
-      ssr: false
-    },
-    {
       src: '~/plugins/',
       ssr: false
     }
@@ -82,9 +74,6 @@ module.exports = {
         name: 'description',
         content: process.env.npm_package_description || ''
       }
-    ],
-    script: [
-      { src: '/krpano.js' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   }

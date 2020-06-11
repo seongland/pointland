@@ -9,7 +9,7 @@ import {
   makeGoogleLayer,
   makeRelLayer,
   makeDrawLayer
-} from '~/plugins/map/modules/layer'
+} from '~/plugins/map/layer'
 import {
   RED,
   ALPHA,
@@ -18,37 +18,28 @@ import {
   WHITE,
   COMP_RAD,
   STROKE
-} from '~/plugins/map/modules/const'
-import {
-  DRAW_LAYER_ID,
-  START_ZOOM,
-  START_POINT
-} from '~/plugins/map/modules/const'
-import { eventBind } from '~/plugins/map/modules/event'
-
+} from '~/plugins/map/const'
+import { DRAW_LAYER_ID, START_ZOOM, START_POINT } from '~/plugins/map/const'
+import { eventBind } from '~/plugins/map/event'
 
 function olInit() {
   /**
    * @summary - Make OSM
    */
   let styles = makeStyle()
-  let pvrLayer = makePvrLayer()
-  let relLayer = makeRelLayer()
   let googleLayer = makeGoogleLayer()
-  let drawLayer = makeDrawLayer(styles)
 
   // Other Layers
   // let osmLayer = makeOSMLayer()
   // let mbLayer = makeMBLayer()
   // let gsLayer = makeGSLayer()
 
-  let layers = [googleLayer, pvrLayer, relLayer, drawLayer]
+  let layers = [googleLayer]
   let map = makeOlMap(layers)
   drawLayer.map = map
   eventBind(map)
   return map
 }
-
 
 function makeStyle() {
   /**
@@ -81,7 +72,6 @@ function makeStyle() {
   return styles
 }
 
-
 function makeOlMap(layers) {
   /**
    * @summary - Make OpenLayers Main Map
@@ -100,11 +90,9 @@ function makeOlMap(layers) {
   return new Map(mapOpt)
 }
 
-
 function getDrawLayer(map) {
   for (let layer of map.getLayers().getArray())
     if (layer.get('lid') === DRAW_LAYER_ID) return layer
 }
-
 
 export { olInit, getDrawLayer }

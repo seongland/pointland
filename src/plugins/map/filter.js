@@ -1,4 +1,4 @@
-import { DELTA } from '~/plugins/map/modules/const'
+import { DELTA } from '~/plugins/map/const'
 
 function squareFilter(coor, size) {
   /**

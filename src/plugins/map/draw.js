@@ -10,7 +10,7 @@ import {
   COS,
   SIN,
   ZINDEX_SEL
-} from '~/plugins/map/modules/const'
+} from '~/plugins/map/const'
 
 function makeArcStyle(heading, fov) {
   let start = -fov / 2 - 90

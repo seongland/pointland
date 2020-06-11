@@ -1,11 +1,16 @@
 import Vue from 'vue'
+import { olInit } from '~/plugins/map/meta'
 
 Vue.mixin({
+  data : () => {
+    return {
+      stMap: undefined
+    }
+  },
   methods: {
-    async mapPano() {
-      this.stMap = this.olInit()
-      this.stPano = this.stPanoInit(this.stMap)
-      this.stMap.pano = this.stPano
+     olInit() {
+      this.stMap = olInit()
+      
       return this.stMap
     }
   }

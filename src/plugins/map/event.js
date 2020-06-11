@@ -3,10 +3,10 @@ import { fromLonLat, transform } from 'ol/proj'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import { GeoJSON } from 'ol/format'
-import { getDrawLayer } from '~/plugins/map/modules/meta'
-import { makeArcStyle } from '~/plugins/map/modules/draw'
-import { roundFilter, pvrIdFilter } from '~/plugins/map/modules/filter'
-import { π, ARC_FID, PVR_URL, ATAN } from '~/plugins/map/modules/const'
+import { getDrawLayer } from '~/plugins/map/meta'
+import { makeArcStyle } from '~/plugins/map/draw'
+import { roundFilter, pvrIdFilter } from '~/plugins/map/filter'
+import { π, ARC_FID, PVR_URL, ATAN } from '~/plugins/map/const'
 
 function getArc(drawLayer) {
   return drawLayer.get('source').getFeatureById(ARC_FID)
