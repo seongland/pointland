@@ -1,0 +1,15 @@
+name: geo
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - shapely
+  - geopandas
+  - psycopg2
+  - pylint
+  - flake8
+  - natsort
+  - gitpython
+  - rope
+prefix: C:\ProgramData\Anaconda3\envs\geo
+
