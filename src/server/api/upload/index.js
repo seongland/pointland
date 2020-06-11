@@ -1,5 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const upload = require('./upload')
-router.use('/upload', upload)
+
+router.post('/upload', upload)
+
+function upload() {
+  console.log('upload test')
+}
+
 module.exports = router

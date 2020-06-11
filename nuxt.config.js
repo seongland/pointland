@@ -1,5 +1,4 @@
 const colors = require('vuetify/es5/util/colors').default
-const serveStatic = require('serve-static')
 
 module.exports = {
   // Root Directory
@@ -18,8 +17,7 @@ module.exports = {
 
   // Middleware Apis
   serverMiddleware: {
-    '/server/api': '~/server/api/',
-    '/server/static': serveStatic(`${__dirname}/src/server/static`)
+    '/api': '~/server/api/'
   },
 
   // Loading Bar

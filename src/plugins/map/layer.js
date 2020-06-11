@@ -1,28 +1,8 @@
-import { Tile, Vector as VectorLayer } from 'ol/layer'
-import { TileWMS, Vector, XYZ, OSM } from 'ol/source'
+import { Tile } from 'ol/layer'
+import { TileWMS, XYZ } from 'ol/source'
 import { ZINDEX_PVR } from '~/plugins/map/const'
-import {
-  DRAW_LAYER_ID,
-  PVR_LAYER,
-  REL_LAYER
-} from '~/plugins/map/const'
+import { PVR_LAYER, REL_LAYER } from '~/plugins/map/const'
 import { GEOSERVER, WORKSPACE } from '~/plugins/map/const'
-
-function makeDrawLayer(styles) {
-  /**
-   * @summary - Make Draw Map
-   */
-  let tempArray = []
-  let vectorSrc = new Vector({ features: tempArray })
-  let drawLayer = new VectorLayer({
-    source: vectorSrc,
-    style: styles.circleRed
-  })
-  drawLayer.styles = styles
-  drawLayer.setZIndex(ZINDEX_PVR)
-  drawLayer.setProperties({ lid: DRAW_LAYER_ID })
-  return drawLayer
-}
 
 function makeGoogleLayer() {
   /**
@@ -67,14 +47,6 @@ function makeRelLayer() {
   })
 }
 
-function makeOSMLayer() {
-  /**
-   * @summary - Get Open Street Map Layer
-   */
-  let tile = { source: new OSM({ crossOrigin: null }) }
-  return new Tile(tile)
-}
-
 function makeMBLayer() {
   /**
    * @summary - Get Open MapBox Layer
@@ -104,12 +76,4 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
-export {
-  makeDrawLayer,
-  makeGoogleLayer,
-  makePvrLayer,
-  makeGSLayer,
-  makeMBLayer,
-  makeOSMLayer,
-  makeRelLayer
-}
+export { makeGoogleLayer, makePvrLayer, makeGSLayer, makeMBLayer, makeRelLayer }
