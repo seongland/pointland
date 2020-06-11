@@ -1,9 +1,5 @@
 <template>
-  <v-container>
-    <v-layout row wrap>
-      <div id="map" />
-    </v-layout>
-  </v-container>
+  <div id="map" />
 </template>
 
 <script>
@@ -12,7 +8,7 @@ export default {}
 
 <style>
 #map {
-  height: 50em;
+  height: 100%;
   width: 100%;
 }
 </style>

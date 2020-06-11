@@ -28,23 +28,15 @@
     </v-navigation-drawer>
 
     <!-- 2. Upper Bar -->
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar :clipped-left="clipped" fixed app dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
     </v-app-bar>
 
     <!-- 3. Main Contents -->
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
-
-    <!-- 4. Footer -->
-    <v-footer :fixed="fixed" app>
-      <v-spacer />
-      <span>&copy; {{ coor }} {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 

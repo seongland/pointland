@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       pageNotFound: '404 Not Found',
-      serverError: 'Internal Server Errro',
+      serverError: 'Internal Server Error',
       otherError: 'An error occurred'
     }
   },

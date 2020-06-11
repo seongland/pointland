@@ -1,16 +1,7 @@
 <template>
-  <v-layout row wrap align-center>
-    <v-flex xs12 sm12 md12>
-      <v-container>
-        <v-card>
-          <geo-map />
-          <v-card-title>
-            GeoMap
-          </v-card-title>
-        </v-card>
-      </v-container>
-    </v-flex>
-  </v-layout>
+  <v-card id="map-card">
+    <geo-map />
+  </v-card>
 </template>
 
 <script>
@@ -25,3 +16,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  #map-card{
+    height: 100%;
+  }
+</style>

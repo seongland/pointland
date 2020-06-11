@@ -4,12 +4,7 @@ import View from 'ol/View'
 import { Circle, Fill, Style } from 'ol/style'
 import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
-import {
-  makePvrLayer,
-  makeGoogleLayer,
-  makeRelLayer,
-  makeDrawLayer
-} from '~/plugins/map/layer'
+import { makeGoogleLayer } from '~/plugins/map/layer'
 import {
   RED,
   ALPHA,
@@ -26,7 +21,7 @@ function olInit() {
   /**
    * @summary - Make OSM
    */
-  let styles = makeStyle()
+  makeStyle()
   let googleLayer = makeGoogleLayer()
 
   // Other Layers
@@ -36,7 +31,6 @@ function olInit() {
 
   let layers = [googleLayer]
   let map = makeOlMap(layers)
-  drawLayer.map = map
   eventBind(map)
   return map
 }
