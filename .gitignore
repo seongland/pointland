@@ -91,3 +91,4 @@ sw.*
 
 # Python
 log
+__pycache__

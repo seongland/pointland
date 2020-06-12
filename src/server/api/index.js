@@ -1,5 +1,12 @@
-const express = require('express')
-const router = express.Router()
-const upload = require('./upload')
-router.use('/upload', upload)
-module.exports = router
+import express from 'express'
+import upload from './upload'
+import cors from 'cors'
+
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+
+app.use('/upload', upload)
+
+export default app

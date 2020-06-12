@@ -1,7 +1,7 @@
 import { Tile } from 'ol/layer'
 import { TileWMS, XYZ } from 'ol/source'
 import { ZINDEX_PVR } from '~/plugins/map/const'
-import { PVR_LAYER, REL_LAYER } from '~/plugins/map/const'
+import { RECORDED_LAYER, DRAFT_LAYER } from '~/plugins/map/const'
 import { GEOSERVER, WORKSPACE } from '~/plugins/map/const'
 
 function makeGoogleLayer() {
@@ -14,37 +14,6 @@ function makeGoogleLayer() {
     })
   }
   return new Tile(tile)
-}
-
-function makePvrLayer() {
-  /**
-   * @summary - Get Marker Image Layer
-   */
-  let pvrLayer = new Tile({
-    source: new TileWMS({
-      url: `${GEOSERVER}${WORKSPACE}/wms`,
-      params: { LAYERS: PVR_LAYER },
-      ratio: 1,
-      serverType: 'geoserver'
-    })
-  })
-  pvrLayer.setZIndex(ZINDEX_PVR)
-  return pvrLayer
-}
-
-function makeRelLayer() {
-  /**
-   * @summary - Get Marker Image Layer
-   */
-  return new Tile({
-    source: new TileWMS({
-      url: `${GEOSERVER}${WORKSPACE}/wms`,
-      params: { LAYERS: REL_LAYER },
-      ratio: 1,
-      serverType: 'geoserver',
-      crossOrigin: 'anonymous'
-    })
-  })
 }
 
 function makeMBLayer() {
@@ -76,4 +45,4 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
-export { makeGoogleLayer, makePvrLayer, makeGSLayer, makeMBLayer, makeRelLayer }
+export { makeGoogleLayer, makeGSLayer, makeMBLayer }

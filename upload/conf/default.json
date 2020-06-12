@@ -1,20 +1,4 @@
 {
-  "db_info_sriver_main" : {
-    "dbsln":"mysql",
-    "url": "app.stryx.co.kr",
-    "port": 13306,
-    "id": "stryx",
-    "password":"15651",
-    "schema":"gis_sriver1_test"
-  },
-  "db_info_sriver_stpano" : {
-    "dbsln":"mysql",
-    "url": "app.stryx.co.kr",
-    "port": 13306,
-    "id": "stryx",
-    "password":"15651",
-    "schema":"stryx_stpano"
-  },
   "db_info_stxpg1" : {
     "dbsln":"postgresql",
     "url": "app.stryx.co.kr",

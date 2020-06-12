@@ -12,9 +12,6 @@ export const ZINDEX_REL = ZINDEX_OL + 1,
   ZINDEX_PVR = ZINDEX_OL + 2,
   ZINDEX_SEL = ZINDEX_OL + 3
 
-// Draw
-export const COMP_RAD = 50
-
 // Geoserver
 export const DELTA = 0.01
 export const WORKSPACE = 'stx_sriver_2019_1'
