@@ -1,7 +1,11 @@
 import { Tile } from 'ol/layer'
 import { TileWMS, XYZ } from 'ol/source'
-import { ZINDEX_PVR } from '~/plugins/map/const'
-import { RECORDED_LAYER, DRAFT_LAYER } from '~/plugins/map/const'
+import {
+  RECORDED_LAYER,
+  DRAFT_LAYER,
+  MISSION_LAYER,
+  ZINDEX_PVR
+} from '~/plugins/map/const'
 import { GEOSERVER, WORKSPACE } from '~/plugins/map/const'
 
 function makeGoogleLayer() {
@@ -14,6 +18,20 @@ function makeGoogleLayer() {
     })
   }
   return new Tile(tile)
+}
+
+const makeRecordedLayer = () => {
+  /**
+   * @summary - Get Marker Image Layer
+   */
+  let source = new TileWMS({
+    url: `${GEOSERVER}${WORKSPACE}/wms`,
+    params: { LAYERS: RECORDED_LAYER },
+    ratio: 1,
+    serverType: 'geoserver',
+    crossOrigin: 'anonymous'
+  })
+  return new Tile({ source })
 }
 
 function makeMBLayer() {
@@ -33,6 +51,37 @@ function makeMBLayer() {
   return new Tile(tile)
 }
 
+const makeMissionLayer = () => {
+  /**
+   * @summary - Get Marker Image Layer
+   */
+  let source = new TileWMS({
+    url: `${GEOSERVER}${WORKSPACE}/wms`,
+    params: { LAYERS: MISSION_LAYER },
+    ratio: 1,
+    serverType: 'geoserver',
+    crossOrigin: 'anonymous'
+  })
+  const missionLayer = new Tile({ source })
+  missionLayer.setZIndex(ZINDEX_PVR - 1)
+  return missionLayer
+}
+
+const makeDraftLayer = () => {
+  /**
+   * @summary - Get Marker Image Layer
+   */
+  let source = new TileWMS({
+    url: `${GEOSERVER}${WORKSPACE}/wms`,
+    params: { LAYERS: DRAFT_LAYER },
+    ratio: 1,
+    serverType: 'geoserver',
+    crossOrigin: 'anonymous'
+  })
+  let draftLayer = new Tile({ source })
+  return draftLayer
+}
+
 function makeGSLayer() {
   /**
    * @summary - Make Google Satelite Map
@@ -45,4 +94,11 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
-export { makeGoogleLayer, makeGSLayer, makeMBLayer }
+export {
+  makeGoogleLayer,
+  makeGSLayer,
+  makeMBLayer,
+  makeDraftLayer,
+  makeRecordedLayer,
+  makeMissionLayer
+}

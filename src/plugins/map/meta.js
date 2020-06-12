@@ -1,9 +1,14 @@
 import 'ol/ol.css'
 import Map from 'ol/Map'
-import View from 'ol/View' 
+import View from 'ol/View'
 import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
-import { makeGoogleLayer } from '~/plugins/map/layer'
+import {
+  makeGoogleLayer,
+  makeDraftLayer,
+  makeRecordedLayer,
+  makeMissionLayer
+} from '~/plugins/map/layer'
 import { DRAW_LAYER_ID, START_ZOOM, START_POINT } from '~/plugins/map/const'
 import { eventBind } from '~/plugins/map/event'
 
@@ -12,13 +17,10 @@ function olInit() {
    * @summary - Make OSM
    */
   let googleLayer = makeGoogleLayer()
-
-  // Other Layers
-  // let osmLayer = makeOSMLayer()
-  // let mbLayer = makeMBLayer()
-  // let gsLayer = makeGSLayer()
-
-  let layers = [googleLayer]
+  let draftLayer = makeDraftLayer()
+  let recordedLayer = makeRecordedLayer()
+  let missionLayer = makeMissionLayer()
+  let layers = [googleLayer, draftLayer, recordedLayer, missionLayer]
   let map = makeOlMap(layers)
   eventBind(map)
   return map

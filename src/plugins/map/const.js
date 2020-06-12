@@ -14,7 +14,8 @@ export const ZINDEX_REL = ZINDEX_OL + 1,
 
 // Geoserver
 export const DELTA = 0.01
-export const WORKSPACE = 'stx_sriver_2019_1'
+export const WORKSPACE = 'stx_mms'
 export const DRAFT_LAYER = WORKSPACE + ':draft'
 export const RECORDED_LAYER = WORKSPACE + ':recorded'
-export const GEOSERVER = 'http://stryx.iptime.org:7545/geoserver/'
+export const MISSION_LAYER = WORKSPACE + ':mission'
+export const GEOSERVER = 'http://app.stryx.co.kr:18090/geoserver/'
