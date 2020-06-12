@@ -19,7 +19,7 @@ RECORDED_LAYER = 'recorded'
 SCHEMA = 'stx_mms'
 DST_DB = 'db_info_stxpg1'
 WGS84 = 4326
-
+ADD_FLAG = True
 
 def xy_upload(xy_df, add):
   '''
@@ -72,4 +72,4 @@ if __name__ == "__main__":
   jdata = sys.argv[1]
   data = json.loads(jdata)
   xy_df = pd.DataFrame(data)
-  pg_main(xy_df, True)
+  pg_main(xy_df, ADD_FLAG)
