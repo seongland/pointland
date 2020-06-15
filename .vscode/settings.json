@@ -1,4 +1,4 @@
 {
   "git.ignoreLimitWarning": true,
-  "python.pythonPath": "C:\\ProgramData\\Anaconda3\\envs\\geo\\python.exe"
+  "python.pythonPath": "/home/stryx/.conda/envs/gis/bin/python"
 }

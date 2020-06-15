@@ -15,7 +15,7 @@ from module.logger import file_log
 from conf.value import NO
 
 
-RECORDED_LAYER = 'recorded'
+RECORDED_LAYER = 'recorded_test'
 SCHEMA = 'stx_mms'
 DST_DB = 'db_info_stxpg1'
 WGS84 = 4326

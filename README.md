@@ -35,11 +35,19 @@ $ yarn start
 
 
 # Python environment
-# Install
+### Install
 ```
-conda create -n gis python=3.6
-conda install pandas
-conda install geoalchemy2
-conda install geopandas
-conda install psycopg2
+conda create -n gis python=3.6 -y
+conda activate gis
+conda install pandas -y
+pip install geoalchemy2
+conda install geopandas -y
+conda install psycopg2 -y
+pip install psycopg2-binary
+```
+
+### Execute
+- test
+```
+python upload/import_test.py
 ```

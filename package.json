@@ -6,8 +6,9 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --watch server/* --exec \"nuxt  --max_old_space_size=4096 --optimize_for_size\"",
-    "production": "pm2 start node_modules/nuxt/bin/nuxt.js -i max -- --port 3000 --host 0.0.0.0 --max-memory-restart 4000M --merge-logs --log-date-format=\"YYYY-MM-DD HH:mm\"",
-    "stop": "pm2 delete all",
+    "production": "pm2 start node_modules/nuxt/bin/nuxt.js --name mms-svr -i max -- --port 3000 --host 0.0.0.0 --max-memory-restart 4000M --merge-logs --log-date-format=\"YYYY-MM-DD HH:mm\"",
+    "restart": "pm2 restart mms-svr",
+    "stop": "pm2 delete mms-svr",
     "productionTest": "cross-env NODE_ENV=production node src/server/index.js",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node src/server/index.js",
