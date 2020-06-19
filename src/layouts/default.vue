@@ -44,22 +44,17 @@
 export default {
   data() {
     return {
-      title: 'GeoPano',
+      title: 'MMS - TOWER',
       coor: 'Stryx',
       clipped: true,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: 'Mdi',
-          title: 'Main Page',
+          icon: 'fas fa-map',
+          title: 'Map',
           to: '/'
         },
-        {
-          icon: 'ETC',
-          title: 'Sub Page',
-          to: '/sub'
-        }
       ],
       miniVariant: false
     }

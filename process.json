@@ -1,5 +1,6 @@
 {
-  "apps": [{
+  "apps": [
+    {
     "name": "mms-svr",
     "script": "./node_modules/nuxt/bin/nuxt.js",
     "merge_logs": true,
@@ -10,5 +11,6 @@
       "PORT": 3000,
       "NODE_ENV": "production"
     }
-  }]
+  }
+  ]
 }
