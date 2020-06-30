@@ -37,7 +37,7 @@ module.exports = {
   // Vuetify
   vuetify: {
     defaultAssets: {
-      icons: 'mdiSvg'
+      icons: 'fa'
     },
     theme: {
       dark: true,
