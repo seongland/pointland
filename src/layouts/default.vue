@@ -55,6 +55,11 @@ export default {
           title: 'Map',
           to: '/'
         },
+        {
+          icon: 'fas fa-table',
+          title: 'Table',
+          to: '/table'
+        }
       ],
       miniVariant: false
     }

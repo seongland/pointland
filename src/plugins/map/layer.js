@@ -94,11 +94,25 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
+function makeNaverMap() {
+  /**
+   * @summary - Make Naver Map
+   */
+  let naverGPS = new naver.maps.LatLng(37.3595704, 127.105399)
+  let NaverMapOptions = {
+    center: naverGPS, zoom: 15, scaleControl: false, zoomControl: false,
+    logoControl: false, mapDataControl: false, mapTypeControl: false,
+    useStyleMap: true, baseTileOpacity: 1, draggable: false
+  }
+  return new naver.maps.Map("naver", NaverMapOptions)
+}
+
 export {
   makeGoogleLayer,
   makeGSLayer,
   makeMBLayer,
   makeDraftLayer,
   makeRecordedLayer,
-  makeMissionLayer
+  makeMissionLayer,
+  makeNaverMap
 }
