@@ -1,10 +1,12 @@
 <template>
-  <div></div>
+  <overlay-pcd />
 </template>
 
 <script>
+import OverlayPcd from '~/components/index/GeoMap/OverlayPcd'
+
 export default {
-  components: {},
+  components: { OverlayPcd },
   mounted() {},
   data: () => ({}),
   methods: {}

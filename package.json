@@ -18,6 +18,7 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md,vue}\"  --ignore-path .gitignore"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.11.0",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
     "dotenv": "^8.2.0",
@@ -28,6 +29,7 @@
     "python-shell": "^2.0.1",
     "sequelize": "^5.21.5",
     "serve-static": "^1.14.1",
+    "three": "^0.118.3",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {

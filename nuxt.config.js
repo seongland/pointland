@@ -29,9 +29,12 @@ module.exports = {
       src: '~/plugins/',
       ssr: false
     }
+  ], transpile: [
+    "three"
   ],
-
   // Nuxt dev-modules
+
+  module: ['@nuxtjs/axios'],
   buildModules: ['@nuxtjs/vuetify'],
 
   // Vuetify
@@ -57,6 +60,10 @@ module.exports = {
 
   // WebPack Build configuration
   build: {
+    maxChunkSize: 300000,
+    transpile: [
+      'three'
+    ],
     extend() { }
   },
 

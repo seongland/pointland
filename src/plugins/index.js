@@ -2,16 +2,15 @@ import Vue from 'vue'
 import { olInit } from '~/plugins/map/meta'
 
 Vue.mixin({
-  data : () => {
+  data: () => {
     return {
-      stMap: undefined
+      map: undefined
     }
   },
   methods: {
-     olInit() {
-      this.stMap = olInit()
-      
-      return this.stMap
+    olInit() {
+      this.map = olInit()
+      return this.map
     }
   }
 })

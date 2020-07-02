@@ -8,6 +8,9 @@
 import GeoMap from '~/components/index/GeoMap.vue'
 
 export default {
+  async asyncData({ res, $axios }) {
+    console.log($axios)
+  },
   components: {
     GeoMap
   },
@@ -18,7 +21,7 @@ export default {
 </script>
 
 <style>
-  #map-card{
-    height: 100%;
-  }
+#map-card {
+  height: 100%;
+}
 </style>

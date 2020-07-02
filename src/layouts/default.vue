@@ -59,6 +59,11 @@ export default {
           icon: 'fas fa-table',
           title: 'Table',
           to: '/table'
+        },
+        {
+          icon: 'fas fa-cloud',
+          title: 'Points',
+          to: '/points'
         }
       ],
       miniVariant: false
