@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import OverlayPcd from '~/components/index/GeoMap/OverlayPcd'
+import OverlayPcd from '~/components/cloud/OverlayPcd'
 
 export default {
   components: {
@@ -36,5 +36,16 @@ export default {
 }
 #naver {
   z-index: 0;
+}
+.ol-zoom {
+  top: unset !important;
+  left: unset;
+  bottom: 1.6em !important;
+  right: 1em;
+}
+.ol-zoom-in,
+.ol-zoom-out {
+  background-color: #646464 !important;
+  opacity: 1 !important;
 }
 </style>

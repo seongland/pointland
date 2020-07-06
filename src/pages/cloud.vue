@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import OverlayPcd from '~/components/index/GeoMap/OverlayPcd'
+import OverlayPcd from '~/components/cloud/OverlayPcd'
 
 export default {
   components: { OverlayPcd },

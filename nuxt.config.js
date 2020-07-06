@@ -29,8 +29,6 @@ module.exports = {
       src: '~/plugins/',
       ssr: false
     }
-  ], transpile: [
-    "three"
   ],
   // Nuxt dev-modules
 

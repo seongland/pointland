@@ -23,14 +23,12 @@
     "cross-env": "^5.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
-    "mysql2": "^2.1.0",
     "nuxt": "^2.0.0",
+    "nuxt-socket-io": "^1.1.4",
     "ol": "^6.2.1",
     "python-shell": "^2.0.1",
-    "sequelize": "^5.21.5",
     "serve-static": "^1.14.1",
-    "three": "^0.118.3",
-    "xml2js": "^0.4.23"
+    "three": "^0.118.3"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",
