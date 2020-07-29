@@ -63,7 +63,7 @@ export default {
         {
           icon: 'fas fa-cloud',
           title: 'Points',
-          to: '/points'
+          to: '/cloud'
         }
       ],
       miniVariant: false

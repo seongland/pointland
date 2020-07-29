@@ -1,12 +1,18 @@
-import { Tile } from 'ol/layer'
-import { TileWMS, XYZ } from 'ol/source'
+/**
+ * @summary - Map Layer Module
+ * @module
+ */
+
+import { Tile, Vector as VectorLayer } from 'ol/layer'
+import { TileWMS, XYZ, Vector } from 'ol/source'
 import {
   RECORDED_LAYER,
   DRAFT_LAYER,
   MISSION_LAYER,
   ZINDEX_PVR
 } from '~/plugins/map/const'
-import { GEOSERVER, WORKSPACE } from '~/plugins/map/const'
+import { GEOSERVER, WORKSPACE, NAVER_ID } from '~/plugins/map/const'
+
 
 function makeGoogleLayer() {
   /**
@@ -94,17 +100,54 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
+const makeRecordingLayer = (styles) => {
+  /**
+   * @summary - Make Draw Map
+   */
+  const tempArray = []
+  const vectorSrc = new Vector({ features: tempArray })
+  const recordingLayer = new VectorLayer({
+    source: vectorSrc,
+    style: styles.circleRed,
+  })
+  recordingLayer.styles = styles
+  recordingLayer.setZIndex(ZINDEX_PVR)
+  return recordingLayer
+}
+
+const makeCurrentLayer = (styles) => {
+  /**
+   * @summary - Make current draw Map
+   */
+  const tempArray = []
+  const vectorSrc = new Vector({ features: tempArray })
+  const currentLayer = new VectorLayer({
+    source: vectorSrc,
+    style: styles.circleBlue,
+  })
+  currentLayer.styles = styles
+  currentLayer.setZIndex(ZINDEX_PVR + 1)
+  return currentLayer
+}
+
 function makeNaverMap() {
   /**
    * @summary - Make Naver Map
    */
   let naverGPS = new naver.maps.LatLng(37.3595704, 127.105399)
   let NaverMapOptions = {
-    center: naverGPS, zoom: 15, scaleControl: false, zoomControl: false,
-    logoControl: false, mapDataControl: false, mapTypeControl: false,
-    useStyleMap: true, baseTileOpacity: 1, draggable: false
+    center: naverGPS,
+    zoom: 15,
+    scaleControl: false,
+    zoomControl: false,
+    logoControl: false,
+    mapDataControl: false,
+    mapTypeControl: false,
+    useStyleMap: true,
+    baseTileOpacity: 1,
+    draggable: false
   }
-  return new naver.maps.Map("naver", NaverMapOptions)
+  return new naver.maps.Map(NAVER_ID, NaverMapOptions)
 }
 
 export {
@@ -114,5 +157,7 @@ export {
   makeDraftLayer,
   makeRecordedLayer,
   makeMissionLayer,
-  makeNaverMap
+  makeNaverMap,
+  makeCurrentLayer,
+  makeRecordingLayer
 }
