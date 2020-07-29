@@ -31,22 +31,22 @@ function makeStyle() {
   return styles
 }
 
-function drawXY(latlng, focus) {
+function drawXY(latlng, focus, id) {
   /**
    * @summary - When Click Map
    */
   if (!latlng) return
-  updateMarker(...latlng)
+  updateMarker(...latlng, id)
   if (focus) setFocus(...latlng)
 }
 
-function drawXYs(latlngArray) {
+function drawXYs(latlngArray, id) {
   /**
    * @summary - When Click Map
    */
   if (!latlngArray.length) return
   let latlng
-  for (latlng of latlngArray) addCircle(...latlng)
+  for (latlng of latlngArray) addCircle(...latlng, id)
 }
 
 function addCircle(lat, lng) {
@@ -60,15 +60,17 @@ function addCircle(lat, lng) {
   recordingLayer.getSource().addFeatures([feature])
 }
 
-function updateMarker(lat, lng) {
+function updateMarker(lat, lng, id) {
   /**
    * @summary - update lyaer
    */
   let loc = fromLonLat([lng, lat])
   let coor = new Point(loc)
   const feature = new Feature({ geometry: coor })
+  feature.setId(id)
   const currentLayer = ref.currentLayer
-  currentLayer.getSource().clear()
+  const legacy = currentLayer.getSource().getFeatureById(id)
+  if (legacy) currentLayer.getSource().removeFeature(legacy)
   currentLayer.getSource().addFeatures([feature])
 }
 

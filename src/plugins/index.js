@@ -9,8 +9,8 @@ Vue.mixin({
     }
   },
   methods: {
-    drawXYs: (data, focus) => drawXYs(data, focus),
-    drawXY: (data, focus) => drawXY(data, focus),
+    drawXYs: (data, focus, id) => drawXYs(data, focus, id),
+    drawXY: (data, focus, id) => drawXY(data, focus, id),
 
     olInit() {
       this.map = olInit()
