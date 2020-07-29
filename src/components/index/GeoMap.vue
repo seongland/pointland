@@ -22,7 +22,8 @@ export default {
   },
   data: () => ({ overlay: false }),
   methods: {},
-  mounted() {}
+  mounted() {
+  }
 }
 </script>
 
@@ -39,9 +40,8 @@ export default {
 }
 .ol-zoom {
   top: unset !important;
-  left: unset;
   bottom: 1.6em !important;
-  right: 1em;
+  left: 1em;
 }
 .ol-zoom-in,
 .ol-zoom-out {

@@ -8,7 +8,7 @@ import Map from 'ol/Map'
 import View from 'ol/View'
 import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
-import { defaults, DragPan, MouseWheelZoom } from 'ol/interaction'
+import { defaults, DragPan, MouseWheelZoom, PinchZoom } from 'ol/interaction'
 
 import { makeStyle } from './draw'
 import {
@@ -57,10 +57,17 @@ function makeOlMap(layers) {
     layers: layers,
     interactions: defaults({
       dragPan: false
-    }).extend([new DragPan({
-      kinetic: false,
-    }), new MouseWheelZoom({ duration: 0 })]),
-
+    })
+      .extend([
+        new DragPan({
+          kinetic: false,
+        }),
+        new MouseWheelZoom({ duration: 0 }),
+        new PinchZoom({
+          constrainResolution: true
+        })
+      ]
+      ),
     view: new View(view),
     controls: controls({
       zoom: true

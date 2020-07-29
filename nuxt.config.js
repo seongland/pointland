@@ -32,7 +32,7 @@ module.exports = {
   ],
   // Nuxt dev-modules
 
-  module: ['@nuxtjs/axios'],
+  modules: ['nuxt-socket-io', '@nuxtjs/axios', 'nuxt-vuex-localstorage'],
   buildModules: ['@nuxtjs/vuetify'],
 
   // Vuetify
@@ -56,6 +56,17 @@ module.exports = {
     }
   },
 
+  io: {
+    server: {
+      ioSvc: 'src/server/io'
+    },
+    sockets: [
+      {
+        name: 'ping',
+        url: '/'
+      }
+    ]
+  },
   // WebPack Build configuration
   build: {
     maxChunkSize: 300000,

@@ -7,9 +7,10 @@ import OverlayPcd from '~/components/cloud/OverlayPcd'
 
 export default {
   components: { OverlayPcd },
-  mounted() {},
   data: () => ({}),
-  methods: {}
+  methods: {},
+  async fetch() {},
+  fetchOnServer: false
 }
 </script>
 
