@@ -9,7 +9,7 @@ Vue.mixin({
     }
   },
   methods: {
-    drawXYs: (data, focus, id) => drawXYs(data, focus, id),
+    drawXYs: (data, id) => drawXYs(data, id),
     drawXY: (data, focus, id) => drawXY(data, focus, id),
 
     olInit() {

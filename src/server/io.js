@@ -12,8 +12,8 @@ export default (socket, io) => {
      * @summary - Defined Methods is on
      */
     dataSharing: (data) => io.to('twr').emit('dataSharing', { ...data, socketId: socket.id }),
-    getEpic: () => io.to('vhcl').emit('getEpic', socket.id),
-    sendEpic: (epic) => io.to(epic.socketId).emit('getEpic', { ...epic, socketId: socket.id })
+    getState: () => io.to('vhcl').emit('getState', socket.id),
+    sendState: (epic) => io.to(epic.socketId).emit('getState', { ...epic, socketId: socket.id })
   }
   return Object.freeze(emited)
 }

@@ -24,8 +24,8 @@ export default {
     })
     const ping = this.$root.ping
 
-    ping.emit('getEpic')
-    ping.on('getEpic', epic => this.drawXYs(epic.latlngs, epic.socketId))
+    ping.emit('getState')
+    ping.on('getState', state => this.drawXYs(state.latlngs, state.socketId))
     ping.on('dataSharing', data => {
       this.drawXY(data.latlng, false, data.socketId)
       this.drawXYs(data.latlngs, data.socketId)
