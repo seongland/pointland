@@ -14,6 +14,7 @@ const pythonOptions = {
 router.post('/', upload)
 
 function upload(req, res) {
+  if (req.body.data) console.log("Count is ", req.body.data.length)
   pythonOptions.args = [
     JSON.stringify(req.body.data),
     JSON.stringify(req.body.add),
@@ -22,6 +23,7 @@ function upload(req, res) {
     JSON.stringify(req.body.snap)
   ]
   PythonShell.run('upload/pg_uploader.py', pythonOptions, (err, results) => {
+    if (err) console.log("Upload err is ", err)
     if (err) res.json({ err, results })
     else res.json({ results })
   })
