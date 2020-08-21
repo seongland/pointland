@@ -8,9 +8,7 @@
 import GeoMap from '~/components/index/GeoMap.vue'
 
 export default {
-  async asyncData({ res, $axios }) {
-    console.log($axios)
-  },
+  async asyncData({ res, $axios }) {},
   components: {
     GeoMap
   },
