@@ -67,6 +67,17 @@ module.exports = {
     }
   },
 
+  io: {
+    server: {
+      ioSvc: 'src/server/io'
+    },
+    sockets: [
+      {
+        name: 'ping',
+        url: '/'
+      }
+    ]
+  },
   // WebPack Build configuration
   build: {
     maxChunkSize: 300000,

@@ -1,5 +1,6 @@
 # Build Setup
-``` bash
+
+```bash
 # 1. install dependencies
 $ yarn
 
@@ -7,35 +8,34 @@ $ yarn
 $ yarn dev
 ```
 
-
 # Production
-``` bash
+
+```bash
 $ yarn build
 $ yarn start
 ```
 
-
 # Understand Project
+
 1. nuxt start from server.js
 2. load nuxt.config.js
 3. load front(module, components ...), back(servermiddleware)
 4. read each folder's readme.md
 5. use Vue Devtools chrome extension
 
-
 # Main Concept
+
 - components <- pages <- layout
 - plugins(mixin), store(vuex) <-> components
 
-
 # ResearchNote
+
 - [Init Research Note](https://www.notion.so/seongland/geopano-front-migration-from-stpan-b3aac3a65be94b7eb11dd34e02115735)
 
-
-
-
 # Python environment
+
 ### Install
+
 ```
 conda create -n gis python=3.6 -y
 conda activate gis
@@ -47,7 +47,14 @@ pip install psycopg2-binary
 ```
 
 ### Execute
+
 - test
+
 ```
 python upload/import_test.py
 ```
+
+# Error resolve
+
+- DB Column
+  if you add column -> Change Code -> add column to DB also

@@ -14,7 +14,7 @@ from module.common import load_config, create_db_engine
 from module.logger import file_log
 
 
-RECORDED_LAYER = 'recorded_test'
+RECORDED_LAYER = 'recorded'
 SCHEMA = 'stx_mms'
 DST_DB = 'db_info_stxpg1'
 WGS84 = 4326
@@ -83,6 +83,7 @@ if __name__ == "__main__":
   snap = sys.argv[5]
   if add == "true": add = True
   elif add == "false": add = False
+  else : add = True
   data = json.loads(jdata)
 
   # return if no data
@@ -95,4 +96,4 @@ if __name__ == "__main__":
   xy_df["maker"] = maker
   xy_df["snap"] = snap
 
-  pg_main(xy_df, add)
+  pg_main(xy_df, True)
