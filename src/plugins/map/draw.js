@@ -45,8 +45,7 @@ function drawXYs(latlngArray, id) {
    * @summary - When Click Map
    */
   if (!latlngArray.length) return
-  let latlng
-  for (latlng of latlngArray) addCircle(...latlng, id)
+  for (const latlng of latlngArray) addCircle(...latlng, id)
 }
 
 function addCircle(lat, lng) {
