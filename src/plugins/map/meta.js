@@ -19,7 +19,7 @@ import {
   makeCurrentLayer,
   makeRecordingLayer
 } from '~/plugins/map/layer'
-import { DRAW_LAYER_ID, INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/const'
+import { RECORDED_LAYER, DRAW_LAYER_ID, INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/const'
 import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
@@ -32,7 +32,7 @@ function olInit() {
   const naver = makeNaverMap()
   const draftLayer = makeDraftLayer()
   const missionLayer = makeMissionLayer()
-  const recordedLayer = makeRecordedLayer()
+  const recordedLayer = makeRecordedLayer(RECORDED_LAYER)
   const recordingLayer = makeRecordingLayer(styles)
   const currentLayer = makeCurrentLayer(styles)
   const layers = [recordingLayer, currentLayer, draftLayer, recordedLayer, missionLayer]
@@ -40,6 +40,7 @@ function olInit() {
   map.styles = styles
   map.naver = naver
   ref.map = map
+  ref.recordedLayer = recordedLayer
   ref.recordingLayer = recordingLayer
   ref.currentLayer = currentLayer
   eventBind(map)

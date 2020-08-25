@@ -6,12 +6,12 @@
 import { Tile, Vector as VectorLayer } from 'ol/layer'
 import { TileWMS, XYZ, Vector } from 'ol/source'
 import {
-  RECORDED_LAYER,
   DRAFT_LAYER,
   MISSION_LAYER,
   ZINDEX_PVR
 } from '~/plugins/map/const'
 import { GEOSERVER, WORKSPACE, NAVER_ID } from '~/plugins/map/const'
+import { ref } from './meta'
 
 
 function makeGoogleLayer() {
@@ -26,13 +26,13 @@ function makeGoogleLayer() {
   return new Tile(tile)
 }
 
-const makeRecordedLayer = () => {
+const makeRecordedLayer = (layer) => {
   /**
    * @summary - Get Marker Image Layer
    */
   let source = new TileWMS({
     url: `${GEOSERVER}${WORKSPACE}/wms`,
-    params: { LAYERS: RECORDED_LAYER },
+    params: { LAYERS: layer },
     ratio: 1,
     serverType: 'geoserver',
     crossOrigin: 'anonymous'
@@ -150,7 +150,22 @@ function makeNaverMap() {
   return new naver.maps.Map(NAVER_ID, NaverMapOptions)
 }
 
+
+const layers = {
+  CODE42: "stx_mms:recorded",
+  AIHUB: "stx_mms:aihub.recorded"
+}
+
+function changeProject(project) {
+  console.log(project)
+  if (ref.recordedLayer) ref.map.removeLayer(ref.recordedLayer)
+  const recordedLayer = makeRecordedLayer(layers[project])
+  ref.map.addLayer(recordedLayer)
+  ref.recordedLayer = recordedLayer
+}
+
 export {
+  changeProject,
   makeGoogleLayer,
   makeGSLayer,
   makeMBLayer,

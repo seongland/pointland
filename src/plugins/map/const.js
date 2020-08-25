@@ -18,8 +18,9 @@ export const DFT_RADIUS = 3
 // Geoserver
 export const DELTA = 0.01
 export const WORKSPACE = 'stx_mms'
+export const DFT_RECORDED = 'recorded'
 export const DRAFT_LAYER = WORKSPACE + ':draft'
-export const RECORDED_LAYER = WORKSPACE + ':recorded'
+export const RECORDED_LAYER = WORKSPACE + `:${DFT_RECORDED}`
 export const MISSION_LAYER = WORKSPACE + ':mission'
 export const GEOSERVER = 'http://app.stryx.co.kr:18090/geoserver/'
 export const FOCUS_DURATION = 0
