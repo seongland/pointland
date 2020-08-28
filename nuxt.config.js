@@ -32,20 +32,9 @@ module.exports = {
   ],
   // Nuxt dev-modules
 
-  module: ['nuxt-socket-io', '@nuxtjs/axios'],
+  modules: ['nuxt-socket-io', '@nuxtjs/axios', 'nuxt-vuex-localstorage'],
   buildModules: ['@nuxtjs/vuetify'],
-  io: {
-    server: {
-      ioSvc: 'src/server/io'
-    },
-    sockets: [
-      {
-        name: 'vhcl',
-        url: '/',
-        nsp: '/'
-      }
-    ]
-  },
+
   // Vuetify
   vuetify: {
     defaultAssets: {
