@@ -66,7 +66,6 @@ export default {
       }
     })
     setInterval(() => {
-      console.log('minus')
       for (const vhcl of this.vhcls) vhcl.remain -= 1
     }, 1000)
   }
