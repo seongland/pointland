@@ -15,12 +15,11 @@ from module.logger import file_log
 
 
 RECORDED_LAYER = 'recorded'
-SCHEMA = 'stx_mms'
 DST_DB = 'db_info_stxpg1'
 WGS84 = 4326
 
 
-def xy_upload(xy_df, add):
+def xy_upload(xy_df, add, schema):
   '''
   PostGres PVR upload for geoserver
   '''
@@ -62,29 +61,26 @@ def xy_upload(xy_df, add):
                 con=dst_engine,
                 if_exists=method,
                 index=True,
-                schema=SCHEMA,
+                schema=schema,
                 dtype=dtype)
 
 
-def pg_main(xy_df, add):
+def pg_main(xy_df, add, schema):
   '''
   PostGres Uploader Main Function
   '''
   file_log()
-  xy_upload(xy_df, add)
+  xy_upload(xy_df, add, schema)
 
 
 if __name__ == "__main__":
   # make data
-  jdata = sys.argv[1]
-  add = sys.argv[2]
-  date = sys.argv[3]
-  maker = sys.argv[4]
-  snap = sys.argv[5]
-  if add == "true": add = True
-  elif add == "false": add = False
-  else : add = True
-  data = json.loads(jdata)
+  data = json.loads(sys.argv[1])
+  add = json.loads(sys.argv[2])
+  date = json.loads(sys.argv[3])
+  maker = json.loads(sys.argv[4])
+  snap = json.loads(sys.argv[5])
+  schema = json.loads(sys.argv[6])
 
   # return if no data
   if len(data) == 0:
@@ -96,4 +92,4 @@ if __name__ == "__main__":
   xy_df["maker"] = maker
   xy_df["snap"] = snap
 
-  pg_main(xy_df, True)
+  pg_main(xy_df, True, schema)
