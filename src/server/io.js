@@ -11,9 +11,9 @@ export default (socket, io) => {
     /**
      * @summary - Defined Methods is on
      */
-    dataSharing: (data) => io.to('twr').emit('dataSharing', { ...data, socketId: socket.id }),
+    dataSharing: (data) => io.to('twr').emit('dataSharing', { ...data, socketId: socket.id, address: socket.handshake.address, time: socket.handshake.time }),
     getState: () => io.to('vhcl').emit('getState', socket.id),
-    sendState: (epic) => io.to(epic.socketId).emit('getState', { ...epic, socketId: socket.id })
+    sendState: (epic) => io.to(epic.socketId).emit('getState', { ...epic, socketId: socket.id, address: socket.handshake.address, time: socket.handshake.time })
   }
   return Object.freeze(emited)
 }
