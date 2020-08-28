@@ -10,6 +10,8 @@
 </template>
 
 <script>
+const MAX_TIME = 10
+
 export default {
   components: {},
   data: () => ({
@@ -18,20 +20,23 @@ export default {
         name: 'Test 1',
         time: 'Fri Aug 28 2020 16:09:33 GMT+0900 (Korean Standard Time)',
         address: '1.1.1.1',
-        latlng: [127, 34]
+        latlng: [127, 34],
+        remain: MAX_TIME
       },
       {
         name: 'Test 2',
         time: 'Fri Aug 28 2020 16:09:33 GMT+0900 (Korean Standard Time)',
         address: '8.8.8.8',
-        latlng: [127, 37]
+        latlng: [127, 37],
+        remain: MAX_TIME
       }
     ],
     headers: [
       { text: 'Name', value: 'name' },
       { text: 'Connected', value: 'time' },
       { text: 'IP', value: 'address' },
-      { text: 'Location', value: 'latlng' }
+      { text: 'Location', value: 'latlng' },
+      { text: '', value: 'remain', filter: value => value >= 0 }
     ]
   }),
   methods: {},
@@ -49,8 +54,21 @@ export default {
       ping.off('dataSharing')
     }
     ping.on('dataSharing', data => {
-      this.vhcls.push(data)
+      let already = false
+      for (const vhcl of this.vhcls)
+        if (vhcl.socketId === data.socketId) {
+          already = true
+          vhcl.remain = MAX_TIME
+        }
+      if (!already) {
+        data.remain = MAX_TIME
+        this.vhcls.push(data)
+      }
     })
+    setInterval(() => {
+      console.log('minus')
+      for (const vhcl of this.vhcls) vhcl.remain -= 1
+    }, 1000)
   }
 }
 </script>
