@@ -1,16 +1,8 @@
-import express from 'express'
-import upload from './upload'
-import cors from 'cors'
+import logger from "./logger"
+import app from "./app"
 
-const app = express()
-
-app.use(cors())
-app.use(express.json({
-  limit: "100mb"
-}))
-app.use(express.urlencoded({
-  limit: "100mb"
-}))
-app.use('/upload', upload)
+process.on("unhandledRejection", (reason, p) =>
+  logger.error("Unhandled Rejection at: Promise ", p, reason)
+)
 
 export default app

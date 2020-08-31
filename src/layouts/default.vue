@@ -43,9 +43,9 @@
     </v-app-bar>
 
     <!-- 3. Main Contents -->
-    <v-content>
+    <v-main>
       <nuxt />
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
