@@ -8,9 +8,10 @@ import cors from "cors"
 import authentication from "./feathers/authentication"
 import appHooks from "./feathers/app.hooks"
 import services from "./services"
-import mongoose from "./mongoose"
-import logger from "./logger"
 import upload from './upload'
+
+import mongoose from "./inout/mongoose"
+import logger from "./inout/logger"
 
 const app = express(feathers())
   .use(express.json({ limit: "100mb" }))
@@ -26,5 +27,9 @@ const app = express(feathers())
   .hooks(appHooks)
 
 app.listen()
+process.on("unhandledRejection", (reason, p) =>
+  logger.error("Unhandled Rejection at: Promise ", p, reason)
+)
+
 
 export default app
