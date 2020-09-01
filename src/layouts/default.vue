@@ -13,6 +13,11 @@
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
+          @click="
+            item.title === 'Logout'
+              ? $store.commit('localStorage/logout')
+              : undefined
+          "
           :to="item.to"
           router
           exact
@@ -28,18 +33,18 @@
     </v-navigation-drawer>
 
     <!-- 2. Upper Bar -->
-    <v-app-bar :clipped-left="clipped" fixed app dense >
+    <v-app-bar :clipped-left="clipped" fixed app dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
-      <v-spacer/><v-spacer/><v-spacer/><v-spacer/><v-spacer/>
+      <v-spacer /><v-spacer /><v-spacer /><v-spacer /><v-spacer />
       <v-select
-          class="mt-6"
-          :items="projects.map(item => item.toUpperCase())"
-          label="CODE42"
-          solo
-          dense
-          @change="changeProject($event)"
-        ></v-select>
+        class="mt-6"
+        :items="projects.map(item => item.toUpperCase())"
+        label="CODE42"
+        solo
+        dense
+        @change="changeProject($event)"
+      ></v-select>
     </v-app-bar>
 
     <!-- 3. Main Contents -->
@@ -53,10 +58,7 @@
 export default {
   data() {
     return {
-      projects: [
-        "code42",
-        "aihub"
-      ],
+      projects: ['code42', 'aihub'],
       title: 'MMS - TOWER',
       coor: 'Stryx',
       clipped: true,
@@ -66,7 +68,7 @@ export default {
         {
           icon: 'fas fa-map',
           title: 'Map',
-          to: '/'
+          to: '/map'
         },
         {
           icon: 'fas fa-table',
@@ -74,9 +76,14 @@ export default {
           to: '/table'
         },
         {
-          icon: 'fas fa-cloud',
+          icon: 'fas fa-meh',
           title: 'Points',
           to: '/cloud'
+        },
+        {
+          icon: 'fas fa-user',
+          title: 'Logout',
+          to: '/'
         }
       ],
       miniVariant: false

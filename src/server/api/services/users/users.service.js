@@ -1,4 +1,3 @@
-// Initializes the `users` service on path `/users`
 import createModel from "./users.model"
 import Users from "./users.class"
 import hooks from "./users.hooks"
