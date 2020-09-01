@@ -4,12 +4,8 @@ const defaultProperties = {
   description: { type: [String], default: undefined },
 
   // Revision Data
-  version: { type: Number, default: 1 },
   edited_by: { type: String, default: undefined },
-  edited_by_table: { type: String, default: undefined },
-  history: { type: [String], default: undefined },
-  origin: { type: String, default: undefined },
-  alive: { type: Boolean, default: true }
+  edited_by_table: { type: String, default: undefined }
 }
 
 export const defaultOptions = {
