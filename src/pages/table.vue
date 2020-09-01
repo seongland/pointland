@@ -13,6 +13,7 @@
 const MAX_TIME = 10
 
 export default {
+  middleware: 'authentication',
   components: {},
   data: () => ({
     vhcls: [
