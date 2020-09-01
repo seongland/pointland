@@ -5,7 +5,7 @@ module.exports = {
   srcDir: 'src/',
 
   // Meta
-  mode: 'universal',
+  mode: 'spa',
 
   // Vue Config
   vue: {

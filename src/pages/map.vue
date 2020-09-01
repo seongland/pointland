@@ -8,6 +8,7 @@
 import GeoMap from '~/components/index/GeoMap.vue'
 
 export default {
+  middleware: 'authentication',
   components: {
     GeoMap
   },
