@@ -1,5 +1,5 @@
 import consola from "consola"
-import logger, { getUserLogger } from "../logger"
+import logger, { getUserLogger } from "../inout/logger"
 import addUserService from "./users/users.service"
 
 export default (app) => {

@@ -17,7 +17,7 @@ module.exports = {
 
   // Middleware Apis
   serverMiddleware: {
-    '/api': '~/server/api/'
+    '/api': '~/server/api/app'
   },
 
   // Loading Bar

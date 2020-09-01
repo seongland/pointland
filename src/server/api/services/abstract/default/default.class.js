@@ -3,12 +3,8 @@
  */
 import { Service } from "feathers-mongoose"
 import { v4 as uuid } from "uuid"
-import defaultAPIMixin from "./component/default.api"
-import defaultUsageMixin from "./component/default.usage"
 
-export default class HidraService extends defaultUsageMixin(
-  defaultAPIMixin(Service)
-) {
+export default class HidraService extends Service {
   setup(app) {
     this.app = app
   }
