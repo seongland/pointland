@@ -15,14 +15,6 @@ $ yarn build
 $ yarn start
 ```
 
-# Understand Project
-
-1. nuxt start from server.js
-2. load nuxt.config.js
-3. load front(module, components ...), back(servermiddleware)
-4. read each folder's readme.md
-5. use Vue Devtools chrome extension
-
 # Main Concept
 
 - components <- pages <- layout
@@ -34,15 +26,14 @@ $ yarn start
 
 # Python environment
 
-### Install
+### Install python env
 
 ```
 conda create -n gis python=3.6 -y
 conda activate gis
 conda install pandas -y
 pip install geoalchemy2
-conda install geopandas -y
-conda install psycopg2 -y
+conda install geopandas psycopg2 -y
 pip install psycopg2-binary
 ```
 
