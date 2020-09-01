@@ -1,11 +1,10 @@
 import mongoose from "mongoose"
-import filterSchema from "./query/filter"
-import sortSchema from "./query/sort"
 
 export default new mongoose.Schema(
   {
+    id: { type: String },
     name: { type: String },
-    role: { type: String, required }
+    role: { type: String, required: true }
   },
   { _id: false }
 )

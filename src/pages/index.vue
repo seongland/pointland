@@ -1,42 +1,74 @@
 <template>
-  <v-card id="map-card">
-    <geo-map />
-  </v-card>
+  <v-container class="fill-height" fluid>
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="8" md="4">
+        <v-card class="elevation-24">
+          <v-toolbar dark flat>
+            <v-toolbar-title>Stryx Account</v-toolbar-title>
+          </v-toolbar>
+          <v-toolbar height="dense" dark flat color="red" v-if="error">
+            <v-toolbar-title>Login Fail</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                autofocus
+                label="Email"
+                v-model="email"
+                name="login"
+                prepend-icon="fas fa-user-circle"
+                type="text"
+              />
+              <v-text-field
+                label="Password"
+                v-model="password"
+                name="password"
+                prepend-icon="fas fa-lock"
+                type="password"
+              />
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="$router.push(`/signup`)"> Singup </v-btn>
+            <v-btn @click="onSubmit(email, password)"> Login </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import GeoMap from '~/components/index/GeoMap.vue'
+const STRATEGY = 'local'
+const CTT_JSON = {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
 
 export default {
-  components: {
-    GeoMap
-  },
-  async mounted() {
-    let ping = this.$root.ping
-    if (!ping)
-      ping = await this.$nuxtSocket({
-        allowUpgrades: false,
-        transports: ['websocket'],
-        name: 'ping',
-        teardown: true
-      })
-    else {
-      ping.off('getState')
-      ping.off('dataSharing')
+  layout: 'before',
+  middleware: 'authentication',
+  data() {
+    return {
+      email: undefined,
+      password: undefined,
+      error: undefined
     }
-    ping.emit('getState')
-    ping.on('getState', state => this.drawXYs(state.latlngs, state.socketId))
-    ping.on('dataSharing', data => {
-      this.drawXY(data.latlng, false, data.socketId)
-      this.drawXYs(data.latlngs, data.socketId)
-    })
-    this.olInit()
+  },
+  methods: {
+    async onSubmit(email, password) {
+      const loginData = JSON.stringify({ strategy: STRATEGY, email, password })
+      const res = await this.$axios
+        .post('/api/authentication', loginData, CTT_JSON)
+        .catch(() => {
+          this.error = true
+        })
+      if (!res) return
+      this.$store.commit('localStorage/login', res.data.accessToken)
+      this.$router.push(`/map`)
+    }
   }
 }
 </script>
-
-<style>
-#map-card {
-  height: 100%;
-}
-</style>

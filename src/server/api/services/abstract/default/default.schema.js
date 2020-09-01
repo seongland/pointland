@@ -1,7 +1,7 @@
 const defaultProperties = {
   // Main Data
   id: { type: String, required: true, unique: true },
-  description: { type: [String], default: undefined },
+  description: { type: String, default: undefined },
 
   // Revision Data
   edited_by: { type: String, default: undefined },
