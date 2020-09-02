@@ -1,9 +1,13 @@
 import consola from "consola"
 import logger, { getUserLogger } from "../inout/logger"
 import addUserService from "./users/users.service"
+import addOrgService from "./orgs/orgs.service"
+import addProjectService from "./projects/projects.service"
 
 export default (app) => {
   addUserService(app)
+  addOrgService(app)
+  addProjectService(app)
 }
 
 function feathersLogger(context) {

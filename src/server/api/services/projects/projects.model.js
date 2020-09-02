@@ -1,5 +1,5 @@
 import defaultSchema from "../abstract/default/default.schema"
-import orgSchema from "./innerSchema/org"
+import orgSchema from "../users/innerSchema/org"
 import userSchema from "./innerSchema/user"
 const modelName = "users"
 
