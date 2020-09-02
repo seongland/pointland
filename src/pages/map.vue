@@ -32,9 +32,11 @@ export default {
     }
   },
   async mounted() {
-    const prj = this.projects[0].name
-    if (this.projects.length) this.olInit(prj)
-    this.$store.commit('localStorage/setPrj', prj)
+    if (this.projects.length > 0) {
+      const prj = this.projects[0].name
+      this.olInit(prj)
+      this.$store.commit('localStorage/setPrj', prj)
+    }
 
     let ping = this.$root.ping
     if (!ping)
