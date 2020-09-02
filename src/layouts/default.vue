@@ -48,9 +48,7 @@
     </v-app-bar>
 
     <!-- 3. Main Contents -->
-    <v-main>
       <nuxt />
-    </v-main>
   </v-app>
 </template>
 
