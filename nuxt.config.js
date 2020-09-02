@@ -6,7 +6,6 @@ module.exports = {
 
   // Meta
   mode: 'spa',
-
   // Vue Config
   vue: {
     config: {
@@ -55,7 +54,6 @@ module.exports = {
       }
     }
   },
-
   io: {
     server: {
       ioSvc: 'src/server/io'
