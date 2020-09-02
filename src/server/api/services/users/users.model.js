@@ -1,5 +1,6 @@
 import defaultSchema from "../abstract/default/default.schema"
 import projectSchema from "./innerSchema/project"
+import orgSchema from "./innerSchema/org"
 const modelName = "users"
 
 export default (app) => {
@@ -11,6 +12,7 @@ export default (app) => {
     profile_photo: { type: String },
     name: { type: String, required: true },
     projects: { type: [projectSchema], default: [] },
+    org: { type: orgSchema, required: true },
   }
   const userSchema = defaultSchema(app).add(userProperties)
   if (mongooseClient.modelNames().includes(modelName)) {
