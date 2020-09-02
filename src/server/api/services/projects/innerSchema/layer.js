@@ -2,8 +2,9 @@ import mongoose from "mongoose"
 
 export default new mongoose.Schema(
   {
-    id: { type: String },
-    role: { type: String, required: true }
+    recorded: { type: String },
+    draft: { type: String },
+    mission: { type: String }
   },
   { _id: false }
 )

@@ -9,7 +9,7 @@ export default (app) => {
     domain: { type: String, required: true, default: undefined },
     users: { type: [userSchema], required: true, default: undefined },
     projects: { type: [projectSchema], default: [] },
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
   }
   const orgSchema = defaultSchema(app).add(orgProperties)
 
