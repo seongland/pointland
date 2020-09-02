@@ -12,6 +12,7 @@ import {
 } from '~/plugins/map/const'
 import { GEOSERVER, WORKSPACE, NAVER_ID } from '~/plugins/map/const'
 import { ref } from './meta'
+import layers from "./layers.json"
 
 
 function makeGoogleLayer() {
@@ -151,13 +152,7 @@ function makeNaverMap() {
 }
 
 
-const layers = {
-  CODE42: "stx_mms:recorded",
-  AIHUB: "stx_mms:aihub.recorded"
-}
-
 function changeProject(project) {
-  console.log(project)
   if (ref.recordedLayer) ref.map.removeLayer(ref.recordedLayer)
   const recordedLayer = makeRecordedLayer(layers[project])
   ref.map.addLayer(recordedLayer)

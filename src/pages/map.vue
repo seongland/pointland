@@ -1,7 +1,21 @@
 <template>
-  <v-card id="map-card">
-    <geo-map />
-  </v-card>
+  <div class="map-wrapper">
+    <v-card class="map-wrapper" v-if="projects.length">
+      <geo-map />
+    </v-card>
+
+    <v-container class="fill-height" fluid v-if="!projects.length">
+      <v-row align="center" justify="center">
+        <v-col cols="12" sm="8" md="4">
+          <v-card class="elevation-24">
+            <v-toolbar dark flat>
+              <v-toolbar-title>No Project</v-toolbar-title>
+            </v-toolbar>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -12,7 +26,16 @@ export default {
   components: {
     GeoMap
   },
+  computed: {
+    projects() {
+      return this.$store.state.localStorage?.user?.projects ?? []
+    }
+  },
   async mounted() {
+    const prj = this.projects[0].name
+    if (this.projects.length) this.olInit(prj)
+    this.$store.commit('localStorage/setPrj', prj)
+
     let ping = this.$root.ping
     if (!ping)
       ping = await this.$nuxtSocket({
@@ -31,13 +54,12 @@ export default {
       this.drawXY(data.latlng, false, data.socketId)
       this.drawXYs(data.latlngs, data.socketId)
     })
-    this.olInit()
   }
 }
 </script>
 
 <style>
-#map-card {
+.map-wrapper {
   height: 100%;
 }
 </style>

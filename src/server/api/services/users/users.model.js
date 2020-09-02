@@ -10,7 +10,7 @@ export default (app) => {
     password: { type: String, required: true },
     profile_photo: { type: String },
     name: { type: String, required: true },
-    projects: { type: [projectSchema] }
+    projects: { type: [projectSchema], default: [] },
   }
   const userSchema = defaultSchema(app).add(userProperties)
   if (mongooseClient.modelNames().includes(modelName)) {

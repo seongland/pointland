@@ -14,8 +14,8 @@ Vue.mixin({
     drawXY: (data, focus, id) => drawXY(data, focus, id),
     changeProject: (project) => changeProject(project),
 
-    olInit() {
-      this.map = olInit()
+    olInit(project) {
+      this.map = olInit(project)
       return this.map
     }
   }
