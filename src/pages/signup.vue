@@ -7,7 +7,7 @@
             <v-toolbar-title>Stryx Account</v-toolbar-title>
           </v-toolbar>
           <v-toolbar height="dense" dark flat color="red" v-if="error">
-            <v-toolbar-title>Login Fail</v-toolbar-title>
+            <v-toolbar-title>Signup Fail</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -44,7 +44,10 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="onSubmit(email, password, name, description)">
+            <v-btn
+              type="submit"
+              @click="onSubmit(email, password, name, description)"
+            >
               Singup
             </v-btn>
           </v-card-actions>

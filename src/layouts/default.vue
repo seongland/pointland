@@ -39,25 +39,42 @@
       <v-spacer /><v-spacer /><v-spacer /><v-spacer /><v-spacer />
       <v-select
         class="mt-6"
-        :items="projects.map(item => item.toUpperCase())"
-        label="CODE42"
+        :items="projectsView"
+        label="Select Project"
         solo
+        v-model="prjView"
+        item-text="name"
+        return-object
         dense
-        @change="changeProject($event)"
+        @change="changeProject($event.toLowerCase())"
       ></v-select>
     </v-app-bar>
 
     <!-- 3. Main Contents -->
+    <v-main>
       <nuxt />
+    </v-main>
   </v-app>
 </template>
 
 <script>
 export default {
+  computed: {
+    projectsView() {
+      const projects = this.$store.state.localStorage?.user?.projects ?? []
+      return projects.map(item => item.name.toUpperCase())
+    },
+    prjView: {
+      get() {
+        const prj = this.$store.state.localStorage?.prj ?? ''
+        return prj.toUpperCase()
+      },
+      set() {}
+    }
+  },
   data() {
     return {
-      projects: ['code42', 'aihub'],
-      title: 'MMS - TOWER',
+      title: 'MMS TOWER',
       coor: 'Stryx',
       clipped: true,
       drawer: false,

@@ -18,6 +18,7 @@
                 name="login"
                 prepend-icon="fas fa-user-circle"
                 type="text"
+                @keydown.enter="onSubmit(email, password)"
               />
               <v-text-field
                 label="Password"
@@ -25,13 +26,16 @@
                 name="password"
                 prepend-icon="fas fa-lock"
                 type="password"
+                @keydown.enter="onSubmit(email, password)"
               />
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn @click="$router.push(`/signup`)"> Singup </v-btn>
-            <v-btn @click="onSubmit(email, password)"> Login </v-btn>
+            <v-btn @click="onSubmit(email, password)">
+              Login
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -66,7 +70,7 @@ export default {
           this.error = true
         })
       if (!res) return
-      this.$store.commit('localStorage/login', res.data.accessToken)
+      this.$store.commit('localStorage/login', res.data)
       this.$router.push(`/map`)
     }
   }
