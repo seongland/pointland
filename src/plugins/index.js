@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { olInit } from '~/plugins/map/meta'
 import { drawXYs, drawXY } from "./map/draw"
-import { changeProject } from "./map/layer"
+import { changeLayers } from "./map/layer"
 
 Vue.mixin({
   data: () => {
@@ -12,10 +12,14 @@ Vue.mixin({
   methods: {
     drawXYs: (data, id) => drawXYs(data, id),
     drawXY: (data, focus, id) => drawXY(data, focus, id),
-    changeProject: (project) => changeProject(project),
+    changeProject: (prj, projects) => {
+      for (const project of projects)
+        if (project.name === prj)
+          changeLayers(project.geoserver, project.workspace, project.layers)
+    },
 
-    olInit(project) {
-      this.map = olInit(project)
+    olInit(geoserver, workspace, layers) {
+      this.map = olInit(geoserver, workspace, layers)
       return this.map
     }
   }

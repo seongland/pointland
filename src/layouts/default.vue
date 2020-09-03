@@ -46,7 +46,7 @@
         item-text="name"
         return-object
         dense
-        @change="changeProject($event.toLowerCase())"
+        @change="changeProject($event.toLowerCase(), projects)"
       ></v-select>
     </v-app-bar>
 
@@ -63,6 +63,9 @@ export default {
     projectsView() {
       const projects = this.$store.state.localStorage?.user?.projects ?? []
       return projects.map(item => item.name.toUpperCase())
+    },
+    projects() {
+      return this.$store.state.localStorage?.user?.projects ?? []
     },
     prjView: {
       get() {

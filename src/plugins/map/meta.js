@@ -9,7 +9,6 @@ import View from 'ol/View'
 import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
 import { defaults, DragPan, MouseWheelZoom, PinchZoom } from 'ol/interaction'
-import layers from "./layers.json"
 
 import { makeStyle } from './draw'
 import {
@@ -25,16 +24,15 @@ import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
 
-function olInit(project) {
+function olInit(geoserver, workspace, layers) {
   /**
    * @summary - Make OSM
    */
-  const recorded = layers[project]
   const styles = makeStyle()
   const naver = makeNaverMap()
-  const draftLayer = makeDraftLayer()
-  const missionLayer = makeMissionLayer()
-  const recordedLayer = makeRecordedLayer(recorded)
+  const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
+  const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
+  const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
   const recordingLayer = makeRecordingLayer(styles)
   const currentLayer = makeCurrentLayer(styles)
   const openlayers = [recordingLayer, currentLayer, draftLayer, recordedLayer, missionLayer]
@@ -43,6 +41,8 @@ function olInit(project) {
   map.naver = naver
   ref.map = map
   ref.recordedLayer = recordedLayer
+  ref.draftLayer = draftLayer
+  ref.missionLayer = missionLayer
   ref.recordingLayer = recordingLayer
   ref.currentLayer = currentLayer
   eventBind(map)

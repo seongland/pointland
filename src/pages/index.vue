@@ -63,15 +63,29 @@ export default {
   },
   methods: {
     async onSubmit(email, password) {
+      const data = await this.login(email, password)
+      if (!data) return
+
+      const config = { headers: { Authorization: data.accessToken } }
+      for (const i in data.user.projects) {
+        const res = await this.$axios.get(
+          `/api/projects?id=${data.user.projects[i].id}`,
+          config
+        )
+        data.user.projects[i] = res.data[0]
+      }
+      this.$store.commit('localStorage/login', data)
+      this.$router.push(`/map`)
+    },
+
+    async login(email, password) {
       const loginData = JSON.stringify({ strategy: STRATEGY, email, password })
       const res = await this.$axios
         .post('/api/authentication', loginData, CTT_JSON)
         .catch(() => {
           this.error = true
         })
-      if (!res) return
-      this.$store.commit('localStorage/login', res.data)
-      this.$router.push(`/map`)
+      return res?.data
     }
   }
 }

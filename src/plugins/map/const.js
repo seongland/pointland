@@ -17,12 +17,6 @@ export const ZINDEX_REL = ZINDEX_OL + 1,
 export const DFT_RADIUS = 3
 // Geoserver
 export const DELTA = 0.01
-export const WORKSPACE = 'stx_mms'
-export const DFT_RECORDED = 'recorded'
-export const DRAFT_LAYER = WORKSPACE + ':draft'
-export const RECORDED_LAYER = WORKSPACE + `:${DFT_RECORDED}`
-export const MISSION_LAYER = WORKSPACE + ':mission'
-export const GEOSERVER = 'http://app.stryx.co.kr:18090/geoserver/'
 export const FOCUS_DURATION = 0
 export const ZOOM_DURATION = 400
 export const START_ZOOM = 17
