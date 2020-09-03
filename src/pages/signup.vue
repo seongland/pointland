@@ -2,7 +2,7 @@
   <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
-        <v-card class="elevation-24">
+        <v-card class="elevation-24" shaped>
           <v-toolbar dark flat>
             <v-toolbar-title>Stryx Account</v-toolbar-title>
           </v-toolbar>
