@@ -1,5 +1,5 @@
 <template>
-  <v-card> <div id="pcd"></div></v-card>
+  <div id="pcd"></div>
 </template>
 
 <script>

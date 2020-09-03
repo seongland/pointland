@@ -24,22 +24,6 @@ function makeGoogleLayer() {
   return new Tile(tile)
 }
 
-const makeRecordedLayer = (geoserver, workspace, layer) => {
-  /**
-   * @summary - Get Marker Image Layer
-   */
-  let source = new TileWMS({
-    url: `${geoserver}/${workspace}/wms`,
-    params: { LAYERS: layer },
-    ratio: 1,
-    serverType: 'geoserver',
-    crossOrigin: 'anonymous'
-  })
-  const recordedLayer = new Tile({ source })
-  recordedLayer.setZIndex(ZINDEX_PVR - 2)
-  return recordedLayer
-}
-
 function makeMBLayer() {
   /**
    * @summary - Get Open MapBox Layer
@@ -55,6 +39,22 @@ function makeMBLayer() {
     })
   }
   return new Tile(tile)
+}
+
+const makeRecordedLayer = (geoserver, workspace, layer) => {
+  /**
+   * @summary - Get Marker Image Layer
+   */
+  let source = new TileWMS({
+    url: `${geoserver}/${workspace}/wms`,
+    params: { LAYERS: layer },
+    ratio: 1,
+    serverType: 'geoserver',
+    crossOrigin: 'anonymous'
+  })
+  const recordedLayer = new Tile({ source })
+  recordedLayer.setZIndex(ZINDEX_PVR - 2)
+  return recordedLayer
 }
 
 const makeMissionLayer = (geoserver, workspace, layer) => {
