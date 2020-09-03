@@ -15,7 +15,7 @@
                 autofocus
                 label="Email"
                 v-model="email"
-                name="login"
+                name="email"
                 prepend-icon="fas fa-user-circle"
                 type="text"
                 @keydown.enter="onSubmit(email, password)"
@@ -52,8 +52,8 @@ const CTT_JSON = {
 }
 
 export default {
-  layout: 'before',
   middleware: 'authentication',
+  layout: 'before',
   data() {
     return {
       email: undefined,
