@@ -6,13 +6,10 @@
 import { Tile, Vector as VectorLayer } from 'ol/layer'
 import { TileWMS, XYZ, Vector } from 'ol/source'
 import {
-  DRAFT_LAYER,
-  MISSION_LAYER,
   ZINDEX_PVR
 } from '~/plugins/map/const'
-import { GEOSERVER, WORKSPACE, NAVER_ID } from '~/plugins/map/const'
+import { NAVER_ID } from '~/plugins/map/const'
 import { ref } from './meta'
-import layers from "./layers.json"
 
 
 function makeGoogleLayer() {
@@ -27,18 +24,20 @@ function makeGoogleLayer() {
   return new Tile(tile)
 }
 
-const makeRecordedLayer = (layer) => {
+const makeRecordedLayer = (geoserver, workspace, layer) => {
   /**
    * @summary - Get Marker Image Layer
    */
   let source = new TileWMS({
-    url: `${GEOSERVER}${WORKSPACE}/wms`,
+    url: `${geoserver}/${workspace}/wms`,
     params: { LAYERS: layer },
     ratio: 1,
     serverType: 'geoserver',
     crossOrigin: 'anonymous'
   })
-  return new Tile({ source })
+  const recordedLayer = new Tile({ source })
+  recordedLayer.setZIndex(ZINDEX_PVR - 2)
+  return recordedLayer
 }
 
 function makeMBLayer() {
@@ -58,13 +57,13 @@ function makeMBLayer() {
   return new Tile(tile)
 }
 
-const makeMissionLayer = () => {
+const makeMissionLayer = (geoserver, workspace, layer) => {
   /**
    * @summary - Get Marker Image Layer
    */
   let source = new TileWMS({
-    url: `${GEOSERVER}${WORKSPACE}/wms`,
-    params: { LAYERS: MISSION_LAYER },
+    url: `${geoserver}/${workspace}/wms`,
+    params: { LAYERS: layer },
     ratio: 1,
     serverType: 'geoserver',
     crossOrigin: 'anonymous'
@@ -74,18 +73,19 @@ const makeMissionLayer = () => {
   return missionLayer
 }
 
-const makeDraftLayer = () => {
+const makeDraftLayer = (geoserver, workspace, layer) => {
   /**
    * @summary - Get Marker Image Layer
    */
   let source = new TileWMS({
-    url: `${GEOSERVER}${WORKSPACE}/wms`,
-    params: { LAYERS: DRAFT_LAYER },
+    url: `${geoserver}/${workspace}/wms`,
+    params: { LAYERS: layer },
     ratio: 1,
     serverType: 'geoserver',
     crossOrigin: 'anonymous'
   })
   let draftLayer = new Tile({ source })
+  draftLayer.setZIndex(ZINDEX_PVR - 3)
   return draftLayer
 }
 
@@ -152,15 +152,23 @@ function makeNaverMap() {
 }
 
 
-function changeProject(project) {
+function changeLayers(geoserver, workspace, layers) {
+  if (ref.draftLayer) ref.map.removeLayer(ref.draftLayer)
   if (ref.recordedLayer) ref.map.removeLayer(ref.recordedLayer)
-  const recordedLayer = makeRecordedLayer(layers[project])
+  if (ref.missionLayer) ref.map.removeLayer(ref.missionLayer)
+  const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
+  const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
+  const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
+  ref.map.addLayer(draftLayer)
   ref.map.addLayer(recordedLayer)
+  ref.map.addLayer(missionLayer)
+  ref.draftLayer = draftLayer
   ref.recordedLayer = recordedLayer
+  ref.missionLayer = missionLayer
 }
 
 export {
-  changeProject,
+  changeLayers,
   makeGoogleLayer,
   makeGSLayer,
   makeMBLayer,

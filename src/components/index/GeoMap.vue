@@ -20,9 +20,22 @@ export default {
   components: {
     OverlayPcd
   },
+  computed: {
+    projects() {
+      return this.$store.state.localStorage?.user?.projects ?? []
+    }
+  },
   data: () => ({ overlay: false }),
   methods: {},
   mounted() {
+    if (this.projects.length > 0) {
+      const prj = this.projects[0].name
+      const layers = this.projects[0].layers
+      const workspace = this.projects[0].workspace
+      const geoserver = this.projects[0].geoserver
+      this.olInit(geoserver, workspace, layers)
+      this.$store.commit('localStorage/setPrj', prj)
+    }
   }
 }
 </script>
