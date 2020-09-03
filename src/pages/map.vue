@@ -1,8 +1,8 @@
 <template>
   <div class="map-wrapper">
-    <v-card class="map-wrapper" v-if="projects.length">
+    <div class="map-wrapper" v-if="projects.length">
       <geo-map />
-    </v-card>
+    </div>
 
     <v-container class="fill-height" fluid v-if="!projects.length">
       <v-row align="center" justify="center">
