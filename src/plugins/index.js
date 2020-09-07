@@ -13,11 +13,13 @@ export default ({ store, $axios }) => {
     methods: {
       drawXYs: (data, id) => drawXYs(data, id),
       drawXY: (data, focus, id) => drawXY(data, focus, id),
-      changeProject: (prj, projects) => {
-        store.commit('localStorage/setPrj', prj)
+      changeProject: (prj, projects, socket) => {
         for (const project of projects)
-          if (project.name === prj)
+          if (project.name === prj) {
+            store.commit('localStorage/setPrj', { id: project.id, prj: project.name, socket })
             changeLayers(project.geoserver, project.workspace, project.layers)
+            socket.emit('getState', store.state.localStorage.prjId)
+          }
       },
 
       olInit(geoserver, workspace, layers) {
