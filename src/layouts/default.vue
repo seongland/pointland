@@ -46,7 +46,7 @@
         item-text="name"
         return-object
         dense
-        @change="changeProject($event.toLowerCase(), projects)"
+        @change="changeProject($event.toLowerCase(), projects, $root.ping)"
       ></v-select>
     </v-app-bar>
 

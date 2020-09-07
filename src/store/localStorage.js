@@ -4,7 +4,7 @@ export const state = () => ({
 
   user: undefined,
   prj: undefined,
-  org: undefined
+  prjId: undefined,
 })
 
 export const mutations = {
@@ -22,11 +22,9 @@ export const mutations = {
     this.$router.push("/")
   },
 
-  setOrg(state, org) {
-    state.org = org
-  },
-
-  setPrj(state, prj) {
+  setPrj(state, { id, prj, socket }) {
+    socket?.emit('setPrj', id)
     state.prj = prj
+    state.prjId = id
   }
 }

@@ -8,7 +8,7 @@ import { Fill, Circle, Style } from 'ol/style'
 import { Point } from 'ol/geom'
 import { Feature } from 'ol'
 import { setFocus } from "./event"
-import { RED, BLUE, DFT_RADIUS, ZINDEX_DRAW } from './const'
+import { RED, BLUE, DFT_RADIUS } from './const'
 import { ref } from './meta'
 
 function makeStyle() {
@@ -26,8 +26,6 @@ function makeStyle() {
     circleRed: new Style({ image: ciRedI }),
     circleBlue: new Style({ image: ciBlueI }),
   }
-  styles.circleBlue.setZIndex(ZINDEX_DRAW)
-  styles.circleRed.setZIndex(ZINDEX_DRAW)
   return styles
 }
 
@@ -48,7 +46,7 @@ function drawXYs(latlngArray, id) {
   for (const latlng of latlngArray) addCircle(...latlng, id)
 }
 
-function addCircle(lat, lng) {
+function addCircle(lat, lng, id) {
   /**
    * @summary - draw circle
    */

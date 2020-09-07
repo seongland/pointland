@@ -165,6 +165,8 @@ function changeLayers(geoserver, workspace, layers) {
   ref.draftLayer = draftLayer
   ref.recordedLayer = recordedLayer
   ref.missionLayer = missionLayer
+  ref.recordingLayer.getSource().clear()
+  ref.currentLayer.getSource().clear()
 }
 
 export {

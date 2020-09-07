@@ -29,12 +29,23 @@ export default {
   methods: {},
   mounted() {
     if (this.projects.length > 0) {
+      const id = this.projects[0].id
       const prj = this.projects[0].name
       const layers = this.projects[0].layers
       const workspace = this.projects[0].workspace
       const geoserver = this.projects[0].geoserver
       this.olInit(geoserver, workspace, layers)
-      this.$store.commit('localStorage/setPrj', prj)
+      this.$nextTick(() => {
+        this.$store.commit('localStorage/setPrj', {
+          prj,
+          id,
+          socket: this.$root.ping
+        })
+        this.$root.ping.emit('getState', this.$store.state.localStorage.prjId)
+        this.$root.ping.on('getState', state =>
+          this.drawXYs(state.latlngs, state.socketId)
+        )
+      })
     }
   }
 }

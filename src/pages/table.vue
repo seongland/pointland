@@ -41,19 +41,19 @@ export default {
     ]
   }),
   methods: {},
-  async mounted() {
-    let ping = this.$root.ping
-    if (!ping)
-      ping = await this.$nuxtSocket({
-        allowUpgrades: false,
-        transports: ['websocket'],
-        name: 'ping',
-        teardown: true
-      })
-    else {
-      ping.off('getState')
-      ping.off('dataSharing')
-    }
+
+  async fetch() {
+    const ping = await this.$nuxtSocket({
+      allowUpgrades: false,
+      transports: ['websocket'],
+      name: 'ping',
+      teardown: true
+    })
+    this.$store.commit('localStorage/setPrj', {
+      prj: this.$store.state.localStorage.prj,
+      id: this.$store.state.localStorage.prjId,
+      socket: ping
+    })
     ping.on('dataSharing', data => {
       let already = false
       for (const vhcl of this.vhcls)
@@ -66,10 +66,13 @@ export default {
         this.vhcls.push(data)
       }
     })
+
     setInterval(() => {
       for (const vhcl of this.vhcls) vhcl.remain -= 1
     }, 1000)
-  }
+    this.$root.ping = ping
+  },
+  fetchOnServer: false
 }
 </script>
 
