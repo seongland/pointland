@@ -18,7 +18,7 @@ export default (socket, io) => {
       io.in(prj).emit('dataSharing', share)
     },
 
-    getState: (prj) => {
+    getStates: (prj) => {
       io.in(prj).emit('sendState', socket.id)
     },
 
@@ -27,14 +27,26 @@ export default (socket, io) => {
       state.socketId = socket.id
       state.address = socket.handshake.address
       state.time = socket.handshake.time
-      io.to(caller).emit('getState', state)
+      io.to(caller).emit('stateResponse', state)
     },
 
-    setPrj: (id) => {
-      if (socket.room && socket.room !== id)
+    setPrj: ({ project, state }) => {
+      // leave room
+      if (socket.room && (socket.room !== project)) {
+        console.log(socket.id, "leaved", socket.room)
+        if (!socket.handshake.headers.origin)
+          io.in(socket.room).emit('leave', socket.id)
         socket.leave(socket.room)
-      socket.join(id)
-      socket.room = id
+      }
+
+      // Enter room
+      if (socket.room !== project) {
+        console.log(socket.id, "entered", project)
+        socket.join(project)
+        socket.room = project
+        if (!socket.handshake.headers.origin && state)
+          io.in(project).emit('stateResponse', state)
+      }
     }
   }
   return Object.freeze(emited)

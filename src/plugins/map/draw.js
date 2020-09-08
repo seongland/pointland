@@ -44,6 +44,33 @@ function drawXYs(latlngArray, id) {
    */
   if (!latlngArray.length) return
   for (const latlng of latlngArray) addCircle(...latlng, id)
+
+  const recordingSource = ref.recordingLayer.getSource()
+  const recordingArray = recordingSource.getFeatures()
+  console.log(id, "added", recordingArray.length)
+}
+
+function subtractVhcl(id) {
+  // remove current
+  console.log(id)
+  const currentLayer = ref.currentLayer
+  if (!currentLayer) return
+  const legacy = currentLayer.getSource().getFeatureById(id)
+  if (legacy) currentLayer.getSource().removeFeature(legacy)
+
+  // remove recording
+  const recordingSource = ref.recordingLayer.getSource()
+  const recordingArray = recordingSource.getFeatures()
+
+  console.log(recordingArray.length)
+
+  for (const feature of recordingArray) {
+    console.log(feature.get('vhcl') === id, feature.get('vhcl'))
+    if (feature.get('vhcl') === id)
+      recordingSource.removeFeature(feature)
+  }
+
+  console.log(recordingArray.length)
 }
 
 function addCircle(lat, lng, id) {
@@ -54,8 +81,10 @@ function addCircle(lat, lng, id) {
   let coor = new Point(loc)
   const recordingLayer = ref.recordingLayer
   const feature = new Feature({ geometry: coor })
+  feature.set('vhcl', id)
   recordingLayer.getSource().addFeatures([feature])
 }
+
 
 function updateMarker(lat, lng, id) {
   /**
@@ -71,4 +100,4 @@ function updateMarker(lat, lng, id) {
   currentLayer.getSource().addFeatures([feature])
 }
 
-export { makeStyle, drawXY, drawXYs }
+export { makeStyle, drawXY, drawXYs, subtractVhcl }

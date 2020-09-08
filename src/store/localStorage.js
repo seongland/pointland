@@ -23,7 +23,7 @@ export const mutations = {
   },
 
   setPrj(state, { id, prj, socket }) {
-    socket?.emit('setPrj', id)
+    socket?.emit('setPrj', { project: id })
     state.prj = prj
     state.prjId = id
   }
