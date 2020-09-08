@@ -29,23 +29,26 @@ export default {
   methods: {},
   mounted() {
     if (this.projects.length > 0) {
-      const id = this.projects[0].id
-      const prj = this.projects[0].name
-      const layers = this.projects[0].layers
-      const workspace = this.projects[0].workspace
-      const geoserver = this.projects[0].geoserver
-      this.olInit(geoserver, workspace, layers)
+      const localStorage = this.$store.state.localStorage
+      let project
+      if (localStorage.prj)
+        for (const prj of this.projects)
+          if (prj.id === localStorage.prjId) project = prj
+          else project = this.projects[0]
+      this.olInit(project.geoserver, project.workspace, project.layers)
+
+      // after job
       this.$nextTick(() => {
         const ping = this.$root.ping
         this.$store.commit('localStorage/setPrj', {
-          prj,
-          id,
+          prj: project.name,
+          id: project.id,
           socket: this.$root.ping
         })
         ping.on('stateResponse', state =>
           this.drawXYs(state.latlngs, state.socketId)
         )
-        ping.emit('getStates', this.$store.state.localStorage.prjId)
+        ping.emit('getStates', localStorage.prjId)
         ping.on('leave', id => this.subtractVhcl(id))
       })
     }
