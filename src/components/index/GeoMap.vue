@@ -36,15 +36,17 @@ export default {
       const geoserver = this.projects[0].geoserver
       this.olInit(geoserver, workspace, layers)
       this.$nextTick(() => {
+        const ping = this.$root.ping
         this.$store.commit('localStorage/setPrj', {
           prj,
           id,
           socket: this.$root.ping
         })
-        this.$root.ping.emit('getState', this.$store.state.localStorage.prjId)
-        this.$root.ping.on('getState', state =>
+        ping.on('stateResponse', state =>
           this.drawXYs(state.latlngs, state.socketId)
         )
+        ping.emit('getStates', this.$store.state.localStorage.prjId)
+        ping.on('leave', id => this.subtractVhcl(id))
       })
     }
   }

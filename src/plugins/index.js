@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { olInit } from '~/plugins/map/meta'
-import { drawXYs, drawXY } from "./map/draw"
+import { drawXYs, drawXY, subtractVhcl } from "./map/draw"
 import { changeLayers } from "./map/layer"
 
 export default ({ store, $axios }) => {
@@ -12,13 +12,14 @@ export default ({ store, $axios }) => {
     },
     methods: {
       drawXYs: (data, id) => drawXYs(data, id),
+      subtractVhcl: (id) => subtractVhcl(id),
       drawXY: (data, focus, id) => drawXY(data, focus, id),
       changeProject: (prj, projects, socket) => {
         for (const project of projects)
           if (project.name === prj) {
             store.commit('localStorage/setPrj', { id: project.id, prj: project.name, socket })
             changeLayers(project.geoserver, project.workspace, project.layers)
-            socket.emit('getState', store.state.localStorage.prjId)
+            socket.emit('getStates', store.state.localStorage.prjId)
           }
       },
 
