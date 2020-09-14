@@ -29,7 +29,7 @@ export default {
       serverError: 'Internal Server Error',
       otherError: 'An error occurred',
       title: undefined,
-      subTitle: 'Hidra'
+      subTitle: 'MMS Tower'
     }
   },
   head() {

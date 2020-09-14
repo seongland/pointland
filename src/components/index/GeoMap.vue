@@ -31,10 +31,13 @@ export default {
     if (this.projects.length > 0) {
       const localStorage = this.$store.state.localStorage
       let project
+
+      // if settled
       if (localStorage.prj)
-        for (const prj of this.projects)
+        for (const prj of this.projects) {
           if (prj.id === localStorage.prjId) project = prj
-          else project = this.projects[0]
+        }
+      else project = this.projects[0]
       this.olInit(project.geoserver, project.workspace, project.layers)
 
       // after job
