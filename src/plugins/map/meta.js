@@ -45,6 +45,9 @@ function olInit(geoserver, workspace, layers) {
   ref.missionLayer = missionLayer
   ref.recordingLayer = recordingLayer
   ref.currentLayer = currentLayer
+  ref.geoserver = geoserver
+  ref.workspace = workspace
+  ref.layers = layers
   eventBind(map)
   return map
 }
