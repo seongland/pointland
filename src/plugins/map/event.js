@@ -4,6 +4,7 @@
  */
 
 import { transform } from 'ol/proj'
+import { GeoJSON } from 'ol/format'
 import { ref } from './meta'
 import { ZOOM_DURATION, START_ZOOM } from './const'
 
@@ -17,8 +18,53 @@ function eventBind(map) {
     loc: changeMapLoc(map),
     zoom: ChangeMapRatio(map)
   }))
+  map.on('click', mapClick)
   return { loc: changeMapLoc(map), zoom: ChangeMapRatio(map) }
 }
+
+function mapClick(e) {
+  /**
+  * @summary - When Click Map
+  */
+  let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
+  let extent = e.map.getView().calculateExtent()
+  let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
+  let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
+  let size = rightTop.map(function (e, i) { return e - leftBottom[i] })
+  console.log(coor, size)
+  getNearDraft(coor, size)
+}
+
+
+function getNearDraft(coor, size) {
+  /**
+  * @summary - Get Near Features & Get nearest feature
+  */
+  const draftURL = `${ref.geoserver}/${ref.workspace}/ows?service=WFS&version=1.0.0` +
+    `&request=GetFeature&typeName=${ref.layers.draft}&outputFormat=application%2Fjson&`
+  fetch(
+    draftURL + bboxFilter(coor, size),
+    { method: 'GET', mode: 'cors' }
+  )
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (json) {
+      let features = new GeoJSON().readFeatures(json)
+      console.log(features)
+    })
+}
+
+
+function bboxFilter(coor, size) {
+  /**
+  * @summary - Round Shaped D-WITHIN CQL filter
+  */
+  console.log(size)
+  const factor = size[0] / 1000
+  return `CQL_FILTER=BBOX(geom, ${coor[0] - factor}, ${coor[1] - factor}, ${coor[0] + factor}, ${coor[1] + factor})`
+}
+
 
 function changeMapLoc(map) {
   const lnglat = transform(map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326')
