@@ -26,7 +26,6 @@ export default {
     }
   },
   data: () => ({ overlay: false }),
-  methods: {},
   mounted() {
     if (this.projects.length > 0) {
       const localStorage = this.$store.state.localStorage
@@ -41,19 +40,27 @@ export default {
       this.olInit(project.geoserver, project.workspace, project.layers)
 
       // after job
-      this.$nextTick(() => {
-        const ping = this.$root.ping
-        this.$store.commit('localStorage/setPrj', {
-          prj: project.name,
-          id: project.id,
-          socket: this.$root.ping
-        })
-        ping.on('stateResponse', state =>
-          this.drawXYs(state.latlngs, state.socketId)
-        )
-        ping.emit('getStates', localStorage.prjId)
-        ping.on('leave', id => this.subtractVhcl(id))
+      this.waitAvail(this.pingFlag, this.listenPing, [project, localStorage])
+    }
+  },
+
+  methods: {
+    pingFlag() {
+      return this.$root.ping
+    },
+    listenPing(project, localStorage) {
+      let ping = this.$root.ping
+      this.$store.commit('localStorage/setPrj', {
+        prj: project.name,
+        id: project.id,
+        socket: this.$root.ping
       })
+      ping.on('stateResponse', state => {
+        process.env.dev ? console.log(state) : undefined
+        this.drawXYs(state.latlngs, state.socketId)
+      })
+      ping.emit('getStates', localStorage.prjId)
+      ping.on('leave', id => this.subtractVhcl(id))
     }
   }
 }

@@ -26,6 +26,12 @@ export default ({ store, $axios }) => {
       olInit(geoserver, workspace, layers) {
         this.map = olInit(geoserver, workspace, layers)
         return this.map
+      },
+
+      waitAvail(flag, callback, args) {
+        this.$nextTick(
+          () => flag() ? callback(...args) : this.waitAbail(flag, callback, args)
+        )
       }
     }
   })
