@@ -7,8 +7,13 @@
       <h2 class="subtitle">
         {{ error.message }}
       </h2>
-      <v-btn to="/" class="button--green">
+      <v-btn to="/" >
         Home page
+      </v-btn>
+      <br/>
+      <br/>
+      <v-btn @click="$store.commit('localStorage/logout')">
+        Logout
       </v-btn>
     </div>
   </div>
@@ -16,7 +21,7 @@
 
 <script>
 export default {
-  layout: 'empty',
+  layout: 'before',
   props: {
     error: {
       type: Object,

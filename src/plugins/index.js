@@ -30,7 +30,7 @@ export default ({ store, $axios }) => {
 
       waitAvail(flag, callback, args) {
         this.$nextTick(
-          () => flag() ? callback(...args) : this.waitAbail(flag, callback, args)
+          () => flag() ? callback(...args) : this.waitAvail(flag, callback, args)
         )
       }
     }
