@@ -2,8 +2,6 @@
   "apps": [
     {
     "name": "mms-svr",
-    "instances": "4",
-    "exec_mode": "cluster",
     "script": "./node_modules/nuxt/bin/nuxt.js",
     "merge_logs": true,
     "log_date_format" :"YYYY-MM-DD HH:mm",
