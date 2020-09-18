@@ -2,7 +2,7 @@
   "apps": [
     {
     "name": "mms-svr",
-    "instances": "max",
+    "instances": "4",
     "exec_mode": "cluster",
     "script": "./node_modules/nuxt/bin/nuxt.js",
     "merge_logs": true,
