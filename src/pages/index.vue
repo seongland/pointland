@@ -66,14 +66,7 @@ export default {
       const data = await this.login(email, password)
       if (!data) return
 
-      const config = { headers: { Authorization: data.accessToken } }
-      for (const i in data.user.projects) {
-        const res = await this.$axios.get(
-          `/api/projects?id=${data.user.projects[i].id}`,
-          config
-        )
-        data.user.projects[i] = res.data[0]
-      }
+      await this.loadProjects(data.user, data.accessToken)
       this.$store.commit('localStorage/login', data)
       this.$router.push(`/map`)
     },

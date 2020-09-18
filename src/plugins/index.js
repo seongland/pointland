@@ -23,6 +23,18 @@ export default ({ store, $axios }) => {
           }
       },
 
+      async loadProjects(user, accessToken) {
+        const projectPromises = []
+        const config = { headers: { Authorization: accessToken } }
+        for (const i in user.projects)
+          projectPromises.push(this.$axios.get(
+            `/api/projects?id=${user.projects[i].id}`,
+            config
+          ))
+        const projectResponses = await Promise.all(projectPromises)
+        user.projects = projectResponses.map(res => res.data[0])
+      },
+
       olInit(geoserver, workspace, layers) {
         this.map = olInit(geoserver, workspace, layers)
         return this.map

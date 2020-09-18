@@ -20,7 +20,7 @@ module.exports = {
   },
 
   // Loading Bar
-  loading: { color: '#fff' },
+  loading: { color: '#424242' },
 
   // Plugins to load before mounting the App
   plugins: [

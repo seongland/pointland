@@ -33,6 +33,19 @@ export default {
       return this.$store.state.localStorage?.user?.projects ?? []
     }
   },
+  async mounted() {
+    const localStorage = this.$store.state.localStorage
+    const accessToken = localStorage.accessToken
+    const config = { headers: { Authorization: accessToken } }
+    const res = await this.$axios.get(
+      `/api/user?id=${localStorage.user.id}`,
+      config
+    )
+    const user = res?.data[0]
+    await this.loadProjects(user, accessToken)
+    this.$store.commit('localStorage/login', { accessToken, user })
+    },
+
   async fetch() {
     const ping = await this.$nuxtSocket({
       allowUpgrades: false,
