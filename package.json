@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
-    "production": "pm2 start process.json",
+    "production": "pm2 delete mms-svr &&pm2 start process.json",
     "restart": "pm2 restart mms-svr",
     "stop": "pm2 delete mms-svr",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
