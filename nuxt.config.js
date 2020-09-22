@@ -1,4 +1,7 @@
 const colors = require('vuetify/es5/util/colors').default
+const package = require('./package.json')
+process.env.version = package.version
+
 
 module.exports = {
   // Root Directory
@@ -12,6 +15,9 @@ module.exports = {
       productionTip: false,
       devtools: true
     }
+  },
+  env: {
+    version: process.env.version
   },
 
   // Middleware Apis

@@ -35,7 +35,7 @@
     <!-- 2. Upper Bar -->
     <v-app-bar :clipped-left="clipped" fixed app dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title v-text="title + ' ' + meta.version" />
       <v-spacer /><v-spacer /><v-spacer /><v-spacer /><v-spacer />
       <v-select
         class="mt-6"
@@ -75,6 +75,9 @@ export default {
       set() {}
     }
   },
+  mounted(){
+    this.meta.version = process.env.version
+  },
   data() {
     return {
       title: 'MMS TOWER',
@@ -82,6 +85,9 @@ export default {
       clipped: true,
       drawer: false,
       fixed: false,
+      meta: {
+        version: undefined
+      },
       items: [
         {
           icon: 'fas fa-map',
