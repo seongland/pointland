@@ -2,8 +2,6 @@ import defaultSchema from "../abstract/default/default.schema"
 import orgSchema from "./innerSchema/org"
 import userSchema from "./innerSchema/user"
 import layerSchema from "./innerSchema/layer"
-import "mongoose-type-url"
-import mongoose from "mongoose"
 
 const modelName = "projects"
 
@@ -15,7 +13,7 @@ export default (app) => {
     orgs: { type: [orgSchema], required: true, default: undefined },
     name: { type: String, required: true, lowercase: true, },
     workspace: { type: String, required: true },
-    geoserver: { type: mongoose.SchemaTypes.Url, required: true },
+    geoserver: { type: String, required: true },
     layers: { type: layerSchema }
   }
   const projectSchema = defaultSchema(app).add(projectProperties)
