@@ -8,11 +8,16 @@ $ yarn
 $ yarn dev
 ```
 
+# GEOSERVER
+```bash
+ docker run -it --restart unless-stopped -p 18090:8080 --name geoserver -e USE_CORS=1   -e USE_WPS=1 -e USE_VECTOR_TILES=1 -e USE_IMG_MOSAIC=1 -v /home/stryx/server/geoserver/data:/opt/geoserver_data meggsimum/geoserver:2.16.2
+```
+
+
 # Production
 
 ```bash
-$ yarn build
-$ yarn start
+$ sudo yarn production
 ```
 
 # Main Concept
