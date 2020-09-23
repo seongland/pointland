@@ -20,11 +20,5 @@ export const mutations = {
     for (var key in state)
       state[key] = undefined
     this.$router.push("/")
-  },
-
-  setPrj(state, { id, prj, socket }) {
-    socket?.emit('setPrj', { project: id })
-    state.prj = prj
-    state.prjId = id
   }
 }

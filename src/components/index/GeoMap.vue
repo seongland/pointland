@@ -38,29 +38,12 @@ export default {
         }
       else project = this.projects[0]
       this.olInit(project.geoserver, project.workspace, project.layers)
-
-      // after job
-      this.waitAvail(this.pingFlag, this.listenPing, [project, localStorage])
     }
   },
 
   methods: {
     pingFlag() {
       return this.$root.ping
-    },
-    listenPing(project, localStorage) {
-      let ping = this.$root.ping
-      this.$store.commit('localStorage/setPrj', {
-        prj: project.name,
-        id: project.id,
-        socket: this.$root.ping
-      })
-      ping.on('stateResponse', state => {
-        process.env.dev ? console.log(state) : undefined
-        this.drawXYs(state.latlngs, state.socketId)
-      })
-      ping.emit('getStates', localStorage.prjId)
-      ping.on('leave', id => this.subtractVhcl(id))
     }
   }
 }

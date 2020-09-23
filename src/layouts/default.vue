@@ -1,53 +1,9 @@
 <template>
   <v-app dark>
-    <!-- 1. Right Drawer -->
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      temporary
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          @click="
-            item.title === 'Logout'
-              ? $store.commit('localStorage/logout')
-              : undefined
-          "
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <!-- 2. Upper Bar -->
+    <!-- 1. Upper Bar -->
     <v-app-bar :clipped-left="clipped" fixed app dense>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title + ' ' + meta.version" />
-      <v-spacer /><v-spacer /><v-spacer /><v-spacer /><v-spacer />
-      <v-select
-        class="mt-6"
-        :items="projectsView"
-        label="Select Project"
-        solo
-        v-model="prjView"
-        item-text="name"
-        return-object
-        dense
-        @change="changeProject($event.toLowerCase(), projects, $root.ping)"
-      ></v-select>
+      <v-spacer />
     </v-app-bar>
 
     <!-- 3. Main Contents -->
@@ -59,28 +15,12 @@
 
 <script>
 export default {
-  computed: {
-    projectsView() {
-      const projects = this.$store.state.localStorage?.user?.projects ?? []
-      return projects.map(item => item.name.toUpperCase())
-    },
-    projects() {
-      return this.$store.state.localStorage?.user?.projects ?? []
-    },
-    prjView: {
-      get() {
-        const prj = this.$store.state.localStorage?.prj ?? ''
-        return prj.toUpperCase()
-      },
-      set() {}
-    }
-  },
   mounted(){
     this.meta.version = process.env.version
   },
   data() {
     return {
-      title: 'MMS TOWER',
+      title: '3D MAPPING',
       coor: 'Stryx',
       clipped: true,
       drawer: false,
@@ -88,28 +28,6 @@ export default {
       meta: {
         version: undefined
       },
-      items: [
-        {
-          icon: 'fas fa-map',
-          title: 'Map',
-          to: '/map'
-        },
-        {
-          icon: 'fas fa-table',
-          title: 'Table',
-          to: '/table'
-        },
-        {
-          icon: 'fas fa-meh',
-          title: 'Points',
-          to: '/cloud'
-        },
-        {
-          icon: 'fas fa-user',
-          title: 'Logout',
-          to: '/'
-        }
-      ],
       miniVariant: false
     }
   }
