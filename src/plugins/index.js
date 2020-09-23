@@ -14,14 +14,6 @@ export default ({ store, $axios }) => {
       drawXYs: (data, id) => drawXYs(data, id),
       subtractVhcl: (id) => subtractVhcl(id),
       drawXY: (data, focus, id) => drawXY(data, focus, id),
-      changeProject: (prj, projects, socket) => {
-        for (const project of projects)
-          if (project.name === prj) {
-            store.commit('localStorage/setPrj', { id: project.id, prj: project.name, socket })
-            changeLayers(project.geoserver, project.workspace, project.layers)
-            socket.emit('getStates', store.state.localStorage.prjId)
-          }
-      },
 
       async loadProjects(user, accessToken) {
         const projectPromises = []

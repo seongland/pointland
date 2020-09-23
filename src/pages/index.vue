@@ -32,7 +32,6 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="$router.push(`/signup`)"> Singup </v-btn>
             <v-btn @click="onSubmit(email, password)">
               Login
             </v-btn>
@@ -68,7 +67,7 @@ export default {
 
       await this.loadProjects(data.user, data.accessToken)
       this.$store.commit('localStorage/login', data)
-      this.$router.push(`/map`)
+      this.$router.push(`/draw`)
     },
 
     async login(email, password) {
