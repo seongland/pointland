@@ -31,26 +31,29 @@ function olInit(geoserver, workspace, layers) {
    */
   const styles = makeStyle()
   const naver = makeNaverMap()
-  const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
-  const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
-  const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
   const recordingLayer = makeRecordingLayer(styles)
   const currentLayer = makeCurrentLayer(styles)
   const drawMissionLayer = makeDrawMissionLayer()
-  const openlayers = [recordingLayer, currentLayer, draftLayer, recordedLayer, missionLayer, drawMissionLayer]
+  const openlayers = [recordingLayer, currentLayer, drawMissionLayer]
+  if (geoserver) {
+    const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
+    const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
+    const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
+    openlayers.push(draftLayer, missionLayer, recordedLayer)
+    ref.recordedLayer = recordedLayer
+    ref.draftLayer = draftLayer
+    ref.missionLayer = missionLayer
+    ref.geoserver = geoserver
+    ref.workspace = workspace
+    ref.layers = layers
+  }
   const map = makeOlMap(openlayers)
   map.styles = styles
   map.naver = naver
   ref.map = map
   ref.drawMissionLayer = drawMissionLayer
-  ref.recordedLayer = recordedLayer
-  ref.draftLayer = draftLayer
-  ref.missionLayer = missionLayer
   ref.recordingLayer = recordingLayer
   ref.currentLayer = currentLayer
-  ref.geoserver = geoserver
-  ref.workspace = workspace
-  ref.layers = layers
   eventBind(map)
   return map
 }
