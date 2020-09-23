@@ -17,7 +17,8 @@ import {
   makeMissionLayer,
   makeNaverMap,
   makeCurrentLayer,
-  makeRecordingLayer
+  makeRecordingLayer,
+  makeDrawMissionLayer
 } from '~/plugins/map/layer'
 import { DRAW_LAYER_ID, INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/const'
 import { eventBind } from '~/plugins/map/event'
@@ -35,11 +36,13 @@ function olInit(geoserver, workspace, layers) {
   const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
   const recordingLayer = makeRecordingLayer(styles)
   const currentLayer = makeCurrentLayer(styles)
-  const openlayers = [recordingLayer, currentLayer, draftLayer, recordedLayer, missionLayer]
+  const drawMissionLayer = makeDrawMissionLayer()
+  const openlayers = [recordingLayer, currentLayer, draftLayer, recordedLayer, missionLayer, drawMissionLayer]
   const map = makeOlMap(openlayers)
   map.styles = styles
   map.naver = naver
   ref.map = map
+  ref.drawMissionLayer = drawMissionLayer
   ref.recordedLayer = recordedLayer
   ref.draftLayer = draftLayer
   ref.missionLayer = missionLayer
