@@ -35,7 +35,6 @@ function makeStyle() {
 
 
 function drawLine(feature) {
-  console.log(feature, ref.drawMissionLayer.getSource())
   ref.drawMissionLayer.getSource().addFeature(feature)
 }
 
