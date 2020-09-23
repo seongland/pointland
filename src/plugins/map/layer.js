@@ -11,6 +11,7 @@ import {
 import { NAVER_ID } from '~/plugins/map/const'
 import { ref } from './meta'
 
+const lineStyle = () => [ref.map.styles.strokeWhite, ref.map.styles.strokeYellow]
 
 function makeGoogleLayer() {
   /**
@@ -131,6 +132,19 @@ const makeCurrentLayer = (styles) => {
   return currentLayer
 }
 
+const makeDrawMissionLayer = () => {
+  /**
+ * @summary - Make current draw Map
+ */
+  const lineSrc = new Vector()
+  const lineLayer = new VectorLayer({
+    source: lineSrc,
+    style: lineStyle
+  })
+  lineLayer.setZIndex(ZINDEX_PVR + 2)
+  return lineLayer
+}
+
 function makeNaverMap() {
   /**
    * @summary - Make Naver Map
@@ -179,5 +193,6 @@ export {
   makeMissionLayer,
   makeNaverMap,
   makeCurrentLayer,
-  makeRecordingLayer
+  makeRecordingLayer,
+  makeDrawMissionLayer
 }

@@ -4,11 +4,11 @@
  */
 
 import { fromLonLat } from 'ol/proj'
-import { Fill, Circle, Style } from 'ol/style'
+import { Fill, Circle, Style, Stroke } from 'ol/style'
 import { Point } from 'ol/geom'
 import { Feature } from 'ol'
 import { setFocus } from "./event"
-import { RED, BLUE, DFT_RADIUS } from './const'
+import { RED, BLUE, DFT_RADIUS, DFT_WIDTH, WHITE, YELLOW } from './const'
 import { ref } from './meta'
 
 function makeStyle() {
@@ -21,12 +21,22 @@ function makeStyle() {
   let cricleDft = { radius: DFT_RADIUS }
   let ciRedI = new Circle({ ...cricleDft, fill: styles.prop.fRed })
   let ciBlueI = new Circle({ radius: DFT_RADIUS * 2, fill: styles.prop.fBlue })
+  let lYellowI = new Stroke({ color: YELLOW, width: DFT_WIDTH })
+  let lWhiteI = new Stroke({ color: WHITE, width: DFT_WIDTH * 2 })
   styles = {
     ...styles,
     circleRed: new Style({ image: ciRedI }),
     circleBlue: new Style({ image: ciBlueI }),
+    strokeYellow: new Style({ stroke: lYellowI }),
+    strokeWhite: new Style({ stroke: lWhiteI })
   }
   return styles
+}
+
+
+function drawLine(feature) {
+  console.log(feature, ref.drawMissionLayer.getSource())
+  ref.drawMissionLayer.getSource().addFeature(feature)
 }
 
 function drawXY(latlng, focus, id) {
@@ -100,4 +110,4 @@ function updateMarker(lat, lng, id) {
   currentLayer.getSource().addFeatures([feature])
 }
 
-export { makeStyle, drawXY, drawXYs, subtractVhcl }
+export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl }

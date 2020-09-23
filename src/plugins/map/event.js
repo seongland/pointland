@@ -6,6 +6,7 @@
 import { transform } from 'ol/proj'
 import { GeoJSON } from 'ol/format'
 import { ref } from './meta'
+import { drawLine } from './draw'
 import { ZOOM_DURATION, START_ZOOM } from './const'
 
 function eventBind(map) {
@@ -31,7 +32,6 @@ function mapClick(e) {
   let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
   let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
   let size = rightTop.map(function (e, i) { return e - leftBottom[i] })
-  console.log(coor, size)
   getNearDraft(coor, size)
 }
 
@@ -50,9 +50,36 @@ function getNearDraft(coor, size) {
       return response.json()
     })
     .then(function (json) {
-      let features = new GeoJSON().readFeatures(json)
-      console.log(features)
+      const features = new GeoJSON().readFeatures(json)
+      if (features.length < 1) return
+      const index = getNearestLineIndex(coor, features)
+      drawLine(features[index])
     })
+}
+
+function getNearestLineIndex(coor, features) {
+  let index
+  let maxDistance = 0
+  for (const feature of features) {
+    let [sumx, sumy] = [0, 0]
+    const geometry = feature.getGeometry()
+    const flatCoords = geometry.flatCoordinates
+    flatCoords.filter((value, index) => {
+      if (!(index % 2)) {
+        sumx += value
+        sumy += flatCoords[index + 1]
+      }
+    })
+    const x = 2 * sumx / flatCoords.length
+    const y = 2 * sumy / flatCoords.length
+    const center = [x, y]
+    const distance = Math.sqrt((center[0] - coor[0]) ** 2 + (center[1] - coor[1]) ** 2)
+    if (distance > maxDistance) {
+      index = features.indexOf(feature)
+      maxDistance = distance
+    }
+  }
+  return index
 }
 
 
@@ -60,8 +87,7 @@ function bboxFilter(coor, size) {
   /**
   * @summary - Round Shaped D-WITHIN CQL filter
   */
-  console.log(size)
-  const factor = size[0] / 1000
+  const factor = size[0] / 10000
   return `CQL_FILTER=BBOX(geom, ${coor[0] - factor}, ${coor[1] - factor}, ${coor[0] + factor}, ${coor[1] + factor})`
 }
 
