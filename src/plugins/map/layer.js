@@ -13,7 +13,10 @@ import { ref } from './meta'
 import WMSCapabilities from 'ol/format/WMSCapabilities'
 import { transformExtent } from 'ol/proj'
 
-const lineStyle = () => [ref.map.styles.strokeWhite, ref.map.styles.strokeYellow]
+function lineStyle() {
+  return [ref.map.styles.strokeWhite, ref.map.styles.strokeYellow]
+}
+
 
 function makeGoogleLayer() {
   /**

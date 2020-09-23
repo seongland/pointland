@@ -50,9 +50,10 @@ function getNearDraft(coor, size) {
       return response.json()
     })
     .then(function (json) {
-      const features = new GeoJSON().readFeatures(json)
+      const features = new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(json)
       if (features.length < 1) return
       const index = getNearestLineIndex(coor, features)
+      console.log(features, index)
       drawLine(features[index])
     })
 }
