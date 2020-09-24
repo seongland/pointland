@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-tabs v-model="index">
+  <div class="wrapper">
+    <v-tabs v-model="index" class="header">
       <v-subheader v-text="title + ' ' + meta.version" />
       <v-spacer />
       <v-tab v-for="tab in tabs" :key="tab.name"> {{ tab.name }} </v-tab>
@@ -26,91 +26,26 @@
         dense
       ></v-select>
     </v-tabs>
-    <v-tabs-items v-model="index">
+    <v-tabs-items v-model="index" class="main wrapper">
       <v-tab-item v-for="(tab, i) in tabs" :key="i">
-        <geo-map/>
+        <geo-map v-if="tab.type==='map'"/>
+        <overlay-pcd v-else-if="tab.type==='3d'"/>
+        <imms-image v-else-if="tab.type==='image'"/>
       </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
-import GeoMap from '~/components/index/GeoMap.vue'
+import GeoMap from '~/components/tabs/GeoMap.vue'
+import OverlayPcd from '~/components/tabs/OverlayPcd.vue'
+import ImmsImage from '~/components/tabs/ImmsImage.vue'
 
 export default {
   middleware: 'authentication',
   components: {
-    GeoMap
+    GeoMap, OverlayPcd, ImmsImage
   },
-  data: () => ({
-    title: '3D MAPPING',
-    coor: 'Stryx',
-    index: 0,
-    meta: {
-      version: undefined
-    },
-    tabs: [
-      {
-        name: '3D',
-        type: '3d'
-      },
-      {
-        name: 'Image',
-        type: 'image'
-      },
-      {
-        name: 'Map',
-        type: 'map'
-      }
-    ],
-    currentRound: {
-      name: 'imms_20200824_193802',
-      snaps: [
-        {
-          name: 'snap1'
-        },
-        {
-          name: 'snap2'
-        },
-        {
-          name: 'snap3'
-        }
-      ]
-    },
-    currentSnap: {
-      name: 'snap3'
-    },
-    rounds: [
-      {
-        name: 'imms_20200824_193802',
-        snaps: [
-          {
-            name: 'snap1'
-          },
-          {
-            name: 'snap2'
-          },
-          {
-            name: 'snap3'
-          }
-        ]
-      },
-      {
-        name: 'imms_20200825_170217',
-        snaps: [
-          {
-            name: 'snap1'
-          },
-          {
-            name: 'snap2'
-          },
-          {
-            name: 'snap3'
-          }
-        ]
-      }
-    ]
-  }),
   async mounted() {
     this.meta.version = process.env.version
     const localStorage = this.$store.state.localStorage
@@ -133,5 +68,16 @@ export default {
 }
 .v-select.snaps {
   width: 150px !important;
+}
+.wrapper {
+  height: 100%; 
+  display: flex;
+  flex-flow: column;
+}
+.header {
+  flex: 0 1 auto;
+}
+.main {
+  flex: 1 1 auto;
 }
 </style>
