@@ -1,15 +1,79 @@
 import Vue from 'vue'
 import { olInit } from '~/plugins/map/meta'
 import { drawXYs, drawXY, subtractVhcl } from "./map/draw"
-import { changeLayers } from "./map/layer"
 
-export default ({ store, $axios }) => {
+export default ({ $axios }) => {
   Vue.mixin({
-    data: () => {
-      return {
-        map: undefined
-      }
-    },
+    data: () => ({
+      title: '3D MAPPING',
+      coor: 'Stryx',
+      index: 0,
+      meta: {
+        version: undefined
+      },
+      map: undefined,
+      tabs: [
+        {
+          name: 'Map',
+          type: 'map'
+        },
+        {
+          name: 'Image',
+          type: 'image'
+        },
+        {
+          name: '3D',
+          type: '3d'
+        }
+      ],
+      currentRound: {
+        name: 'imms_20200824_193802',
+        snaps: [
+          {
+            name: 'snap1'
+          },
+          {
+            name: 'snap2'
+          },
+          {
+            name: 'snap3'
+          }
+        ]
+      },
+      currentSnap: {
+        name: 'snap3'
+      },
+      rounds: [
+        {
+          name: 'imms_20200824_193802',
+          snaps: [
+            {
+              name: 'snap1'
+            },
+            {
+              name: 'snap2'
+            },
+            {
+              name: 'snap3'
+            }
+          ]
+        },
+        {
+          name: 'imms_20200825_170217',
+          snaps: [
+            {
+              name: 'snap1'
+            },
+            {
+              name: 'snap2'
+            },
+            {
+              name: 'snap3'
+            }
+          ]
+        }
+      ]
+    }),
     methods: {
       drawXYs: (data, id) => drawXYs(data, id),
       subtractVhcl: (id) => subtractVhcl(id),

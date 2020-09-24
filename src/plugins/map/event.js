@@ -19,7 +19,8 @@ function eventBind(map) {
     loc: changeMapLoc(map),
     zoom: ChangeMapRatio(map)
   }))
-  map.on('click', mapClick)
+  if (map.draftLayer)
+    map.on('click', mapClick)
   return { loc: changeMapLoc(map), zoom: ChangeMapRatio(map) }
 }
 
