@@ -1,5 +1,4 @@
 {
-  "git.ignoreLimitWarning": true,
   "python.pythonPath": "/home/stryx/.conda/envs/gis/bin/python",
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
