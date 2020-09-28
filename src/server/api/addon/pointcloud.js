@@ -1,7 +1,8 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { PythonShell } from 'python-shell'
-import { existsSync, mkdir } from 'fs'
+import { existsSync, mkdir, createReadStream } from 'fs'
+import { createGzip } from 'zlib'
 
 dotenv.config()
 const router = express.Router()
@@ -51,14 +52,22 @@ function pointcloud(req, res) {
   const path = lasPath(req)
   const cache = cachePath(req)
   console.log(path, cache)
+  if (existsSync(`${cache}\\x.gz`)) return res.json({ cached: true })
 
   pythonOptions.args = [JSON.stringify(path), JSON.stringify(cache)]
 
-  console.time('python')
+  console.time('json')
   PythonShell.run('src/python/lastojson.py', pythonOptions, (err, result) => {
-    console.timeEnd('python')
-    if (!err) res.json(true)
+    console.timeEnd('json')
+    if (!err) res.json(JSON.parse(result[0]))
     if (err) res.json({ err, result })
+  })
+
+  console.time('gzip')
+  PythonShell.run('src/python/lastogzip.py', pythonOptions, (err, result) => {
+    console.timeEnd('gzip')
+    if (!err) console.log(true)
+    if (err) console.log({ err, result })
   })
 }
 
@@ -68,24 +77,34 @@ function getRoot(round) {
 
 
 function lasx(req, res) {
+  res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const cache = cachePath(req)
-  res.sendFile(`${cache}\\x.json`)
+  const gz = createReadStream(`${cache}\\x.gz`)
+  gz.pipe(res)
 }
 function lasy(req, res) {
+  res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const cache = cachePath(req)
-  res.sendFile(`${cache}\\y.json`)
+  const gz = createReadStream(`${cache}\\y.gz`)
+  gz.pipe(res)
 }
 function lasz(req, res) {
+  res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const cache = cachePath(req)
-  res.sendFile(`${cache}\\z.json`)
+  const gz = createReadStream(`${cache}\\z.gz`)
+  gz.pipe(res)
 }
 function lasc(req, res) {
+  res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const cache = cachePath(req)
-  res.sendFile(`${cache}\\c.json`)
+  const gz = createReadStream(`${cache}\\c.gz`)
+  gz.pipe(res)
 }
 function lasi(req, res) {
+  res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const cache = cachePath(req)
-  res.sendFile(`${cache}\\i.json`)
+  const gz = createReadStream(`${cache}\\i.gz`)
+  gz.pipe(res)
 }
 
 

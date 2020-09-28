@@ -23,7 +23,7 @@ function drawLas(lasJson) {
       cloud.center[2] - lasJson.center[2]
     ]
     for (const i in lasJson.x)
-      vertices.push(lasJson.x[i] + offset[0], lasJson.y[i] + offset[1], lasJson.z[i] + offset[2])
+      vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
   }
 
   let intensity
@@ -114,7 +114,7 @@ function drawClick(cloud) {
     changeColor(colors, index, SELECTED_COLOR, attributes)
     cloud.currentSelected = cloud.currentHover
     const center = cloud.currentSelected.point
-    cloud.controls.target.set(center.x, center.y, center.z)
+    // cloud.controls.target.set(center.x, center.y, center.z)
   }
   else {
     cloud.selected.splice(cloud.selected.indexOf(cloud.currentHover))
