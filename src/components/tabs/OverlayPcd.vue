@@ -8,7 +8,7 @@ export default {
     pointSize: 0.05
   }),
   async fetch() {
-    for (const i of [1]) {
+    for (const i of [1, 2, 3, 4, 5, 6,  7, 8, 9, 10, 11, 12]) {
       const lasData = await this.$axios(
         `/api/pointcloud/imms_20200824_193802/snap1/${i}`
       )

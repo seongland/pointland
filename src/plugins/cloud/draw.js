@@ -6,11 +6,26 @@ const SELECTED_COLOR = [0.4, 1, 0.8]
 const HOVER_COLOR = [0.8, 1, 1]
 
 function drawLas(lasJson) {
+  const cloud = ref.cloud
+  const [vertices, colors] = [[], []]
   ref.loading = true
 
-  const [vertices, colors] = [[], []]
-  for (const i in lasJson.x)
-    vertices.push(lasJson.x[i], lasJson.y[i], lasJson.z[i])
+  if (!cloud.center) {
+    cloud.center = lasJson.center
+    cloud.controls.target.set(0, 0, 0.1)
+    for (const i in lasJson.x)
+      vertices.push(lasJson.x[i], lasJson.y[i], lasJson.z[i])
+  }
+  else {
+    const offset = [
+      cloud.center[0] - lasJson.center[0],
+      cloud.center[1] - lasJson.center[1],
+      cloud.center[2] - lasJson.center[2]
+    ]
+    for (const i in lasJson.x)
+      vertices.push(lasJson.x[i] + offset[0], lasJson.y[i] + offset[1], lasJson.z[i] + offset[2])
+  }
+
   let intensity
   for (const i in lasJson.intensity) {
     intensity = lasJson.intensity[i] / 255
@@ -34,7 +49,7 @@ function drawLas(lasJson) {
     vertexColors: THREE.VertexColors
   })
   const points = new THREE.Points(geometry, material)
-  ref.cloud.controls.target.set(0, 0, 0.1)
+
   ref.cloud.scene.add(points)
   ref.cloud.points = points
   console.log(points)
