@@ -3,25 +3,25 @@
 python las to json
 '''
 
-import json, sys, os
-import pylas, numpy as np
+from json import loads, dumps
+from sys import argv
+import os
+import pylas
 
 if __name__ == "__main__":
   # make data
-  path = json.loads(sys.argv[1])
+  path = loads(argv[1])
+  cache = loads(argv[2])
   las = pylas.read(path)
   las_min = {}
-  maximizer = 255 / las.intensity.max()
-  las.intensity = las.intensity * maximizer
-  # las.intensity = 15 * np.sqrt(las.intensity)
   las_min["center"] = [las.x.mean(), las.y.mean(),las.z.mean()]
   las_min["intensity"] = las.intensity.tolist()
-  las_min["x"] = las.x.tolist()
-  las_min["y"] = las.y.tolist()
-  las_min["z"] = las.z.tolist()
-  las_json = json.dumps(las_min, indent=None, separators=(',',':'))
-  json_path = "cache.json"
+  las_min["x"] = (las.x - las_min["center"][0]).tolist()
+  las_min["y"] = (las.y - las_min["center"][1]).tolist()
+  las_min["z"] = (las.z - las_min["center"][2]).tolist()
+  las_json = dumps(las_min, indent=None, separators=(',',':'))
+  json_path = cache
   text_file = open(json_path, "w")
   text_file.write(las_json)
   text_file.close()
-  print(os.path.abspath(json_path))
+  exit(print(os.path.abspath(json_path)))

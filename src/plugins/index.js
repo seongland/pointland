@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { olInit } from '~/plugins/map/meta'
 import { drawXYs, drawXY, subtractVhcl } from "./map/draw"
+import { initCloud, purgeCloud } from "./cloud/meta"
+import { drawLas } from "./cloud/draw"
 
 export default ({ $axios }) => {
   Vue.mixin({
@@ -75,6 +77,9 @@ export default ({ $axios }) => {
       ]
     }),
     methods: {
+      initCloud: () => initCloud(),
+      purgeCloud: () => purgeCloud(),
+      drawLas: (lasJson) => drawLas(lasJson),
       drawXYs: (data, id) => drawXYs(data, id),
       subtractVhcl: (id) => subtractVhcl(id),
       drawXY: (data, focus, id) => drawXY(data, focus, id),

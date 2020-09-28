@@ -27,10 +27,10 @@
       ></v-select>
     </v-tabs>
     <v-tabs-items v-model="index" class="main wrapper">
-      <v-tab-item v-for="(tab, i) in tabs" :key="i">
-        <geo-map v-if="tab.type==='map'"/>
-        <overlay-pcd v-else-if="tab.type==='3d'"/>
-        <imms-image v-else-if="tab.type==='image'"/>
+      <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper">
+        <geo-map v-if="tab.type==='map'" class="wrapper"/>
+        <overlay-pcd v-else-if="tab.type==='3d'" class="wrapper"/>
+        <imms-image v-else-if="tab.type==='image'" class="wrapper"/>
       </v-tab-item>
     </v-tabs-items>
   </div>
