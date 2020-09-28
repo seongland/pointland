@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { PythonShell } from 'python-shell'
+import { existsSync, mkdir } from 'fs'
 
 dotenv.config()
 const router = express.Router()
@@ -29,11 +30,28 @@ function lasPath(req) {
 }
 
 
+function cachePath(req) {
+  const round = req.params.round
+  const snap = req.params.snap
+  const seq = req.params.seq
+  const root = process.cwd()
+  const snapPath = `${root}\\cache\\${round}\\${snap}`
+  mkdir(snapPath, { recursive: true }, () => ({}))
+  return `${snapPath}\\${seq}.json`
+}
+
+
 function pointcloud(req, res) {
   const path = lasPath(req)
+  const cache = cachePath(req)
+  console.log(path, cache)
+  if (existsSync(cache)) return res.sendFile(cache)
 
-  pythonOptions.args = [JSON.stringify(path)]
+  pythonOptions.args = [JSON.stringify(path), JSON.stringify(cache)]
+
+  console.time('python')
   PythonShell.run('src/python/lastojson.py', pythonOptions, (err, result) => {
+    console.timeEnd('python')
     if (!err) res.sendFile(result[0])
     if (err) res.json({ err, result })
   })
