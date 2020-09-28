@@ -13,6 +13,12 @@ const pythonOptions = {
 }
 
 router.get('/:round/:snap/:seq', pointcloud)
+router.get('/:round/:snap/:seq/x', lasx)
+router.get('/:round/:snap/:seq/y', lasy)
+router.get('/:round/:snap/:seq/z', lasz)
+router.get('/:round/:snap/:seq/i', lasi)
+router.get('/:round/:snap/:seq/c', lasc)
+
 router.get('/file/:round/:snap/:seq', las)
 
 function las(req, res) {
@@ -35,9 +41,9 @@ function cachePath(req) {
   const snap = req.params.snap
   const seq = req.params.seq
   const root = process.cwd()
-  const snapPath = `${root}\\cache\\${round}\\${snap}`
+  const snapPath = `${root}\\cache\\${round}\\${snap}\\${seq}`
   mkdir(snapPath, { recursive: true }, () => ({}))
-  return `${snapPath}\\${seq}.json`
+  return snapPath
 }
 
 
@@ -45,14 +51,13 @@ function pointcloud(req, res) {
   const path = lasPath(req)
   const cache = cachePath(req)
   console.log(path, cache)
-  if (existsSync(cache)) return res.sendFile(cache)
 
   pythonOptions.args = [JSON.stringify(path), JSON.stringify(cache)]
 
   console.time('python')
   PythonShell.run('src/python/lastojson.py', pythonOptions, (err, result) => {
     console.timeEnd('python')
-    if (!err) res.sendFile(result[0])
+    if (!err) res.json(true)
     if (err) res.json({ err, result })
   })
 }
@@ -60,5 +65,29 @@ function pointcloud(req, res) {
 function getRoot(round) {
   return `\\\\10.1.0.113\\2020_aihub\\04_dataset_draw_tool\\${round}`
 }
+
+
+function lasx(req, res) {
+  const cache = cachePath(req)
+  res.sendFile(`${cache}\\x.json`)
+}
+function lasy(req, res) {
+  const cache = cachePath(req)
+  res.sendFile(`${cache}\\y.json`)
+}
+function lasz(req, res) {
+  const cache = cachePath(req)
+  res.sendFile(`${cache}\\z.json`)
+}
+function lasc(req, res) {
+  const cache = cachePath(req)
+  res.sendFile(`${cache}\\c.json`)
+}
+function lasi(req, res) {
+  const cache = cachePath(req)
+  res.sendFile(`${cache}\\i.json`)
+}
+
+
 
 export default router

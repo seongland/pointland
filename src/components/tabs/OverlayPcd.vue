@@ -8,12 +8,24 @@ export default {
     pointSize: 0.05
   }),
   async fetch() {
-    for (const i of [1, 2, 3, 4, 5, 6,  7, 8, 9, 10, 11, 12]) {
-      const lasData = await this.$axios(
-        `/api/pointcloud/imms_20200824_193802/snap1/${i}`
-      )
-      console.log(lasData)
-      this.drawLas(lasData.data)
+    for (const index of [22]) {
+      console.time('loadlas')
+      const root = `/api/pointcloud/imms_20200824_193802/snap1/${index}`
+      const xp = this.$axios(`${root}/x`)
+      const yp = this.$axios(`${root}/y`)
+      const zp = this.$axios(`${root}/z`)
+      const cp = this.$axios(`${root}/c`)
+      const ip = this.$axios(`${root}/i`)
+      const [x, y, z, c, i] = await Promise.all([xp, yp, zp, cp, ip])
+      console.timeEnd('loadlas')
+      console.log({ x, y, z, c, i })
+      this.drawLas({
+        x: x.data,
+        y: y.data,
+        z: z.data,
+        center: c.data,
+        intensity: i.data
+      })
     }
   },
   fetchOnServer: false,

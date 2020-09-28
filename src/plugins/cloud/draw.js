@@ -113,6 +113,8 @@ function drawClick(cloud) {
     cloud.selected.push(cloud.currentHover)
     changeColor(colors, index, SELECTED_COLOR, attributes)
     cloud.currentSelected = cloud.currentHover
+    const center = cloud.currentSelected.point
+    cloud.controls.target.set(center.x, center.y, center.z)
   }
   else {
     cloud.selected.splice(cloud.selected.indexOf(cloud.currentHover))
