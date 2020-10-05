@@ -2,8 +2,8 @@ import express from 'express'
 import dotenv from 'dotenv'
 import proj4 from 'proj4'
 import jimp from 'jimp-compact'
-import path from 'path'
 import fs from 'fs'
+import { DBFFile } from 'dbffile'
 
 const EPSG5186 = '+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=600000 +ellps=GRS80 +units=m +no_defs'
 const EPSG32652 = '+proj=utm +zone=52 +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
@@ -20,21 +20,41 @@ function image(req, res) {
   res.sendFile(path)
 }
 
-function depthmap(req, res) {
+async function depthmap(req, res) {
   const path = depthmapPath(req)
   const imgPath = imagePath(req)
-  const meta = getMeta(req)
-  drawAtPanoImage(path, imgPath, meta)
-  res.sendFile(path)
+  const meta = await getMeta(req)
+  const base64 = await drawAtPanoImage(path, imgPath, meta)
+  res.json(base64)
 }
 
-function getMeta(req) {
+async function getMeta(req) {
+  const path = dbfPath(req)
+  const seq = req.params.seq
+  const record = await getDbfRecord(path, seq)
   return {
-    lat: 37.578493,
-    lon: 126.890831,
-    alt: 38.598289,
-    height: 2
+    lat: record.Latitude,
+    lon: record.Longitude,
+    alt: record.altitude,
   }
+}
+
+async function getDbfRecord(dbfPath, seq) {
+  const dbf = await DBFFile.open(dbfPath)
+  let records = await dbf.readRecords(dbf.recordCount)
+  for (let record of records) {
+    if (record.sequence == seq)
+      return record
+  }
+}
+
+function dbfPath(req) {
+  const round = req.params.round
+  const snap = req.params.snap
+
+  const root = getRoot(round)
+  const ext = "dbf"
+  return `${root}\\${snap}\\images_shp\\[${round}]${snap}.${ext}`
 }
 
 function imagePath(req) {
@@ -131,14 +151,7 @@ async function drawAtPanoImage(depthmapPath, imagePath, point) {
         )
       }
     }
-    const parsedPath = path.parse(imagePath)
-    const destinationPath = path.join(
-      parsedPath.dir,
-      parsedPath.name + '_depth' + parsedPath.ext
-    )
-    console.log(`Start making depthmap images - ${destinationPath}`)
-    image.write(destinationPath)
-    console.log(`End making depthmap images - ${destinationPath}`)
+    return image.getBase64Async('image/jpeg')
   } catch (e) {
     console.log(e)
   }

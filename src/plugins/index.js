@@ -3,6 +3,9 @@ import { olInit } from '~/plugins/map/meta'
 import { drawXYs, drawXY, subtractVhcl } from "./map/draw"
 import { initCloud, purgeCloud } from "./cloud/meta"
 import { drawLas } from "./cloud/draw"
+import AsyncComputed from 'vue-async-computed'
+
+Vue.use(AsyncComputed)
 
 export default ({ $axios }) => {
   Vue.mixin({
@@ -27,53 +30,6 @@ export default ({ $axios }) => {
           name: '3D',
           type: '3d'
         }
-      ],
-      currentRound: {
-        name: 'imms_20200824_193802',
-        snaps: [
-          {
-            name: 'snap1'
-          },
-          {
-            name: 'snap2'
-          },
-          {
-            name: 'snap3'
-          }
-        ]
-      },
-      currentSnap: {
-        name: 'snap3'
-      },
-      rounds: [
-        {
-          name: 'imms_20200824_193802',
-          snaps: [
-            {
-              name: 'snap1'
-            },
-            {
-              name: 'snap2'
-            },
-            {
-              name: 'snap3'
-            }
-          ]
-        },
-        {
-          name: 'imms_20200825_170217',
-          snaps: [
-            {
-              name: 'snap1'
-            },
-            {
-              name: 'snap2'
-            },
-            {
-              name: 'snap3'
-            }
-          ]
-        }
       ]
     }),
     methods: {
@@ -83,6 +39,16 @@ export default ({ $axios }) => {
       drawXYs: (data, id) => drawXYs(data, id),
       subtractVhcl: (id) => subtractVhcl(id),
       drawXY: (data, focus, id) => drawXY(data, focus, id),
+
+      chanageRound(round) {
+        this.$store.commit('ls/chanageRound', round)
+      },
+      changeSnap(snap) {
+        this.$store.commit('ls/changeSnap', snap)
+      },
+      changeSeq(seq) {
+        this.$store.commit('ls/changeSeq', seq)
+      },
 
       async loadProjects(user, accessToken) {
         const projectPromises = []

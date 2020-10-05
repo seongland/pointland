@@ -66,7 +66,7 @@ export default {
       if (!data) return
 
       await this.loadProjects(data.user, data.accessToken)
-      this.$store.commit('localStorage/login', data)
+      this.$store.commit('ls/login', data)
       this.$router.push(`/draw`)
     },
 

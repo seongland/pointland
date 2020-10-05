@@ -2,7 +2,6 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { PythonShell } from 'python-shell'
 import { existsSync, mkdir, createReadStream } from 'fs'
-import { createGzip } from 'zlib'
 
 dotenv.config()
 const router = express.Router()
