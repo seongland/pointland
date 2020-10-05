@@ -3,11 +3,17 @@ export const state = () => ({
   user: undefined,
   prj: undefined,
   prjId: undefined,
+  index: 0,
   currentRound: {
     name: 'imms_20200825_170217',
     snaps: [
       {
-        name: 'snap1'
+        name: 'snap1',
+        count: 1017
+      },
+      {
+        name: 'snap2',
+        count: 1017
       }
     ]
   },
@@ -21,7 +27,25 @@ export const state = () => ({
       name: 'imms_20200825_170217',
       snaps: [
         {
-          name: 'snap1'
+          name: 'snap1',
+          count: 1017
+        },
+        {
+          name: 'snap2',
+          count: 1017
+        }
+      ]
+    },
+    {
+      name: 'imms_20200824_193802',
+      snaps: [
+        {
+          name: 'snap1',
+          count: 1017
+        },
+        {
+          name: 'snap2',
+          count: 1017
         }
       ]
     }
@@ -38,14 +62,27 @@ export const mutations = {
     /**
      * @summary - Reset Token & Last Page
      */
-    for (var key in state)
-      state[key] = undefined
+    state.accessToken = undefined
+    state.user = undefined
+    state.prj = undefined
+    state.prjId = undefined
+    state.index = 0
+    state.currentSeq = 0
     this.$router.push("/")
   },
+  setIndex(state, index) {
+    state.index = index
+  },
 
-  changeRound(state, round) { },
-  changeSnap(state, snap) { },
+  changeRound(state, round) {
+    state.currentRound = round
+  },
+  changeSnap(state, snap) {
+    state.currentSnap = snap
+  },
   changeSeq(state, seq) {
+    if (seq < 0) return
+    if (seq >= state.currentSnap.count) return
     state.currentSeq = seq
   }
 }

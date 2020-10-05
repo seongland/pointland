@@ -1,6 +1,7 @@
 {
   "python.pythonPath": "/home/stryx/.conda/envs/gis/bin/python",
   "python.linting.pylintEnabled": false,
+  "deno.enable": false,
   "python.linting.flake8Enabled": true,
   "python.linting.enabled": true
 }

@@ -9,9 +9,11 @@
         class="mt-1 mr-2 rounds"
         label="Round"
         solo
-        :items="ls.rounds"
+        :items="rounds"
         item-text="name"
-        v-model="ls.currentRound.name"
+        item-value="name"
+        v-model="currentRound"
+        @change="changeRound"
         return-object
         dense
       ></v-select>
@@ -19,9 +21,11 @@
         class="mt-1 mr-4 snaps"
         label="Snap"
         solo
-        :items="ls.currentRound.snaps"
+        :items="currentRound.snaps"
         item-text="name"
-        v-model="ls.currentSnap.name"
+        item-value="name"
+        v-model="currentSnap"
+        @change="changeSnap"
         return-object
         dense
       ></v-select>
@@ -30,8 +34,7 @@
         label="Seq"
         solo
         :items="seqs"
-        v-model="ls.currentSeq"
-        return-object
+        v-model="currentSeq"
         @change="changeSeq"
         dense
       ></v-select>
@@ -64,8 +67,43 @@ export default {
       const seqs = init.map((v, i) => i)
       return seqs
     },
-    ls() {
-      return this.$store.state.ls
+    rounds() {
+      return this.$store.state.ls.rounds
+    },
+    index: {
+      get() {
+        return this.$store.state.ls.index
+      },
+      set(values) {
+        this.$store.commit('ls/setIndex', values)
+      }
+    },
+    currentRound: {
+      get() {
+        return this.$store.state.ls.currentRound
+      },
+      set(values) {
+        console.log(values)
+        this.changeRound(values)
+      }
+    },
+    currentSnap: {
+      get() {
+        return this.$store.state.ls.currentSnap
+      },
+      set(values) {
+        console.log(values)
+        this.changeSnap(values)
+      }
+    },
+    currentSeq: {
+      get() {
+        return this.$store.state.ls.currentSeq
+      },
+      set(values) {
+        console.log(values)
+        this.changeSeq(values)
+      }
     }
   },
   async mounted() {
@@ -73,10 +111,7 @@ export default {
     const ls = this.$store.state.ls
     const accessToken = ls.accessToken
     const config = { headers: { Authorization: accessToken } }
-    const res = await this.$axios.get(
-      `/api/user?id=${ls.user.id}`,
-      config
-    )
+    const res = await this.$axios.get(`/api/user?id=${ls.user.id}`, config)
     const user = res?.data[0]
     await this.loadProjects(user, accessToken)
     this.$store.commit('ls/login', { accessToken, user })
