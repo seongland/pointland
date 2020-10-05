@@ -12,7 +12,7 @@
       </v-btn>
       <br/>
       <br/>
-      <v-btn @click="$store.commit('localStorage/logout')">
+      <v-btn @click="$store.commit('ls/logout')">
         Logout
       </v-btn>
     </div>

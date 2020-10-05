@@ -37,7 +37,7 @@ module.exports = {
   ],
   // Nuxt dev-modules
 
-  modules: ['@nuxtjs/axios', 'nuxt-vuex-localstorage'],
+  modules: ['@nuxtjs/axios', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }]],
   buildModules: ['@nuxtjs/vuetify'],
 
   // Vuetify

@@ -17,19 +17,19 @@
 export default {
   computed: {
     projects() {
-      return this.$store.state.localStorage?.user?.projects ?? []
+      return this.$store.state.ls?.user?.projects ?? []
     }
   },
   data: () => ({ overlay: false }),
   mounted() {
     if (this.projects.length > 0) {
-      const localStorage = this.$store.state.localStorage
+      const ls = this.$store.state.ls
       let project
 
       // if settled
-      if (localStorage.prj)
+      if (ls.prj)
         for (const prj of this.projects) {
-          if (prj.id === localStorage.prjId) project = prj
+          if (prj.id === ls.prjId) project = prj
         }
       else project = this.projects[0]
       this.olInit(project.geoserver, project.workspace, project.layers)

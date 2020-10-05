@@ -25,6 +25,7 @@
     "consola": "^2.15.0",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
+    "dbffile": "^1.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "feathers-hooks-common": "^5.0.3",
@@ -37,6 +38,7 @@
     "proj4": "^2.6.2",
     "python-shell": "^2.0.1",
     "three": "^0.118.3",
+    "vue-async-computed": "^3.9.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
