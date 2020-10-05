@@ -12,7 +12,6 @@ export default ({ $axios }) => {
     data: () => ({
       title: '3D MAPPING',
       coor: 'Stryx',
-      index: 0,
       meta: {
         version: undefined
       },
@@ -40,8 +39,8 @@ export default ({ $axios }) => {
       subtractVhcl: (id) => subtractVhcl(id),
       drawXY: (data, focus, id) => drawXY(data, focus, id),
 
-      chanageRound(round) {
-        this.$store.commit('ls/chanageRound', round)
+      changeRound(round) {
+        this.$store.commit('ls/changeRound', round)
       },
       changeSnap(snap) {
         this.$store.commit('ls/changeSnap', snap)
