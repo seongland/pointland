@@ -14,7 +14,7 @@ export const ZINDEX_REL = ZINDEX_OL + 1,
   ZINDEX_PVR = ZINDEX_OL + 2,
   ZINDEX_SEL = ZINDEX_OL + 3,
   ZINDEX_DRAW = ZINDEX_OL + 4
-export const DFT_RADIUS = 3
+export const DFT_RADIUS = 1
 export const DFT_WIDTH = 2
 // Geoserver
 export const DELTA = 0.01

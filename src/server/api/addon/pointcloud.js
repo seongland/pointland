@@ -14,19 +14,11 @@ const pythonOptions = {
 }
 
 router.get('/:round/:snap/:seq', pointcloud)
-router.get('/:round/:snap/:seq/:prop', lasp)
+router.get('/:round/:snap/:seq/:prop', lasCache)
 router.get('/file/:round/:snap/:seq', las)
 
 function las(req, res) {
   res.sendFile(lasPath(req))
-}
-
-function lasp(req, res) {
-  const prop = req.params.prop
-  res.writeHead(200, { 'Content-Encoding': 'gzip' })
-  const cache = cachePath(req)
-  const gz = createReadStream(`${cache}\\${prop}.gz`)
-  gz.pipe(res)
 }
 
 function pointcloud(req, res) {
@@ -51,4 +43,13 @@ function pointcloud(req, res) {
     if (err) console.log({ err, result })
   })
 }
+
+function lasCache(req, res) {
+  const prop = req.params.prop
+  res.writeHead(200, { 'Content-Encoding': 'gzip' })
+  const cache = cachePath(req)
+  const gz = createReadStream(`${cache}\\${prop}.gz`)
+  gz.pipe(res)
+}
+
 export default router

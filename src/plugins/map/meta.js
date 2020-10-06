@@ -25,7 +25,7 @@ import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
 
-function olInit(geoserver, workspace, layers) {
+function olInit(geoserver, workspace, layers, options) {
   /**
    * @summary - Make OSM
    */
