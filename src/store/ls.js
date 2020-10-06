@@ -1,3 +1,5 @@
+import { updateCtrl } from "~/plugins/cloud/meta"
+
 export const state = () => ({
   accessToken: undefined,
   user: undefined,
@@ -70,8 +72,16 @@ export const mutations = {
     state.currentSeq = 0
     this.$router.push("/")
   },
+
   setIndex(state, index) {
+  /**
+   * @summary - change tab  & resize because of canvas error
+   */
     state.index = index
+    if (index !== 1)
+      setTimeout(() => window.dispatchEvent(new Event('resize')))
+    if (index === 2)
+      setTimeout(() => updateCtrl())
   },
 
   changeRound(state, round) {

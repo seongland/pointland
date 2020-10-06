@@ -35,9 +35,9 @@ export default ({ $axios }) => {
       initCloud: () => initCloud(),
       purgeCloud: () => purgeCloud(),
       drawLas: (lasJson) => drawLas(lasJson),
-      drawXYs: (data, id) => drawXYs(data, id),
+      drawXYs: (latlngs, id) => drawXYs(latlngs, id),
       subtractVhcl: (id) => subtractVhcl(id),
-      drawXY: (data, focus, id) => drawXY(data, focus, id),
+      drawXY: (latlng, focus, id) => drawXY(latlng, focus, id),
 
       changeRound(round) {
         this.$store.commit('ls/changeRound', round)

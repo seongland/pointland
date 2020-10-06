@@ -8,7 +8,7 @@ export default {
     pointSize: 0.05
   }),
   async fetch() {
-    for (const index of [11, 12, 13,14, 15,16,17,18]) {
+    for (const index of [8]) {
       const root = `/api/pointcloud/imms_20200824_193802/snap1/${index}`
       console.time('first')
       const check = await this.$axios(`${root}`)

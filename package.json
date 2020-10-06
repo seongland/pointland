@@ -1,6 +1,6 @@
 {
   "name": "mms-twr",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Geology Panorama Street View Map",
   "author": "seonglae",
   "private": true,
@@ -30,6 +30,7 @@
     "express": "^4.16.4",
     "feathers-hooks-common": "^5.0.3",
     "feathers-mongoose": "^8.3.1",
+    "jimp": "^0.16.1",
     "jimp-compact": "^0.16.1",
     "mongoose": "^5.10.1",
     "nuxt": "^2.0.0",

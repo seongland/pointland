@@ -54,6 +54,17 @@ function purgeCloud(cloud) {
   return null
 }
 
+export function updateCtrl() {
+  /**
+   * @summary - Make Controls
+   */
+  if (ref.updated) return
+  const camera = ref.cloud.camera
+  const renderer = ref.cloud.renderer
+  ref.cloud.controls = makeControls(camera, renderer)
+  ref.updated = true
+}
+
 
 function makeCamera(el) {
   /**

@@ -40,7 +40,7 @@
       ></v-select>
     </v-tabs>
     <v-tabs-items v-model="index" class="main wrapper">
-      <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper">
+      <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper" eager>
         <geo-map v-if="tab.type === 'map'" class="wrapper" />
         <overlay-pcd v-else-if="tab.type === '3d'" class="wrapper" />
         <imms-image v-else-if="tab.type === 'image'" class="wrapper" />
