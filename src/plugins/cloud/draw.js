@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { ref } from './meta'
 
-
 const SELECTED_COLOR = [0.4, 1, 0.8]
 const HOVER_COLOR = [0.8, 1, 1]
 
@@ -23,29 +22,25 @@ function addLas(lasJson, cloud, vertices) {
     cloud.center[2] - lasJson.center[2]
   ]
   for (const i in lasJson.x)
-    vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
+    vertices.push(
+      lasJson.x[i] - offset[0],
+      lasJson.y[i] - offset[1],
+      lasJson.z[i] - offset[2]
+    )
 }
-
 
 function addPoints(lasJson, colors, vertices, cloud) {
   let intensity
   for (const i in lasJson.intensity) {
     intensity = lasJson.intensity[i] / 255
-    colors.push(
-      intensity,
-      intensity,
-      intensity
-    )
+    colors.push(intensity, intensity, intensity)
   }
   const geometry = new THREE.BufferGeometry()
   geometry.setAttribute(
     'position',
     new THREE.Float32BufferAttribute(vertices, 3)
   )
-  geometry.setAttribute(
-    'color',
-    new THREE.Float32BufferAttribute(colors, 3)
-  )
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
   const material = new THREE.PointsMaterial({
     size: ref.pointSize,
     vertexColors: THREE.VertexColors
@@ -54,10 +49,8 @@ function addPoints(lasJson, colors, vertices, cloud) {
 
   cloud.scene.add(points)
 
-  if (cloud.points)
-    cloud.points.push(points)
-  else
-    cloud.points = [points]
+  if (cloud.points) cloud.points.push(points)
+  else cloud.points = [points]
   return points
 }
 
@@ -75,7 +68,12 @@ function drawHover(cloud) {
 
   // If null
   if (!hovered && previous)
-    changeColor(previous.colors, previous.index, previous.intensity, previous.attributes)
+    changeColor(
+      previous.colors,
+      previous.index,
+      previous.intensity,
+      previous.attributes
+    )
   if (!hovered) return
 
   // check selected
@@ -90,8 +88,19 @@ function drawHover(cloud) {
   if (previous) {
     if (previous.index === index) return
     if (cloud.selected.filter(e => e.index === previous.index).length === 0)
-      changeColor(previous.colors, previous.index, previous.intensity, previous.attributes)
-    else changeColor(previous.colors, previous.index, SELECTED_COLOR, previous.attributes)
+      changeColor(
+        previous.colors,
+        previous.index,
+        previous.intensity,
+        previous.attributes
+      )
+    else
+      changeColor(
+        previous.colors,
+        previous.index,
+        SELECTED_COLOR,
+        previous.attributes
+      )
   }
 
   // save current
@@ -103,14 +112,12 @@ function drawHover(cloud) {
   changeColor(colors, index, HOVER_COLOR, attributes)
 }
 
-
 function changeColor(colors, index, color, attributes) {
   if (color instanceof Array) {
     colors[3 * index] = color[0]
     colors[3 * index + 1] = color[1]
     colors[3 * index + 2] = color[2]
-  }
-  else {
+  } else {
     colors[3 * index] = color
     colors[3 * index + 1] = color
     colors[3 * index + 2] = color
@@ -118,25 +125,25 @@ function changeColor(colors, index, color, attributes) {
   attributes.color.needsUpdate = true
 }
 
-
 function drawClick(cloud) {
   const index = cloud.currentHover.index
   const attributes = cloud.currentHover.object.geometry.attributes
   const colors = attributes.color.array
-  if (cloud.selected.filter(e => e.index === cloud.currentHover.index).length === 0) {
+  if (
+    cloud.selected.filter(e => e.index === cloud.currentHover.index).length ===
+    0
+  ) {
     cloud.selected.push(cloud.currentHover)
     changeColor(colors, index, SELECTED_COLOR, attributes)
     cloud.currentSelected = cloud.currentHover
     const center = cloud.currentSelected.point
     // cloud.controls.target.set(center.x, center.y, center.z)
-  }
-  else {
+  } else {
     cloud.selected.splice(cloud.selected.indexOf(cloud.currentHover))
     changeColor(colors, index, cloud.currentHover.intensity, attributes)
     cloud.currentSelected = undefined
   }
   console.log(cloud.selected)
 }
-
 
 export { drawLas, drawHover, drawClick }

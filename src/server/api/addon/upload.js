@@ -19,14 +19,23 @@ function upload(req, res) {
   const body = req.body
   if (body.data) {
     const length = body.data.length
-    console.log("Count is ", length)
-    console.log("date, maker, snap, schema", body.date, body.maker, body.snap, body.schema)
+    console.log('Count is ', length)
+    console.log(
+      'date, maker, snap, schema',
+      body.date,
+      body.maker,
+      body.snap,
+      body.schema
+    )
     const divCount = Math.ceil(length / DIV_FACTOR)
     const tempArray = new Array(divCount).fill(0)
     const results = []
     console.log(`Group Total: ${tempArray.length}`)
     for (const count in tempArray) {
-      const tempData = body.data.slice(count * DIV_FACTOR, (Number(count) + 1) * DIV_FACTOR)
+      const tempData = body.data.slice(
+        count * DIV_FACTOR,
+        (Number(count) + 1) * DIV_FACTOR
+      )
       console.log(`Group ${count} add started with count ${tempData.length}`)
       pythonOptions.args = [
         JSON.stringify(tempData),

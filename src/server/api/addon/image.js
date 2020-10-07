@@ -1,8 +1,14 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import proj4 from 'proj4'
-import { WGS84, EPSG32652 } from './node/const';
-import { imagePath, depthmapPath, getNodeMeta, depthData, xyzAtDepthmap } from './node/image'
+import { WGS84, EPSG32652 } from './node/const'
+import {
+  imagePath,
+  depthmapPath,
+  getNodeMeta,
+  depthData,
+  xyzAtDepthmap
+} from './node/image'
 
 dotenv.config()
 const router = express.Router()
