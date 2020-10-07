@@ -1,25 +1,23 @@
 <template>
   <div>
-    <v-img :src="src.front.uri">
-      <transition name="fade" appear>
+    <transition name="fade" appear>
+      <v-img :src="src.front.uri" v-if="!loading" >
         <v-img
           id="front"
           :src="depth ? depth.front.uri : src.front.uri"
-          v-if="show"
           @click="imageClick"
         />
-      </transition>
-    </v-img>
-    <v-img :src="src.back.uri">
-      <transition name="fade" appear>
+      </v-img>
+    </transition>
+    <transition name="fade" appear>
+      <v-img :src="src.back.uri" v-if="!loading">
         <v-img
           id="back"
           :src="depth ? depth.back.uri : src.back.uri"
-          v-if="show"
           @click="imageClick"
         />
-      </transition>
-    </v-img>
+      </v-img>
+    </transition>
   </div>
 </template>
 
@@ -86,9 +84,12 @@ export default {
           commit('ls/changeSeq', state.ls.currentSeq + 1)
           this.loading = true
           return
-        case '1': return commit('ls/setIndex', Number(event.key) - 1)
-        case '2': return commit('ls/setIndex', Number(event.key) - 1)
-        case '3': return commit('ls/setIndex', Number(event.key) - 1)
+        case '1':
+          return commit('ls/setIndex', Number(event.key) - 1)
+        case '2':
+          return commit('ls/setIndex', Number(event.key) - 1)
+        case '3':
+          return commit('ls/setIndex', Number(event.key) - 1)
       }
     },
 

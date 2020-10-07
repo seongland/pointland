@@ -7,8 +7,7 @@ import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls
 import { drawHover, drawClick } from './draw'
 
 export const ref = { pointSize: 0.05 }
-const CLOUD_ID = "las"
-
+const CLOUD_ID = 'las'
 
 function initCloud() {
   /**
@@ -19,7 +18,6 @@ function initCloud() {
   const cloud = {}
   cloud.el = document.getElementById(CLOUD_ID)
   if (cloud.el && window) {
-
     // Make Space
     cloud.camera = makeCamera(cloud.el)
     cloud.scene = makeScene(cloud.camera)
@@ -40,16 +38,14 @@ function initCloud() {
     // Add To Canvas
     cloud.id = animate()
     return cloud
-  }
-  else throw new Error('No Window or No #cloud')
+  } else throw new Error('No Window or No #cloud')
 }
-
 
 function purgeCloud(cloud) {
   /**
    * @summary - Purge cloud event, loop
    */
-  window.removeEventListener("resize", onWindowResize, false)
+  window.removeEventListener('resize', onWindowResize, false)
   cancelAnimationFrame(cloud.id)
   return null
 }
@@ -64,7 +60,6 @@ export function updateCtrl() {
   ref.cloud.controls = makeControls(camera, renderer)
   ref.updated = true
 }
-
 
 function makeCamera(el) {
   /**
@@ -86,7 +81,6 @@ function makeScene(cam) {
   return scene
 }
 
-
 function makeRenderer(el) {
   /**
    * @summary - Make Renderer - window used
@@ -97,15 +91,11 @@ function makeRenderer(el) {
   return renderer
 }
 
-
 function makeControls(camera, renderer) {
   /**
    * @summary - Make Controls
    */
-  const controls = new TrackballControls(
-    camera,
-    renderer.domElement
-  )
+  const controls = new TrackballControls(camera, renderer.domElement)
   controls.rotateSpeed = 2.0
   controls.zoomSpeed = 1
   controls.panSpeed = 1
@@ -114,7 +104,6 @@ function makeControls(camera, renderer) {
   controls.maxDistance = 0.3 * 1000
   return controls
 }
-
 
 function animate() {
   /**
@@ -132,7 +121,6 @@ function animate() {
   return id
 }
 
-
 function onWindowResize() {
   /**
    * @summary - Animate function for Point Cloud
@@ -143,17 +131,15 @@ function onWindowResize() {
   ref.cloud.renderer.setSize(el.offsetWidth, el.offsetHeight)
 }
 
-
 function onDocumentMouseMove(event) {
   event.preventDefault()
   ref.cloud.mouse.x = (event.offsetX / ref.cloud.el.offsetWidth) * 2 - 1
-  ref.cloud.mouse.y = - (event.offsetY / ref.cloud.el.offsetHeight) * 2 + 1
+  ref.cloud.mouse.y = -(event.offsetY / ref.cloud.el.offsetHeight) * 2 + 1
 }
 
 function onDocumentClick() {
   const cloud = ref.cloud
   if (cloud.currentHover) drawClick(cloud)
 }
-
 
 export { initCloud, purgeCloud }

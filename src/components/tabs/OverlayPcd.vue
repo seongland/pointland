@@ -32,7 +32,8 @@ export default {
           intensity: i.data
         })
         console.timeEnd('draw')
-      } else this.drawLas(check.data, console.timeEnd('first'), console.log(check))
+      } else
+        this.drawLas(check.data, console.timeEnd('first'), console.log(check))
     }
   },
   fetchOnServer: false,
