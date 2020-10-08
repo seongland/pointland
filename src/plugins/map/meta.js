@@ -69,17 +69,15 @@ function makeOlMap(layers) {
     layers: layers,
     interactions: defaults({
       dragPan: false
-    })
-      .extend([
-        new DragPan({
-          kinetic: false,
-        }),
-        new MouseWheelZoom({ duration: 0 }),
-        new PinchZoom({
-          constrainResolution: true
-        })
-      ]
-      ),
+    }).extend([
+      new DragPan({
+        kinetic: false
+      }),
+      new MouseWheelZoom({ duration: 0 }),
+      new PinchZoom({
+        constrainResolution: true
+      })
+    ]),
     view: new View(view),
     controls: controls({
       zoom: true
@@ -89,8 +87,7 @@ function makeOlMap(layers) {
 }
 
 function getDrawLayer(map) {
-  for (let layer of map.getLayers().getArray())
-    if (layer.get('lid') === DRAW_LAYER_ID) return layer
-}
+                             for (let layer of map.getLayers().getArray()) if (layer.get('lid') === DRAW_LAYER_ID) return layer
+                           }
 
 export { olInit, getDrawLayer }

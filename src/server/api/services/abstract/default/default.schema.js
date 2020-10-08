@@ -10,15 +10,15 @@ const defaultProperties = {
 
 export const defaultOptions = {
   timestamps: {
-    createdAt: "created_at",
-    updatedAt: "edited_at"
+    createdAt: 'created_at',
+    updatedAt: 'edited_at'
   },
   versionKey: false,
-  strict: "throw"
+  strict: 'throw'
 }
 
-export default (app) => {
-  const mongooseClient = app.get("mongooseClient")
+export default app => {
+  const mongooseClient = app.get('mongooseClient')
   const { Schema } = mongooseClient
   const defaultSchema = new Schema(defaultProperties, defaultOptions)
   defaultSchema.options.toJSON = {
@@ -27,6 +27,6 @@ export default (app) => {
       delete json._id
     }
   }
-  defaultSchema.set("toObject", { flattenMaps: true })
+  defaultSchema.set('toObject', { flattenMaps: true })
   return defaultSchema
 }
