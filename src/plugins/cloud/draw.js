@@ -67,13 +67,15 @@ function drawHover(cloud) {
   const previous = cloud.currentHover
 
   // If null
-  if (!hovered && previous)
+  if (!hovered && previous) {
     changeColor(
       previous.colors,
       previous.index,
       previous.intensity,
       previous.attributes
     )
+    cloud.currentHover = undefined
+  }
   if (!hovered) return
 
   // check selected
