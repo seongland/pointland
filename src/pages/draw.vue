@@ -29,15 +29,7 @@
         return-object
         dense
       ></v-select>
-      <v-select
-        class="mt-1 mr-4 seqs"
-        label="Seq"
-        solo
-        :items="seqs"
-        v-model="currentSeq"
-        @change="changeSeq"
-        dense
-      ></v-select>
+      <v-select class="mt-1 mr-4 seqs" label="Seq" solo :items="seqs" v-model="currentSeq" @change="changeSeq" dense></v-select>
     </v-tabs>
 
     <v-card class="main wrapper">
@@ -62,20 +54,10 @@
 
         <div v-for="classObj in classes" :key="classObj.class">
           <v-list nav dense>
-            <v-list-item
-              link
-              v-for="layer in classObj.layers"
-              :key="layer.layer"
-            >
-              <v-list-item-icon>
-                {{ layer.layer }}
-              </v-list-item-icon>
-              <v-list-item-title>
-                {{ layer.name }}
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                {{ layer.type }}
-              </v-list-item-subtitle>
+            <v-list-item link v-for="layer in classObj.layers" :key="layer.layer">
+              <v-list-item-icon v-text="layer.layer" />
+              <v-list-item-title v-text="layer.name" />
+              <v-list-item-subtitle v-text="layer.type" />
             </v-list-item>
           </v-list>
           <v-divider></v-divider>
