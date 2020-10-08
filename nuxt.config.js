@@ -1,7 +1,11 @@
 const colors = require('vuetify/es5/util/colors').default
 const package = require('./package.json')
-process.env.version = package.version
+const dotenv = require('dotenv')
 
+dotenv.config()
+
+process.env.version = package.version
+process.env.twr = process.env.TWR
 
 module.exports = {
   // Root Directory
@@ -17,7 +21,8 @@ module.exports = {
     }
   },
   env: {
-    version: process.env.version
+    version: process.env.version,
+    twr: process.env.twr
   },
 
   // Middleware Apis
@@ -74,10 +79,8 @@ module.exports = {
   // WebPack Build configuration
   build: {
     maxChunkSize: 300000,
-    transpile: [
-      'three'
-    ],
-    extend() { }
+    transpile: ['three'],
+    extend() {}
   },
 
   // Header
@@ -86,8 +89,7 @@ module.exports = {
     title: process.env.npm_package_name || '',
     script: [
       {
-        src:
-          'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ajrugsv5ub'
+        src: 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ajrugsv5ub'
       }
     ],
     meta: [

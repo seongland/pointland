@@ -5,11 +5,69 @@
       {
         "layer": "A1",
         "type": "Point",
-        "name": "NODE"
+        "description": "주행경로노드",
+        "name": "NODE",
+        "properties": {
+          "NodeType": {
+            "type": "VARCHAR2(2)",
+            "method": "select",
+            "candidates": [
+              {
+                "data": "01",
+                "description": "평면교차로"
+              },
+              {
+                "data": "02",
+                "description": "입체교차로"
+              },
+              {
+                "data": "03",
+                "description": "터널시/종점"
+              },
+              {
+                "data": "04",
+                "description": "교량시/종점"
+              },
+              {
+                "data": "05",
+                "description": "지하차도시/종점"
+              },
+              {
+                "data": "06",
+                "description": "고가차도시/종점"
+              },
+              {
+                "data": "07",
+                "description": "도로차로수변화"
+              },
+              {
+                "data": "08",
+                "description": "톨게이트시/종점"
+              },
+              {
+                "data": "09",
+                "description": "요금소"
+              },
+              {
+                "data": "10",
+                "description": "회전교차로"
+              },
+              {
+                "data": "99",
+                "description": "유형없음"
+              }
+            ]
+          },
+          "ITSNodeID": {
+            "type": "VARCHAR2(10)",
+            "method": "auto",
+            "optional": true
+          }
+        }
       },
       {
         "layer": "A2",
-        "type": "Line",
+        "type": "LineString",
         "name": "LINK"
       },
       {
@@ -39,8 +97,8 @@
       },
       {
         "layer": "B2",
-        "type": "Line",
-        "name": "SURFACELINEMARK"
+        "type": "LineString",
+        "name": "SURFACELineStringMARK"
       },
       {
         "layer": "B3",
@@ -64,7 +122,7 @@
       },
       {
         "layer": "C2",
-        "type": "Line",
+        "type": "LineString",
         "name": "KILOPOST"
       },
       {
@@ -99,7 +157,7 @@
       },
       {
         "layer": "D2",
-        "type": "Line",
+        "type": "LineString",
         "name": "INTERSECTIONCONTROLLER"
       },
       {

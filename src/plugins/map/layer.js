@@ -5,9 +5,7 @@
 
 import { Tile, Vector as VectorLayer } from 'ol/layer'
 import { TileWMS, XYZ, Vector } from 'ol/source'
-import {
-  ZINDEX_PVR
-} from '~/plugins/map/const'
+import { ZINDEX_PVR } from '~/plugins/map/const'
 import { NAVER_ID } from '~/plugins/map/const'
 import { ref } from './meta'
 import WMSCapabilities from 'ol/format/WMSCapabilities'
@@ -16,7 +14,6 @@ import { transformExtent } from 'ol/proj'
 function lineStyle() {
   return [ref.map.styles.strokeWhite, ref.map.styles.strokeYellow]
 }
-
 
 function makeGoogleLayer() {
   /**
@@ -34,14 +31,10 @@ function makeMBLayer() {
   /**
    * @summary - Get Open MapBox Layer
    */
-  let key =
-    'pk.eyJ1Ijoic2VvbmdsYWUiLCJhIjoiY2s3MDE0dHNtMWVueDNucDlhZHhkdjlrZyJ9.39bib8g2kspp44rI6MmAzw'
+  let key = 'pk.eyJ1Ijoic2VvbmdsYWUiLCJhIjoiY2s3MDE0dHNtMWVueDNucDlhZHhkdjlrZyJ9.39bib8g2kspp44rI6MmAzw'
   let tile = {
     source: new XYZ({
-      url:
-        'https://api.mapbox.com/styles/v1/seonglae/ck701700t0rgf1imr4boh5n14/tiles/256/{z}/{x}/{y}@2x?' +
-        'access_token=' +
-        key
+      url: 'https://api.mapbox.com/styles/v1/seonglae/ck701700t0rgf1imr4boh5n14/tiles/256/{z}/{x}/{y}@2x?' + 'access_token=' + key
     })
   }
   return new Tile(tile)
@@ -53,33 +46,15 @@ const makeRecordedLayer = (geoserver, workspace, layer) => {
    */
   let source = new TileWMS({
     url: `${geoserver}/${workspace}/wms`,
-    params: { LAYERS: layer },
+    params: {
+      LAYERS: layer
+    },
     ratio: 1,
     serverType: 'geoserver',
     crossOrigin: 'anonymous'
   })
   const recordedLayer = new Tile({ source })
   recordedLayer.setZIndex(ZINDEX_PVR - 2)
-
-
-  const parser = new WMSCapabilities();
-  fetch(`${geoserver}/${workspace}/wms?service=wms&version=1.3.0&request=GetCapabilities`)
-    .then((response) => {
-      return response.text()
-    })
-    .then((text) => {
-      const result = parser.read(text)
-      const layers = result.Capability.Layer.Layer
-      for (const layerObj of layers)
-        if (layerObj.Name === layer)
-          if (ref.map) {
-            let bbox4326 = layerObj.EX_GeographicBoundingBox
-            let bbox3857 = transformExtent(bbox4326, "EPSG:4326", "EPSG:3857")
-            for (const element of bbox3857) if (isNaN(element)) return
-            ref.map.getView().fit(bbox3857, { duration: 1000 })
-          }
-    })
-
   return recordedLayer
 }
 
@@ -115,6 +90,42 @@ const makeDraftLayer = (geoserver, workspace, layer) => {
   return draftLayer
 }
 
+const makeTiffLayer = (geoserver, workspace, layer) => {
+  /**
+   * @summary - Get Marker Image Layer
+   */
+  let source = new TileWMS({
+    url: `${geoserver}/${workspace}/wms`,
+    params: { LAYERS: layer, SRS: 'EPSG:32652' },
+    ratio: 1,
+    serverType: 'geoserver',
+    crossOrigin: 'anonymous',
+    projection: 'EPSG:32652'
+  })
+  let tiffLayer = new Tile({ source })
+  tiffLayer.setZIndex(ZINDEX_PVR - 2)
+
+  const parser = new WMSCapabilities()
+  fetch(`${geoserver}/${workspace}/wms?service=wms&version=1.3.0&request=GetCapabilities`)
+    .then(response => {
+      return response.text()
+    })
+    .then(text => {
+      const result = parser.read(text)
+      const layers = result.Capability.Layer.Layer
+      for (const layerObj of layers)
+        if (layerObj.Name === layer)
+          if (ref.map) {
+            let bbox4326 = layerObj.EX_GeographicBoundingBox
+            let bbox3857 = transformExtent(bbox4326, 'EPSG:4326', 'EPSG:3857')
+            for (const element of bbox3857) if (isNaN(element)) return
+            ref.map.getView().fit(bbox3857, { duration: 1000 })
+          }
+    })
+
+  return tiffLayer
+}
+
 function makeGSLayer() {
   /**
    * @summary - Make Google Satelite Map
@@ -127,7 +138,7 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
-const makeRecordingLayer = (styles) => {
+const makeRecordingLayer = styles => {
   /**
    * @summary - Make Draw Map
    */
@@ -135,32 +146,31 @@ const makeRecordingLayer = (styles) => {
   const vectorSrc = new Vector({ features: tempArray })
   const recordingLayer = new VectorLayer({
     source: vectorSrc,
-    style: styles.circleRed,
+    style: styles.circleRed
   })
   recordingLayer.styles = styles
   recordingLayer.setZIndex(ZINDEX_PVR)
   return recordingLayer
 }
 
-const makeCurrentLayer = (styles) => {
+const makeDrawLayer = styles => {
   /**
    * @summary - Make current draw Map
    */
   const tempArray = []
   const vectorSrc = new Vector({ features: tempArray })
-  const currentLayer = new VectorLayer({
-    source: vectorSrc,
-    style: styles.circleBlue,
+  const drawLayer = new VectorLayer({
+    source: vectorSrc
   })
-  currentLayer.styles = styles
-  currentLayer.setZIndex(ZINDEX_PVR + 1)
-  return currentLayer
+  drawLayer.styles = styles
+  drawLayer.setZIndex(ZINDEX_PVR + 1)
+  return drawLayer
 }
 
 const makeDrawMissionLayer = () => {
   /**
- * @summary - Make current draw Map
- */
+   * @summary - Make current draw Map
+   */
   const lineSrc = new Vector()
   const lineLayer = new VectorLayer({
     source: lineSrc,
@@ -190,7 +200,6 @@ function makeNaverMap() {
   return new naver.maps.Map(NAVER_ID, NaverMapOptions)
 }
 
-
 function changeLayers(geoserver, workspace, layers) {
   if (ref.draftLayer) ref.map.removeLayer(ref.draftLayer)
   if (ref.recordedLayer) ref.map.removeLayer(ref.recordedLayer)
@@ -205,11 +214,12 @@ function changeLayers(geoserver, workspace, layers) {
   ref.recordedLayer = recordedLayer
   ref.missionLayer = missionLayer
   ref.recordingLayer.getSource().clear()
-  ref.currentLayer.getSource().clear()
+  ref.drawLayer.getSource().clear()
 }
 
 export {
   changeLayers,
+  makeTiffLayer,
   makeGoogleLayer,
   makeGSLayer,
   makeMBLayer,
@@ -217,7 +227,7 @@ export {
   makeRecordedLayer,
   makeMissionLayer,
   makeNaverMap,
-  makeCurrentLayer,
+  makeDrawLayer,
   makeRecordingLayer,
   makeDrawMissionLayer
 }

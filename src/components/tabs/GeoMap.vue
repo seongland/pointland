@@ -2,12 +2,7 @@
   <div>
     <div id="ol" />
     <div id="naver" />
-    <v-dialog
-      :absolute="true"
-      :value="overlay"
-      :z-index="1000"
-      @keydown.esc="overlay = false"
-    >
+    <v-dialog :absolute="true" :value="overlay" :z-index="1000" @keydown.esc="overlay = false">
       <overlay-pcd />
     </v-dialog>
   </div>
