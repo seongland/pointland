@@ -39,13 +39,101 @@
         dense
       ></v-select>
     </v-tabs>
-    <v-tabs-items v-model="index" class="main wrapper">
-      <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper" eager>
-        <geo-map v-if="tab.type === 'map'" class="wrapper" />
-        <overlay-pcd v-else-if="tab.type === '3d'" class="wrapper" />
-        <imms-image v-else-if="tab.type === 'image'" class="wrapper" />
-      </v-tab-item>
-    </v-tabs-items>
+
+    <v-card class="main wrapper">
+      <v-navigation-drawer permanent expand-on-hover app color="grey darken-4">
+        <v-list>
+          <v-list-item class="px-2">
+            <v-list-item-avatar>
+              <v-img src="/profile.png"></v-img>
+            </v-list-item-avatar>
+          </v-list-item>
+
+          <v-list-item link>
+            <v-list-item-content>
+              <v-list-item-subtitle v-text="$store.state.ls.user.email" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <v-divider></v-divider>
+
+        <v-list nav dense>
+          <v-list-item link>
+            <v-list-item-icon>
+              A1
+            </v-list-item-icon>
+            <v-list-item-title>My Files</v-list-item-title>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-icon>
+              A2
+            </v-list-item-icon>
+            <v-list-item-title>Shared with me</v-list-item-title>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-icon>
+              A3
+            </v-list-item-icon>
+            <v-list-item-title>Starred</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        
+        <v-divider></v-divider>
+
+        <v-list nav dense>
+          <v-list-item link>
+            <v-list-item-icon>
+              B1
+            </v-list-item-icon>
+            <v-list-item-title>My Files</v-list-item-title>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-icon>
+              B2
+            </v-list-item-icon>
+            <v-list-item-title>Shared with me</v-list-item-title>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-icon>
+              B3
+            </v-list-item-icon>
+            <v-list-item-title>Starred</v-list-item-title>
+          </v-list-item>
+        </v-list>
+
+        <v-divider></v-divider>
+
+        <v-list nav dense>
+          <v-list-item link>
+            <v-list-item-icon>
+              B1
+            </v-list-item-icon>
+            <v-list-item-title>My Files</v-list-item-title>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-icon>
+              B2
+            </v-list-item-icon>
+            <v-list-item-title>Shared with me</v-list-item-title>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-icon>
+              B3
+            </v-list-item-icon>
+            <v-list-item-title>Starred</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+      <v-tabs-items v-model="index" class="wrapper">
+        <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper" eager>
+          <geo-map v-if="tab.type === 'map'" class="wrapper" />
+          <overlay-pcd v-else-if="tab.type === '3d'" class="wrapper" />
+          <imms-image v-else-if="tab.type === 'image'" class="wrapper" />
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card>
   </div>
 </template>
 

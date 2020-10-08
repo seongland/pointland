@@ -1,0 +1,112 @@
+[
+  {
+    "class": "A",
+    "layers": [
+      {
+        "layer": "A1",
+        "type": "Point",
+        "name": "NODE"
+      },
+      {
+        "layer": "A2",
+        "type": "Line",
+        "name": "LINK"
+      },
+      {
+        "layer": "A3",
+        "type": "Polygon",
+        "name": "DRIVEWAYSECTION"
+      },
+      {
+        "layer": "A4",
+        "type": "Polygon",
+        "name": "SUBSIDIARYSECTION"
+      },
+      {
+        "layer": "A5",
+        "type": "Polygon",
+        "name": "PARKINGLOT"
+      }
+    ]
+  },
+  {
+    "class": "B",
+    "layers": [
+      {
+        "layer": "B1",
+        "type": "Point",
+        "name": "SAFETYSIGN"
+      },
+      {
+        "layer": "B2",
+        "type": "Line",
+        "name": "SURFACELINEMARK"
+      },
+      {
+        "layer": "B3",
+        "type": "Polygon",
+        "name": "SURFACEMARK"
+      },
+      {
+        "layer": "B4",
+        "type": "Polygon",
+        "name": "CROSSWALK"
+      }
+    ]
+  },
+  {
+    "class": "C",
+    "layers": [
+      {
+        "layer": "C1",
+        "type": "Point",
+        "name": "TRAFFICLIGHT"
+      },
+      {
+        "layer": "C2",
+        "type": "Line",
+        "name": "KILOPOST"
+      },
+      {
+        "layer": "C3",
+        "type": "Polygon",
+        "name": "VEHICLEPROTECTIONSAFETY"
+      },
+      {
+        "layer": "C4",
+        "type": "Polygon",
+        "name": "SPEEDBUMP"
+      },
+      {
+        "layer": "C5",
+        "type": "Polygon",
+        "name": "HEIGHTBARRIER"
+      },
+      {
+        "layer": "C6",
+        "type": "Polygon",
+        "name": "POSTPOINT"
+      }
+    ]
+  },
+  {
+    "class": "D",
+    "layers": [
+      {
+        "layer": "D1",
+        "type": "Point",
+        "name": "SYNCEDTRAFFICLIGHT"
+      },
+      {
+        "layer": "D2",
+        "type": "Line",
+        "name": "INTERSECTIONCONTROLLER"
+      },
+      {
+        "layer": "D3",
+        "type": "Polygon",
+        "name": "SIDEWALK"
+      }
+    ]
+  }
+]

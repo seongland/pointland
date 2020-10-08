@@ -88,7 +88,9 @@ export async function depthData(depthmapPath, point) {
     )
   }
   return {
-    uri: await image.getBase64Async('image/png')
+    uri: await image.getBase64Async('image/png'),
+    width: imageWidth,
+    height: imageHeight
   }
 }
 

@@ -1,21 +1,27 @@
 <template>
   <div>
     <transition name="fade" appear>
-      <v-img :src="src.front.uri" v-if="!loading" >
-        <v-img
-          id="front"
-          :src="depth ? depth.front.uri : src.front.uri"
-          @click="imageClick"
-        />
+      <v-img :src="src.front.uri" v-if="!loading">
+        <transition name="fade" appear>
+          <v-img
+            id="front"
+            v-if="show"
+            :src="depth ? depth.front.uri : src.front.uri"
+            @click="imageClick"
+          />
+        </transition>
       </v-img>
     </transition>
     <transition name="fade" appear>
       <v-img :src="src.back.uri" v-if="!loading">
-        <v-img
-          id="back"
-          :src="depth ? depth.back.uri : src.back.uri"
-          @click="imageClick"
-        />
+        <transition name="fade" appear>
+          <v-img
+            id="back"
+            v-if="show"
+            :src="depth ? depth.back.uri : src.back.uri"
+            @click="imageClick"
+          />
+        </transition>
       </v-img>
     </transition>
   </div>
