@@ -5,7 +5,7 @@ export const state = () => ({
   user: undefined,
   prj: undefined,
   prjId: undefined,
-  index: 0,
+  index: 1,
   currentRound: {
     name: 'imms_20200825_170217',
     snaps: [
@@ -57,7 +57,16 @@ export const mutations = {
      * @summary - change tab  & resize because of canvas error
      */
     state.index = index
-    if (index !== 1) setTimeout(() => window.dispatchEvent(new Event('resize')))
+    const mapWrapper = document.getElementById('global-map').parentElement
+    setTimeout(() => window.dispatchEvent(new Event('resize')))
+
+    if (index !== 0) {
+      setTimeout(() => {
+        mapWrapper.classList.add('small-map')
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 500)
+      })
+    } else mapWrapper.classList.remove('small-map')
+
     if (index === 2) setTimeout(() => updateCtrl())
   },
 

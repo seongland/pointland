@@ -22,7 +22,6 @@ export default {
         const ip = this.$axios(`${root}/i`)
         const [x, y, z, c, i] = await Promise.all([xp, yp, zp, cp, ip])
         console.timeEnd('loadlas')
-        console.log({ x, y, z, c, i })
         console.time('draw')
         this.drawLas({
           x: x.data,
@@ -32,7 +31,7 @@ export default {
           intensity: i.data
         })
         console.timeEnd('draw')
-      } else this.drawLas(check.data, console.timeEnd('first'), console.log(check))
+      } else this.drawLas(check.data, console.timeEnd('first'))
     }
   },
   fetchOnServer: false,

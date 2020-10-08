@@ -7,7 +7,8 @@ import { fromLonLat } from 'ol/proj'
 import { Fill, Circle, Style, Stroke } from 'ol/style'
 import { Point } from 'ol/geom'
 import { Feature } from 'ol'
-import { setFocus } from "./event"
+import Draw from 'ol/interaction/Draw'
+import { setFocus } from './event'
 import { RED, BLUE, DFT_RADIUS, DFT_WIDTH, WHITE, YELLOW } from './const'
 import { ref } from './meta'
 
@@ -33,7 +34,6 @@ function makeStyle() {
   return styles
 }
 
-
 function drawLine(feature) {
   ref.drawMissionLayer.getSource().addFeature(feature)
 }
@@ -56,30 +56,24 @@ function drawXYs(latlngArray, id) {
 
   const recordingSource = ref.recordingLayer.getSource()
   const recordingArray = recordingSource.getFeatures()
-  console.log(id, "added", recordingArray.length)
+  console.log(id, 'added', recordingArray.length)
 }
 
 function subtractVhcl(id) {
   // remove current
-  console.log(id)
-  const currentLayer = ref.currentLayer
-  if (!currentLayer) return
-  const legacy = currentLayer.getSource().getFeatureById(id)
-  if (legacy) currentLayer.getSource().removeFeature(legacy)
+  const drawLayer = ref.drawLayer
+  if (!drawLayer) return
+  const legacy = drawLayer.getSource().getFeatureById(id)
+  if (legacy) drawLayer.getSource().removeFeature(legacy)
 
   // remove recording
   const recordingSource = ref.recordingLayer.getSource()
   const recordingArray = recordingSource.getFeatures()
 
-  console.log(recordingArray.length)
-
   for (const feature of recordingArray) {
     console.log(feature.get('vhcl') === id, feature.get('vhcl'))
-    if (feature.get('vhcl') === id)
-      recordingSource.removeFeature(feature)
+    if (feature.get('vhcl') === id) recordingSource.removeFeature(feature)
   }
-
-  console.log(recordingArray.length)
 }
 
 function addCircle(lat, lng, id) {
@@ -94,7 +88,6 @@ function addCircle(lat, lng, id) {
   recordingLayer.getSource().addFeatures([feature])
 }
 
-
 function updateMarker(lat, lng, id) {
   /**
    * @summary - update lyaer
@@ -103,10 +96,21 @@ function updateMarker(lat, lng, id) {
   let coor = new Point(loc)
   const feature = new Feature({ geometry: coor })
   feature.setId(id)
-  const currentLayer = ref.currentLayer
-  const legacy = currentLayer.getSource().getFeatureById(id)
-  if (legacy) currentLayer.getSource().removeFeature(legacy)
-  currentLayer.getSource().addFeatures([feature])
+  const drawLayer = ref.drawLayer
+  const legacy = drawLayer.getSource().getFeatureById(id)
+  if (legacy) drawLayer.getSource().removeFeature(legacy)
+  drawLayer.getSource().addFeatures([feature])
 }
 
-export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl }
+function setDrawInteraction(layerObj) {
+  if (ref.map.draw) ref.map.removeInteraction(ref.map.draw)
+  const source = ref.drawLayer.getSource()
+  const draw = new Draw({
+    source,
+    type: layerObj.type
+  })
+  ref.map.draw = draw
+  ref.map.addInteraction(draw)
+}
+
+export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl, setDrawInteraction }

@@ -19,42 +19,38 @@ function eventBind(map) {
     loc: changeMapLoc(map),
     zoom: ChangeMapRatio(map)
   }))
-  if (map.draftLayer)
-    map.on('click', mapClick)
   return { loc: changeMapLoc(map), zoom: ChangeMapRatio(map) }
 }
 
 function mapClick(e) {
   /**
-  * @summary - When Click Map
-  */
+   * @summary - When Click Map
+   */
   let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
   let extent = e.map.getView().calculateExtent()
   let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
   let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
-  let size = rightTop.map(function (e, i) { return e - leftBottom[i] })
+  let size = rightTop.map(function(e, i) {
+    return e - leftBottom[i]
+  })
   getNearDraft(coor, size)
 }
 
-
 function getNearDraft(coor, size) {
   /**
-  * @summary - Get Near Features & Get nearest feature
-  */
-  const draftURL = `${ref.geoserver}/${ref.workspace}/ows?service=WFS&version=1.0.0` +
+   * @summary - Get Near Features & Get nearest feature
+   */
+  const draftURL =
+    `${ref.geoserver}/${ref.workspace}/ows?service=WFS&version=1.0.0` +
     `&request=GetFeature&typeName=${ref.layers.draft}&outputFormat=application%2Fjson&`
-  fetch(
-    draftURL + bboxFilter(coor, size),
-    { method: 'GET', mode: 'cors' }
-  )
-    .then(function (response) {
+  fetch(draftURL + bboxFilter(coor, size), { method: 'GET', mode: 'cors' })
+    .then(function(response) {
       return response.json()
     })
-    .then(function (json) {
+    .then(function(json) {
       const features = new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(json)
       if (features.length < 1) return
       const index = getNearestLineIndex(coor, features)
-      console.log(features, index)
       drawLine(features[index])
     })
 }
@@ -72,8 +68,8 @@ function getNearestLineIndex(coor, features) {
         sumy += flatCoords[index + 1]
       }
     })
-    const x = 2 * sumx / flatCoords.length
-    const y = 2 * sumy / flatCoords.length
+    const x = (2 * sumx) / flatCoords.length
+    const y = (2 * sumy) / flatCoords.length
     const center = [x, y]
     const distance = Math.sqrt((center[0] - coor[0]) ** 2 + (center[1] - coor[1]) ** 2)
     if (distance > maxDistance) {
@@ -84,21 +80,18 @@ function getNearestLineIndex(coor, features) {
   return index
 }
 
-
 function bboxFilter(coor, size) {
   /**
-  * @summary - Round Shaped D-WITHIN CQL filter
-  */
+   * @summary - Round Shaped D-WITHIN CQL filter
+   */
   const factor = size[0] / 10000
   return `CQL_FILTER=BBOX(geom, ${coor[0] - factor}, ${coor[1] - factor}, ${coor[0] + factor}, ${coor[1] + factor})`
 }
-
 
 function changeMapLoc(map) {
   const lnglat = transform(map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326')
   map.naver.setCenter({ x: lnglat[0], y: lnglat[1] })
 }
-
 
 function setFocus(lat, lng) {
   let coor = transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
@@ -109,19 +102,17 @@ function setZoom(follow) {
   if (follow) return
   const view = ref.map.getView()
   const zoom = view.getZoom()
-  view.animate({ zoom: zoom - 1, duration: ZOOM_DURATION },
-    { zoom: START_ZOOM, duration: ZOOM_DURATION * Math.ceil(Math.abs(START_ZOOM - (zoom - 1)) / 3) })
+  view.animate(
+    { zoom: zoom - 1, duration: ZOOM_DURATION },
+    { zoom: START_ZOOM, duration: ZOOM_DURATION * Math.ceil(Math.abs(START_ZOOM - (zoom - 1)) / 3) }
+  )
 }
 
 function ChangeMapRatio(map) {
   const zoom = Math.round(map.getView().getZoom())
   map.naver.setZoom(zoom)
   let olExtent = map.getView().calculateExtent()
-  let olStartExt = transform(
-    [olExtent[0], olExtent[1]],
-    'EPSG:3857',
-    'EPSG:4326'
-  )
+  let olStartExt = transform([olExtent[0], olExtent[1]], 'EPSG:3857', 'EPSG:4326')
   let olEndExt = transform([olExtent[2], olExtent[3]], 'EPSG:3857', 'EPSG:4326')
   let olSideX = olEndExt[0] - olStartExt[0]
   let olSideY = olEndExt[1] - olStartExt[1]
@@ -133,8 +124,7 @@ function ChangeMapRatio(map) {
   let naverSideY = naverEndY - naverStartY
   let naverRatioX = naverSideX / olSideX
   let naverRatioY = naverSideY / olSideY
-  for (const child of map.naver.element.children)
-    child.style.transform = `scale(${(naverRatioX, naverRatioY)})`
+  for (const child of map.naver.element.children) child.style.transform = `scale(${(naverRatioX, naverRatioY)})`
 }
 
 export { eventBind, setFocus, setZoom }

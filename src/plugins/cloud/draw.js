@@ -113,7 +113,6 @@ function drawClick(cloud) {
     changeColor(colors, index, cloud.currentHover.intensity, attributes)
     cloud.currentSelected = undefined
   }
-  console.log(cloud.selected)
 }
 
 export { drawLas, drawHover, drawClick }

@@ -16,9 +16,9 @@ import {
   makeRecordedLayer,
   makeMissionLayer,
   makeNaverMap,
-  makeCurrentLayer,
+  makeDrawLayer,
   makeRecordingLayer,
-  makeDrawMissionLayer
+  makeTiffLayer
 } from '~/plugins/map/layer'
 import { DRAW_LAYER_ID, INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/const'
 import { eventBind } from '~/plugins/map/event'
@@ -28,21 +28,35 @@ export const ref = {}
 function olInit(geoserver, workspace, layers, options) {
   /**
    * @summary - Make OSM
+   * @todo - option conatin id and substitute default configs
    */
   const styles = makeStyle()
   const naver = makeNaverMap()
   const recordingLayer = makeRecordingLayer(styles)
-  const currentLayer = makeCurrentLayer(styles)
-  const drawMissionLayer = makeDrawMissionLayer()
-  const openlayers = [recordingLayer, currentLayer, drawMissionLayer]
+  const drawLayer = makeDrawLayer(styles)
+  const openlayers = [recordingLayer, drawLayer]
   if (geoserver) {
-    const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
-    const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
-    const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
-    openlayers.push(draftLayer, missionLayer, recordedLayer)
-    ref.recordedLayer = recordedLayer
-    ref.draftLayer = draftLayer
-    ref.missionLayer = missionLayer
+    if (layers.draft) {
+      const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
+      openlayers.push(draftLayer)
+      ref.draftLayer = draftLayer
+    }
+    if (layers.tiff) {
+      const tiffLayer = makeTiffLayer(geoserver, workspace, layers.tiff)
+      openlayers.push(tiffLayer)
+      ref.tiffLayer = tiffLayer
+      console.log(tiffLayer.getSource())
+    }
+    if (layers.mission) {
+      const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
+      openlayers.push(missionLayer)
+      ref.missionLayer = missionLayer
+    }
+    if (layers.recorded) {
+      const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
+      openlayers.push(recordedLayer)
+      ref.recordedLayer = recordedLayer
+    }
     ref.geoserver = geoserver
     ref.workspace = workspace
     ref.layers = layers
@@ -51,9 +65,8 @@ function olInit(geoserver, workspace, layers, options) {
   map.styles = styles
   map.naver = naver
   ref.map = map
-  ref.drawMissionLayer = drawMissionLayer
   ref.recordingLayer = recordingLayer
-  ref.currentLayer = currentLayer
+  ref.drawLayer = drawLayer
   eventBind(map)
   return map
 }
@@ -87,7 +100,7 @@ function makeOlMap(layers) {
 }
 
 function getDrawLayer(map) {
-                             for (let layer of map.getLayers().getArray()) if (layer.get('lid') === DRAW_LAYER_ID) return layer
-                           }
+  for (let layer of map.getLayers().getArray()) if (layer.get('lid') === DRAW_LAYER_ID) return layer
+}
 
 export { olInit, getDrawLayer }

@@ -35,21 +35,22 @@ export default ({ $axios, store: { commit } }) => {
       setRound: round => commit('ls/setRound', round),
       setSnap: snap => commit('ls/setSnap', snap),
       setSeq: seq => commit('ls/setSeq', seq),
+      setLayer: data => commit('setLayer', data),
       drawXY: (latlng, focus, id) => drawXY(latlng, focus, id),
-
-      setLayer(layer) {
-        console.log(layer)
-      },
 
       async loadProjects(user, accessToken) {
         const projectPromises = []
         const config = { headers: { Authorization: accessToken } }
-        for (const i in user.projects) projectPromises.push($axios.get(`/api/projects?id=${user.projects[i].id}`, config))
+        for (const i in user.projects)
+          projectPromises.push($axios.get(`${process.env.twr}/api/projects?id=${user.projects[i].id}`, config))
         const projectResponses = await Promise.all(projectPromises)
         user.projects = projectResponses.map(res => res.data[0])
       },
 
       olInit(geoserver, workspace, layers) {
+        layers = {
+          tiff: 'testiff'
+        }
         this.map = olInit(geoserver, workspace, layers)
         return this.map
       },
