@@ -72,12 +72,12 @@ export default {
           return
         case ',':
           if (this.loading) return
-          commit('ls/changeSeq', state.ls.currentSeq - 1)
+          commit('ls/setSeq', state.ls.currentSeq - 1)
           this.loading = true
           return
         case '.':
           if (this.loading) return
-          commit('ls/changeSeq', state.ls.currentSeq + 1)
+          commit('ls/setSeq', state.ls.currentSeq + 1)
           this.loading = true
           return
         case '1':

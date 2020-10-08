@@ -13,7 +13,7 @@
         item-text="name"
         item-value="name"
         v-model="currentRound"
-        @change="changeRound"
+        @change="setRound"
         return-object
         dense
       ></v-select>
@@ -25,11 +25,11 @@
         item-text="name"
         item-value="name"
         v-model="currentSnap"
-        @change="changeSnap"
+        @change="setSnap"
         return-object
         dense
       ></v-select>
-      <v-select class="mt-1 mr-4 seqs" label="Seq" solo :items="seqs" v-model="currentSeq" @change="changeSeq" dense></v-select>
+      <v-select class="mt-1 mr-4 seqs" label="Seq" solo :items="seqs" v-model="currentSeq" @change="setSeq" dense></v-select>
     </v-tabs>
 
     <v-card class="main wrapper">
@@ -54,10 +54,10 @@
 
         <div v-for="classObj in classes" :key="classObj.class">
           <v-list nav dense>
-            <v-list-item link v-for="layer in classObj.layers" :key="layer.layer">
-              <v-list-item-icon v-text="layer.layer" />
-              <v-list-item-title v-text="layer.name" />
-              <v-list-item-subtitle v-text="layer.type" />
+            <v-list-item link v-for="layerObj in classObj.layers" :key="layerObj.layer" @click="setLayer(layerObj)">
+              <v-list-item-icon v-text="layerObj.layer" />
+              <v-list-item-title v-text="layerObj.name" />
+              <v-list-item-subtitle v-text="layerObj.type" />
             </v-list-item>
           </v-list>
           <v-divider></v-divider>
@@ -114,7 +114,7 @@ export default {
       },
       set(values) {
         console.log(values)
-        this.changeRound(values)
+        this.setRound(values)
       }
     },
     currentSnap: {
@@ -123,7 +123,7 @@ export default {
       },
       set(values) {
         console.log(values)
-        this.changeSnap(values)
+        this.setSnap(values)
       }
     },
     currentSeq: {
@@ -132,7 +132,7 @@ export default {
       },
       set(values) {
         console.log(values)
-        this.changeSeq(values)
+        this.setSeq(values)
       }
     }
   },
