@@ -3,24 +3,14 @@
     <transition name="fade" appear>
       <v-img :src="src.front.uri" v-if="!loading">
         <transition name="fade" appear>
-          <v-img
-            id="front"
-            v-if="show"
-            :src="depth ? depth.front.uri : src.front.uri"
-            @click="imageClick"
-          />
+          <v-img id="front" v-if="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick" />
         </transition>
       </v-img>
     </transition>
     <transition name="fade" appear>
       <v-img :src="src.back.uri" v-if="!loading">
         <transition name="fade" appear>
-          <v-img
-            id="back"
-            v-if="show"
-            :src="depth ? depth.back.uri : src.back.uri"
-            @click="imageClick"
-          />
+          <v-img id="back" v-if="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick" />
         </transition>
       </v-img>
     </transition>
@@ -138,8 +128,7 @@ export default {
             [x + axios, y + d],
             [x + axios, y - d]
           ]
-          for (const point of points)
-            if (image.getPixelColor(...point)) return point
+          for (const point of points) if (image.getPixelColor(...point)) return point
         }
       }
     },

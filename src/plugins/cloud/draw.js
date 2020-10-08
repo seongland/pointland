@@ -16,17 +16,8 @@ function drawLas(lasJson) {
 }
 
 function addLas(lasJson, cloud, vertices) {
-  const offset = [
-    cloud.center[0] - lasJson.center[0],
-    cloud.center[1] - lasJson.center[1],
-    cloud.center[2] - lasJson.center[2]
-  ]
-  for (const i in lasJson.x)
-    vertices.push(
-      lasJson.x[i] - offset[0],
-      lasJson.y[i] - offset[1],
-      lasJson.z[i] - offset[2]
-    )
+  const offset = [cloud.center[0] - lasJson.center[0], cloud.center[1] - lasJson.center[1], cloud.center[2] - lasJson.center[2]]
+  for (const i in lasJson.x) vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
 }
 
 function addPoints(lasJson, colors, vertices, cloud) {
@@ -36,10 +27,7 @@ function addPoints(lasJson, colors, vertices, cloud) {
     colors.push(intensity, intensity, intensity)
   }
   const geometry = new THREE.BufferGeometry()
-  geometry.setAttribute(
-    'position',
-    new THREE.Float32BufferAttribute(vertices, 3)
-  )
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
   const material = new THREE.PointsMaterial({
     size: ref.pointSize,
@@ -57,8 +45,7 @@ function addPoints(lasJson, colors, vertices, cloud) {
 function firstLas(cloud, lasJson, vertices) {
   cloud.center = lasJson.center
   cloud.controls.target.set(0, 0, 0.1)
-  for (const i in lasJson.x)
-    vertices.push(lasJson.x[i], lasJson.y[i], lasJson.z[i])
+  for (const i in lasJson.x) vertices.push(lasJson.x[i], lasJson.y[i], lasJson.z[i])
 }
 
 function drawHover(cloud) {
@@ -68,12 +55,7 @@ function drawHover(cloud) {
 
   // If null
   if (!hovered && previous) {
-    changeColor(
-      previous.colors,
-      previous.index,
-      previous.intensity,
-      previous.attributes
-    )
+    changeColor(previous.colors, previous.index, previous.intensity, previous.attributes)
     cloud.currentHover = undefined
   }
   if (!hovered) return
@@ -90,19 +72,8 @@ function drawHover(cloud) {
   if (previous) {
     if (previous.index === index) return
     if (cloud.selected.filter(e => e.index === previous.index).length === 0)
-      changeColor(
-        previous.colors,
-        previous.index,
-        previous.intensity,
-        previous.attributes
-      )
-    else
-      changeColor(
-        previous.colors,
-        previous.index,
-        SELECTED_COLOR,
-        previous.attributes
-      )
+      changeColor(previous.colors, previous.index, previous.intensity, previous.attributes)
+    else changeColor(previous.colors, previous.index, SELECTED_COLOR, previous.attributes)
   }
 
   // save current
@@ -131,10 +102,7 @@ function drawClick(cloud) {
   const index = cloud.currentHover.index
   const attributes = cloud.currentHover.object.geometry.attributes
   const colors = attributes.color.array
-  if (
-    cloud.selected.filter(e => e.index === cloud.currentHover.index).length ===
-    0
-  ) {
+  if (cloud.selected.filter(e => e.index === cloud.currentHover.index).length === 0) {
     cloud.selected.push(cloud.currentHover)
     changeColor(colors, index, SELECTED_COLOR, attributes)
     cloud.currentSelected = cloud.currentHover
