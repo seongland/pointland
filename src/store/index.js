@@ -1,6 +1,6 @@
 export const state = () => ({
-  selected: []
-})
+         drawingLayer: undefined,
+         selected: []
+       })
 
-export const mutations = {
-}
+export const mutations = {}

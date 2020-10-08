@@ -49,6 +49,8 @@
             </v-list-item-avatar>
           </v-list-item>
 
+          <v-divider></v-divider>
+
           <v-list-item link>
             <v-list-item-content>
               <v-list-item-subtitle v-text="$store.state.ls.user.email" />
@@ -58,72 +60,26 @@
 
         <v-divider></v-divider>
 
-        <v-list nav dense>
-          <v-list-item link>
-            <v-list-item-icon>
-              A1
-            </v-list-item-icon>
-            <v-list-item-title>My Files</v-list-item-title>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-icon>
-              A2
-            </v-list-item-icon>
-            <v-list-item-title>Shared with me</v-list-item-title>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-icon>
-              A3
-            </v-list-item-icon>
-            <v-list-item-title>Starred</v-list-item-title>
-          </v-list-item>
-        </v-list>
-        
-        <v-divider></v-divider>
-
-        <v-list nav dense>
-          <v-list-item link>
-            <v-list-item-icon>
-              B1
-            </v-list-item-icon>
-            <v-list-item-title>My Files</v-list-item-title>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-icon>
-              B2
-            </v-list-item-icon>
-            <v-list-item-title>Shared with me</v-list-item-title>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-icon>
-              B3
-            </v-list-item-icon>
-            <v-list-item-title>Starred</v-list-item-title>
-          </v-list-item>
-        </v-list>
-
-        <v-divider></v-divider>
-
-        <v-list nav dense>
-          <v-list-item link>
-            <v-list-item-icon>
-              B1
-            </v-list-item-icon>
-            <v-list-item-title>My Files</v-list-item-title>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-icon>
-              B2
-            </v-list-item-icon>
-            <v-list-item-title>Shared with me</v-list-item-title>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-icon>
-              B3
-            </v-list-item-icon>
-            <v-list-item-title>Starred</v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <div v-for="classObj in classes" :key="classObj.class">
+          <v-list nav dense>
+            <v-list-item
+              link
+              v-for="layer in classObj.layers"
+              :key="layer.layer"
+            >
+              <v-list-item-icon>
+                {{ layer.layer }}
+              </v-list-item-icon>
+              <v-list-item-title>
+                {{ layer.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ layer.type }}
+              </v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+        </div>
       </v-navigation-drawer>
 
       <v-tabs-items v-model="index" class="wrapper">
@@ -138,9 +94,10 @@
 </template>
 
 <script>
-import GeoMap from '~/components/tabs/GeoMap.vue'
-import OverlayPcd from '~/components/tabs/OverlayPcd.vue'
-import ImmsImage from '~/components/tabs/ImmsImage.vue'
+import GeoMap from '~/components/tabs/GeoMap'
+import OverlayPcd from '~/components/tabs/OverlayPcd'
+import ImmsImage from '~/components/tabs/ImmsImage'
+import classes from '~/assets/classes'
 
 export default {
   middleware: 'authentication',
@@ -149,6 +106,9 @@ export default {
     OverlayPcd,
     ImmsImage
   },
+  data: () => ({
+    classes
+  }),
   computed: {
     seqs() {
       const init = new Array(this.$store.state.ls.currentSnap.count).fill(0)
@@ -195,6 +155,7 @@ export default {
     }
   },
   async mounted() {
+    console.log(this.classes)
     this.meta.version = process.env.version
     const ls = this.$store.state.ls
     const accessToken = ls.accessToken
