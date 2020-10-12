@@ -74,7 +74,7 @@
       <v-tabs-items v-model="index" class="wrapper">
         <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper" eager>
           <geo-map id="global-map" v-if="tab.type === 'map'" class="wrapper" />
-          <overlay-pcd v-else-if="tab.type === 'cloud'" class="wrapper" />
+          <las-cloud v-else-if="tab.type === 'cloud'" class="wrapper" />
           <imms-image v-else-if="tab.type === 'image'" class="wrapper" />
         </v-tab-item>
       </v-tabs-items>
@@ -86,13 +86,13 @@
 
 <script>
 import GeoMap from '~/components/tabs/GeoMap'
-import OverlayPcd from '~/components/tabs/OverlayPcd'
+import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
 import classes from '~/assets/classes'
 
 export default {
   middleware: 'authentication',
-  components: { GeoMap, OverlayPcd, ImmsImage },
+  components: { GeoMap, LasCloud, ImmsImage },
   data: () => ({ classes }),
 
   async mounted() {
