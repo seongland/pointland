@@ -45,7 +45,6 @@ function olInit(geoserver, workspace, layers, options) {
       const tiffLayer = makeTiffLayer(geoserver, workspace, layers.tiff)
       openlayers.push(tiffLayer)
       ref.tiffLayer = tiffLayer
-      console.log(tiffLayer.getSource())
     }
     if (layers.mission) {
       const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)

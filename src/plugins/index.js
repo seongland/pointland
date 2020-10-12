@@ -61,14 +61,21 @@ export default ({ $axios, store: { commit, state } }) => {
       },
 
       keyEvent(event) {
+        let seqIndex
+        const ls = this.$store.state.ls
         const index = this.$store.state.ls.index
-        console.log(event)
         switch (event.key) {
           // change seq
           case ',':
-            if (!state.depth.loading) return commit('ls/setSeq', state.ls.currentSeq - 1)
+            seqIndex = ls.currentSnap.seqs.indexOf(ls.currentSeq)
+            if (seqIndex > 0) if (!state.depth.loading) commit('ls/setSeq', ls.currentSnap.seqs[seqIndex - 1])
+            return
+
           case '.':
-            if (!state.depth.loading) return commit('ls/setSeq', state.ls.currentSeq + 1)
+            seqIndex = ls.currentSnap.seqs.indexOf(ls.currentSeq)
+            if (seqIndex < ls.currentSnap.seqs.length - 1)
+              if (!state.depth.loading) commit('ls/setSeq', ls.currentSnap.seqs[seqIndex + 1])
+            return
 
           // change tabs
           case '1':
@@ -81,6 +88,7 @@ export default ({ $axios, store: { commit, state } }) => {
           // Toggle
           case 'd':
             if (index === 1) return commit('toggleDepth')
+            return
           case 'm':
             if (index === 0) return
             const mapWrapper = document.getElementById('global-map').parentElement
@@ -89,6 +97,7 @@ export default ({ $axios, store: { commit, state } }) => {
             this.tabs[0].show = !this.tabs[0].show
             return
         }
+        console.log(event)
       },
 
       async loadProjects(user, accessToken) {

@@ -13,7 +13,6 @@
         item-text="name"
         item-value="name"
         v-model="currentRound"
-        @change="setRound"
         return-object
         dense
       ></v-select>
@@ -25,11 +24,20 @@
         item-text="name"
         item-value="name"
         v-model="currentSnap"
-        @change="setSnap"
         return-object
         dense
       ></v-select>
-      <v-select class="mt-1 mr-4 seqs" label="Seq" solo :items="seqs" v-model="currentSeq" @change="setSeq" dense></v-select>
+      <v-select
+        class="mt-1 mr-4 seqs"
+        label="Seq"
+        solo
+        :items="currentSnap.seqs"
+        item-text="name"
+        item-value="name"
+        v-model="currentSeq"
+        return-object
+        dense
+      ></v-select>
     </v-tabs>
 
     <v-card class="main wrapper">
@@ -93,6 +101,24 @@ export default {
   middleware: 'authentication',
   components: { GeoMap, LasCloud, ImmsImage },
   data: () => ({ classes }),
+  fetchOnServer: false,
+  async fetch() {
+    const currentRoundName = this.$store.state.ls.rounds[0].name
+    const res = await this.$axios.get(`/api/meta/${currentRoundName}`)
+    const currentRound = res.data
+
+    for (const snapObj of currentRound.snaps) {
+      snapObj.seqs = snapObj.image.data.table
+      for (const seqObj of snapObj.seqs) seqObj.name = seqObj[snapObj.image.data.column.name]
+    }
+
+    const currentSnap = currentRound.snaps[0]
+    const currentSeq = currentSnap.seqs[0]
+
+    this.setRound(currentRound)
+    this.setSnap(currentSnap)
+    this.setSeq(currentSeq)
+  },
 
   async mounted() {
     this.reloadUser()
@@ -100,11 +126,6 @@ export default {
   },
 
   computed: {
-    seqs() {
-      const init = new Array(this.$store.state.ls.currentSnap.count).fill(0)
-      const seqs = init.map((v, i) => i)
-      return seqs
-    },
     index: {
       get() {
         return this.$store.state.ls.index

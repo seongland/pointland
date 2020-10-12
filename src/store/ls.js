@@ -8,31 +8,10 @@ export const state = () => ({
   prj: undefined,
   prjId: undefined,
   index: 0,
-  currentRound: {
-    name: 'imms_20200825_170217',
-    snaps: [
-      { name: 'snap1', count: 1017 },
-      { name: 'snap2', count: 1017 }
-    ]
-  },
-  currentSnap: { name: 'snap1', count: 1017 },
-  currentSeq: 0,
-  rounds: [
-    {
-      name: 'imms_20200825_170217',
-      snaps: [
-        { name: 'snap1', count: 1017 },
-        { name: 'snap2', count: 1017 }
-      ]
-    },
-    {
-      name: 'imms_20200824_193802',
-      snaps: [
-        { name: 'snap1', count: 1017 },
-        { name: 'snap2', count: 1017 }
-      ]
-    }
-  ]
+  currentRound: undefined,
+  currentSnap: undefined,
+  currentSeq: undefined,
+  rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200909_231253' }]
 })
 
 export const mutations = {
@@ -82,8 +61,6 @@ export const mutations = {
   setRound: (state, round) => (state.currentRound = round),
   setSnap: (state, snap) => (state.currentSnap = snap),
   setSeq(state, seq) {
-    if (seq < 0) return
-    if (seq >= state.currentSnap.count) return
     state.currentSeq = seq
   }
 }

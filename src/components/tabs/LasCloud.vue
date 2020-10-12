@@ -11,8 +11,10 @@ export default {
   async fetch() {
     const commit = this.$store.commit
     const fetch = this.$axios
-    for (const index of [8]) {
-      const root = `/api/pointcloud/imms_20200824_193802/snap1/${index}`
+    const currentRound = this.$store.state.ls.currentRound.name
+    const currentSnap = this.$store.state.ls.currentSnap.name
+    for (const index of []) {
+      const root = `/api/pointcloud/${currentRound}/${currentSnap}/${index}`
       const check = await fetch(`${root}`)
       commit('setLoading', true)
       if (check.data.cached) {
