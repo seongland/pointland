@@ -105,23 +105,23 @@ const makeTiffLayer = (geoserver, workspace, layer) => {
   let tiffLayer = new Tile({ source })
   tiffLayer.setZIndex(ZINDEX_PVR - 2)
 
-  const parser = new WMSCapabilities()
-  fetch(`${geoserver}/${workspace}/wms?service=wms&version=1.3.0&request=GetCapabilities`)
-    .then(response => {
-      return response.text()
-    })
-    .then(text => {
-      const result = parser.read(text)
-      const layers = result.Capability.Layer.Layer
-      for (const layerObj of layers)
-        if (layerObj.Name === layer)
-          if (ref.map) {
-            let bbox4326 = layerObj.EX_GeographicBoundingBox
-            let bbox3857 = transformExtent(bbox4326, 'EPSG:4326', 'EPSG:3857')
-            for (const element of bbox3857) if (isNaN(element)) return
-            ref.map.getView().fit(bbox3857, { duration: 1000 })
-          }
-    })
+  // const parser = new WMSCapabilities()
+  // fetch(`${geoserver}/${workspace}/wms?service=wms&version=1.3.0&request=GetCapabilities`)
+  //   .then(response => {
+  //     return response.text()
+  //   })
+  //   .then(text => {
+  //     const result = parser.read(text)
+  //     const layers = result.Capability.Layer.Layer
+  //     for (const layerObj of layers)
+  //       if (layerObj.Name === layer)
+  //         if (ref.map) {
+  //           let bbox4326 = layerObj.EX_GeographicBoundingBox
+  //           let bbox3857 = transformExtent(bbox4326, 'EPSG:4326', 'EPSG:3857')
+  //           for (const element of bbox3857) if (isNaN(element)) return
+  //           ref.map.getView().fit(bbox3857, { duration: 1000 })
+  //         }
+  //   })
 
   return tiffLayer
 }

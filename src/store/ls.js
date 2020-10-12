@@ -7,7 +7,7 @@ export const state = () => ({
   user: undefined,
   prj: undefined,
   prjId: undefined,
-  index: 1,
+  index: 0,
   currentRound: {
     name: 'imms_20200825_170217',
     snaps: [

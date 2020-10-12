@@ -2,6 +2,11 @@ import { setDrawInteraction } from '~/plugins/map/draw'
 
 export const state = () => ({
   drawLayer: { index: undefined, layerObj: undefined },
+  loading: false,
+  depth: {
+    loading: false,
+    on: true
+  },
   selected: []
 })
 
@@ -14,11 +19,20 @@ export const mutations = {
     if (index !== undefined) state.drawLayer.index = index
     if (layerObj !== undefined) {
       state.drawLayer.layerObj = layerObj
-      setDrawInteraction(layerObj)
+      // setDrawInteraction(layerObj)
     }
   },
 
+  setDepthLoading: (state, value) => (state.depth.loading = value),
+  toggleDepth: state => (state.depth.on = !state.depth.on),
+
   select(state, { xyz, latlng, point }) {
     const slected = {}
+  },
+
+  load(state, { func, params }) {
+    state.loading = true
+    func(...params)
+    state.loading = false
   }
 }
