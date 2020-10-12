@@ -2,17 +2,12 @@ import express from 'express'
 import dotenv from 'dotenv'
 import proj4 from 'proj4'
 import { WGS84, EPSG32652 } from './node/const'
-import {
-  imagePath,
-  depthmapPath,
-  getNodeMeta,
-  depthData,
-  xyzAtDepthmap
-} from './node/image'
+import { imagePath, depthmapPath, getNodeMeta, depthData, xyzAtDepthmap } from './node/image'
 
 dotenv.config()
 const router = express.Router()
 
+router.get('/:round/:snap/:seq/las', getLasList)
 router.get('/:round/:snap/:seq/:direction', image)
 router.get('/:round/:snap/:seq/:direction/depth', depthmap)
 router.get('/:round/:snap/:seq/:direction/depth/:x/:y', imgtoxyz)
@@ -27,6 +22,11 @@ async function depthmap(req, res) {
   const meta = await getNodeMeta(req)
   const data = await depthData(path, meta)
   res.json(data)
+}
+
+async function getLasList(req, res) {
+  const path = depthmapPath(req)
+  res.json(path)
 }
 
 async function imgtoxyz(req, res) {

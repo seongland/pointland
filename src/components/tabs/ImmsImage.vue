@@ -23,7 +23,6 @@ import jimp from 'jimp/browser/lib/jimp'
 const NEAR = 5
 
 export default {
-  data: () => ({ loading: false, on: true }),
   computed: {
     src() {
       const ls = this.$store.state.ls
@@ -31,13 +30,17 @@ export default {
       return { front: { uri: `${root}/front` }, back: { uri: `${root}/back` } }
     },
     show() {
-      return !this.loading && this.on
+      const depth = this.$store.state.depth
+      return !depth.loading && depth.on
+    },
+    loading() {
+      return this.$store.state.depth.loading
     }
   },
 
   asyncComputed: {
     async depth() {
-      this.loading = true
+      this.$store.commit('setDepthLoading', true)
       const frontURL = `${this.src.front.uri}/depth`
       const backURL = `${this.src.back.uri}/depth`
       const frontP = this.$axios.get(frontURL)
@@ -52,14 +55,11 @@ export default {
       })
       front.url = frontURL
       back.url = backURL
-      this.loading = false
+      this.$store.commit('setDepthLoading', false)
       return { front, back }
     }
   },
-  mounted() {
-    window.removeEventListener('keypress', this.keyEvent)
-    window.addEventListener('keypress', this.keyEvent)
-  },
+
   methods: {
     async imageClick(e) {
       let image, data

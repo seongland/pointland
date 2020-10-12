@@ -40,9 +40,6 @@
               <v-img src="/profile.png"></v-img>
             </v-list-item-avatar>
           </v-list-item>
-
-          <v-divider></v-divider>
-
           <v-list-item link>
             <v-list-item-content>
               <v-list-item-subtitle v-text="$store.state.ls.user.email" />
@@ -63,6 +60,14 @@
               <v-divider></v-divider>
             </div>
           </v-list-item-group>
+
+          <v-list>
+            <v-list-item link>
+              <v-list-item-content>
+                <v-list-item-subtitle v-text="`Logout`" @click="$store.commit('ls/logout')" />
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
         </v-list>
       </v-navigation-drawer>
 
@@ -74,6 +79,8 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
+
+    <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>
 
@@ -85,28 +92,14 @@ import classes from '~/assets/classes'
 
 export default {
   middleware: 'authentication',
-  components: {
-    GeoMap,
-    OverlayPcd,
-    ImmsImage
-  },
-  data: () => ({
-    classes
-  }),
-  async mounted() {
-    const mapWrapper = document.getElementById('global-map').parentElement
-    if (this.index !== 0) mapWrapper.classList.add('small-map')
-    setTimeout(() => window.dispatchEvent(new Event('resize')))
+  components: { GeoMap, OverlayPcd, ImmsImage },
+  data: () => ({ classes }),
 
-    this.meta.version = process.env.version
-    const ls = this.$store.state.ls
-    const accessToken = ls.accessToken
-    const config = { headers: { Authorization: accessToken } }
-    const res = await this.$axios.get(`/api/user?id=${ls.user.id}`, config)
-    const user = res?.data[0]
-    await this.loadProjects(user, accessToken)
-    this.$store.commit('ls/login', { accessToken, user })
+  async mounted() {
+    this.reloadUser()
+    this.eventBind()
   },
+
   computed: {
     seqs() {
       const init = new Array(this.$store.state.ls.currentSnap.count).fill(0)
@@ -160,37 +153,4 @@ export default {
 }
 </script>
 
-<style>
-.v-select.rounds {
-  width: 150px !important;
-}
-.v-select.snaps {
-  width: 50px !important;
-}
-.v-select.seqs {
-  width: 10px !important;
-}
-.wrapper {
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-}
-.header {
-  flex: 0 1 auto;
-}
-.main {
-  flex: 1 1 auto;
-}
-.small-map {
-  position: fixed !important;
-  width: 500px !important;
-  bottom: 10px !important;
-  right: 10px !important;
-  height: 500px !important;
-  z-index: 5 !important;
-  display: block !important;
-  overflow: hidden !important;
-  border-radius: 10px !important;
-  box-shadow: 20px 20px 60px #000, -20px -20px 60px #0007 !important;
-}
-</style>
+<style src="./draw.css"></style>

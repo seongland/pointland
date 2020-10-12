@@ -1,0 +1,38 @@
+.v-select.rounds {
+  width: 150px !important;
+}
+
+.v-select.snaps {
+  width: 50px !important;
+}
+
+.v-select.seqs {
+  width: 50px !important;
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+.header {
+  flex: 0 1 auto;
+}
+
+.main {
+  flex: 1 1 auto;
+}
+
+.small-map {
+  position: fixed !important;
+  width: 500px !important;
+  bottom: 10px !important;
+  right: 10px !important;
+  height: 500px !important;
+  z-index: 5 !important;
+  display: block !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
+  box-shadow: 20px 20px 60px #000, -20px -20px 60px #0007 !important;
+}

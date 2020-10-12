@@ -5,6 +5,7 @@ const SELECTED_COLOR = [0.4, 1, 0.8]
 const HOVER_COLOR = [0.8, 1, 1]
 
 function drawLas(lasJson) {
+  console.log(lasJson)
   const cloud = ref.cloud
   const [vertices, colors] = [[], []]
   ref.loading = true
