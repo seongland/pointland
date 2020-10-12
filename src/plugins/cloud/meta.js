@@ -9,7 +9,7 @@ import { drawHover, drawClick } from './draw'
 export const ref = { pointSize: 0.05 }
 const CLOUD_ID = 'las'
 
-function initCloud() {
+function initCloud({ selectCallback }) {
   /**
    * @summary - Make Point Cloud
    * @params {String} id - dom id for append
@@ -31,9 +31,10 @@ function initCloud() {
     cloud.raycaster.params.Points.threshold = 0.03
     cloud.selected = []
     ref.cloud = cloud
+    ref.cloud.selectCallback = selectCallback
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
-    cloud.el.addEventListener('click', onDocumentClick, false)
+    cloud.el.addEventListener('click', drawClick, false)
 
     // Add To Canvas
     cloud.id = animate()
@@ -135,11 +136,6 @@ function onDocumentMouseMove(event) {
   event.preventDefault()
   ref.cloud.mouse.x = (event.offsetX / ref.cloud.el.offsetWidth) * 2 - 1
   ref.cloud.mouse.y = -(event.offsetY / ref.cloud.el.offsetHeight) * 2 + 1
-}
-
-function onDocumentClick() {
-  const cloud = ref.cloud
-  if (cloud.currentHover) drawClick(cloud)
 }
 
 export { initCloud, purgeCloud }

@@ -69,7 +69,7 @@
       <v-tabs-items v-model="index" class="wrapper">
         <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper" eager>
           <geo-map id="global-map" v-if="tab.type === 'map'" class="wrapper" />
-          <overlay-pcd v-else-if="tab.type === '3d'" class="wrapper" />
+          <overlay-pcd v-else-if="tab.type === 'cloud'" class="wrapper" />
           <imms-image v-else-if="tab.type === 'image'" class="wrapper" />
         </v-tab-item>
       </v-tabs-items>

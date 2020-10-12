@@ -9,14 +9,14 @@ function drawLas(lasJson) {
   const [vertices, colors] = [[], []]
   ref.loading = true
 
-  if (!cloud.center) firstLas(cloud, lasJson, vertices)
+  if (!cloud.offset) firstLas(cloud, lasJson, vertices)
   else addLas(lasJson, cloud, vertices)
   addPoints(lasJson, colors, vertices, cloud)
   ref.loading = false
 }
 
 function addLas(lasJson, cloud, vertices) {
-  const offset = [cloud.center[0] - lasJson.center[0], cloud.center[1] - lasJson.center[1], cloud.center[2] - lasJson.center[2]]
+  const offset = [cloud.offset[0] - lasJson.center[0], cloud.offset[1] - lasJson.center[1], cloud.offset[2] - lasJson.center[2]]
   for (const i in lasJson.x) vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
 }
 
@@ -43,7 +43,7 @@ function addPoints(lasJson, colors, vertices, cloud) {
 }
 
 function firstLas(cloud, lasJson, vertices) {
-  cloud.center = lasJson.center
+  cloud.offset = lasJson.center
   cloud.controls.target.set(0, 0, 0.1)
   for (const i in lasJson.x) vertices.push(lasJson.x[i], lasJson.y[i], lasJson.z[i])
 }
@@ -98,7 +98,9 @@ function changeColor(colors, index, color, attributes) {
   attributes.color.needsUpdate = true
 }
 
-function drawClick(cloud) {
+function drawClick() {
+  const cloud = ref.cloud
+  if (!cloud.currentHover) return
   const index = cloud.currentHover.index
   const attributes = cloud.currentHover.object.geometry.attributes
   const colors = attributes.color.array
@@ -107,7 +109,10 @@ function drawClick(cloud) {
     changeColor(colors, index, SELECTED_COLOR, attributes)
     cloud.currentSelected = cloud.currentHover
     const center = cloud.currentSelected.point
-    // cloud.controls.target.set(center.x, center.y, center.z)
+    ref.cloud.selectCallback(
+      [center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]],
+      cloud.currentSelected
+    )
   } else {
     cloud.selected.splice(cloud.selected.indexOf(cloud.currentHover))
     changeColor(colors, index, cloud.currentHover.intensity, attributes)

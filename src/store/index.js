@@ -16,5 +16,9 @@ export const mutations = {
       state.drawLayer.layerObj = layerObj
       setDrawInteraction(layerObj)
     }
+  },
+
+  select(state, { xyz, latlng, point }) {
+    const slected = {}
   }
 }

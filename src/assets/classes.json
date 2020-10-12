@@ -7,7 +7,7 @@
         "type": "Point",
         "description": "주행경로노드",
         "name": "NODE",
-        "properties": {
+        "attributes": {
           "NodeType": {
             "type": "VARCHAR2(2)",
             "method": "select",
@@ -67,21 +67,25 @@
       },
       {
         "layer": "A2",
+        "description": "주행경로링크",
         "type": "LineString",
         "name": "LINK"
       },
       {
         "layer": "A3",
+        "description": "구간",
         "type": "Polygon",
         "name": "DRIVEWAYSECTION"
       },
       {
         "layer": "A4",
+        "description": "-",
         "type": "Polygon",
         "name": "SUBSIDIARYSECTION"
       },
       {
         "layer": "A5",
+        "description": "주차슬롯",
         "type": "Polygon",
         "name": "PARKINGLOT"
       }
@@ -93,21 +97,25 @@
       {
         "layer": "B1",
         "type": "Point",
+        "description": "주행경로노드",
         "name": "SAFETYSIGN"
       },
       {
         "layer": "B2",
         "type": "LineString",
+        "description": "주행경로노드",
         "name": "SURFACELineStringMARK"
       },
       {
         "layer": "B3",
         "type": "Polygon",
+        "description": "주행경로노드",
         "name": "SURFACEMARK"
       },
       {
         "layer": "B4",
         "type": "Polygon",
+        "description": "주행경로노드",
         "name": "CROSSWALK"
       }
     ]
@@ -118,31 +126,37 @@
       {
         "layer": "C1",
         "type": "Point",
+        "description": "주행경로노드",
         "name": "TRAFFICLIGHT"
       },
       {
         "layer": "C2",
         "type": "LineString",
+        "description": "주행경로노드",
         "name": "KILOPOST"
       },
       {
         "layer": "C3",
         "type": "Polygon",
+        "description": "주행경로노드",
         "name": "VEHICLEPROTECTIONSAFETY"
       },
       {
         "layer": "C4",
         "type": "Polygon",
+        "description": "주행경로노드",
         "name": "SPEEDBUMP"
       },
       {
         "layer": "C5",
         "type": "Polygon",
+        "description": "주행경로노드",
         "name": "HEIGHTBARRIER"
       },
       {
         "layer": "C6",
         "type": "Polygon",
+        "description": "주행경로노드",
         "name": "POSTPOINT"
       }
     ]
@@ -152,17 +166,20 @@
     "layers": [
       {
         "layer": "D1",
-        "type": "Point",
+        "type": "None",
+        "description": "주행경로노드",
         "name": "SYNCEDTRAFFICLIGHT"
       },
       {
         "layer": "D2",
-        "type": "LineString",
+        "type": "None",
+        "description": "주행경로노드",
         "name": "INTERSECTIONCONTROLLER"
       },
       {
         "layer": "D3",
         "type": "Polygon",
+        "description": "주행경로노드",
         "name": "SIDEWALK"
       }
     ]
