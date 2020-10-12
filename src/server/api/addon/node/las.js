@@ -1,11 +1,11 @@
 import { mkdir } from 'fs'
-import { getRoot } from './tool'
+import { getRootByRound } from './tool'
 
 export function lasPath(req) {
   const round = req.params.round
   const snap = req.params.snap
   const seq = req.params.seq
-  const root = getRoot(round)
+  const root = getRootByRound(round)
   const ext = 'las'
   const seq6 = seq.toString().padStart(6, '0')
   return `${root}\\${snap}\\pointcloud\\STRYX_GEOXYZ_${seq6}.${ext}`

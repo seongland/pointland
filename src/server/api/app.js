@@ -1,22 +1,23 @@
-import configuration from "@feathersjs/configuration"
-import express from "@feathersjs/express"
-import feathers from "@feathersjs/feathers"
+import configuration from '@feathersjs/configuration'
+import express from '@feathersjs/express'
+import feathers from '@feathersjs/feathers'
 
-import compress from "compression"
-import cors from "cors"
+import compress from 'compression'
+import cors from 'cors'
 
-import authentication from "./feathers/authentication"
-import appHooks from "./feathers/app.hooks"
-import services from "./services"
+import authentication from './feathers/authentication'
+import appHooks from './feathers/app.hooks'
+import services from './services'
 import upload from './addon/upload'
 import image from './addon/image'
+import meta from './addon/meta'
 import pointcloud from './addon/pointcloud'
 
-import mongoose from "./inout/mongoose"
-import logger from "./inout/logger"
+import mongoose from './inout/mongoose'
+import logger from './inout/logger'
 
 const app = express(feathers())
-  .use(express.json({ limit: "100mb" }))
+  .use(express.json({ limit: '100mb' }))
   .configure(express.rest())
   .configure(configuration())
   .use(cors())
@@ -27,12 +28,11 @@ const app = express(feathers())
   .use('/upload', upload)
   .use('/image', image)
   .use('/pointcloud', pointcloud)
+  .use('/meta', meta)
   .use(express.errorHandler({ logger }))
   .hooks(appHooks)
 
 app.listen()
-process.on("unhandledRejection", (reason, p) =>
-  logger.error("Unhandled Rejection at: Promise ", p, reason)
-)
+process.on('unhandledRejection', (reason, p) => logger.error('Unhandled Rejection at: Promise ', p, reason))
 
 export default app

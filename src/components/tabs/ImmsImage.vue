@@ -14,8 +14,8 @@
         </transition>
       </v-img>
     </transition>
-  </div>
-</template>
+  </div> </template
+>..
 
 <script>
 import jimp from 'jimp/browser/lib/jimp'
@@ -26,7 +26,7 @@ export default {
   computed: {
     src() {
       const ls = this.$store.state.ls
-      const root = `/api/image/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentSeq}`
+      const root = `/api/image/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentSeq.name}`
       return { front: { uri: `${root}/front` }, back: { uri: `${root}/back` } }
     },
     show() {
