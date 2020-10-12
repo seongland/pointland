@@ -1,5 +1,7 @@
 import { updateCtrl } from '~/plugins/cloud/meta'
 
+const WAIT_RENDER = 500
+
 export const state = () => ({
   accessToken: undefined,
   user: undefined,
@@ -56,16 +58,23 @@ export const mutations = {
     /**
      * @summary - change tab  & resize because of canvas error
      */
+    if (state.index === index) return
+    const previous = state.index
     state.index = index
     const mapWrapper = document.getElementById('global-map').parentElement
     setTimeout(() => window.dispatchEvent(new Event('resize')))
 
-    if (index !== 0) {
+    if (previous === 0) {
+      mapWrapper.style.opacity = 0
       setTimeout(() => {
         mapWrapper.classList.add('small-map')
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 500)
+        setTimeout(() => {
+          mapWrapper.style.opacity = 1
+          mapWrapper.style.transitionDuration = '500ms'
+          window.dispatchEvent(new Event('resize'))
+        }, WAIT_RENDER)
       })
-    } else mapWrapper.classList.remove('small-map')
+    } else if (index === 0) mapWrapper.classList.remove('small-map')
 
     if (index === 2) setTimeout(() => updateCtrl())
   },

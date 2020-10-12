@@ -34,6 +34,7 @@ export default {
       return !this.loading && this.on
     }
   },
+
   asyncComputed: {
     async depth() {
       this.loading = true
@@ -60,35 +61,6 @@ export default {
     window.addEventListener('keypress', this.keyEvent)
   },
   methods: {
-    keyEvent(event) {
-      const commit = this.$store.commit
-      const state = this.$store.state
-      const index = this.$store.state.ls.index
-      console.log(event)
-      switch (event.key) {
-        case 'd':
-          if (index !== 1) return
-          this.on = !this.on
-          return
-        case ',':
-          if (this.loading) return
-          commit('ls/setSeq', state.ls.currentSeq - 1)
-          this.loading = true
-          return
-        case '.':
-          if (this.loading) return
-          commit('ls/setSeq', state.ls.currentSeq + 1)
-          this.loading = true
-          return
-        case '1':
-          return commit('ls/setIndex', Number(event.key) - 1)
-        case '2':
-          return commit('ls/setIndex', Number(event.key) - 1)
-        case '3':
-          return commit('ls/setIndex', Number(event.key) - 1)
-      }
-    },
-
     async imageClick(e) {
       let image, data
       const xRatio = e.offsetX / e.target.offsetWidth

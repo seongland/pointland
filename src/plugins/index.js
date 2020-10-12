@@ -20,14 +20,14 @@ export default ({ $axios, store: { commit } }) => {
       meta: { version: undefined },
       map: undefined,
       tabs: [
-        { name: 'Map', type: 'map' },
+        { name: 'Map', type: 'map', show: true },
         { name: 'Image', type: 'image' },
-        { name: '3D', type: '3d' }
+        { name: 'Cloud', type: 'cloud' }
       ]
     }),
 
     methods: {
-      initCloud: () => initCloud(),
+      initCloud: option => initCloud(option),
       purgeCloud: () => purgeCloud(),
       drawLas: lasJson => drawLas(lasJson),
       drawXYs: (latlngs, id) => drawXYs(latlngs, id),
@@ -37,6 +37,46 @@ export default ({ $axios, store: { commit } }) => {
       setSeq: seq => commit('ls/setSeq', seq),
       setLayer: data => commit('setLayer', data),
       drawXY: (latlng, focus, id) => drawXY(latlng, focus, id),
+
+      keyEvent(event) {
+        const commit = this.$store.commit
+        const state = this.$store.state
+        const index = this.$store.state.ls.index
+        console.log(event)
+        switch (event.key) {
+          case 'd':
+            if (index !== 1) return
+            this.on = !this.on
+            return
+          case ',':
+            if (this.loading) return
+            commit('ls/setSeq', state.ls.currentSeq - 1)
+            this.loading = true
+            return
+          case '.':
+            if (this.loading) return
+            commit('ls/setSeq', state.ls.currentSeq + 1)
+            this.loading = true
+            return
+          case '1':
+            return commit('ls/setIndex', Number(event.key) - 1)
+          case '2':
+            return commit('ls/setIndex', Number(event.key) - 1)
+          case '3':
+            return commit('ls/setIndex', Number(event.key) - 1)
+          case 'm':
+            if (index === 0) return
+            const mapWrapper = document.getElementById('global-map').parentElement
+            if (this.tabs[0].show) {
+              this.tabs[0].show = false
+              mapWrapper.setAttribute('style', 'z-index:-1 !important')
+            } else {
+              this.tabs[0].show = true
+              mapWrapper.setAttribute('style', 'z-index:5 !important')
+            }
+            return
+        }
+      },
 
       async loadProjects(user, accessToken) {
         const projectPromises = []
