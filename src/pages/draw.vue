@@ -9,7 +9,7 @@
         class="mt-1 mr-2 rounds"
         label="Round"
         solo
-        :items="rounds"
+        :items="$store.state.ls.rounds"
         item-text="name"
         item-value="name"
         v-model="currentRound"
@@ -79,7 +79,6 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>
@@ -105,9 +104,6 @@ export default {
       const init = new Array(this.$store.state.ls.currentSnap.count).fill(0)
       const seqs = init.map((v, i) => i)
       return seqs
-    },
-    rounds() {
-      return this.$store.state.ls.rounds
     },
     index: {
       get() {

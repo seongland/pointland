@@ -30,9 +30,8 @@ export const mutations = {
     const slected = {}
   },
 
-  load(state, { func, params }) {
-    state.loading = true
-    func(...params)
-    state.loading = false
+  setLoading(state, value) {
+    console.log(value)
+    state.loading = value
   }
 }
