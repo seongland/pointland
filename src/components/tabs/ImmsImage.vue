@@ -1,21 +1,25 @@
 <template>
   <div>
-    <transition name="fade" appear>
-      <v-img :src="src.front.uri" v-if="!loading">
+    <v-row align="center" justify="center">
+      <v-col cols="6" md="6" sm="12">
         <transition name="fade" appear>
-          <v-img id="front" v-if="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick" />
-        </transition>
-      </v-img>
-    </transition>
-    <transition name="fade" appear>
-      <v-img :src="src.back.uri" v-if="!loading">
+          <v-img :src="src.front.uri" v-if="!loading">
+            <transition name="fade" appear>
+              <v-img id="front" v-if="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick" />
+            </transition>
+          </v-img> </transition
+      ></v-col>
+      <v-col cols="6" md="6" sm="12">
         <transition name="fade" appear>
-          <v-img id="back" v-if="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick" />
-        </transition>
-      </v-img>
-    </transition>
-  </div> </template
->..
+          <v-img :src="src.back.uri" v-if="!loading">
+            <transition name="fade" appear>
+              <v-img id="back" v-if="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick" />
+            </transition>
+          </v-img> </transition
+      ></v-col>
+    </v-row>
+  </div>
+</template>
 
 <script>
 import jimp from 'jimp/browser/lib/jimp'

@@ -4,7 +4,7 @@
 
 <script>
 import proj4 from 'proj4'
-import { WGS84, EPSG32652 } from '~/server/api/addon/node/const'
+import { WGS84, EPSG32652 } from '~/server/api/addon/mark/const'
 
 export default {
   data: () => ({ loading: false }),

@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { PythonShell } from 'python-shell'
 import { existsSync, createReadStream } from 'fs'
-import { lasPath, cachePath } from './node/las'
+import { lasPath, cachePath } from './mark/las'
 
 dotenv.config()
 const router = express.Router()
