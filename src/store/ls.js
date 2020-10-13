@@ -10,7 +10,7 @@ export const state = () => ({
   index: 0,
   currentRound: undefined,
   currentSnap: undefined,
-  currentSeq: undefined,
+  currentMark: undefined,
   rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200909_231253' }]
 })
 
@@ -29,7 +29,7 @@ export const mutations = {
     state.prj = undefined
     state.prjId = undefined
     state.index = 0
-    state.currentSeq = 0
+    state.currentMark = 0
     this.$router.push('/')
   },
 
@@ -60,7 +60,7 @@ export const mutations = {
 
   setRound: (state, round) => (state.currentRound = round),
   setSnap: (state, snap) => (state.currentSnap = snap),
-  setSeq(state, seq) {
-    state.currentSeq = seq
+  setMark(state, seq) {
+    state.currentMark = seq
   }
 }

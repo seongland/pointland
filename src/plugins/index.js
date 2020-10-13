@@ -34,7 +34,7 @@ export default ({ $axios, store: { commit, state } }) => {
       subtractVhcl: id => subtractVhcl(id),
       setRound: round => commit('ls/setRound', round),
       setSnap: snap => commit('ls/setSnap', snap),
-      setSeq: seq => commit('ls/setSeq', seq),
+      setMark: seq => commit('ls/setMark', seq),
       setLayer: data => commit('setLayer', data),
       drawXY: (latlng, focus, id) => drawXY(latlng, focus, id),
 
@@ -67,14 +67,14 @@ export default ({ $axios, store: { commit, state } }) => {
         switch (event.key) {
           // change seq
           case ',':
-            seqIndex = ls.currentSnap.seqs.indexOf(ls.currentSeq)
-            if (seqIndex > 0) if (!state.depth.loading) commit('ls/setSeq', ls.currentSnap.seqs[seqIndex - 1])
+            seqIndex = ls.currentSnap.marks.indexOf(ls.currentMark)
+            if (seqIndex > 0) if (!state.depth.loading) commit('ls/setMark', ls.currentSnap.marks[seqIndex - 1])
             return
 
           case '.':
-            seqIndex = ls.currentSnap.seqs.indexOf(ls.currentSeq)
-            if (seqIndex < ls.currentSnap.seqs.length - 1)
-              if (!state.depth.loading) commit('ls/setSeq', ls.currentSnap.seqs[seqIndex + 1])
+            seqIndex = ls.currentSnap.marks.indexOf(ls.currentMark)
+            if (seqIndex < ls.currentSnap.marks.length - 1)
+              if (!state.depth.loading) commit('ls/setMark', ls.currentSnap.marks[seqIndex + 1])
             return
 
           // change tabs
@@ -110,7 +110,6 @@ export default ({ $axios, store: { commit, state } }) => {
       },
 
       olInit(geoserver, workspace, layers) {
-        layers = { tiff: 'testiff' }
         this.map = olInit(geoserver, workspace, layers)
         return this.map
       }

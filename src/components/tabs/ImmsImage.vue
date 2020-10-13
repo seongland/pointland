@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row align="center" justify="center">
-      <v-col cols="6" md="6" sm="12">
+      <v-col cols="6" md="6" sm="12" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.front.uri" v-if="!loading">
             <transition name="fade" appear>
@@ -9,7 +9,7 @@
             </transition>
           </v-img> </transition
       ></v-col>
-      <v-col cols="6" md="6" sm="12">
+      <v-col cols="6" md="6" sm="12" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.back.uri" v-if="!loading">
             <transition name="fade" appear>
@@ -30,7 +30,7 @@ export default {
   computed: {
     src() {
       const ls = this.$store.state.ls
-      const root = `/api/image/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentSeq.name}`
+      const root = `/api/image/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}`
       return { front: { uri: `${root}/front` }, back: { uri: `${root}/back` } }
     },
     show() {
@@ -45,12 +45,14 @@ export default {
   asyncComputed: {
     async depth() {
       this.$store.commit('setDepthLoading', true)
+      const currentMark = this.$store.state.ls.currentMark
       const frontURL = `${this.src.front.uri}/depth`
       const backURL = `${this.src.back.uri}/depth`
-      const frontP = this.$axios.get(frontURL)
-      const backP = this.$axios.get(backURL)
+      const frontP = this.$axios.post(frontURL, { data: { mark: currentMark } })
+      const backP = this.$axios.post(backURL, { data: { mark: currentMark } })
       const [f, b] = await Promise.all([frontP, backP])
       const [front, back] = [f.data, b.data]
+      if (process.env.dev) console.log('Load Depthmap', front, back)
       jimp.read(Buffer.from(front.uri.split(',')[1], 'base64')).then(image => {
         front.image = image
       })

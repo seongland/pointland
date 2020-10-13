@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
+process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.dev = 1)
 process.env.version = package.version
 process.env.twr = process.env.TWR
 
@@ -21,6 +22,7 @@ module.exports = {
     }
   },
   env: {
+    dev: process.env.dev,
     version: process.env.version,
     twr: process.env.twr
   },

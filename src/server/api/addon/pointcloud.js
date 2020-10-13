@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { PythonShell } from 'python-shell'
 import { existsSync, createReadStream } from 'fs'
-import { lasPath, cachePath } from './mark/las'
+import { lasPath, cachePath } from './pointcloud/pcd'
 
 dotenv.config()
 const router = express.Router()
@@ -13,9 +13,9 @@ const pythonOptions = {
   scriptPath: `${process.cwd()}`
 }
 
-router.get('/:round/:snap/:seq', pointcloud)
-router.get('/:round/:snap/:seq/:prop', lasCache)
-router.get('/file/:round/:snap/:seq', las)
+router.get('/:round/:snap/:mark', pointcloud)
+router.get('/:round/:snap/:mark/:prop', lasCache)
+router.get('/file/:round/:snap/:mark', las)
 
 function las(req, res) {
   res.sendFile(lasPath(req))

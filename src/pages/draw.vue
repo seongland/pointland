@@ -28,13 +28,13 @@
         dense
       ></v-select>
       <v-select
-        class="mt-1 mr-4 seqs"
-        label="Seq"
+        class="mt-1 mr-4 marks"
+        label="Mark"
         solo
-        :items="currentSnap.seqs"
+        :items="currentSnap.marks"
         item-text="name"
         item-value="name"
-        v-model="currentSeq"
+        v-model="currentMark"
         return-object
         dense
       ></v-select>
@@ -105,19 +105,14 @@ export default {
   async fetch() {
     const currentRoundName = this.$store.state.ls.rounds[0].name
     const res = await this.$axios.get(`/api/meta/${currentRoundName}`)
-    const currentRound = res.data
+    const roundObj = res.data
+    const snapObj = roundObj.snaps[0]
+    const markObj = snapObj.marks[0]
+    if (process.env.dev) console.log('Round Object', roundObj)
 
-    for (const snapObj of currentRound.snaps) {
-      snapObj.seqs = snapObj.image.data.table
-      for (const seqObj of snapObj.seqs) seqObj.name = seqObj[snapObj.image.data.column.name]
-    }
-
-    const currentSnap = currentRound.snaps[0]
-    const currentSeq = currentSnap.seqs[0]
-
-    this.setRound(currentRound)
-    this.setSnap(currentSnap)
-    this.setSeq(currentSeq)
+    this.setRound(roundObj)
+    this.setSnap(snapObj)
+    this.setMark(markObj)
   },
 
   async mounted() {
@@ -139,6 +134,7 @@ export default {
         return this.$store.state.ls.currentRound
       },
       set(values) {
+        if (process.env.dev) console.log('Set Round', values)
         this.setRound(values)
       }
     },
@@ -147,15 +143,17 @@ export default {
         return this.$store.state.ls.currentSnap
       },
       set(values) {
+        if (process.env.dev) console.log('Set Snap', values)
         this.setSnap(values)
       }
     },
-    currentSeq: {
+    currentMark: {
       get() {
-        return this.$store.state.ls.currentSeq
+        return this.$store.state.ls.currentMark
       },
       set(values) {
-        this.setSeq(values)
+        if (process.env.dev) console.log('Set Mark', values)
+        this.setMark(values)
       }
     },
     layerIndex: {
