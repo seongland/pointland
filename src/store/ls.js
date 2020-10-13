@@ -58,8 +58,16 @@ export const mutations = {
     if (index === 2) setTimeout(() => updateCtrl())
   },
 
-  setRound: (state, round) => (state.currentRound = round),
-  setSnap: (state, snap) => (state.currentSnap = snap),
+  setRound(state, roundObj) {
+    state.currentRound = roundObj
+    const snapObj = roundObj.snaps[0]
+    this.commit('ls/setSnap', snapObj)
+  },
+  setSnap(state, snapObj) {
+    state.currentSnap = snapObj
+    const markObj = snapObj.marks[0]
+    this.commit('ls/setMark', markObj)
+  },
   setMark(state, seq) {
     state.currentMark = seq
   }

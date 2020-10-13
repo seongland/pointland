@@ -4,19 +4,17 @@ import { getRootByRound } from '../tool/round'
 export function lasPath(req) {
   const round = req.params.round
   const snap = req.params.snap
-  const seq = req.params.seq
+  const area = req.params.area
   const root = getRootByRound(round)
-  const ext = 'las'
-  const seq6 = seq.toString().padStart(6, '0')
-  return `${root}\\${snap}\\pointcloud\\STRYX_GEOXYZ_${seq6}.${ext}`
+  return `${root}\\${snap}\\pointcloud\\${area}`
 }
 
 export function cachePath(req) {
   const round = req.params.round
   const snap = req.params.snap
-  const seq = req.params.seq
+  const area = req.params.area
   const root = process.cwd()
-  const snapPath = `${root}\\cache\\${round}\\${snap}\\${seq}`
+  const snapPath = `${root}\\cache\\${round}\\${snap}\\${area}`
   mkdir(snapPath, { recursive: true }, () => ({}))
   return snapPath
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background: #000">
     <v-row align="center" justify="center">
       <v-col cols="6" md="6" sm="12" class="py-0 px-0">
         <transition name="fade" appear>
@@ -23,6 +23,7 @@
 
 <script>
 import jimp from 'jimp/browser/lib/jimp'
+import { v4 as uuid } from 'uuid'
 
 const NEAR = 5
 
@@ -52,7 +53,6 @@ export default {
       const backP = this.$axios.post(backURL, { data: { mark: currentMark } })
       const [f, b] = await Promise.all([frontP, backP])
       const [front, back] = [f.data, b.data]
-      if (process.env.dev) console.log('Load Depthmap', front, back)
       jimp.read(Buffer.from(front.uri.split(',')[1], 'base64')).then(image => {
         front.image = image
       })
@@ -87,10 +87,10 @@ export default {
       }
       this.drawNear(image, x, y)
       image.getBase64Async('image/png').then(uri => (data.uri = uri))
-      this.$axios.get(`${data.url}/${x}/${y}`).then(res => {
-        const latlng = [res.data[0], res.data[1]]
-        this.drawXY(latlng, true, latlng[0])
-      })
+      const res = await this.$axios.get(`${data.url}/${x}/${y}`)
+      const latlngz = res.data
+      const latlng = [latlngz[0], latlngz[1]]
+      this.drawXY(latlng, true, uuid())
     },
 
     checkNear(image, x, y) {

@@ -31,7 +31,6 @@ export const mutations = {
   },
 
   setLoading(state, value) {
-    console.log(value)
     state.loading = value
   }
 }

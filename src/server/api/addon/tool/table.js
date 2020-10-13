@@ -9,12 +9,8 @@ export async function tablePath(round, snap, meta) {
   const folderPath = `${root}\\${snap}\\${meta.folder}`
   const filePaths = await fs.promises.readdir(folderPath)
   for (const fileName of filePaths) {
-    const filePath = `${folderPath}\\${fileName}`
-    const fileExt = path
-      .extname(filePath)
-      .split('.')
-      .pop()
-    if (ext === fileExt) return filePath
+    const fileExt = fileName.split('.').pop()
+    if (ext === fileExt) return `${folderPath}\\${fileName}`
   }
 }
 
