@@ -4,7 +4,7 @@
 
 <script>
 import proj4 from 'proj4'
-import { WGS84, EPSG32652 } from '~/server/api/addon/mark/const'
+import { xyto84 } from '~/server/api/addon/tool/coor'
 
 export default {
   data: () => ({ loading: false }),
@@ -29,7 +29,7 @@ export default {
   mounted() {
     this.$root.cloud = this.initCloud({
       selectCallback: (xyz, point) => {
-        const lnglat = proj4(EPSG32652, WGS84, [xyz[0], xyz[1]])
+        const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = [lnglat[1], lnglat[0]]
         this.drawXY(latlng, true, latlng[0])
       }

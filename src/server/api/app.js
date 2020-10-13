@@ -8,7 +8,6 @@ import cors from 'cors'
 import authentication from './feathers/authentication'
 import appHooks from './feathers/app.hooks'
 import services from './services'
-import upload from './addon/upload'
 import image from './addon/image'
 import meta from './addon/meta'
 import pointcloud from './addon/pointcloud'
@@ -25,7 +24,6 @@ const app = express(feathers())
   .configure(mongoose)
   .configure(services)
   .configure(authentication)
-  .use('/upload', upload)
   .use('/image', image)
   .use('/pointcloud', pointcloud)
   .use('/meta', meta)

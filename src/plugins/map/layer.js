@@ -40,57 +40,7 @@ function makeMBLayer() {
   return new Tile(tile)
 }
 
-const makeRecordedLayer = (geoserver, workspace, layer) => {
-  /**
-   * @summary - Get Marker Image Layer
-   */
-  let source = new TileWMS({
-    url: `${geoserver}/${workspace}/wms`,
-    params: {
-      LAYERS: layer
-    },
-    ratio: 1,
-    serverType: 'geoserver',
-    crossOrigin: 'anonymous'
-  })
-  const recordedLayer = new Tile({ source })
-  recordedLayer.setZIndex(ZINDEX_PVR - 2)
-  return recordedLayer
-}
-
-const makeMissionLayer = (geoserver, workspace, layer) => {
-  /**
-   * @summary - Get Marker Image Layer
-   */
-  let source = new TileWMS({
-    url: `${geoserver}/${workspace}/wms`,
-    params: { LAYERS: layer },
-    ratio: 1,
-    serverType: 'geoserver',
-    crossOrigin: 'anonymous'
-  })
-  const missionLayer = new Tile({ source })
-  missionLayer.setZIndex(ZINDEX_PVR - 1)
-  return missionLayer
-}
-
-const makeDraftLayer = (geoserver, workspace, layer) => {
-  /**
-   * @summary - Get Marker Image Layer
-   */
-  let source = new TileWMS({
-    url: `${geoserver}/${workspace}/wms`,
-    params: { LAYERS: layer },
-    ratio: 1,
-    serverType: 'geoserver',
-    crossOrigin: 'anonymous'
-  })
-  let draftLayer = new Tile({ source })
-  draftLayer.setZIndex(ZINDEX_PVR - 3)
-  return draftLayer
-}
-
-const makeTiffLayer = (geoserver, workspace, layer) => {
+const makeTileLayer = (geoserver, workspace, layer, zindex, focus) => {
   /**
    * @summary - Get Marker Image Layer
    */
@@ -102,28 +52,28 @@ const makeTiffLayer = (geoserver, workspace, layer) => {
     crossOrigin: 'anonymous',
     projection: 'EPSG:32652'
   })
-  let tiffLayer = new Tile({ source })
-  tiffLayer.setZIndex(ZINDEX_PVR - 2)
+  let tileLayer = new Tile({ source })
+  tileLayer.setZIndex(zindex)
+  if (!focus) return tileLayer
 
-  // const parser = new WMSCapabilities()
-  // fetch(`${geoserver}/${workspace}/wms?service=wms&version=1.3.0&request=GetCapabilities`)
-  //   .then(response => {
-  //     return response.text()
-  //   })
-  //   .then(text => {
-  //     const result = parser.read(text)
-  //     const layers = result.Capability.Layer.Layer
-  //     for (const layerObj of layers)
-  //       if (layerObj.Name === layer)
-  //         if (ref.map) {
-  //           let bbox4326 = layerObj.EX_GeographicBoundingBox
-  //           let bbox3857 = transformExtent(bbox4326, 'EPSG:4326', 'EPSG:3857')
-  //           for (const element of bbox3857) if (isNaN(element)) return
-  //           ref.map.getView().fit(bbox3857, { duration: 1000 })
-  //         }
-  //   })
-
-  return tiffLayer
+  const parser = new WMSCapabilities()
+  fetch(`${geoserver}/${workspace}/wms?service=wms&version=1.3.0&request=GetCapabilities`)
+    .then(response => {
+      return response.text()
+    })
+    .then(text => {
+      const result = parser.read(text)
+      const layers = result.Capability.Layer.Layer
+      for (const layerObj of layers)
+        if (layerObj.Name === layer)
+          if (ref.map) {
+            let bbox4326 = layerObj.EX_GeographicBoundingBox
+            let bbox3857 = transformExtent(bbox4326, 'EPSG:4326', 'EPSG:3857')
+            for (const element of bbox3857) if (isNaN(element)) return
+            ref.map.getView().fit(bbox3857, { duration: 1000 })
+          }
+    })
+  return tileLayer
 }
 
 function makeGSLayer() {
@@ -204,30 +154,44 @@ function changeLayers(geoserver, workspace, layers) {
   if (ref.draftLayer) ref.map.removeLayer(ref.draftLayer)
   if (ref.recordedLayer) ref.map.removeLayer(ref.recordedLayer)
   if (ref.missionLayer) ref.map.removeLayer(ref.missionLayer)
-  const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
-  const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
-  const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
-  ref.map.addLayer(draftLayer)
-  ref.map.addLayer(recordedLayer)
-  ref.map.addLayer(missionLayer)
-  ref.draftLayer = draftLayer
-  ref.recordedLayer = recordedLayer
-  ref.missionLayer = missionLayer
+  if (ref.tiffLayer) ref.map.removeLayer(ref.tiffLayer)
+  if (geoserver) {
+    if (layers.tiff) {
+      const tiffLayer = makeTileLayer(geoserver, workspace, layers.tiff, ZINDEX_PVR - 4, true)
+      ref.map.addLayer(tiffLayer)
+      ref.tiffLayer = tiffLayer
+    }
+    if (layers.draft) {
+      const draftLayer = makeTileLayer(geoserver, workspace, layers.draft, ZINDEX_PVR - 3)
+      ref.map.addLayer(draftLayer)
+      ref.draftLayer = draftLayer
+    }
+    if (layers.mission) {
+      const missionLayer = makeTileLayer(geoserver, workspace, layers.mission, ZINDEX_PVR - 2)
+      ref.map.addLayer(missionLayer)
+      ref.missionLayer = missionLayer
+    }
+    if (layers.recorded) {
+      const recordedLayer = makeTileLayer(geoserver, workspace, layers.recorded, ZINDEX_PVR - 1)
+      ref.map.addLayer(recordedLayer)
+      ref.recordedLayer = recordedLayer
+    }
+    ref.geoserver = geoserver
+    ref.workspace = workspace
+    ref.layers = layers
+  }
   ref.recordingLayer.getSource().clear()
-  ref.drawLayer.getSource().clear()
+  ref.currentLayer.getSource().clear()
 }
 
 export {
   changeLayers,
-  makeTiffLayer,
   makeGoogleLayer,
   makeGSLayer,
   makeMBLayer,
-  makeDraftLayer,
-  makeRecordedLayer,
-  makeMissionLayer,
   makeNaverMap,
   makeDrawLayer,
   makeRecordingLayer,
-  makeDrawMissionLayer
+  makeDrawMissionLayer,
+  makeTileLayer
 }

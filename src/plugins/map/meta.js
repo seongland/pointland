@@ -9,50 +9,41 @@ import View from 'ol/View'
 import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
 import { defaults, DragPan, MouseWheelZoom, PinchZoom } from 'ol/interaction'
-
+import { ZINDEX_PVR } from '~/plugins/map/const'
 import { makeStyle } from './draw'
-import {
-  makeDraftLayer,
-  makeRecordedLayer,
-  makeMissionLayer,
-  makeNaverMap,
-  makeDrawLayer,
-  makeRecordingLayer,
-  makeTiffLayer
-} from '~/plugins/map/layer'
+import { makeNaverMap, makeDrawLayer, makeTileLayer } from '~/plugins/map/layer'
 import { DRAW_LAYER_ID, INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/const'
 import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
 
-function olInit(geoserver, workspace, layers, options) {
+function olInit(geoserver, workspace, layers) {
   /**
    * @summary - Make OSM
    * @todo - option conatin id and substitute default configs
    */
   const styles = makeStyle()
   const naver = makeNaverMap()
-  const recordingLayer = makeRecordingLayer(styles)
   const drawLayer = makeDrawLayer(styles)
-  const openlayers = [recordingLayer, drawLayer]
+  const openlayers = [drawLayer]
   if (geoserver) {
-    if (layers.draft) {
-      const draftLayer = makeDraftLayer(geoserver, workspace, layers.draft)
-      openlayers.push(draftLayer)
-      ref.draftLayer = draftLayer
-    }
     if (layers.tiff) {
-      const tiffLayer = makeTiffLayer(geoserver, workspace, layers.tiff)
+      const tiffLayer = makeTileLayer(geoserver, workspace, layers.tiff, ZINDEX_PVR - 4, true)
       openlayers.push(tiffLayer)
       ref.tiffLayer = tiffLayer
     }
+    if (layers.draft) {
+      const draftLayer = makeTileLayer(geoserver, workspace, layers.draft, ZINDEX_PVR - 3)
+      openlayers.push(draftLayer)
+      ref.draftLayer = draftLayer
+    }
     if (layers.mission) {
-      const missionLayer = makeMissionLayer(geoserver, workspace, layers.mission)
+      const missionLayer = makeTileLayer(geoserver, workspace, layers.mission, ZINDEX_PVR - 2)
       openlayers.push(missionLayer)
       ref.missionLayer = missionLayer
     }
     if (layers.recorded) {
-      const recordedLayer = makeRecordedLayer(geoserver, workspace, layers.recorded)
+      const recordedLayer = makeTileLayer(geoserver, workspace, layers.recorded, ZINDEX_PVR - 1)
       openlayers.push(recordedLayer)
       ref.recordedLayer = recordedLayer
     }
@@ -63,9 +54,8 @@ function olInit(geoserver, workspace, layers, options) {
   const map = makeOlMap(openlayers)
   map.styles = styles
   map.naver = naver
-  ref.map = map
-  ref.recordingLayer = recordingLayer
   ref.drawLayer = drawLayer
+  ref.map = map
   eventBind(map)
   return map
 }
