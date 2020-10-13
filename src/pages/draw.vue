@@ -102,17 +102,13 @@ export default {
   components: { GeoMap, LasCloud, ImmsImage },
   data: () => ({ classes }),
   fetchOnServer: false,
+
   async fetch() {
     const currentRoundName = this.$store.state.ls.rounds[0].name
     const res = await this.$axios.get(`/api/meta/${currentRoundName}`)
     const roundObj = res.data
-    const snapObj = roundObj.snaps[0]
-    const markObj = snapObj.marks[0]
     if (process.env.dev) console.log('Round Object', roundObj)
-
     this.setRound(roundObj)
-    this.setSnap(snapObj)
-    this.setMark(markObj)
   },
 
   async mounted() {
