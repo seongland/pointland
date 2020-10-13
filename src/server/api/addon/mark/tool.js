@@ -35,8 +35,10 @@ export function to32652(lon, lat) {
 }
 
 export function color(distance) {
+  // 1 is white, 0 is black
   let ratio
-  if (distance < 50) ratio = (50 - distance) / 50
-  else ratio = 1
+  if (distance < 5) ratio = 1
+  else if (distance < 50) ratio = (55 - distance) / 50
+  else ratio = 0.1
   return jimp.rgbaToInt(255 * ratio, 255 * ratio, 255 * ratio, 255)
 }

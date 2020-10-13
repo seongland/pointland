@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { getImgTable } from './node/image'
+import { getImgTable } from './mark/image'
 
 dotenv.config()
 const router = express.Router()
@@ -25,7 +25,11 @@ async function round(req, res) {
             column: {
               name: 'id_point'
             },
-            table: []
+            prefix: {
+              front: '00',
+              back: '01'
+            },
+            sep: '_'
           }
         },
         pointcloud: {
@@ -36,8 +40,7 @@ async function round(req, res) {
             ext: 'dbf',
             column: {
               name: 'file_las'
-            },
-            table: []
+            }
           }
         }
       }
