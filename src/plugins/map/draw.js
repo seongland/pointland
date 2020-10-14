@@ -34,16 +34,27 @@ function makeStyle() {
   return styles
 }
 
+function makePointStyle({ color, radius }) {
+  /**
+   * @summary - Make Diverse Style
+   * @function
+   */
+  const fill = new Fill({ color })
+  const circle = new Circle({ radius, fill })
+  const style = new Style({ image: circle })
+  return style
+}
+
 function drawLine(feature) {
   ref.drawMissionLayer.getSource().addFeature(feature)
 }
 
-function drawXY(latlng, focus, id) {
+function drawXY(layer, latlng, focus, id) {
   /**
    * @summary - When Click Map
    */
   if (!latlng) return
-  updateMarker(...latlng, id)
+  updateMarker(layer, ...latlng, id)
   if (focus) setFocus(...latlng)
 }
 
@@ -88,7 +99,7 @@ function addCircle(lat, lng, id) {
   recordingLayer.getSource().addFeatures([feature])
 }
 
-function updateMarker(lat, lng, id) {
+function updateMarker(layer, lat, lng, id) {
   /**
    * @summary - update lyaer
    */
@@ -96,10 +107,9 @@ function updateMarker(lat, lng, id) {
   let coor = new Point(loc)
   const feature = new Feature({ geometry: coor })
   feature.setId(id)
-  const drawLayer = ref.drawLayer
-  const legacy = drawLayer.getSource().getFeatureById(id)
-  if (legacy) drawLayer.getSource().removeFeature(legacy)
-  drawLayer.getSource().addFeatures([feature])
+  const legacy = layer.getSource().getFeatureById(id)
+  if (legacy) layer.getSource().removeFeature(legacy)
+  layer.getSource().addFeatures([feature])
 }
 
 function setDrawInteraction(layerObj) {
@@ -113,4 +123,4 @@ function setDrawInteraction(layerObj) {
   ref.map.addInteraction(draw)
 }
 
-export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl, setDrawInteraction }
+export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl, setDrawInteraction, makePointStyle }

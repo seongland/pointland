@@ -10,12 +10,42 @@ import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
 import { defaults, DragPan, MouseWheelZoom, PinchZoom } from 'ol/interaction'
 import { ZINDEX_PVR } from '~/plugins/map/const'
-import { makeStyle } from './draw'
-import { makeNaverMap, makeDrawLayer, makeTileLayer } from '~/plugins/map/layer'
+import { makeStyle, makePointStyle } from './draw'
+import { makeNaverMap, makeTileLayer, makeVectorLayer } from '~/plugins/map/layer'
 import { DRAW_LAYER_ID, INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/const'
 import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
+const layerConfig = {
+  geoserverLayers: [{ name: 'tiffLayer', key: 'tiff' }],
+  vectorLayers: [
+    {
+      name: 'markLayer',
+      zindex: ZINDEX_PVR + 1,
+      style: makePointStyle({
+        color: '#f59',
+        radius: 5
+      })
+    },
+    {
+      name: 'currentLayer',
+      zindex: ZINDEX_PVR + 2,
+      style: makePointStyle({
+        color: '#18f',
+        radius: 5
+      })
+    },
+    { name: 'drawLayer', zindex: ZINDEX_PVR + 3 },
+    {
+      name: 'selectedLayer',
+      zindex: ZINDEX_PVR + 4,
+      style: makePointStyle({
+        color: '#6eb',
+        radius: 2
+      })
+    }
+  ]
+}
 
 function olInit(geoserver, workspace, layers) {
   /**
@@ -24,8 +54,10 @@ function olInit(geoserver, workspace, layers) {
    */
   const styles = makeStyle()
   const naver = makeNaverMap()
-  const drawLayer = makeDrawLayer(styles)
-  const openlayers = [drawLayer]
+  const openlayers = []
+
+  for (const vectorConfig of layerConfig.vectorLayers) openlayers.push(makeVectorLayer(vectorConfig))
+
   if (geoserver) {
     if (layers.tiff) {
       const tiffLayer = makeTileLayer(geoserver, workspace, layers.tiff, ZINDEX_PVR - 4, true)
@@ -51,10 +83,10 @@ function olInit(geoserver, workspace, layers) {
     ref.workspace = workspace
     ref.layers = layers
   }
+
   const map = makeOlMap(openlayers)
   map.styles = styles
   map.naver = naver
-  ref.drawLayer = drawLayer
   ref.map = map
   eventBind(map)
   return map

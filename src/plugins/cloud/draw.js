@@ -10,7 +10,6 @@ function drawLas(lasJson) {
   /*
    * <summary>index file from js</summary>
    */
-  console.log(lasJson)
   const cloud = ref.cloud
   const [vertices, colors] = [[], []]
   ref.loading = true

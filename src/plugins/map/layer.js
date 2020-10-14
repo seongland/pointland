@@ -11,10 +11,6 @@ import { ref } from './init'
 import WMSCapabilities from 'ol/format/WMSCapabilities'
 import { transformExtent } from 'ol/proj'
 
-function lineStyle() {
-  return [ref.map.styles.strokeWhite, ref.map.styles.strokeYellow]
-}
-
 function makeGoogleLayer() {
   /**
    * @summary - Make Google Road Map
@@ -91,60 +87,18 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
-const makeRecordingLayer = styles => {
-  /**
-   * @summary - Make Draw Map
-   */
-  const tempArray = []
-  const vectorSrc = new Vector({ features: tempArray })
-  const recordingLayer = new VectorLayer({
-    source: vectorSrc,
-    style: styles.circleRed
-  })
-  recordingLayer.styles = styles
-  recordingLayer.setZIndex(ZINDEX_PVR)
-  return recordingLayer
-}
-
-const makeVectorLayer = (style, { zindex, name }) => {
+const makeVectorLayer = ({ style, zindex, name }) => {
   /**
    * @summary - Make Vector Layer Tempalte
    */
   const vectorSrc = new Vector()
   const vectorLayer = new VectorLayer({
     source: vectorSrc,
-    style: style
+    style
   })
   if (zindex) vectorLayer.setZIndex(zindex)
   if (name) ref[name] = vectorLayer
   return vectorLayer
-}
-
-const makeDrawLayer = styles => {
-  /**
-   * @summary - Make current draw Map
-   */
-  const tempArray = []
-  const vectorSrc = new Vector({ features: tempArray })
-  const drawLayer = new VectorLayer({
-    source: vectorSrc
-  })
-  drawLayer.styles = styles
-  drawLayer.setZIndex(ZINDEX_PVR + 1)
-  return drawLayer
-}
-
-const makeDrawMissionLayer = () => {
-  /**
-   * @summary - Make current draw Map
-   */
-  const lineSrc = new Vector()
-  const lineLayer = new VectorLayer({
-    source: lineSrc,
-    style: lineStyle
-  })
-  lineLayer.setZIndex(ZINDEX_PVR + 2)
-  return lineLayer
 }
 
 function makeNaverMap() {
@@ -201,15 +155,4 @@ function changeLayers(geoserver, workspace, layers) {
   ref.currentLayer.getSource().clear()
 }
 
-export {
-  changeLayers,
-  makeGoogleLayer,
-  makeGSLayer,
-  makeMBLayer,
-  makeNaverMap,
-  makeDrawLayer,
-  makeRecordingLayer,
-  makeDrawMissionLayer,
-  makeTileLayer,
-  makeVectorLayer
-}
+export { changeLayers, makeGoogleLayer, makeGSLayer, makeMBLayer, makeNaverMap, makeTileLayer, makeVectorLayer }
