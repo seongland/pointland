@@ -33,18 +33,31 @@ function addLas(lasJson, cloud, vertices) {
   for (const i in lasJson.x) vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
 }
 
-export function drawXYZ(xyz, focus, id) {
+export function drawXYZ(layer, xyz, focus, id) {
   /*
    * <summary>index file from js</summary>
    */
   const cloud = ref.cloud
-  const selectedLayer = cloud.selectedLayer
-  const geometry = selectedLayer.geometry
-  console.log(geometry)
+  const geometry = layer.geometry
+  const positions = geometry.attributes.position.array
+  const count = geometry.drawRange.count
+  const xyzInCloud = [xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2]]
 
-  // geometry.vertices.push(new THREE.Vector3(xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2]))
-  // geometry.verticesNeedUpdate = true
-  // console.log(selectedLayer)
+  positions[3 * count] = xyzInCloud[0]
+  positions[3 * count + 1] = xyzInCloud[1]
+  positions[3 * count + 2] = xyzInCloud[2]
+  geometry.setDrawRange(0, ++geometry.drawRange.count)
+  geometry.attributes.position.needsUpdate = true
+  geometry.computeBoundingSphere()
+
+  if (focus) cloud.controls.target.set(...xyzInCloud)
+}
+
+export function resetPointLayer(layer) {
+  const geometry = layer.geometry
+  geometry.setDrawRange(0, 0)
+  geometry.attributes.position.needsUpdate = true
+  geometry.computeBoundingSphere()
 }
 
 function addPoints(lasJson, colors, vertices, cloud) {
@@ -139,7 +152,7 @@ function drawClick() {
   if (!cloud.currentHover) return
   cloud.currentSelected = cloud.currentHover
   const center = cloud.currentSelected.point
-  ref.cloud.selectCallback([center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]])
+  // ref.cloud.selectCallback([center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]])
 }
 
 export { drawLas, drawHover, drawClick }

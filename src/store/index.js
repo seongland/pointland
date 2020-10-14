@@ -2,7 +2,7 @@ import { setDrawInteraction } from '~/plugins/map/draw'
 
 export const state = () => ({
   drawLayer: { index: undefined, layerObj: undefined },
-  loading: false,
+  loading: true,
   depth: {
     loading: false,
     on: true

@@ -4,13 +4,10 @@
 
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
+import { CLOUD_ID, SELECT_SIZE, SELECT_POINTS, MARK_SIZE, SNAP_POINTS } from './const'
 import { drawHover, drawClick } from './draw'
 
 export const ref = { cloudSize: 0.05, pointSize: 1 }
-const CLOUD_ID = 'las'
-const SELECT_POINTS = 100
-const SNAP_POINTS = 10000
-const SELECTED_COLOR = [0.4, 1, 0.8]
 
 function initCloud({ selectCallback }) {
   /**
@@ -37,8 +34,8 @@ function initCloud({ selectCallback }) {
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
     cloud.el.addEventListener('click', drawClick, false)
-    cloud.selectedLayer = makePointLayer(cloud.scene, 0x66ffbb, 0.05, SELECT_POINTS)
-    cloud.markLayer = makePointLayer(cloud.scene, 0xee2266, 1, SNAP_POINTS)
+    ref.selectedLayer = makePointLayer(cloud.scene, 0x66ffbb, SELECT_SIZE, SELECT_POINTS, 1)
+    ref.markLayer = makePointLayer(cloud.scene, 0xee2266, MARK_SIZE, SNAP_POINTS)
 
     // Add To Canvas
     cloud.id = animate()
@@ -55,7 +52,7 @@ function purgeCloud(cloud) {
   return null
 }
 
-function makePointLayer(scene, color, size, length) {
+function makePointLayer(scene, color, size, length, order) {
   /**
    * @summary - Add Layer
    */
@@ -65,6 +62,7 @@ function makePointLayer(scene, color, size, length) {
   geometry.setDrawRange(0, 0)
   const material = new THREE.PointsMaterial({ color, size })
   const points = new THREE.Points(geometry, material)
+  if (order) points.renderOrder = order
   scene.add(points)
   return points
 }

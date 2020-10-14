@@ -34,7 +34,10 @@ function makeMBLayer() {
   let key = 'pk.eyJ1Ijoic2VvbmdsYWUiLCJhIjoiY2s3MDE0dHNtMWVueDNucDlhZHhkdjlrZyJ9.39bib8g2kspp44rI6MmAzw'
   let tile = {
     source: new XYZ({
-      url: 'https://api.mapbox.com/styles/v1/seonglae/ck701700t0rgf1imr4boh5n14/tiles/256/{z}/{x}/{y}@2x?' + 'access_token=' + key
+      url:
+        'https://api.mapbox.com/styles/v1/seonglae/ck701700t0rgf1imr4boh5n14/tiles/256/{z}/{x}/{y}@2x?' +
+        'access_token=' +
+        key
     })
   }
   return new Tile(tile)
@@ -42,7 +45,7 @@ function makeMBLayer() {
 
 const makeTileLayer = (geoserver, workspace, layer, zindex, focus) => {
   /**
-   * @summary - Get Marker Image Layer
+   * @summary - Get Tile Layer Template
    */
   let source = new TileWMS({
     url: `${geoserver}/${workspace}/wms`,
@@ -101,6 +104,20 @@ const makeRecordingLayer = styles => {
   recordingLayer.styles = styles
   recordingLayer.setZIndex(ZINDEX_PVR)
   return recordingLayer
+}
+
+const makeVectorLayer = (style, { zindex, name }) => {
+  /**
+   * @summary - Make Vector Layer Tempalte
+   */
+  const vectorSrc = new Vector()
+  const vectorLayer = new VectorLayer({
+    source: vectorSrc,
+    style: style
+  })
+  if (zindex) vectorLayer.setZIndex(zindex)
+  if (name) ref[name] = vectorLayer
+  return vectorLayer
 }
 
 const makeDrawLayer = styles => {
@@ -193,5 +210,6 @@ export {
   makeDrawLayer,
   makeRecordingLayer,
   makeDrawMissionLayer,
-  makeTileLayer
+  makeTileLayer,
+  makeVectorLayer
 }

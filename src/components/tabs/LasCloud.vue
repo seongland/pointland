@@ -27,8 +27,6 @@ export default {
       const currentRound = this.$store.state.ls.currentRound.name
       const currentSnap = this.$store.state.ls.currentSnap.name
       const lasList = res.data
-      commit('setLoading', true)
-      commit('setLoading', false)
 
       for (const areaName of lasList) {
         if (this.lasList.includes(areaName)) return
@@ -38,7 +36,13 @@ export default {
         const check = await fetch(`${root}`)
         commit('setLoading', true)
         if (check.data.cached) {
-          const promises = [fetch(`${root}/x`), fetch(`${root}/y`), fetch(`${root}/z`), fetch(`${root}/c`), fetch(`${root}/i`)]
+          const promises = [
+            fetch(`${root}/x`),
+            fetch(`${root}/y`),
+            fetch(`${root}/z`),
+            fetch(`${root}/c`),
+            fetch(`${root}/i`)
+          ]
           const [x, y, z, c, i] = await Promise.all(promises)
           this.drawLas({ x: x.data, y: y.data, z: z.data, center: c.data, intensity: i.data })
         } else this.drawLas(check.data)
