@@ -22,10 +22,11 @@ export default {
       let project
 
       // if settled
-      if (ls.prj) for (const prj of this.projects) if (prj.id === ls.prjId && prj.layers.tiff && layers.recorded) project = prj
+      if (ls.prj)
+        for (const prj of this.projects) if (prj.id === ls.prjId && prj.layers.tiff && layers.recorded) project = prj
 
       // filter
-      for (const prj of this.projects) if (prj.layers.tiff && prj.layers.recorded) project = prj
+      for (const prj of this.projects) if (prj.layers.tiff) project = prj
       if (!project) project = this.projects[0]
       this.olInit(project.geoserver, project.workspace, project.layers)
     }

@@ -56,7 +56,7 @@ export default {
   mounted() {
     this.$root.cloud = this.initCloud({
       selectCallback: (xyz, point) => {
-        this.clickXYZ(xyz, true, uuid())
+        this.selectXYZ(xyz, uuid())
       }
     })
   },

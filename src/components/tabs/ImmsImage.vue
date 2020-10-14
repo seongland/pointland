@@ -89,7 +89,7 @@ export default {
       image.getBase64Async('image/png').then(uri => (data.uri = uri))
       const res = await this.$axios.get(`${data.url}/${x}/${y}`)
       const xyz = res.data
-      this.clickXYZ(xyz, true, uuid())
+      this.selectXYZ(xyz, uuid())
     },
 
     checkNear(image, x, y) {

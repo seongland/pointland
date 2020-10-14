@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import { olInit } from '~/plugins/map/init'
+import { olInit, ref as mapRef } from '~/plugins/map/init'
 import { drawXYs, drawXY, subtractVhcl } from './map/draw'
 import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
-import { drawLas, drawXYZ } from './cloud/draw'
+import { drawLas, drawXYZ, resetPointLayer } from './cloud/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import AsyncComputed from 'vue-async-computed'
 
@@ -34,16 +34,50 @@ export default ({ $axios, store: { commit, state } }) => {
       drawXYs: (latlngs, id) => drawXYs(latlngs, id),
       subtractVhcl: id => subtractVhcl(id),
       setRound: round => commit('ls/setRound', round),
-      setSnap: snap => commit('ls/setSnap', snap),
-      setMark: seq => commit('ls/setMark', seq),
+
+      checkMount: () => {
+        console.log(mapRef.map, cloudRef.cloud)
+        return mapRef.map !== undefined && cloudRef.cloud.offset !== undefined
+      },
+
+      setSnap(snapObj) {
+        commit('ls/setSnap', snapObj)
+        for (const mark of snapObj.marks)
+          this.waitAvail(this.checkMount, this.markXYZ, [[mark.x, mark.y, mark.alt], mark.name])
+      },
+
+      setMark(markObj) {
+        commit('ls/setMark', markObj)
+        this.waitAvail(this.checkMount, this.currentXYZ, [[markObj.x, markObj.y, markObj.alt]])
+      },
+
       setLayer: data => commit('setLayer', data),
 
-      clickXYZ(xyz, focus, id) {
-        const selectedLayer = cloudRef.selectedLayer
+      async waitAvail(flag, callback, args) {
+        console.log(args)
+        flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 500)
+      },
+
+      selectXYZ(xyz, id) {
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
-        drawXY(latlng, focus, id)
-        drawXYZ(selectedLayer, xyz, focus, id)
+        drawXY(mapRef.selectedLayer, latlng, false, id)
+        drawXYZ(cloudRef.selectedLayer, xyz, false, id)
+      },
+
+      markXYZ(xyz, id) {
+        const lnglat = xyto84(xyz[0], xyz[1])
+        const latlng = lnglat.reverse()
+        drawXY(mapRef.markLayer, latlng, false, id)
+        drawXYZ(cloudRef.markLayer, xyz, false, id)
+      },
+
+      currentXYZ(xyz) {
+        resetPointLayer(cloudRef.currentLayer)
+        const lnglat = xyto84(xyz[0], xyz[1])
+        const latlng = lnglat.reverse()
+        drawXY(mapRef.currentLayer, latlng, true, 'current')
+        drawXYZ(cloudRef.currentLayer, xyz, true, 'current')
       },
 
       eventBind() {
@@ -76,13 +110,13 @@ export default ({ $axios, store: { commit, state } }) => {
           // change seq
           case ',':
             seqIndex = ls.currentSnap.marks.indexOf(ls.currentMark)
-            if (seqIndex > 0) if (!state.depth.loading) commit('ls/setMark', ls.currentSnap.marks[seqIndex - 1])
+            if (seqIndex > 0) if (!state.depth.loading) this.setMark(ls.currentSnap.marks[seqIndex - 1])
             return
 
           case '.':
             seqIndex = ls.currentSnap.marks.indexOf(ls.currentMark)
             if (seqIndex < ls.currentSnap.marks.length - 1)
-              if (!state.depth.loading) commit('ls/setMark', ls.currentSnap.marks[seqIndex + 1])
+              if (!state.depth.loading) this.setMark(ls.currentSnap.marks[seqIndex + 1])
             return
 
           // change tabs
@@ -118,8 +152,8 @@ export default ({ $axios, store: { commit, state } }) => {
       },
 
       olInit(geoserver, workspace, layers) {
-        this.map = olInit(geoserver, workspace, layers)
-        return this.map
+        this.$root.map = olInit(geoserver, workspace, layers)
+        return this.$root.map
       }
     }
   })

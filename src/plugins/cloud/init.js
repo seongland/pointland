@@ -4,10 +4,18 @@
 
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
-import { CLOUD_ID, SELECT_SIZE, SELECT_POINTS, MARK_SIZE, SNAP_POINTS } from './const'
+import { CLOUD_ID, SELECT_SIZE, SELECT_POINTS, MARK_SIZE, MARK_POINTS } from './const'
 import { drawHover, drawClick } from './draw'
 
 export const ref = { cloudSize: 0.05, pointSize: 1 }
+
+const layerConfig = {
+  pointLayers: [
+    { name: 'selectedLayer', color: 0x66ffbb, size: SELECT_SIZE, length: SELECT_POINTS, order: 1 },
+    { name: 'markLayer', color: 0xee2266, size: MARK_SIZE / 2, length: MARK_POINTS },
+    { name: 'currentLayer', color: 0x1188ff, size: MARK_SIZE, length: 1, order: 2 }
+  ]
+}
 
 function initCloud({ selectCallback }) {
   /**
@@ -34,8 +42,8 @@ function initCloud({ selectCallback }) {
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
     cloud.el.addEventListener('click', drawClick, false)
-    ref.selectedLayer = makePointLayer(cloud.scene, 0x66ffbb, SELECT_SIZE, SELECT_POINTS, 1)
-    ref.markLayer = makePointLayer(cloud.scene, 0xee2266, MARK_SIZE, SNAP_POINTS)
+
+    for (const config of layerConfig.pointLayers) cloud.scene.add(makePointLayer(config))
 
     // Add To Canvas
     cloud.id = animate()
@@ -52,7 +60,7 @@ function purgeCloud(cloud) {
   return null
 }
 
-function makePointLayer(scene, color, size, length, order) {
+function makePointLayer({ name, color, size, length, order }) {
   /**
    * @summary - Add Layer
    */
@@ -63,7 +71,7 @@ function makePointLayer(scene, color, size, length, order) {
   const material = new THREE.PointsMaterial({ color, size })
   const points = new THREE.Points(geometry, material)
   if (order) points.renderOrder = order
-  scene.add(points)
+  ref[name] = points
   return points
 }
 
@@ -113,9 +121,9 @@ function makeControls(camera, renderer) {
    * @summary - Make Controls
    */
   const controls = new TrackballControls(camera, renderer.domElement)
-  controls.rotateSpeed = 2.0
-  controls.zoomSpeed = 1
-  controls.panSpeed = 1
+  controls.rotateSpeed = 2
+  controls.zoomSpeed = 2
+  controls.panSpeed = 2
   controls.staticMoving = true
   controls.minDistance = 0.3
   controls.maxDistance = 0.3 * 1000
