@@ -1,4 +1,4 @@
-import { updateCtrl } from '~/plugins/cloud/meta'
+import { updateCtrl } from '~/plugins/cloud/init'
 
 const WAIT_RENDER = 500
 

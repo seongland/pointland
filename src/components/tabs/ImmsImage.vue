@@ -88,9 +88,8 @@ export default {
       this.drawNear(image, x, y)
       image.getBase64Async('image/png').then(uri => (data.uri = uri))
       const res = await this.$axios.get(`${data.url}/${x}/${y}`)
-      const latlngz = res.data
-      const latlng = [latlngz[0], latlngz[1]]
-      this.drawXY(latlng, true, uuid())
+      const xyz = res.data
+      this.clickXYZ(xyz, true, uuid())
     },
 
     checkNear(image, x, y) {

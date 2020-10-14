@@ -10,7 +10,7 @@ import { Feature } from 'ol'
 import Draw from 'ol/interaction/Draw'
 import { setFocus } from './event'
 import { RED, BLUE, DFT_RADIUS, DFT_WIDTH, WHITE, YELLOW } from './const'
-import { ref } from './meta'
+import { ref } from './init'
 
 function makeStyle() {
   /**
