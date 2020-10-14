@@ -42,14 +42,6 @@ async function round(req, res) {
                 back: '01'
               },
               sep: '_'
-            },
-            {
-              folder: 'auxiliary',
-              key: 'id_point',
-              ext: 'csv',
-              column: {
-                las: ''
-              }
             }
           ]
         },

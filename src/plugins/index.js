@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { olInit } from '~/plugins/map/init'
 import { drawXYs, drawXY, subtractVhcl } from './map/draw'
-import { initCloud, purgeCloud } from './cloud/init'
+import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
 import { drawLas, drawXYZ } from './cloud/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import AsyncComputed from 'vue-async-computed'
@@ -39,10 +39,11 @@ export default ({ $axios, store: { commit, state } }) => {
       setLayer: data => commit('setLayer', data),
 
       clickXYZ(xyz, focus, id) {
+        const selectedLayer = cloudRef.selectedLayer
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
         drawXY(latlng, focus, id)
-        drawXYZ(xyz, focus, id)
+        drawXYZ(selectedLayer, xyz, focus, id)
       },
 
       eventBind() {

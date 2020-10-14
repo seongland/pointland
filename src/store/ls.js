@@ -1,4 +1,6 @@
 import { updateCtrl } from '~/plugins/cloud/init'
+import { ref as cloudRef } from '~/plugins/cloud/init'
+import { drawXYZ } from '~/plugins/cloud/draw'
 
 const WAIT_RENDER = 500
 
@@ -62,13 +64,16 @@ export const mutations = {
     state.currentRound = roundObj
     const snapObj = roundObj.snaps[0]
     this.commit('ls/setSnap', snapObj)
+    setTimeout(() => {
+      for (const mark of snapObj.marks) drawXYZ(cloudRef.markLayer, [mark.x, mark.y, mark.alt], false)
+    }, 2000)
   },
   setSnap(state, snapObj) {
     state.currentSnap = snapObj
     const markObj = snapObj.marks[0]
     this.commit('ls/setMark', markObj)
   },
-  setMark(state, seq) {
-    state.currentMark = seq
+  setMark(state, mark) {
+    state.currentMark = mark
   }
 }
