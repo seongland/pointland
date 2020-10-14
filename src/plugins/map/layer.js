@@ -7,7 +7,7 @@ import { Tile, Vector as VectorLayer } from 'ol/layer'
 import { TileWMS, XYZ, Vector } from 'ol/source'
 import { ZINDEX_PVR } from '~/plugins/map/const'
 import { NAVER_ID } from '~/plugins/map/const'
-import { ref } from './meta'
+import { ref } from './init'
 import WMSCapabilities from 'ol/format/WMSCapabilities'
 import { transformExtent } from 'ol/proj'
 

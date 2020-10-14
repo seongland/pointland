@@ -5,7 +5,7 @@
 
 import { transform } from 'ol/proj'
 import { GeoJSON } from 'ol/format'
-import { ref } from './meta'
+import { ref } from './init'
 import { drawLine } from './draw'
 import { ZOOM_DURATION, START_ZOOM } from './const'
 

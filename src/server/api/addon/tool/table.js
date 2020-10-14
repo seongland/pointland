@@ -1,7 +1,13 @@
 import fs from 'fs'
-import path from 'path'
 import { DBFFile } from 'dbffile'
 import { getRootByRound } from './round'
+
+const merge = (target, source) => {
+  for (let key of Object.keys(source))
+    if (source[key] instanceof Object) Object.assign(source[key], merge(target[key], source[key]))
+  Object.assign(target || {}, source)
+  return target
+}
 
 export async function tablePath(round, snap, meta) {
   const root = getRootByRound(round)
@@ -14,15 +20,22 @@ export async function tablePath(round, snap, meta) {
   }
 }
 
-export async function getTable(round, snap, meta) {
-  const path = await tablePath(round, snap, meta)
-  const records = await getDbfRecords(path)
-  const table = records.map(record => {
-    const tableElement = {}
-    for (const key of Object.keys(meta.column)) tableElement[key] = record[meta.column[key]]
-    return tableElement
-  })
-  return table
+export async function getTable(round, snap, metas) {
+  let mergeObj = {}
+  for (const meta of metas) {
+    const tableObj = {}
+    if (meta.ext === 'dbf') {
+      const path = await tablePath(round, snap, meta)
+      const records = await getDbfRecords(path)
+      for (const record of records) {
+        const recordObj = {}
+        for (const key of Object.keys(meta.column)) recordObj[key] = record[meta.column[key]]
+        tableObj[record[meta.key]] = recordObj
+      }
+    }
+    mergeObj = merge(mergeObj, tableObj)
+  }
+  return Object.values(mergeObj)
 }
 
 export async function getDbfRecord(dbfPath, seq) {

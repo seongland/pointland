@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import proj4 from 'proj4'
 import { xyto84 } from '~/server/api/addon/tool/coor'
+import { v4 as uuid } from 'uuid'
 
 export default {
   data: () => ({
@@ -52,9 +52,7 @@ export default {
   mounted() {
     this.$root.cloud = this.initCloud({
       selectCallback: (xyz, point) => {
-        const lnglat = xyto84(xyz[0], xyz[1])
-        const latlng = [lnglat[1], lnglat[0]]
-        this.drawXY(latlng, true, latlng[0])
+        this.clickXYZ(xyz, true, uuid())
       }
     })
   },

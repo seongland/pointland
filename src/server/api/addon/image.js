@@ -4,7 +4,6 @@
 
 import express from 'express'
 import dotenv from 'dotenv'
-import { xyto84 } from './tool/coor'
 import { imagePath, depthmapPath, depthData, xyzAtDepthmap, getLasList } from './image/img'
 import { getRootByRound } from './tool/round'
 
@@ -43,8 +42,7 @@ async function imgtoxyz(req, res) {
   const [x, y] = [Number(req.params.x), Number(req.params.y)]
   const path = depthmapPath(req)
   const xyz = await xyzAtDepthmap(path, x, y)
-  const lnglat = xyto84(xyz.x, xyz.y)
-  res.json([lnglat[1], lnglat[0], xyz.z])
+  res.json([xyz.x, xyz.y, xyz.z])
 }
 
 export default router
