@@ -77,6 +77,11 @@
           <v-list>
             <v-list-item link>
               <v-list-item-content>
+                <v-list-item-subtitle v-text="`Help`" @click="$router.push('/help')" />
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item link>
+              <v-list-item-content>
                 <v-list-item-subtitle v-text="`Logout`" @click="$store.commit('ls/logout')" />
               </v-list-item-content>
             </v-list-item>
@@ -100,11 +105,12 @@
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
+import InputData from '~/components/overlay/InputData'
 import classes from '~/assets/morai'
 
 export default {
   middleware: 'authentication',
-  components: { GeoMap, LasCloud, ImmsImage },
+  components: { GeoMap, LasCloud, ImmsImage, InputData },
   data: () => ({ classes }),
   fetchOnServer: false,
 

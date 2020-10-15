@@ -47,13 +47,17 @@ export const mutations = {
       mapWrapper.style.opacity = 0
       setTimeout(() => {
         mapWrapper.classList.add('small-map')
+        mapWrapper.classList.add('bottom')
+        mapWrapper.classList.add('left')
         setTimeout(() => {
           mapWrapper.style.opacity = 1
           mapWrapper.style.transitionDuration = '500ms'
           window.dispatchEvent(new Event('resize'))
         }, WAIT_RENDER)
       })
-    } else if (index === 0) mapWrapper.classList.remove('small-map')
+    } else if (index === 0) {
+      mapWrapper.classList.remove('small-map')
+    }
 
     if (index === 2) setTimeout(() => updateCtrl())
   },
