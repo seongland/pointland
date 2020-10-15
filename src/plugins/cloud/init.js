@@ -6,6 +6,7 @@ import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
 import { CLOUD_ID, SELECT_SIZE, SELECT_POINTS, MARK_SIZE, MARK_POINTS } from './const'
 import { drawHover, drawClick } from './draw'
+import { makePointLayer } from './layer'
 
 export const ref = { cloudSize: 0.05, pointSize: 1 }
 
@@ -24,7 +25,7 @@ function initCloud({ selectCallback }) {
    * @params {Object} socket - socket io object to render real time
    */
   const cloud = {}
-  cloud.el = document.getElementById(CLOUD_ID)
+  cloud.el = document.getElementById('las')
   if (cloud.el && window) {
     // Make Space
     cloud.camera = makeCamera(cloud.el)
@@ -58,21 +59,6 @@ function purgeCloud(cloud) {
   window.removeEventListener('resize', onWindowResize, false)
   cancelAnimationFrame(cloud.id)
   return null
-}
-
-function makePointLayer({ name, color, size, length, order }) {
-  /**
-   * @summary - Add Layer
-   */
-  const geometry = new THREE.BufferGeometry()
-  var positions = new Float32Array(length * 3)
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-  geometry.setDrawRange(0, 0)
-  const material = new THREE.PointsMaterial({ color, size })
-  const points = new THREE.Points(geometry, material)
-  if (order) points.renderOrder = order
-  ref[name] = points
-  return points
 }
 
 export function updateCtrl() {

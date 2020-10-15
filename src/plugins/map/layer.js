@@ -116,7 +116,8 @@ function makeNaverMap() {
     mapTypeControl: false,
     useStyleMap: true,
     baseTileOpacity: 1,
-    draggable: false
+    draggable: false,
+    mapTypeId: naver.maps.MapTypeId.SATELLITE
   }
   return new naver.maps.Map(NAVER_ID, NaverMapOptions)
 }

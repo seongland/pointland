@@ -20,33 +20,39 @@ export default {
   watch: {
     async currentMark(markObj) {
       const commit = this.$store.commit
-      const fetch = this.$axios
-      const ls = this.$store.state.ls
-      const root = escape(`/api/image/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}`)
-      const res = await fetch.post(`${root}/las`, { data: { mark: markObj } })
-      const currentRound = this.$store.state.ls.currentRound.name
-      const currentSnap = this.$store.state.ls.currentSnap.name
-      const lasList = res.data
-
+      const lasList = markObj.lasList.split(':')
       for (const areaName of lasList) {
-        if (this.lasList.includes(areaName)) return
+        if (this.lasList.includes(areaName)) continue
         this.lasList.push(areaName)
-        if (process.env.dev) console.log('New Area', areaName)
-        const root = `/api/pointcloud/${currentRound}/${currentSnap}/${areaName}`
-        const check = await fetch(`${root}`)
+        this.loadLas(areaName)
+      }
+    }
+  },
+
+  methods: {
+    async loadLas(areaName) {
+      const ls = this.$store.state.ls
+      const currentRound = ls.currentRound.name
+      const currentSnap = ls.currentSnap.name
+      const commit = this.$store.commit
+      const fetch = this.$axios
+      if (process.env.dev) console.log('New Area', areaName)
+      const root = `/api/pointcloud/${currentRound}/${currentSnap}/${areaName}`
+      const check = await fetch(`${root}`)
+      if (check.data.cached) {
+        const promises = [fetch(`${root}/x`), fetch(`${root}/y`), fetch(`${root}/z`), fetch(`${root}/c`), fetch(`${root}/i`)]
+        const [x, y, z, c, i] = await Promise.all(promises)
         commit('setLoading', true)
-        if (check.data.cached) {
-          const promises = [
-            fetch(`${root}/x`),
-            fetch(`${root}/y`),
-            fetch(`${root}/z`),
-            fetch(`${root}/c`),
-            fetch(`${root}/i`)
-          ]
-          const [x, y, z, c, i] = await Promise.all(promises)
+        setTimeout(() => {
           this.drawLas({ x: x.data, y: y.data, z: z.data, center: c.data, intensity: i.data })
-        } else this.drawLas(check.data)
-        commit('setLoading', false)
+          commit('setLoading', false)
+        })
+      } else {
+        commit('setLoading', true)
+        setTimeout(() => {
+          this.drawLas(check.data)
+          commit('setLoading', false)
+        })
       }
     }
   },

@@ -6,3 +6,7 @@ export const WGS84 = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
 
 export const to32652 = (lon, lat) => proj4(WGS84, EPSG32652, [parseFloat(lon), parseFloat(lat)])
 export const xyto84 = (x, y) => proj4(EPSG32652, WGS84, [x, y])
+
+export function getDistance(x1, y1, z1, x2, y2, z2) {
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2))
+}

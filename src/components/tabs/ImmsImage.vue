@@ -1,7 +1,7 @@
 <template>
   <div style="background: #000">
     <v-row align="center" justify="center">
-      <v-col cols="6" md="6" sm="12" class="py-0 px-0">
+      <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.front.uri" v-if="!loading">
             <transition name="fade" appear>
@@ -9,7 +9,7 @@
             </transition>
           </v-img> </transition
       ></v-col>
-      <v-col cols="6" md="6" sm="12" class="py-0 px-0">
+      <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.back.uri" v-if="!loading">
             <transition name="fade" appear>
