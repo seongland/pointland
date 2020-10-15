@@ -4,7 +4,7 @@
 
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
-import { CLOUD_ID, SELECT_SIZE, SELECT_POINTS, MARK_SIZE, MARK_POINTS } from './const'
+import { CLOUD_ID, SELECT_SIZE, SELECT_POINTS, MARK_SIZE, MARK_POINTS } from './config'
 import { drawHover, drawClick } from './draw'
 import { makePointLayer } from './layer'
 

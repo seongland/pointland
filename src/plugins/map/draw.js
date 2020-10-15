@@ -9,7 +9,7 @@ import { Point } from 'ol/geom'
 import { Feature } from 'ol'
 import Draw from 'ol/interaction/Draw'
 import { setFocus } from './event'
-import { RED, BLUE, DFT_RADIUS, DFT_WIDTH, WHITE, YELLOW } from './const'
+import { RED, BLUE, DFT_RADIUS, DFT_WIDTH, WHITE, YELLOW } from './config'
 import { ref } from './init'
 
 function makeStyle() {

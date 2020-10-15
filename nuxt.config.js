@@ -38,7 +38,19 @@ module.exports = {
   // Plugins to load before mounting the App
   plugins: [
     {
-      src: '~/plugins/',
+      src: '~/plugins/init',
+      ssr: false
+    },
+    {
+      src: '~/plugins/config',
+      ssr: false
+    },
+    {
+      src: '~/plugins/event',
+      ssr: false
+    },
+    {
+      src: '~/plugins/draw',
       ssr: false
     }
   ],

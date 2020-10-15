@@ -5,8 +5,9 @@
 
 import { Tile, Vector as VectorLayer } from 'ol/layer'
 import { TileWMS, XYZ, Vector } from 'ol/source'
-import { ZINDEX_PVR } from '~/plugins/map/const'
-import { NAVER_ID } from '~/plugins/map/const'
+import { makePointStyle } from './draw'
+import { ZINDEX_PVR } from '~/plugins/map/config'
+import { NAVER_ID } from '~/plugins/map/config'
 import { ref } from './init'
 import WMSCapabilities from 'ol/format/WMSCapabilities'
 import { transformExtent } from 'ol/proj'
@@ -87,26 +88,32 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
-const makeVectorLayer = ({ style, zindex, name }) => {
+const makeVectorLayer = ({ style, zindex, name, type }) => {
   /**
    * @summary - Make Vector Layer Tempalte
    */
+  let vectorStyle
+  if (type === 'Point')
+    vectorStyle = makePointStyle({
+      color: style.color,
+      radius: style.radius
+    })
   const vectorSrc = new Vector()
   const vectorLayer = new VectorLayer({
     source: vectorSrc,
-    style
+    style: vectorStyle
   })
   if (zindex) vectorLayer.setZIndex(zindex)
   if (name) ref[name] = vectorLayer
   return vectorLayer
 }
 
-function makeNaverMap() {
+function makeNaverMap(mapConfig) {
   /**
    * @summary - Make Naver Map
    */
-  let naverGPS = new naver.maps.LatLng(37.3595704, 127.105399)
-  let NaverMapOptions = {
+  let naverGPS = new naver.maps.LatLng(...mapConfig.center)
+  let naverMapOption = {
     center: naverGPS,
     zoom: 15,
     scaleControl: false,
@@ -116,10 +123,10 @@ function makeNaverMap() {
     mapTypeControl: false,
     useStyleMap: true,
     baseTileOpacity: 1,
-    draggable: false,
-    mapTypeId: naver.maps.MapTypeId.SATELLITE
+    draggable: false
   }
-  return new naver.maps.Map(NAVER_ID, NaverMapOptions)
+  if (mapConfig.type === 'satellite') naverMapOption.mapTypeId = naver.maps.MapTypeId.SATELLITE
+  return new naver.maps.Map(NAVER_ID, naverMapOption)
 }
 
 function changeLayers(geoserver, workspace, layers) {

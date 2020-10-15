@@ -21,7 +21,8 @@ export async function getTable(round, snap, meta) {
     for (const key of Object.keys(meta.column)) tableElement[key] = record[meta.column[key]]
     return tableElement
   })
-  const filtered = table.filter(record => record[meta.filter])
+  let filtered = table
+  if (meta.filter) filtered = table.filter(record => record[meta.filter])
   return filtered
 }
 
