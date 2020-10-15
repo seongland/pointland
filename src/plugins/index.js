@@ -2,7 +2,8 @@ import Vue from 'vue'
 import { olInit, ref as mapRef } from '~/plugins/map/init'
 import { drawXYs, drawXY, subtractVhcl } from './map/draw'
 import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
-import { drawLas, drawXYZ, resetPointLayer } from './cloud/draw'
+import { drawLas, drawXYZ } from './cloud/draw'
+import { resetPointLayer } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import AsyncComputed from 'vue-async-computed'
 
@@ -34,11 +35,7 @@ export default ({ $axios, store: { commit, state } }) => {
       drawXYs: (latlngs, id) => drawXYs(latlngs, id),
       subtractVhcl: id => subtractVhcl(id),
       setRound: round => commit('ls/setRound', round),
-
-      checkMount: () => {
-        console.log(mapRef.map, cloudRef.cloud)
-        return mapRef.map !== undefined && cloudRef.cloud.offset !== undefined
-      },
+      checkMount: () => mapRef.map !== undefined && cloudRef.cloud.offset !== undefined,
 
       setSnap(snapObj) {
         commit('ls/setSnap', snapObj)
@@ -54,8 +51,7 @@ export default ({ $axios, store: { commit, state } }) => {
       setLayer: data => commit('setLayer', data),
 
       async waitAvail(flag, callback, args) {
-        console.log(args)
-        flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 500)
+        flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
       },
 
       selectXYZ(xyz, id) {
@@ -137,6 +133,18 @@ export default ({ $axios, store: { commit, state } }) => {
             if (this.tabs[0].show) mapWrapper.setAttribute('style', 'z-index:-1 !important')
             else mapWrapper.setAttribute('style', 'z-index:5 !important')
             this.tabs[0].show = !this.tabs[0].show
+            return
+
+          // UI control
+          case ' ':
+            if (index !== 2) return
+            if (!cloudRef.cloud.offset) return
+            const markObj = ls.currentMark
+            const controls = cloudRef.cloud.controls
+            const offset = cloudRef.cloud.offset
+            const camera = cloudRef.cloud.camera
+            camera.position.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2] + 20)
+            controls.target.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2])
             return
         }
         console.log(event)

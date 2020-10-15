@@ -46,6 +46,9 @@ const layerConfig = {
     }
   ]
 }
+const mapConfig = {
+  type: 'map'
+}
 
 function olInit(geoserver, workspace, layers) {
   /**
