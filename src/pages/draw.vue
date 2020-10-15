@@ -60,7 +60,12 @@
         <v-list nav dense>
           <v-list-item-group v-model="layerIndex" color="primary">
             <div v-for="classObj in classes" :key="classObj.class">
-              <v-list-item link v-for="layerObj in classObj.layers" :key="layerObj.layer" @click="setLayer({ layerObj })">
+              <v-list-item
+                link
+                v-for="layerObj in classObj.layers"
+                :key="layerObj.layer"
+                @click="setLayer({ object: layerObj })"
+              >
                 <v-list-item-icon v-text="layerObj.layer" />
                 <v-list-item-title v-text="layerObj.description" />
                 <v-list-item-subtitle v-text="layerObj.type" />
@@ -154,7 +159,7 @@ export default {
     },
     layerIndex: {
       get() {
-        return this.$store.state.drawLayer.index
+        return this.$store.state.targetLayer.index
       },
       set(values) {
         this.setLayer({ index: values })

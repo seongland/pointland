@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
+import { v4 as uuid } from 'uuid'
+import { imageClick } from './image/event'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
@@ -22,6 +24,10 @@ export default ({ store: { commit, state } }) => {
       setMark(markObj) {
         commit('ls/setMark', markObj)
         this.waitAvail(this.checkMount, this.currentXYZ, [[markObj.x, markObj.y, markObj.alt]])
+      },
+
+      async imageClick(event) {
+        return imageClick(event, this.depth, this.drawFromDepth)
       },
 
       keyEvent(event) {
