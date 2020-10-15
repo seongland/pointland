@@ -31,6 +31,31 @@ export default () => {
         const latlng = lnglat.reverse()
         drawXY(mapRef.currentLayer, latlng, true, 'current')
         drawXYZ(cloudRef.currentLayer, xyz, true, 'current')
+      },
+
+      drawNear(image, x, y) {
+        image.setPixelColor(0x44ffddff, x, y)
+        image.setPixelColor(0x44ffddff, x - 1, y - 1)
+        image.setPixelColor(0x44ffddff, x + 1, y + 1)
+        image.setPixelColor(0x44ffddff, x + 1, y - 1)
+        image.setPixelColor(0x44ffddff, x - 1, y + 1)
+        image.setPixelColor(0x44ffddff, x, y - 1)
+        image.setPixelColor(0x44ffddff, x, y + 1)
+        image.setPixelColor(0x44ffddff, x + 1, y)
+        image.setPixelColor(0x44ffddff, x - 1, y)
+      },
+
+      async drawFromDepth(x, y, data) {
+        const targetLayer = this.$store.state.targetLayer
+        if (targetLayer.object) {
+          if (targetLayer.object.type === 'Point') {
+            this.drawNear(data.layer.selected.image, x, y)
+            data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
+            const res = await this.$axios.get(`${data.url}/${x}/${y}`)
+            const xyz = res.data
+            this.selectXYZ(xyz, 'Point')
+          }
+        }
       }
     }
   })

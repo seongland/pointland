@@ -1,7 +1,7 @@
 import { setDrawInteraction } from '~/plugins/map/draw'
 
 export const state = () => ({
-  drawLayer: { index: undefined, layerObj: undefined },
+  targetLayer: { index: undefined, object: undefined },
   loading: true,
   depth: {
     loading: false,
@@ -11,15 +11,15 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setLayer(state, { index, layerObj }) {
-    if (index === undefined && layerObj === undefined) {
-      state.drawLayer.index = undefined
-      state.drawLayer.layerObj = undefined
+  setLayer(state, { index, object }) {
+    if (index === undefined && object === undefined) {
+      state.targetLayer.index = undefined
+      state.targetLayer.object = undefined
     }
-    if (index !== undefined) state.drawLayer.index = index
-    if (layerObj !== undefined) {
-      state.drawLayer.layerObj = layerObj
-      // setDrawInteraction(layerObj)
+    if (index !== undefined) state.targetLayer.index = index
+    if (object !== undefined) {
+      state.targetLayer.object = object
+      // setDrawInteraction(object)
     }
   },
 
