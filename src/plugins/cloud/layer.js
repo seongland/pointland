@@ -6,6 +6,7 @@ export function makePointLayer({ name, color, size, length, order }) {
    * @summary - Add Layer
    */
   const geometry = new THREE.BufferGeometry()
+  geometry.ids = {}
   var positions = new Float32Array(length * 3)
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
   geometry.setDrawRange(0, 0)
