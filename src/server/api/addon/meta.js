@@ -23,7 +23,6 @@ async function round(req, res) {
           meta: {
             folder: 'images_shp',
             ext: 'dbf',
-            key: 'id_point',
             filter: 'lasList',
             column: {
               name: 'id_point',

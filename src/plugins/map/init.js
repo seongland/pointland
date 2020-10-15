@@ -9,10 +9,10 @@ import View from 'ol/View'
 import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
 import { defaults, DragPan, MouseWheelZoom, PinchZoom } from 'ol/interaction'
-import { ZINDEX_PVR } from '~/plugins/map/const'
-import { makeStyle, makePointStyle } from './draw'
+import { ZINDEX_PVR } from '~/plugins/map/config'
+import { makeStyle } from './draw'
 import { makeNaverMap, makeTileLayer, makeVectorLayer } from '~/plugins/map/layer'
-import { DRAW_LAYER_ID, INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/const'
+import { INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/config'
 import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
@@ -21,33 +21,38 @@ const layerConfig = {
   vectorLayers: [
     {
       name: 'markLayer',
+      type: 'Point',
       zindex: ZINDEX_PVR + 1,
-      style: makePointStyle({
+      style: {
         color: '#f59',
         radius: 5
-      })
+      }
     },
     {
       name: 'currentLayer',
+      type: 'Point',
       zindex: ZINDEX_PVR + 2,
-      style: makePointStyle({
+      style: {
         color: '#18f',
         radius: 5
-      })
+      }
     },
     { name: 'drawLayer', zindex: ZINDEX_PVR + 3 },
     {
       name: 'selectedLayer',
+      type: 'Point',
       zindex: ZINDEX_PVR + 4,
-      style: makePointStyle({
+      style: {
         color: '#6eb',
         radius: 2
-      })
+      }
     }
   ]
 }
 const mapConfig = {
-  type: 'map'
+  id: MAP_ID,
+  center: [37.3595704, 127.105399],
+  type: 'satellite'
 }
 
 function olInit(geoserver, workspace, layers) {
@@ -56,7 +61,7 @@ function olInit(geoserver, workspace, layers) {
    * @todo - option conatin id and substitute default configs
    */
   const styles = makeStyle()
-  const naver = makeNaverMap()
+  const naver = makeNaverMap(mapConfig)
   const openlayers = []
 
   for (const vectorConfig of layerConfig.vectorLayers) openlayers.push(makeVectorLayer(vectorConfig))
@@ -104,27 +109,15 @@ function makeOlMap(layers) {
   let mapOpt = {
     target: MAP_ID,
     layers: layers,
-    interactions: defaults({
-      dragPan: false
-    }).extend([
-      new DragPan({
-        kinetic: false
-      }),
+    interactions: defaults({ dragPan: false }).extend([
+      new DragPan({ kinetic: false }),
       new MouseWheelZoom({ duration: 0 }),
-      new PinchZoom({
-        constrainResolution: true
-      })
+      new PinchZoom({ constrainResolution: true })
     ]),
     view: new View(view),
-    controls: controls({
-      zoom: true
-    })
+    controls: controls({ zoom: true })
   }
   return new Map(mapOpt)
 }
 
-function getDrawLayer(map) {
-  for (let layer of map.getLayers().getArray()) if (layer.get('lid') === DRAW_LAYER_ID) return layer
-}
-
-export { olInit, getDrawLayer }
+export { olInit }
