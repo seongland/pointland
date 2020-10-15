@@ -3,6 +3,7 @@ import { ref } from './init'
 
 export function resetPointLayer(layer) {
   const geometry = layer.geometry
+  geometry.ids = {}
   geometry.setDrawRange(0, 0)
   geometry.attributes.position.needsUpdate = true
   geometry.computeBoundingSphere()

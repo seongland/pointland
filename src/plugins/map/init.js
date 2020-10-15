@@ -25,7 +25,7 @@ const layerConfig = {
       zindex: ZINDEX_PVR + 1,
       style: {
         color: '#f59',
-        radius: 5
+        radius: 2
       }
     },
     {
