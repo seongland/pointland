@@ -78,12 +78,6 @@
         "name": "DRIVEWAYSECTION"
       },
       {
-        "layer": "A4",
-        "description": "부속구간",
-        "type": "Polygon",
-        "name": "SUBSIDIARYSECTION"
-      },
-      {
         "layer": "A5",
         "description": "주차슬롯",
         "type": "Polygon",
@@ -130,14 +124,8 @@
         "name": "TRAFFICLIGHT"
       },
       {
-        "layer": "C2",
-        "type": "LineString",
-        "description": "킬로포스트",
-        "name": "KILOPOST"
-      },
-      {
         "layer": "C3",
-        "type": "Polygon",
+        "type": "LineString",
         "description": "차량방호안전시설",
         "name": "VEHICLEPROTECTIONSAFETY"
       },
@@ -146,18 +134,29 @@
         "type": "Polygon",
         "description": "과속방지턱",
         "name": "SPEEDBUMP"
+      }
+    ]
+  },
+  {
+    "class": "D",
+    "layers": [
+      {
+        "layer": "D1",
+        "type": "None",
+        "description": "연결된신호등",
+        "name": "SYNCEDTRAFFICLIGHT"
       },
       {
-        "layer": "C5",
-        "type": "Polygon",
-        "description": "높이장애물",
-        "name": "HEIGHTBARRIER"
+        "layer": "D2",
+        "type": "None",
+        "description": "교차로신호등통제기",
+        "name": "INTERSECTIONCONTROLLER"
       },
       {
-        "layer": "C6",
+        "layer": "D3",
         "type": "Polygon",
-        "description": "지주",
-        "name": "POSTPOINT"
+        "description": "보도",
+        "name": "SIDEWALK"
       }
     ]
   }

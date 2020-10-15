@@ -95,7 +95,7 @@
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
-import classes from '~/assets/classes'
+import classes from '~/assets/morai'
 
 export default {
   middleware: 'authentication',
