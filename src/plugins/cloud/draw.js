@@ -27,13 +27,23 @@ export function drawXYZ(layer, xyz, focus, id) {
   const cloud = ref.cloud
   const geometry = layer.geometry
   const positions = geometry.attributes.position.array
+  const ids = geometry.ids
   const count = geometry.drawRange.count
   const xyzInCloud = [xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2]]
 
-  positions[3 * count] = xyzInCloud[0]
-  positions[3 * count + 1] = xyzInCloud[1]
-  positions[3 * count + 2] = xyzInCloud[2]
-  geometry.setDrawRange(0, ++geometry.drawRange.count)
+  // add
+  if (ids[id] === undefined) {
+    positions[3 * count] = xyzInCloud[0]
+    positions[3 * count + 1] = xyzInCloud[1]
+    positions[3 * count + 2] = xyzInCloud[2]
+    geometry.setDrawRange(0, ++geometry.drawRange.count)
+  }
+  // Chnage Last
+  else {
+    positions[3 * count - 3] = xyzInCloud[0]
+    positions[3 * count - 2] = xyzInCloud[1]
+    positions[3 * count - 1] = xyzInCloud[2]
+  }
   geometry.attributes.position.needsUpdate = true
   geometry.computeBoundingSphere()
 
@@ -42,6 +52,7 @@ export function drawXYZ(layer, xyz, focus, id) {
     cloud.camera.position.set(xyzInCloud[0], xyzInCloud[1], xyzInCloud[2] + 20)
     cloud.focused = true
   }
+  ids[id] = id
 }
 
 function drawHover(cloud) {

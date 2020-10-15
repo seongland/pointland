@@ -5,6 +5,7 @@ import { ref as cloudRef } from './cloud/init'
 import { drawLas, drawXYZ } from './cloud/draw'
 import { resetPointLayer } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
+import jimp from 'jimp/browser/lib/jimp'
 
 export default () => {
   Vue.mixin({
@@ -49,6 +50,7 @@ export default () => {
         const targetLayer = this.$store.state.targetLayer
         if (targetLayer.object) {
           if (targetLayer.object.type === 'Point') {
+            data.layer.selected.image = new jimp(data.width, data.height)
             this.drawNear(data.layer.selected.image, x, y)
             data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
             const res = await this.$axios.get(`${data.url}/${x}/${y}`)
