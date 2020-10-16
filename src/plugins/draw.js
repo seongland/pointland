@@ -15,7 +15,7 @@ export default () => {
       selectXYZ(xyz, id) {
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
-        drawXY(mapRef.selectedLayer, latlng, true, id)
+        drawXY(mapRef.selectedLayer, latlng, false, id)
         drawXYZ(cloudRef.selectedLayer, xyz, false, id)
       },
 

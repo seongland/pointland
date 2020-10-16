@@ -3,7 +3,7 @@
  */
 
 // Map
-export const INIT_ZOOM = 12
+export const INIT_ZOOM = 16
 export const START_POINT = [126.972, 37.5293]
 export const MAP_ID = 'ol'
 
