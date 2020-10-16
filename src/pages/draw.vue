@@ -97,6 +97,7 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
+    <v-dialog :v-if="$store.state.submit.input" :value="$store.state.submit.show"> <input-data /></v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>

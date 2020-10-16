@@ -40,7 +40,6 @@ export default ({ store: { commit, state } }) => {
             seqIndex = ls.currentSnap.marks.indexOf(ls.currentMark)
             if (seqIndex > 0) if (!state.depth.loading) this.setMark(ls.currentSnap.marks[seqIndex - 1])
             return
-
           case '.':
             seqIndex = ls.currentSnap.marks.indexOf(ls.currentMark)
             if (seqIndex < ls.currentSnap.marks.length - 1)
@@ -56,10 +55,6 @@ export default ({ store: { commit, state } }) => {
             return commit('ls/setIndex', Number(event.key) - 1)
 
           // Toggle
-          case 'd':
-          case 'D':
-            if (index === 1) return commit('toggleDepth')
-            return
           case 'm':
           case 'M':
             if (index === 0) return
@@ -80,6 +75,10 @@ export default ({ store: { commit, state } }) => {
             camera.position.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2] + 20)
             controls.target.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2])
             return
+
+          // Submit
+          case 'Enter':
+            return commit('startInput')
         }
         console.log(event)
       }

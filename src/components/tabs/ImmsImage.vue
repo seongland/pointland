@@ -1,11 +1,22 @@
 <template>
   <div style="background: #000">
-    <v-row align="center" justify="center">
+    <v-row>
+      <v-toolbar color="grey darken-4" dense>
+        <v-slider class="pt-5 px-5" label="Opacity" :value="opacity" :max="1" :min="0" step="0.01" @change="setOpacity" />
+      </v-toolbar>
+    </v-row>
+    <v-row>
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.front.uri" v-if="!loading">
             <transition name="fade" appear>
-              <v-img id="front" v-if="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick">
+              <v-img
+                id="front"
+                v-if="show"
+                :src="depth ? depth.front.uri : src.front.uri"
+                @click="imageClick"
+                :opacity="0.2"
+              >
                 <v-img :src="depth ? depth.front.layer.selected.uri : src.front.uri"
               /></v-img>
             </transition>
@@ -16,7 +27,7 @@
         <transition name="fade" appear>
           <v-img :src="src.back.uri" v-if="!loading">
             <transition name="fade" appear>
-              <v-img id="back" v-if="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick">
+              <v-img id="back" v-if="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick" :opacity="0.7">
                 <v-img :src="depth ? depth.back.layer.selected.uri : src.back.uri" />
               </v-img>
             </transition>
@@ -24,6 +35,8 @@
         </transition>
       </v-col>
     </v-row>
+    <v-spacer />
+    <v-row> </v-row>
   </div>
 </template>
 
@@ -31,6 +44,10 @@
 import jimp from 'jimp/browser/lib/jimp'
 
 export default {
+  data: () => ({
+    opacity: 0.5
+  }),
+
   computed: {
     src() {
       const ls = this.$store.state.ls
@@ -39,7 +56,7 @@ export default {
     },
     show() {
       const depth = this.$store.state.depth
-      return !depth.loading && depth.on
+      return !depth.loading
     },
     loading() {
       return this.$store.state.depth.loading
@@ -70,6 +87,15 @@ export default {
       back.url = backURL
       this.$store.commit('setDepthLoading', false)
       return { front, back }
+    }
+  },
+
+  methods: {
+    setOpacity(opacity) {
+      const front = document.getElementById('front')
+      const back = document.getElementById('back')
+      for (const child of front.children) if (child.children.length === 0) child.style.opacity = opacity
+      for (const child of back.children) if (child.children.length === 0) child.style.opacity = opacity
     }
   }
 }
