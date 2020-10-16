@@ -1,8 +1,9 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 export default new mongoose.Schema(
   {
-    id: { type: String }
+    images: { type: Array },
+    pointclouds: { type: Array }
   },
   { _id: false }
 )
