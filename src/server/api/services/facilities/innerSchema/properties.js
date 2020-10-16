@@ -2,8 +2,7 @@ import mongoose from "mongoose"
 
 export default new mongoose.Schema(
   {
-    id: { type: String },
-    role: { type: String, required: true }
+    id: { type: String }
   },
   { _id: false }
 )

@@ -1,13 +1,11 @@
-import consola from "consola"
-import logger, { getUserLogger } from "../inout/logger"
-import addUserService from "./users/users.service"
-// import addOrgService from "./orgs/orgs.service"
-// import addProjectService from "./projects/projects.service"
+import consola from 'consola'
+import logger, { getUserLogger } from '../inout/logger'
+import addUserService from './users/users.service'
+import addFacilityService from './facilities/facilities.service'
 
-export default (app) => {
+export default app => {
   addUserService(app)
-  // addOrgService(app)
-  // addProjectService(app)
+  addFacilityService(app)
 }
 
 function feathersLogger(context) {
@@ -37,7 +35,7 @@ function feathersErrorHandler(context) {
   getUserLogger(context.params.user.email).error(context.error)
   logger.error(context.error)
 
-  if (process.env.NODE_ENV !== "production") consola.error(context.error)
+  if (process.env.NODE_ENV !== 'production') consola.error(context.error)
 }
 
 export { feathersLogger, feathersErrorHandler }
