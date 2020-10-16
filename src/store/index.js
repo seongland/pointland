@@ -7,6 +7,10 @@ export const state = () => ({
     loading: false,
     on: true
   },
+  submit: {
+    input: false,
+    show: false
+  },
   selected: []
 })
 
@@ -23,8 +27,12 @@ export const mutations = {
     }
   },
 
+  startInput(state) {
+    state.input = true
+    state.show = true
+  },
+
   setDepthLoading: (state, value) => (state.depth.loading = value),
-  toggleDepth: state => (state.depth.on = !state.depth.on),
 
   select(state, { xyz, latlng, point }) {
     const slected = {}
