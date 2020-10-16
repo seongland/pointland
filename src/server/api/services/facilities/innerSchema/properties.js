@@ -1,8 +1,11 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 export default new mongoose.Schema(
   {
-    id: { type: String }
+    comment: { type: String },
+    x: { type: Number },
+    y: { type: Number },
+    z: { type: Number }
   },
   { _id: false }
 )
