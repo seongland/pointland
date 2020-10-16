@@ -51,6 +51,7 @@ const layerConfig = {
 }
 const mapConfig = {
   id: MAP_ID,
+  zoom: 15,
   center: [37.3595704, 127.105399],
   type: 'satellite'
 }
