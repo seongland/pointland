@@ -7,12 +7,14 @@
             <v-toolbar-title><span style="font-weight: bold">시설물</span> 도화 설명서</v-toolbar-title>
           </v-toolbar>
 
-          <v-card-title>UI </v-card-title>
+          <v-card-title>예시</v-card-title>
           <v-divider />
-          <v-card-text><span style="font-weight: bold">상단 바</span> - 라운드, 스냅, 마크를 정한다</v-card-text>
-          <v-img src="/help/bar.png" />
-          <v-card-text><span style="font-weight: bold">도구</span> - 어떤 시설물을 그릴지 정한다</v-card-text>
-          <v-img src="/help/tools.png" />
+          <v-card-text><span style="font-weight: bold">표지판</span></v-card-text>
+          <v-img src="/example/B1_SAFETYSIGN_1.png" />
+          <v-img src="/example/B1_SAFETYSIGN_2.png" />
+          <v-img src="/example/B1_SAFETYSIGN_3.png" />
+          <v-card-text><span style="font-weight: bold">신호등</span></v-card-text>
+          <v-img src="/example/C1_TRAFFICLIGHT_1.png" />
 
           <v-card-title>단축키</v-card-title>
           <v-divider />
@@ -22,17 +24,21 @@
             <span style="font-weight: bold">Space</span> - 현재 마크로 이동한다 (포인트클라우드 뷰가 이상할 때 사용한다)
           </v-card-text>
           <v-img src="/help/focus.png" />
-          <v-card-text><span style="font-weight: bold">Enter</span> - Submit Facility</v-card-text>
-          <v-card-text> <span style="font-weight: bold">&lt;</span> - Move to Previous Mark </v-card-text>
-          <v-card-text> <span style="font-weight: bold">&gt;</span> - Move to Next Mark </v-card-text>
+          <v-card-text><span style="font-weight: bold">Enter</span> - 도화 데이터를 제출한다</v-card-text>
+          <v-card-text><span style="font-weight: bold">Space</span> - 현재 마크를 포커싱한다</v-card-text>
+          <v-card-text> <span style="font-weight: bold">&lt;</span> - 이전 마크로 이동한다 </v-card-text>
+          <v-card-text> <span style="font-weight: bold">&gt;</span> - 다음 마크로 이동한다 </v-card-text>
 
-          <v-card-title>Map Keyboard Shortcuts </v-card-title>
+          <v-card-title>UI 단축키 </v-card-title>
+          <v-card-text><span style="font-weight: bold">M</span> - 지도 뷰를 토글한다</v-card-text>
 
-          <v-card-title>Image Keyboard Shortcuts </v-card-title>
-          <v-card-text><span style="font-weight: bold">M</span> - Toggle Map</v-card-text>
-          <v-card-text><span style="font-weight: bold">D</span> - Toggle Depth Map</v-card-text>
-          <v-card-title>Cloud Keyboard Shortcuts </v-card-title>
-          <v-card-text><span style="font-weight: bold">M</span> - Toggle Map</v-card-text>
+          <v-card-title>UI </v-card-title>
+          <v-divider />
+          <v-card-text><span style="font-weight: bold">상단 바</span> - 라운드, 스냅, 마크를 정한다</v-card-text>
+          <v-img src="/help/bar.png" />
+          <v-card-text><span style="font-weight: bold">도구</span> - 어떤 시설물을 그릴지 정한다</v-card-text>
+          <v-img src="/help/tools.png" />
+          <v-card-text><span style="font-weight: bold">지도</span> - 마크를 클릭하여 이동할 수 있다</v-card-text>
 
           <v-card-title>Caution </v-card-title>
           <v-divider />
