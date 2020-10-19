@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
-import { v4 as uuid } from 'uuid'
 import { imageClick } from './image/event'
+import { setFocus } from './map/event'
 
 const allowedLayers = ['B1', 'C1']
 
@@ -69,14 +69,16 @@ export default ({ store: { commit, state } }) => {
 
           // UI control
           case ' ':
-            if (index !== 2) return
-            if (!cloudRef.cloud.offset) return
-            const markObj = ls.currentMark
-            const controls = cloudRef.cloud.controls
-            const offset = cloudRef.cloud.offset
-            const camera = cloudRef.cloud.camera
-            camera.position.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2] + 20)
-            controls.target.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2])
+            if (index === 2) {
+              if (!cloudRef.cloud.offset) return
+              const markObj = ls.currentMark
+              const controls = cloudRef.cloud.controls
+              const offset = cloudRef.cloud.offset
+              const camera = cloudRef.cloud.camera
+              camera.position.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2] + 20)
+              controls.target.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2])
+            }
+            if (state.ls.currentMark) setFocus(state.ls.currentMark.lat, state.ls.currentMark.lon)
             return
 
           // Submit
