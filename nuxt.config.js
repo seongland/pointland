@@ -13,7 +13,7 @@ module.exports = {
   srcDir: 'src/',
 
   // Meta
-  mode: 'spa',
+  ssr: false,
   // Vue Config
   vue: {
     config: {

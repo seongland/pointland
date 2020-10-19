@@ -22,7 +22,7 @@ router.get('/file/:round/:snap/:area', las)
 function pointcloud(req, res) {
   const path = lasPath(req)
   const cache = cachePath(req)
-  if (existsSync(`${cache}\\x.gz`)) return res.json({ cached: true })
+  if (existsSync(`${cache}/x.gz`)) return res.json({ cached: true })
 
   pythonOptions.args = [JSON.stringify(path), JSON.stringify(cache)]
 
@@ -45,7 +45,7 @@ function lasCache(req, res) {
   const prop = req.params.prop
   res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const cache = cachePath(req)
-  const gz = createReadStream(`${cache}\\${prop}.gz`)
+  const gz = createReadStream(`${cache}/${prop}.gz`)
   gz.pipe(res)
 }
 
