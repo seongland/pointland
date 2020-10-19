@@ -60,6 +60,11 @@ export const mutations = {
     }
 
     if (index === 2) setTimeout(() => updateCtrl())
+  },  
+  setRounds(state, rounds) {
+    state.rounds = rounds
+    const roundObj = rounds[0]
+    this.$router.app.setRound(roundObj)
   },
 
   setRound(state, roundObj) {

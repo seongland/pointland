@@ -11,6 +11,7 @@ export default ({ store: { commit, state } }) => {
     methods: {
       setLayer: data => commit('setLayer', data),
       setRound: round => commit('ls/setRound', round),
+      setRounds: rounds => commit('ls/setRounds', rounds),
       checkMount: () => mapRef.map !== undefined && cloudRef.cloud.offset !== undefined,
 
       async waitAvail(flag, callback, args) {
