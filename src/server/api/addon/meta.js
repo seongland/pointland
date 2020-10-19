@@ -9,9 +9,9 @@ router.get('/:round', round)
 
 async function round(req, res) {
   const roundObj = {
-    name: 'imms_20200909_231253',
-    nas: {"id": '10.2.0.108'},
-    root: 'mms_test2/2020_imms/00_proj_hdmap/01_cto_output/Daejeon_KAIST/imms_20200909_231253',
+    name: 'imms_20200910_000230',
+    nas: { id: '10.2.0.108' },
+    root: 'mms_test2/2020_imms/00_proj_hdmap/01_cto_output/Daejeon_KAIST/imms_20200910_000230',
     snaps: [
       {
         name: 'snap1',
