@@ -120,7 +120,7 @@ export default {
     const res = await this.$axios.get(`/api/meta/${currentRoundName}`)
     const roundObj = res.data
     if (process.env.dev) console.log('Round Object', roundObj)
-    this.setRound(roundObj)
+    this.setRounds([roundObj])
   },
 
   async mounted() {
