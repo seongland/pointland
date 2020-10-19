@@ -2,21 +2,15 @@
   <div style="background: #000">
     <v-row>
       <v-toolbar color="grey darken-4" dense>
-        <v-slider class="pt-5 px-5" label="Opacity" :value="opacity" :max="1" :min="0" step="0.01" @change="setOpacity" />
+        <v-slider class="pt-5 px-5" label="Opacity" v-model="opacity" :max="1" :min="0" step="0.01" @change="setOpacity" />
       </v-toolbar>
     </v-row>
     <v-row>
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
-          <v-img :src="src.front.uri" v-if="!loading">
+          <v-img :src="src.front.uri" v-show="!loading">
             <transition name="fade" appear>
-              <v-img
-                id="front"
-                v-if="show"
-                :src="depth ? depth.front.uri : src.front.uri"
-                @click="imageClick"
-                :opacity="0.2"
-              >
+              <v-img id="front" v-show="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick">
                 <v-img :src="depth ? depth.front.layer.selected.uri : src.front.uri"
               /></v-img>
             </transition>
@@ -25,9 +19,9 @@
       </v-col>
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
-          <v-img :src="src.back.uri" v-if="!loading">
+          <v-img :src="src.back.uri" v-show="!loading">
             <transition name="fade" appear>
-              <v-img id="back" v-if="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick" :opacity="0.7">
+              <v-img id="back" v-show="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick" :opacity="0.7">
                 <v-img :src="depth ? depth.back.layer.selected.uri : src.back.uri" />
               </v-img>
             </transition>
@@ -45,7 +39,7 @@ import jimp from 'jimp/browser/lib/jimp'
 
 export default {
   data: () => ({
-    opacity: 0.5
+    opacity: 1
   }),
 
   computed: {
@@ -85,6 +79,8 @@ export default {
       back.layer.selected.image = new jimp(back.width, back.height)
       front.url = frontURL
       back.url = backURL
+      front.name = 'front'
+      back.name = 'back'
       this.$store.commit('setDepthLoading', false)
       return { front, back }
     }
@@ -101,11 +97,4 @@ export default {
 }
 </script>
 
-<style>
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
+<style></style>

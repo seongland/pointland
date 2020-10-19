@@ -4,6 +4,8 @@ import { ref as cloudRef } from './cloud/init'
 import { v4 as uuid } from 'uuid'
 import { imageClick } from './image/event'
 
+const allowedLayers = ['B1', 'C1']
+
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
@@ -31,6 +33,7 @@ export default ({ store: { commit, state } }) => {
       },
 
       keyEvent(event) {
+        if (state.submit.show) return
         let seqIndex
         const ls = this.$store.state.ls
         const index = this.$store.state.ls.index
@@ -78,7 +81,8 @@ export default ({ store: { commit, state } }) => {
 
           // Submit
           case 'Enter':
-            return commit('startInput')
+            if (allowedLayers.includes(state.targetLayer.object?.layer)) commit('setSubmitOverlay', true)
+            return
         }
         console.log(event)
       }

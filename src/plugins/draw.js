@@ -7,7 +7,7 @@ import { resetPointLayer } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
-export default () => {
+export default ({ store: { commit } }) => {
   Vue.mixin({
     methods: {
       drawLas: lasJson => drawLas(lasJson),
@@ -48,6 +48,7 @@ export default () => {
 
       async drawFromDepth(x, y, data) {
         const targetLayer = this.$store.state.targetLayer
+        const ls = this.$store.state.ls
         if (targetLayer.object) {
           if (targetLayer.object.type === 'Point') {
             this.resetSelectedExcept(data)
@@ -56,6 +57,20 @@ export default () => {
             data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
             const res = await this.$axios.get(`${data.url}/${x}/${y}`)
             const xyz = res.data
+
+            commit('select', {
+              xyz,
+              type: 'Point',
+              images: [
+                {
+                  round: ls.currentRound.name,
+                  snap: ls.currentSnap.name,
+                  name: ls.currentMark.name,
+                  direction: data.name,
+                  coordinates: [x, y]
+                }
+              ]
+            })
             this.selectXYZ(xyz, 'Point')
           }
         }
