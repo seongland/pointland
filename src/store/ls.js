@@ -11,7 +11,7 @@ export const state = () => ({
   currentRound: { name: 'Waiting' },
   currentSnap: { name: 'Waiting' },
   currentMark: { name: 'Waiting' },
-  rounds: []
+  rounds: [{ name: 'imms_20200910_000230' }]
 })
 
 export const mutations = {
