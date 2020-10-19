@@ -19,6 +19,7 @@ function eventBind(map) {
     loc: changeMapLoc(map),
     zoom: ChangeMapRatio(map)
   }))
+  map.on('click', mapClick)
   return { loc: changeMapLoc(map), zoom: ChangeMapRatio(map) }
 }
 
@@ -26,14 +27,13 @@ function mapClick(e) {
   /**
    * @summary - When Click Map
    */
-  let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
-  let extent = e.map.getView().calculateExtent()
-  let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
-  let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
-  let size = rightTop.map(function(e, i) {
-    return e - leftBottom[i]
-  })
-  getNearDraft(coor, size)
+  // let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
+  // let extent = e.map.getView().calculateExtent()
+  // let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
+  // let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
+  // let size = rightTop.map((e, i) => e - leftBottom[i])
+  const feature = ref.markLayer.getSource().getClosestFeatureToCoordinate(e.coordinate)
+  if (ref.clickCallback) ref.clickCallback(feature)
 }
 
 function getNearDraft(coor, size) {

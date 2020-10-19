@@ -14,6 +14,13 @@ export default ({ store: { commit, state } }) => {
       setRounds: rounds => commit('ls/setRounds', rounds),
       checkMount: () => mapRef.map !== undefined && cloudRef.cloud.offset !== undefined,
 
+      clickMark(feature) {
+        if (feature) {
+          const markId = feature.getId()
+          for (const markObj of state.ls.currentSnap.marks) if (markObj.name === markId) this.setMark(markObj)
+        }
+      },
+
       async waitAvail(flag, callback, args) {
         flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
       },

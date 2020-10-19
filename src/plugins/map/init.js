@@ -121,4 +121,11 @@ function makeOlMap(layers) {
   return new Map(mapOpt)
 }
 
-export { olInit }
+function setClickCB(callback) {
+  /**
+   * @summary - Make OpenLayers Main Map
+   */
+  ref.clickCallback = callback
+}
+
+export { olInit, setClickCB }
