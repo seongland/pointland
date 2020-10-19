@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { ref as mapRef } from '~/plugins/map/init'
+import { ref as imgRef } from '~/plugins/image/init'
 import { drawXY } from './map/draw'
 import { ref as cloudRef } from './cloud/init'
 import { drawLas, drawXYZ } from './cloud/draw'
@@ -85,6 +86,15 @@ export default ({ store: { commit } }) => {
         }
         if (this.depth.back !== excepted) {
           data = this.depth.back
+          data.layer.selected.image = new jimp(data.width, data.height)
+          data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
+        }
+      },
+
+      resetSelected() {
+        if (process.env.dev) console.log(`Reset Selected`)
+        const depth = imgRef.depth
+        for (const data of Object.values(depth)) {
           data.layer.selected.image = new jimp(data.width, data.height)
           data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
         }
