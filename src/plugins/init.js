@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { olInit } from '~/plugins/map/init'
+import { olInit, setClickCB } from '~/plugins/map/init'
 import { initCloud, purgeCloud } from './cloud/init'
 
 export default ({ $axios, store: { commit } }) => {
@@ -41,6 +41,7 @@ export default ({ $axios, store: { commit } }) => {
 
       olInit(geoserver, workspace, layers) {
         this.$root.map = olInit(geoserver, workspace, layers)
+        setClickCB(this.clickMark)
         return this.$root.map
       }
     }

@@ -29,13 +29,7 @@ export default {
       for (const prj of this.projects) if (prj.layers.tiff) project = prj
       if (!project) project = this.projects[0]
       if (process.env.dev) console.log('Project is', project)
-      this.olInit(project.geoserver, project.workspace, project.layers)
-    }
-  },
-
-  methods: {
-    pingFlag() {
-      return this.$root.ping
+      this.$root.map = this.olInit(project.geoserver, project.workspace, project.layers)
     }
   }
 }
