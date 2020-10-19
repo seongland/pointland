@@ -97,7 +97,7 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-    <v-dialog v-model="submitOverlay"> <input-data /></v-dialog>
+    <v-dialog v-if="submitting" v-model="showSubmit"> <input-data /></v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>
@@ -137,12 +137,20 @@ export default {
         this.$store.commit('ls/setIndex', values)
       }
     },
-    submitOverlay: {
+    showSubmit: {
       get() {
         return this.$store.state.submit.show
       },
       set(values) {
-        this.$store.commit('setSubmitOverlay', values)
+        this.$store.commit('setShowSubmit', values)
+      }
+    },
+    submitting: {
+      get() {
+        return this.$store.state.submit.ing
+      },
+      set(values) {
+        this.$store.commit('setSubmitting', values)
       }
     },
     currentRound: {
