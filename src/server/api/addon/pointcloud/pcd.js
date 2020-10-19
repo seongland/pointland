@@ -6,7 +6,7 @@ export function lasPath(req) {
   const snap = req.params.snap
   const area = req.params.area
   const root = getRootByRound(round)
-  return `${root}\\${snap}\\pointcloud\\${area}`
+  return `${root}/${snap}/pointcloud/${area}`
 }
 
 export function cachePath(req) {
@@ -14,7 +14,7 @@ export function cachePath(req) {
   const snap = req.params.snap
   const area = req.params.area
   const root = process.cwd()
-  const snapPath = `${root}\\cache\\${round}\\${snap}\\${area}`
+  const snapPath = `${root}/cache/${round}/${snap}/${area}`
   mkdir(snapPath, { recursive: true }, () => ({}))
   return snapPath
 }

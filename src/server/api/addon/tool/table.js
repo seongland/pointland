@@ -5,11 +5,11 @@ import { getRootByRound } from './round'
 export async function tablePath(round, snap, meta) {
   const root = getRootByRound(round)
   const ext = meta.ext
-  const folderPath = `${root}\\${snap}\\${meta.folder}`
+  const folderPath = `${root}/${snap}/${meta.folder}`
   const filePaths = await fs.promises.readdir(folderPath)
   for (const fileName of filePaths) {
     const fileExt = fileName.split('.').pop()
-    if (ext === fileExt) return `${folderPath}\\${fileName}`
+    if (ext === fileExt) return `${folderPath}/${fileName}`
   }
 }
 
