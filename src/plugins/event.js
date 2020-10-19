@@ -81,7 +81,10 @@ export default ({ store: { commit, state } }) => {
 
           // Submit
           case 'Enter':
-            if (allowedLayers.includes(state.targetLayer.object?.layer)) commit('setSubmitOverlay', true)
+            if (allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
+              commit('setSubmitting', true)
+              commit('setShowSubmit', true)
+            }
             return
         }
         console.log(event)

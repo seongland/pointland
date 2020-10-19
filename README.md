@@ -25,5 +25,5 @@ sudo mount -t cifs "\\\\10.2.0.108\\mms_test2\\mms_test2" /mnt/10.2.0.108/mms_te
 
 ## Windows
 ```cmd
-mklink /d "c:\Program Files\Git\mnt\10.2.0.108\mms_test2" "\\10.1.0.112\mms_test2"
+mklink /d "c:\mnt\10.2.0.108\mms_test2" "\\10.1.0.112\mms_test2"
 ```

@@ -9,7 +9,8 @@ export const state = () => ({
     on: true
   },
   submit: {
-    show: false
+    show: false,
+    ing: false
   },
   selected: []
 })
@@ -27,8 +28,11 @@ export const mutations = {
     }
   },
 
-  setSubmitOverlay(state, value) {
+  setShowSubmit(state, value) {
     state.submit.show = value
+  },
+  setSubmitting(state, value) {
+    state.submit.ing = value
   },
 
   async submit(state, { comment, args, type, messenger }) {
@@ -45,7 +49,8 @@ export const mutations = {
       headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
     })
     if (res.status === 201) {
-      this.commit('setSubmitOverlay', false)
+      this.commit('setShowSubmit', false)
+      this.$router.app.resetSelected()
     } else return
   },
 
@@ -73,6 +78,10 @@ export const mutations = {
     if (pointclouds?.length > 0) feature.relations.pointclouds.push(...pointclouds)
 
     state.selected = [feature]
+  },
+
+  resetSelected(state) {
+    state.selected = []
   },
 
   setLoading(state, value) {

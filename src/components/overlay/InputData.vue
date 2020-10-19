@@ -5,20 +5,31 @@
         <v-card-title v-text="layerObj.description" />
         <v-divider />
         <v-card-title> Geometry </v-card-title>
-        <v-card-text v-text="`X : ${selected[0].properties.x}`" />
-        <v-card-text v-text="`Y : ${selected[0].properties.y}`" />
-        <v-card-text v-text="`Z : ${selected[0].properties.z}`" />
-        <v-card-text v-text="`Longitude : ${selected[0].geometry.coordinates[0]}`" />
-        <v-card-text v-text="`Latitude : ${selected[0].geometry.coordinates[1]}`" />
+        <v-card-text class="py-0"
+          ><span style="font-weight: bold">X : </span> {{ selected[0].properties.x }} -
+          <span style="font-weight: bold">Y : </span> {{ selected[0].properties.y }} -
+          <span style="font-weight: bold">Z : </span> {{ selected[0].properties.z }}
+        </v-card-text>
+
+        <v-card-text class="pt-0"
+          ><span style="font-weight: bold">Longitude : </span> {{ selected[0].geometry.coordinates[0] }} -
+          <span style="font-weight: bold">Latitude : </span> {{ selected[0].geometry.coordinates[1] }}
+        </v-card-text>
 
         <v-divider />
+
         <v-card-title v-text="`Image`" />
-        <v-card-text v-text="`Round : ${ls.currentRound.name}`" />
-        <v-card-text v-text="`Snap : ${ls.currentSnap.name}`" />
-        <v-card-text v-text="`Mark : ${ls.currentMark.name}`" />
-        <v-card-text v-text="`X : ${relations.images[0].coordinates[0]}`" />
-        <v-card-text v-text="`Y : ${relations.images[0].coordinates[1]}`" />
-        <v-divider />
+
+        <v-card-text class="py-0"
+          ><span style="font-weight: bold">Round : </span> {{ ls.currentRound.name }} -
+          <span style="font-weight: bold">Snap : </span> {{ ls.currentSnap.name }} -
+          <span style="font-weight: bold">Mark : </span> {{ ls.currentMark.name }}
+        </v-card-text>
+
+        <v-card-text class="pt-0"
+          ><span style="font-weight: bold">Pixel X : </span> {{ relations.images[0].coordinates[0] }} -
+          <span style="font-weight: bold">Pixel Y : </span> {{ relations.images[0].coordinates[1] }}
+        </v-card-text>
 
         <v-card-title> Comment </v-card-title>
         <v-card-text>
@@ -53,12 +64,10 @@ export default {
   methods: {
     async submit() {
       const commit = this.$store.commit
-      await commit('submit', {
+      commit('submit', {
         comment: this.comment,
         type: 'Point',
-        args: {
-          layer: this.layerObj.layer
-        }
+        args: { layer: this.layerObj.layer }
       })
     }
   }

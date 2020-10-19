@@ -8,7 +8,7 @@ import { resetPointLayer } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
-export default ({ store: { commit } }) => {
+export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
       drawLas: lasJson => drawLas(lasJson),
@@ -92,12 +92,17 @@ export default ({ store: { commit } }) => {
       },
 
       resetSelected() {
-        if (process.env.dev) console.log(`Reset Selected`)
         const depth = imgRef.depth
+        commit('setSubmitting', false)
+        commit('setShowSubmit', false)
         for (const data of Object.values(depth)) {
           data.layer.selected.image = new jimp(data.width, data.height)
           data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
         }
+        mapRef.selectedLayer.getSource().clear()
+        resetPointLayer(cloudRef.selectedLayer)
+        commit('resetSelected')
+        if (process.env.dev) console.log(`Reset Selected`, state.selected)
       }
     }
   })
