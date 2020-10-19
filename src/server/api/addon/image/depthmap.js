@@ -7,11 +7,11 @@ export async function getLasList(root, markObj, snap) {
   /*
    * <summary>index file from js</summary>
    */
-  const lasFolder = `${root}\\${snap}\\pointcloud`
+  const lasFolder = `${root}/${snap}/pointcloud`
   const lasList = []
   const filePaths = await fs.promises.readdir(lasFolder)
   for (const fileName of filePaths) {
-    const file = fs.openSync(`${lasFolder}\\${fileName}`, 'r')
+    const file = fs.openSync(`${lasFolder}/${fileName}`, 'r')
     const header = Buffer.alloc(LAS_HEADER_SIZE_1_2)
     fs.readSync(file, header, 0, LAS_HEADER_SIZE_1_2, 0)
     const maxX = header.slice(LAS_HEADER_SIZE_1_2 - 6 * 8, LAS_HEADER_SIZE_1_2 - 8 * 5).readDoubleLE()
