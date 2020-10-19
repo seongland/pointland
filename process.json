@@ -1,16 +1,16 @@
 {
   "apps": [
     {
-    "name": "mms-svr",
-    "script": "./node_modules/nuxt/bin/nuxt.js",
-    "merge_logs": true,
-    "log_date_format" :"YYYY-MM-DD HH:mm",
-    "max_memory_restart": "4000M",
-    "env": {
-      "HOST": "0.0.0.0",
-      "PORT": 3000,
-      "NODE_ENV": "production"
+      "name": "3d-mapping",
+      "script": "./node_modules/nuxt/bin/nuxt.js",
+      "merge_logs": true,
+      "log_date_format": "YYYY-MM-DD HH:mm",
+      "max_memory_restart": "4000M",
+      "env": {
+        "HOST": "0.0.0.0",
+        "PORT": 80,
+        "NODE_ENV": "production"
+      }
     }
-  }
   ]
 }

@@ -8,10 +8,10 @@ export const state = () => ({
   prj: undefined,
   prjId: undefined,
   index: 0,
-  currentRound: undefined,
-  currentSnap: undefined,
-  currentMark: undefined,
-  rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200909_231253' }]
+  currentRound: { name: 'Waiting' },
+  currentSnap: { name: 'Waiting' },
+  currentMark: { name: 'Waiting' },
+  rounds: []
 })
 
 export const mutations = {

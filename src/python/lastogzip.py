@@ -31,11 +31,11 @@ if __name__ == "__main__":
   c_utf = c_json.encode('utf-8')
   i_utf = i_json.encode('utf-8')
 
-  x_file = o(f"{cache}\\x.gz", "w")
-  y_file = o(f"{cache}\\y.gz", "w")
-  z_file = o(f"{cache}\\z.gz", "w")
-  c_file = o(f"{cache}\\c.gz", "w")
-  i_file = o(f"{cache}\\i.gz", "w")
+  x_file = o(f"{cache}/x.gz", "w")
+  y_file = o(f"{cache}/y.gz", "w")
+  z_file = o(f"{cache}/z.gz", "w")
+  c_file = o(f"{cache}/c.gz", "w")
+  i_file = o(f"{cache}/i.gz", "w")
 
   x_file.write(x_utf)
   y_file.write(y_utf)
