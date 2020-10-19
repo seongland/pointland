@@ -1,3 +1,5 @@
+import { ref } from './init'
+
 const NEAR = 5
 
 function checkNear(image, x, y) {
@@ -19,6 +21,7 @@ function checkNear(image, x, y) {
 
 function getImageData(event, depth) {
   const path = event.path
+  ref.depth = depth
   for (const element of path)
     if (element.id === 'front') return depth.front
     else if (element.id === 'back') return depth.back

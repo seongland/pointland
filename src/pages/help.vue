@@ -18,18 +18,13 @@
           <v-divider />
 
           <v-card-title>전역 단축키</v-card-title>
-          <v-card-text
-            ><span style="font-weight: bold">Space</span> - 현재 스냅으로 이동한다 (포인트클라우드 뷰가 이상할 때
-            사용한다)</v-card-text
-          >
+          <v-card-text>
+            <span style="font-weight: bold">Space</span> - 현재 마크로 이동한다 (포인트클라우드 뷰가 이상할 때 사용한다)
+          </v-card-text>
           <v-img src="/help/focus.png" />
           <v-card-text><span style="font-weight: bold">Enter</span> - Submit Facility</v-card-text>
-          <v-card-text
-            ><span style="font-weight: bold">{{ '' }}</span> - Move to Previous Mark
-          </v-card-text>
-          <v-card-text
-            ><span style="font-weight: bold">{{ '' }}</span> - Move to Next Mark</v-card-text
-          >
+          <v-card-text> <span style="font-weight: bold">&lt;</span> - Move to Previous Mark </v-card-text>
+          <v-card-text> <span style="font-weight: bold">&gt;</span> - Move to Next Mark </v-card-text>
 
           <v-card-title>Map Keyboard Shortcuts </v-card-title>
 

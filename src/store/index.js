@@ -44,8 +44,9 @@ export const mutations = {
     const res = await this.$axios.post('/api/facility', feature, {
       headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
     })
-    if (res.status === 201) this.commit('setSubmitOverlay', false)
-    else return
+    if (res.status === 201) {
+      this.commit('setSubmitOverlay', false)
+    } else return
   },
 
   setDepthLoading: (state, value) => (state.depth.loading = value),
