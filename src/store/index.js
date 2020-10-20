@@ -4,6 +4,7 @@ import { xyto84 } from '~/server/api/addon/tool/coor'
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
   targetLayer: { index: undefined, object: undefined },
+  allowedLayers: ['B1', 'C1'],
   loading: true,
   depth: {
     loading: false,

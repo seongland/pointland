@@ -91,9 +91,11 @@ export default {
       }
     },
     sameTypes() {
+      const allowedLayers = this.$store.state.allowedLayers
       let types = []
       for (const classObj of Object.values(classes))
-        for (const layerObj of classObj.layers) if (this.type === layerObj.type) types.push(layerObj)
+        for (const layerObj of classObj.layers)
+          if (this.type === layerObj.type && allowedLayers.includes(layerObj.layer)) types.push(layerObj)
       return types
     },
     ls() {
@@ -109,7 +111,7 @@ export default {
       commit('submit', {
         comment: this.comment,
         type: 'Point',
-        args: { layer: this.layerObj.layer }
+        args: { layer: this.targetLayer.layer }
       })
     }
   }
