@@ -36,15 +36,15 @@ export default ({ store: { commit, state } }) => {
       },
 
       drawNear(image, x, y) {
-        image.setPixelColor(0x44ffddff, x, y)
-        image.setPixelColor(0x44ffddff, x - 1, y - 1)
-        image.setPixelColor(0x44ffddff, x + 1, y + 1)
-        image.setPixelColor(0x44ffddff, x + 1, y - 1)
-        image.setPixelColor(0x44ffddff, x - 1, y + 1)
-        image.setPixelColor(0x44ffddff, x, y - 1)
-        image.setPixelColor(0x44ffddff, x, y + 1)
-        image.setPixelColor(0x44ffddff, x + 1, y)
-        image.setPixelColor(0x44ffddff, x - 1, y)
+        image.setPixelColor(0x8866ffff, x, y)
+        image.setPixelColor(0x8866ffff, x - 1, y - 1)
+        image.setPixelColor(0x8866ffff, x + 1, y + 1)
+        image.setPixelColor(0x8866ffff, x + 1, y - 1)
+        image.setPixelColor(0x8866ffff, x - 1, y + 1)
+        image.setPixelColor(0x8866ffff, x, y - 1)
+        image.setPixelColor(0x8866ffff, x, y + 1)
+        image.setPixelColor(0x8866ffff, x + 1, y)
+        image.setPixelColor(0x8866ffff, x - 1, y)
       },
 
       async drawFromDepth(x, y, data) {

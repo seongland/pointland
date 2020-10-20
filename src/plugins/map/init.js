@@ -43,7 +43,7 @@ const layerConfig = {
       type: 'Point',
       zindex: ZINDEX_PVR + 4,
       style: {
-        color: '#6eb',
+        color: '#8866ff',
         radius: 2
       }
     }
