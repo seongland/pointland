@@ -16,7 +16,7 @@ function drawLas(lasJson) {
 
   if (!cloud.offset) firstLas(cloud, lasJson, vertices)
   else addLas(lasJson, cloud, vertices)
-  // addPoints(lasJson, colors, vertices, cloud)
+  addPoints(lasJson, colors, vertices, cloud)
   ref.loading = false
 }
 
