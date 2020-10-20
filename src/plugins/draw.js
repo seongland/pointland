@@ -93,6 +93,7 @@ export default ({ store: { commit, state } }) => {
 
       resetSelected() {
         const depth = imgRef.depth
+        if (!depth) return
         commit('setSubmitting', false)
         commit('setShowSubmit', false)
         for (const data of Object.values(depth)) {
@@ -103,6 +104,13 @@ export default ({ store: { commit, state } }) => {
         resetPointLayer(cloudRef.selectedLayer)
         commit('resetSelected')
         if (process.env.dev) console.log(`Reset Selected`, state.selected)
+      },
+
+      resetSnap() {
+        this.resetSelected()
+        if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
+        if (cloudRef.markLayer) resetPointLayer(cloudRef.markLayer)
+        if (cloudRef.points) for (const pointLayer of cloudRef.points) resetPointLayer(pointLayer)
       }
     }
   })
