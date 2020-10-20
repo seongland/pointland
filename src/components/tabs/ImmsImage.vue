@@ -45,6 +45,8 @@ export default {
   computed: {
     src() {
       const ls = this.$store.state.ls
+      if (!ls.currentRound || !ls.currentSnap || !ls.currentMark)
+        return { front: { uri: undefined }, back: { uri: undefined } }
       const root = `/api/image/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}`
       return { front: { uri: `${root}/front` }, back: { uri: `${root}/back` } }
     },
@@ -61,6 +63,11 @@ export default {
     async depth() {
       this.$store.commit('setDepthLoading', true)
       const currentMark = this.$store.state.ls.currentMark
+      if (!currentMark)
+        return {
+          front: { uri: undefined, layer: { selected: { uri: undefined } } },
+          back: { uri: undefined, layer: { selected: { uri: undefined } } }
+        }
       const frontURL = `${this.src.front.uri}/depth`
       const backURL = `${this.src.back.uri}/depth`
       const frontP = this.$axios.post(frontURL, { data: { mark: currentMark } })

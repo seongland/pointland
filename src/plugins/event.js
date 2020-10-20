@@ -69,7 +69,8 @@ export default ({ store: { commit, state } }) => {
           case 'm':
           case 'M':
             if (index === 0) return
-            const mapWrapper = document.getElementById('global-map').parentElement
+            const mapWrapper = document.getElementById('global-map')?.parentElement
+            if (!mapWrapper) return
             if (this.tabs[0].show) mapWrapper.setAttribute('style', 'z-index:-1 !important')
             else mapWrapper.setAttribute('style', 'z-index:5 !important')
             this.tabs[0].show = !this.tabs[0].show

@@ -5,7 +5,6 @@ python las to json
 
 from json import loads, dumps
 from sys import argv
-import os
 import pylas
 
 if __name__ == "__main__":
@@ -15,9 +14,22 @@ if __name__ == "__main__":
   las = pylas.read(path)
   las_min = {}
   las_min["center"] = [las.x.mean(), las.y.mean(),las.z.mean()]
-  las_min["intensity"] = las.intensity.tolist()
-  las_min["x"] = (las.x - las_min["center"][0]).tolist()
-  las_min["y"] = (las.y - las_min["center"][1]).tolist()
-  las_min["z"] = (las.z - las_min["center"][2]).tolist()
+  intensity = las.intensity.tolist()
+  center = [las.x.mean(), las.y.mean(),las.z.mean()]
+
+  x = (las.x - center[0]).tolist()
+  y = (las.y - center[1]).tolist()
+  z = (las.z - center[2]).tolist()
+
+  x_min = x[0::10]
+  y_min = y[0::10]
+  z_min = z[0::10]
+  i_min = intensity[0::10]
+
+  las_min["x"] = x_min
+  las_min["y"] = y_min
+  las_min["z"] = z_min
+  las_min["intensity"] = i_min
+
   las_json = dumps(las_min, indent=None, separators=(',',':'))
   exit(print(las_json))
