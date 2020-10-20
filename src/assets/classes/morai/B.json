@@ -1,0 +1,87 @@
+{
+  "class": "B",
+  "layers": [
+    {
+      "layer": "B1",
+      "type": "Point",
+      "description": "표지판",
+      "name": "SAFETYSIGN",
+      "attributes": {
+        "Type": {
+          "type": "String",
+          "method": "select",
+          "candidates": [
+            {
+              "data": "1",
+              "name": "HDR_CautionSignType",
+              "description": "주의표지",
+              "attributes": {
+                "SubType": {}
+              }
+            },
+            {
+              "data": "2",
+              "name": "HDR_IndicationSignType",
+              "description": "지시표지"
+            },
+            {
+              "data": "3",
+              "name": "HDR_RestrictionSignType",
+              "description": "규제표지"
+            },
+            {
+              "data": "4",
+              "name": "HDR_AssistantSignType",
+              "description": "보조표지"
+            }
+          ]
+        },
+        "Value": {
+          "type": "Number",
+          "method": "typing"
+        },
+        "Unit": {
+          "type": "String",
+          "method": "typing"
+        },
+        "Post": {
+          "type": "Boolean",
+          "method": "select",
+          "candidates": [
+            {
+              "data": true,
+              "name": "Vertical_Post",
+              "description": "세로 기둥",
+              "attributes": {
+                "SubType": {}
+              }
+            },
+            {
+              "data": false,
+              "name": "Horizontal_Post",
+              "description": "가로 기둥"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "layer": "B2",
+      "type": "LineString",
+      "description": "차선",
+      "name": "SURFACELineStringMARK"
+    },
+    {
+      "layer": "B3",
+      "type": "Polygon",
+      "description": "노면표시",
+      "name": "SURFACEMARK"
+    },
+    {
+      "layer": "B4",
+      "type": "Polygon",
+      "description": "횡단보도",
+      "name": "CROSSWALK"
+    }
+  ]
+}
