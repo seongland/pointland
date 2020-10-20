@@ -36,15 +36,19 @@ export default ({ store: { commit, state } }) => {
       },
 
       drawNear(image, x, y) {
-        image.setPixelColor(0x8866ffff, x, y)
-        image.setPixelColor(0x8866ffff, x - 1, y - 1)
-        image.setPixelColor(0x8866ffff, x + 1, y + 1)
-        image.setPixelColor(0x8866ffff, x + 1, y - 1)
-        image.setPixelColor(0x8866ffff, x - 1, y + 1)
-        image.setPixelColor(0x8866ffff, x, y - 1)
-        image.setPixelColor(0x8866ffff, x, y + 1)
-        image.setPixelColor(0x8866ffff, x + 1, y)
-        image.setPixelColor(0x8866ffff, x - 1, y)
+        const color = 0x993366ff
+        const list = [
+          [x, y],
+          [x - 1, y - 1],
+          [x + 1, y + 1],
+          [x + 1, y - 1],
+          [x - 1, y + 1],
+          [x, y - 1],
+          [x, y + 1],
+          [x + 1, y],
+          [x - 1, y]
+        ]
+        for (const coor of list) image.setPixelColor(color, ...coor)
       },
 
       async drawFromDepth(x, y, data) {
