@@ -20,7 +20,7 @@
         class="mt-1 mr-4 snaps"
         label="Snap"
         solo
-        :items="currentRound.snaps"
+        :items="currentRound ? currentRound.snaps : []"
         item-text="name"
         item-value="name"
         v-model="currentSnap"
@@ -31,7 +31,7 @@
         class="mt-1 mr-4 marks"
         label="Mark"
         solo
-        :items="currentSnap.marks"
+        :items="currentSnap ? currentSnap.marks : []"
         item-text="name"
         item-value="name"
         v-model="currentMark"

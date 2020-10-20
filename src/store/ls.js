@@ -8,9 +8,9 @@ export const state = () => ({
   prj: undefined,
   prjId: undefined,
   index: 0,
-  currentRound: { name: 'Waiting' },
-  currentSnap: { name: 'Waiting' },
-  currentMark: { name: 'Waiting' },
+  currentRound: undefined,
+  currentSnap: undefined,
+  currentMark: undefined,
   rounds: [{ name: 'imms_20200910_000230' }]
 })
 
@@ -40,7 +40,8 @@ export const mutations = {
     if (state.index === index) return
     const previous = state.index
     state.index = index
-    const mapWrapper = document.getElementById('global-map').parentElement
+    const mapWrapper = document.getElementById('global-map')?.parentElement
+    if (!mapWrapper) return
     setTimeout(() => window.dispatchEvent(new Event('resize')))
 
     if (previous === 0) {
@@ -74,7 +75,9 @@ export const mutations = {
   },
 
   setRound(state, roundObj) {
-    const snapIndex = state.currentRound.snaps.findIndex(element => element.name === state.currentSnap.name)
+    let snapIndex
+    if (state.currentRound?.snaps)
+      snapIndex = state.currentRound.snaps.findIndex(element => element.name === state.currentSnap.name)
     state.currentRound = roundObj
 
     let snapObj
@@ -87,7 +90,9 @@ export const mutations = {
   setSnap(state, snapObj) {
     this.$router.app.resetSnap()
     snapObj.round = state.currentRound.name
-    const markIndex = state.currentSnap.marks.findIndex(element => element.name === state.currentMark.name)
+    let markIndex
+    if (state.currentSnap?.marks)
+      markIndex = state.currentSnap.marks.findIndex(element => element.name === state.currentMark.name)
     state.currentSnap = snapObj
 
     let markObj
