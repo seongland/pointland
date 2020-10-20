@@ -36,7 +36,7 @@ export default ({ store: { commit, state } }) => {
       },
 
       drawNear(image, x, y) {
-        const color = 0x993366ff
+        const color = 0xff5599ff
         const list = [
           [x, y],
           [x - 1, y - 1],

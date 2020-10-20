@@ -12,8 +12,8 @@ export const ref = { cloudSize: 0.05, pointSize: 1 }
 
 const layerConfig = {
   pointLayers: [
-    { name: 'selectedLayer', color: 0x993366, size: SELECT_SIZE, length: SELECT_POINTS, order: 1 },
-    { name: 'markLayer', color: 0xee2266, size: MARK_SIZE / 2, length: MARK_POINTS },
+    { name: 'selectedLayer', color: 0xff5599, size: SELECT_SIZE, length: SELECT_POINTS, order: 1 },
+    { name: 'markLayer', color: 0x22dd88, size: MARK_SIZE / 2, length: MARK_POINTS },
     { name: 'currentLayer', color: 0x1188ff, size: MARK_SIZE, length: 1, order: 2 }
   ]
 }

@@ -24,7 +24,7 @@ const layerConfig = {
       type: 'Point',
       zindex: ZINDEX_PVR + 1,
       style: {
-        color: '#f59',
+        color: '#22dd88',
         radius: 2
       }
     },
@@ -43,7 +43,7 @@ const layerConfig = {
       type: 'Point',
       zindex: ZINDEX_PVR + 4,
       style: {
-        color: '#993366',
+        color: '#ff5599',
         radius: 2
       }
     }
