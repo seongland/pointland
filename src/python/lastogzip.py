@@ -19,11 +19,16 @@ if __name__ == "__main__":
   y = (las.y - center[1]).tolist()
   z = (las.z - center[2]).tolist()
 
-  x_json = dumps(x, indent=None, separators=(',',':'))
-  y_json = dumps(y, indent=None, separators=(',',':'))
-  z_json = dumps(z, indent=None, separators=(',',':'))
+  x_min = x[0::10]
+  y_min = y[0::10]
+  z_min = z[0::10]
+  i_min = intensity[0::10]
+
+  x_json = dumps(x_min, indent=None, separators=(',',':'))
+  y_json = dumps(y_min, indent=None, separators=(',',':'))
+  z_json = dumps(z_min, indent=None, separators=(',',':'))
   c_json = dumps(center, indent=None, separators=(',',':'))
-  i_json = dumps(intensity, indent=None, separators=(',',':'))
+  i_json = dumps(i_min, indent=None, separators=(',',':'))
 
   x_utf = x_json.encode('utf-8')
   y_utf = y_json.encode('utf-8')

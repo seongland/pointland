@@ -21,7 +21,8 @@ export default ({ $axios, store: { commit } }) => {
 
       eventBind() {
         // Register Map event for tab change
-        const mapWrapper = document.getElementById('global-map').parentElement
+        const mapWrapper = document.getElementById('global-map')?.parentElement
+        if (!mapWrapper) return
         if (this.index !== 0) mapWrapper.classList.add('small-map')
         setTimeout(() => window.dispatchEvent(new Event('resize')))
 
