@@ -97,17 +97,24 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-    <v-dialog v-if="submitting" v-model="showSubmit"> <input-data /></v-dialog>
+    <v-dialog v-if="submitting" v-model="showSubmit">
+      <input-data :layer="$store.state.targetLayer.object.layer" :type="$store.state.targetLayer.object.type"
+    /></v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>
 
 <script>
-import classes from '~/assets/morai'
+import A from '~/assets/classes/morai/A'
+import B from '~/assets/classes/morai/B'
+import C from '~/assets/classes/morai/C'
+import D from '~/assets/classes/morai/D'
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
 import InputData from '~/components/overlay/InputData'
+
+const classes = [A, B, C, D]
 
 export default {
   middleware: 'authentication',

@@ -1,0 +1,23 @@
+{
+  "class": "D",
+  "layers": [
+    {
+      "layer": "D1",
+      "type": "None",
+      "description": "연결된신호등",
+      "name": "SYNCEDTRAFFICLIGHT"
+    },
+    {
+      "layer": "D2",
+      "type": "None",
+      "description": "교차로신호등통제기",
+      "name": "INTERSECTIONCONTROLLER"
+    },
+    {
+      "layer": "D3",
+      "type": "Polygon",
+      "description": "보도",
+      "name": "SIDEWALK"
+    }
+  ]
+}

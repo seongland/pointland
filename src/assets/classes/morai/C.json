@@ -1,0 +1,23 @@
+{
+  "class": "C",
+  "layers": [
+    {
+      "layer": "C1",
+      "type": "Point",
+      "description": "신호등",
+      "name": "TRAFFICLIGHT"
+    },
+    {
+      "layer": "C3",
+      "type": "LineString",
+      "description": "차량방호안전시설",
+      "name": "VEHICLEPROTECTIONSAFETY"
+    },
+    {
+      "layer": "C4",
+      "type": "Polygon",
+      "description": "과속방지턱",
+      "name": "SPEEDBUMP"
+    }
+  ]
+}
