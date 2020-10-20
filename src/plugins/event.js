@@ -97,7 +97,7 @@ export default ({ store: { commit, state } }) => {
             }
             return
         }
-        console.log(event)
+        if (process.env.dev) console.log(event)
       }
     }
   })
