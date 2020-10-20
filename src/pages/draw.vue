@@ -103,11 +103,11 @@
 </template>
 
 <script>
+import classes from '~/assets/morai'
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
 import InputData from '~/components/overlay/InputData'
-import classes from '~/assets/morai'
 
 export default {
   middleware: 'authentication',
