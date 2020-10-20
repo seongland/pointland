@@ -4,8 +4,6 @@ import { ref as cloudRef } from './cloud/init'
 import { imageClick } from './image/event'
 import { setFocus } from './map/event'
 
-const allowedLayers = ['B1', 'C1']
-
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
@@ -92,7 +90,7 @@ export default ({ store: { commit, state } }) => {
 
           // Submit
           case 'Enter':
-            if (allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
+            if (state.allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
               commit('setSubmitting', true)
               commit('setShowSubmit', true)
             }
