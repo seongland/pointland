@@ -35,8 +35,7 @@ export default ({ store: { commit, state } }) => {
         drawXYZ(cloudRef.currentLayer, xyz, true, 'current')
       },
 
-      drawNear(image, x, y) {
-        const color = 0xff5599ff
+      drawNear(image, x, y, color) {
         const list = [
           [x, y],
           [x - 1, y - 1],
@@ -58,10 +57,10 @@ export default ({ store: { commit, state } }) => {
           if (targetLayer.object.type === 'Point') {
             this.resetSelectedExcept(data)
             data.layer.selected.image = new jimp(data.width, data.height)
-            this.drawNear(data.layer.selected.image, x, y)
+            this.drawNear(data.layer.selected.image, x, y, 0xff5599ff)
             data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
-            const res = await this.$axios.get(`${data.url}/${x}/${y}`)
-            const xyz = res.data
+            const xyzRes = await this.$axios.get(`${data.url}/${x}/${y}`)
+            const xyz = xyzRes.data
 
             commit('select', {
               xyz,

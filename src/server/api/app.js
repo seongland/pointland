@@ -11,6 +11,7 @@ import services from './services'
 import image from './addon/image'
 import meta from './addon/meta'
 import pointcloud from './addon/pointcloud'
+import facility from './addon/facility'
 
 import mongoose from './inout/mongoose'
 import logger from './inout/logger'
@@ -24,6 +25,7 @@ const app = express(feathers())
   .configure(mongoose)
   .configure(services)
   .configure(authentication)
+  .configure(facility)
   .use('/image', image)
   .use('/pointcloud', pointcloud)
   .use('/meta', meta)

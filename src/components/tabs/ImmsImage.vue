@@ -9,22 +9,22 @@
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.front.uri" v-show="!loading">
-            <transition name="fade" appear>
-              <v-img id="front" v-show="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick">
+            <v-img id="front" v-show="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick">
+              <v-img :src="depth ? depth.front.layer.drawn.uri : src.front.uri">
                 <v-img :src="depth ? depth.front.layer.selected.uri : src.front.uri"
               /></v-img>
-            </transition>
+            </v-img>
           </v-img>
         </transition>
       </v-col>
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.back.uri" v-show="!loading">
-            <transition name="fade" appear>
-              <v-img id="back" v-show="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick" :opacity="0.7">
+            <v-img id="back" v-show="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick">
+              <v-img :src="depth ? depth.back.layer.drawn.uri : src.back.uri">
                 <v-img :src="depth ? depth.back.layer.selected.uri : src.back.uri" />
               </v-img>
-            </transition>
+            </v-img>
           </v-img>
         </transition>
       </v-col>
@@ -65,8 +65,8 @@ export default {
       const currentMark = this.$store.state.ls.currentMark
       if (!currentMark)
         return {
-          front: { uri: undefined, layer: { selected: { uri: undefined } } },
-          back: { uri: undefined, layer: { selected: { uri: undefined } } }
+          front: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } },
+          back: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } }
         }
       const frontURL = `${this.src.front.uri}/depth`
       const backURL = `${this.src.back.uri}/depth`
@@ -80,10 +80,24 @@ export default {
       jimp.read(Buffer.from(back.uri.split(',')[1], 'base64')).then(image => {
         back.image = image
       })
-      front.layer = { selected: { uri: undefined } }
-      back.layer = { selected: { uri: undefined } }
+      front.layer = { selected: { uri: undefined }, drawn: { uri: undefined } }
+      back.layer = { selected: { uri: undefined }, drawn: { uri: undefined } }
       front.layer.selected.image = new jimp(front.width, front.height)
       back.layer.selected.image = new jimp(back.width, back.height)
+      front.layer.drawn.image = new jimp(front.width, front.height)
+      back.layer.drawn.image = new jimp(back.width, back.height)
+
+      const nearRes = this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
+        const facilites = res.data
+        for (const facility of facilites)
+          for (const image of facility.relations.images)
+            if (image.name == currentMark.name) {
+              const img = this.depth[image.direction].layer.drawn.image
+              this.drawNear(img, image.coordinates[0], image.coordinates[1], 0x9911ffff)
+              img.getBase64Async('image/png').then(uri => (this.depth[image.direction].layer.drawn.uri = uri))
+            }
+      })
+
       front.url = frontURL
       back.url = backURL
       front.name = 'front'
