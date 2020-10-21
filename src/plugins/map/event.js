@@ -28,16 +28,27 @@ function mapClick(e) {
   /**
    * @summary - When Click Map
    */
+  const vectorOpts = ref.map.opt.layers.vector
+
   let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
   let extent = e.map.getView().calculateExtent()
   let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
   let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
   let size = rightTop.map((e, i) => e - leftBottom[i])
 
-  let closest
   const tmpSrc = new Vector()
-  closest = ref.markLayer.getSource().getClosestFeatureToCoordinate(e.coordinate)
-  if (ref.clickCallback) ref.clickCallback(closest)
+  for (const opt of vectorOpts) {
+    const layer = ref[opt.name]
+    if (opt?.callback?.click) {
+      const feature = layer.getSource().getClosestFeatureToCoordinate(e.coordinate)
+      if (feature) {
+        feature.callback = opt.callback
+        tmpSrc.addFeature(feature)
+      }
+    }
+  }
+  const closest = tmpSrc.getClosestFeatureToCoordinate(e.coordinate)
+  closest.callback.click(closest)
 }
 
 function getNearDraft(coor, size) {

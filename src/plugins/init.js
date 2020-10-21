@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { olInit, setClickCB } from '~/plugins/map/init'
+import { olInit } from '~/plugins/map/init'
 import { initCloud, purgeCloud } from './cloud/init'
 
 export default ({ $axios, store: { commit } }) => {
@@ -41,8 +41,12 @@ export default ({ $axios, store: { commit } }) => {
       },
 
       olInit(opt, geoserver, workspace, layers) {
+        for (const config of this.mapOpt.layers.vector) {
+          config.callback = {}
+          if (config.name === 'markLayer') config.callback.click = this.clickMark
+          else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn
+        }
         this.$root.map = olInit(opt, geoserver, workspace, layers)
-        setClickCB(this.clickMark)
         return this.$root.map
       }
     }
