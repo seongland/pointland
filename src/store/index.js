@@ -1,5 +1,6 @@
 import { setDrawInteraction } from '~/plugins/map/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
+import { ref as imgRef } from '~/plugins/image/init'
 
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
@@ -37,7 +38,7 @@ export const mutations = {
     state.submit.ing = value
   },
 
-  async submit(state, { comment, args, type, messenger }) {
+  async submit(state, { comment, args, type }) {
     let feature
     if (type === 'Point') {
       feature = state.selected[0]
@@ -53,6 +54,7 @@ export const mutations = {
     if (res.status === 201) {
       this.commit('setShowSubmit', false)
       this.$router.app.resetSelected()
+      this.$router.app.drawFacilities(state.ls.currentMark, imgRef.depth)
     } else return
   },
 
