@@ -13,6 +13,7 @@ export default app => {
     geometry: { type: geometrySchema }
   }
   const facilitySchema = defaultSchema(app).add(facilityProps)
+  facilitySchema.index({ geometry: '2dsphere' })
 
   if (mongooseClient.modelNames().includes(modelName)) {
     mongooseClient.deleteModel(modelName)
