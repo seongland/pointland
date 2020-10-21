@@ -19,6 +19,15 @@ export default ({ store: { commit, state } }) => {
         }
       },
 
+      getAuthConfig: () => ({ headers: { Authorization: state.ls.accessToken } }),
+
+      async clickDrawn(feature) {
+        const id = feature.getId()
+        commit('setEditTarget', id)
+        commit('setEditing', true)
+        commit('setShowEdit', true)
+      },
+
       async waitAvail(flag, callback, args) {
         flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
       },

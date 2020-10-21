@@ -15,6 +15,11 @@ export const state = () => ({
     show: false,
     ing: false
   },
+  edit: {
+    show: false,
+    ing: false,
+    id: undefined
+  },
   selected: []
 })
 
@@ -36,6 +41,15 @@ export const mutations = {
   },
   setSubmitting(state, value) {
     state.submit.ing = value
+  },
+  setShowEdit(state, value) {
+    state.edit.show = value
+  },
+  setEditing(state, value) {
+    state.edit.ing = value
+  },
+  setEditTarget(state, id) {
+    state.edit.id = id
   },
 
   async submit(state, { comment, args, type }) {
@@ -90,5 +104,16 @@ export const mutations = {
 
   setLoading(state, value) {
     state.loading = value
+  }
+}
+
+export const actions = {
+  async remove({ state, commit }, id) {
+    const app = this.$router.app
+    const config = app.getAuthConfig()
+    const res = await this.$axios.delete(`/api/facility/${id}`, config)
+    commit('setEditing', false)
+    commit('setShowEdit', false)
+    console.log(res.data)
   }
 }

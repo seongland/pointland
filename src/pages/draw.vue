@@ -97,11 +97,16 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
+
     <v-dialog v-if="submitting" v-model="showSubmit">
       <input-data
         :layer="targetLayer.object ? targetLayer.object.layer : ''"
         :type="targetLayer.object ? targetLayer.object.type : ''"
-    /></v-dialog>
+      />
+    </v-dialog>
+    <v-dialog v-if="editing" v-model="showEdit">
+      <edit-data :id="$store.state.edit.id" />
+    </v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>
@@ -114,13 +119,14 @@ import D from '~/assets/classes/morai/D'
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
+import EditData from '~/components/overlay/EditData'
 import InputData from '~/components/overlay/InputData'
 
 const classes = [A, B, C, D]
 
 export default {
   middleware: 'authentication',
-  components: { GeoMap, LasCloud, ImmsImage, InputData },
+  components: { GeoMap, LasCloud, ImmsImage, EditData, InputData },
   data: () => ({ classes }),
   fetchOnServer: false,
 
@@ -160,6 +166,22 @@ export default {
       },
       set(values) {
         this.$store.commit('setSubmitting', values)
+      }
+    },
+    showEdit: {
+      get() {
+        return this.$store.state.edit.show
+      },
+      set(values) {
+        this.$store.commit('setShowEdit', values)
+      }
+    },
+    editing: {
+      get() {
+        return this.$store.state.edit.ing
+      },
+      set(values) {
+        this.$store.commit('setEditing', values)
       }
     },
     currentRound: {

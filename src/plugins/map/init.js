@@ -16,20 +16,13 @@ import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
 
-const mapConfig = {
-  id: MAP_ID,
-  zoom: 15,
-  center: [37.3595704, 127.105399],
-  type: 'satellite'
-}
-
 function olInit(opt, geoserver, workspace, layers) {
   /**
    * @summary - Make OSM
    * @todo - option conatin id and substitute default configs
    */
   const styles = makeStyle()
-  const naver = makeNaverMap(mapConfig)
+  const naver = makeNaverMap(opt)
   const openlayers = []
 
   for (const vectorConfig of opt.layers.vector) openlayers.push(makeVectorLayer(vectorConfig))
@@ -48,8 +41,9 @@ function olInit(opt, geoserver, workspace, layers) {
   const map = makeOlMap(openlayers)
   map.styles = styles
   map.naver = naver
+  map.opt = opt
   ref.map = map
-  eventBind(map)
+  eventBind(map, opt)
   return map
 }
 
@@ -73,11 +67,4 @@ function makeOlMap(layers) {
   return new Map(mapOpt)
 }
 
-function setClickCB(callback) {
-  /**
-   * @summary - Make OpenLayers Main Map
-   */
-  ref.clickCallback = callback
-}
-
-export { olInit, setClickCB }
+export { olInit }
