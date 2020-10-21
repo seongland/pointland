@@ -8,6 +8,7 @@ import { GeoJSON } from 'ol/format'
 import { ref } from './init'
 import { drawLine } from './draw'
 import { ZOOM_DURATION, START_ZOOM } from './config'
+import { Vector } from 'ol/source'
 
 function eventBind(map) {
   /**
@@ -27,13 +28,16 @@ function mapClick(e) {
   /**
    * @summary - When Click Map
    */
-  // let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
-  // let extent = e.map.getView().calculateExtent()
-  // let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
-  // let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
-  // let size = rightTop.map((e, i) => e - leftBottom[i])
-  const feature = ref.markLayer.getSource().getClosestFeatureToCoordinate(e.coordinate)
-  if (ref.clickCallback) ref.clickCallback(feature)
+  let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
+  let extent = e.map.getView().calculateExtent()
+  let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
+  let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
+  let size = rightTop.map((e, i) => e - leftBottom[i])
+
+  let closest
+  const tmpSrc = new Vector()
+  closest = ref.markLayer.getSource().getClosestFeatureToCoordinate(e.coordinate)
+  if (ref.clickCallback) ref.clickCallback(closest)
 }
 
 function getNearDraft(coor, size) {

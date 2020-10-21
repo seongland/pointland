@@ -40,8 +40,8 @@ export default ({ $axios, store: { commit } }) => {
         user.projects = projectResponses.map(res => res.data[0])
       },
 
-      olInit(geoserver, workspace, layers) {
-        this.$root.map = olInit(geoserver, workspace, layers)
+      olInit(opt, geoserver, workspace, layers) {
+        this.$root.map = olInit(opt, geoserver, workspace, layers)
         setClickCB(this.clickMark)
         return this.$root.map
       }
