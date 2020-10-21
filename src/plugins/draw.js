@@ -35,6 +35,13 @@ export default ({ store: { commit, state } }) => {
         drawXYZ(cloudRef.currentLayer, xyz, true, 'current')
       },
 
+      drawnXYZ(xyz, id) {
+        const lnglat = xyto84(xyz[0], xyz[1])
+        const latlng = lnglat.reverse()
+        drawXY(mapRef.drawnLayer, latlng, false, id)
+        drawXYZ(cloudRef.drawnLayer, xyz, false, id)
+      },
+
       drawNear(image, x, y, color) {
         const list = [
           [x, y],
@@ -48,6 +55,23 @@ export default ({ store: { commit, state } }) => {
           [x - 1, y]
         ]
         for (const coor of list) image.setPixelColor(color, ...coor)
+      },
+
+      drawFacilities(currentMark, depth) {
+        return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
+          resetPointLayer(cloudRef.drawnLayer)
+          const facilites = res.data
+          for (const facility of facilites) {
+            for (const image of facility.relations.images)
+              if (image.name == currentMark.name) {
+                const img = depth[image.direction].layer.drawn.image
+                this.drawNear(img, image.coordinates[0], image.coordinates[1], 0x9911ffff)
+                img.getBase64Async('image/png').then(uri => (depth[image.direction].layer.drawn.uri = uri))
+              }
+            const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
+            this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
+          }
+        })
       },
 
       async drawFromDepth(x, y, data) {

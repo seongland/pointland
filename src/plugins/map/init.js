@@ -37,11 +37,20 @@ const layerConfig = {
         radius: 5
       }
     },
-    { name: 'drawLayer', zindex: ZINDEX_PVR + 3 },
+    {
+      name: 'drawnLayer',
+      type: 'Point',
+      zindex: ZINDEX_PVR + 3,
+      style: {
+        color: '#9911ff',
+        radius: 2
+      }
+    },
+    { name: 'drawLayer', zindex: ZINDEX_PVR + 4 },
     {
       name: 'selectedLayer',
       type: 'Point',
-      zindex: ZINDEX_PVR + 4,
+      zindex: ZINDEX_PVR + 5,
       style: {
         color: '#ff5599',
         radius: 2
