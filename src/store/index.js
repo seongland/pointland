@@ -114,6 +114,6 @@ export const actions = {
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setEditing', false)
     commit('setShowEdit', false)
-    console.log(res.data)
+    if (process.env.dev) console.log('Removed', res.data)
   }
 }
