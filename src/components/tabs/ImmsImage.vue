@@ -36,6 +36,8 @@
 
 <script>
 import jimp from 'jimp/browser/lib/jimp'
+import { resetPointLayer } from '~/plugins/cloud/event'
+import { ref as cloudRef } from '~/plugins/cloud/init'
 
 export default {
   data: () => ({
@@ -86,24 +88,16 @@ export default {
       back.layer.selected.image = new jimp(back.width, back.height)
       front.layer.drawn.image = new jimp(front.width, front.height)
       back.layer.drawn.image = new jimp(back.width, back.height)
+      const depth = { front, back }
 
-      const nearRes = this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
-        const facilites = res.data
-        for (const facility of facilites)
-          for (const image of facility.relations.images)
-            if (image.name == currentMark.name) {
-              const img = this.depth[image.direction].layer.drawn.image
-              this.drawNear(img, image.coordinates[0], image.coordinates[1], 0x9911ffff)
-              img.getBase64Async('image/png').then(uri => (this.depth[image.direction].layer.drawn.uri = uri))
-            }
-      })
+      this.drawFacilities(currentMark, depth)
 
       front.url = frontURL
       back.url = backURL
       front.name = 'front'
       back.name = 'back'
       this.$store.commit('setDepthLoading', false)
-      return { front, back }
+      return depth
     }
   },
 
