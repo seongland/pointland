@@ -34,6 +34,7 @@ export async function getDbfRecord(dbfPath, seq) {
 }
 
 export async function getDbfRecords(dbfPath) {
+  console.log(dbfPath)
   const dbf = await DBFFile.open(dbfPath)
   return await dbf.readRecords(dbf.recordCount)
 }

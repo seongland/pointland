@@ -98,7 +98,9 @@
       </v-tabs-items>
     </v-card>
     <v-dialog v-if="submitting" v-model="showSubmit">
-      <input-data :layer="$store.state.targetLayer.object.layer" :type="$store.state.targetLayer.object.type"
+      <input-data
+        :layer="targetLayer.object ? targetLayer.object.layer : ''"
+        :type="targetLayer.object ? targetLayer.object.type : ''"
     /></v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
@@ -186,6 +188,9 @@ export default {
         if (process.env.dev) console.log('Set Mark', values)
         this.setMark(values)
       }
+    },
+    targetLayer() {
+      return this.$store.state.targetLayer
     },
     layerIndex: {
       get() {
