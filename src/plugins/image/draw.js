@@ -13,6 +13,7 @@ export function drawNear(layer, { direction, x, y, color, id }) {
     [x + 1, y],
     [x - 1, y]
   ]
+  if (!ref.ids) ref.ids = {}
   ref.ids[id] = { direction, x, y }
   for (const coor of list) img.setPixelColor(color, ...coor)
   img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
