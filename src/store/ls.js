@@ -11,7 +11,7 @@ export const state = () => ({
   currentRound: undefined,
   currentSnap: undefined,
   currentMark: undefined,
-  rounds: [{ name: 'imms_20200910_000230' }]
+  rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }]
 })
 
 export const mutations = {
@@ -64,7 +64,7 @@ export const mutations = {
   },
 
   setRounds(state, rounds) {
-    const roundIndex = state.rounds.findIndex(element => element.name === state.rounds.name)
+    const roundIndex = state.rounds.findIndex(element => element.name === state.currentRound.name)
     state.rounds = rounds
 
     let roundObj
