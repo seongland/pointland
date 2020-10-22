@@ -104,7 +104,7 @@
         :type="targetLayer.object ? targetLayer.object.type : ''"
       />
     </v-dialog>
-    <v-dialog v-if="editing" v-model="showEdit">
+    <v-dialog v-if="editing" v-model="editing">
       <edit-data :id="$store.state.edit.id" />
     </v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
@@ -131,11 +131,14 @@ export default {
   fetchOnServer: false,
 
   async fetch() {
-    const currentRoundName = this.$store.state.ls.rounds[0].name
-    const res = await this.$axios.get(`/api/meta/${currentRoundName}`)
-    const roundObj = res.data
-    if (process.env.dev) console.log('Round Object', roundObj)
-    this.setRounds([roundObj])
+    const rounds = []
+    for (const round of this.$store.state.ls.rounds) {
+      const res = await this.$axios.get(`/api/meta/${round.name}`)
+      const roundObj = res.data
+      rounds.push(roundObj)
+    }
+    if (process.env.dev) console.log('Rounds', rounds)
+    this.setRounds(rounds)
   },
 
   async mounted() {
@@ -166,14 +169,6 @@ export default {
       },
       set(values) {
         this.$store.commit('setSubmitting', values)
-      }
-    },
-    showEdit: {
-      get() {
-        return this.$store.state.edit.show
-      },
-      set(values) {
-        this.$store.commit('setShowEdit', values)
       }
     },
     editing: {

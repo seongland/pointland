@@ -16,7 +16,6 @@ export const state = () => ({
     ing: false
   },
   edit: {
-    show: false,
     ing: false,
     id: undefined
   },
@@ -41,9 +40,6 @@ export const mutations = {
   },
   setSubmitting(state, value) {
     state.submit.ing = value
-  },
-  setShowEdit(state, value) {
-    state.edit.show = value
   },
   setEditing(state, value) {
     state.edit.ing = value
@@ -113,7 +109,6 @@ export const actions = {
     const config = app.getAuthConfig()
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setEditing', false)
-    commit('setShowEdit', false)
     if (process.env.dev) console.log('Removed', res.data)
   }
 }
