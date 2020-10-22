@@ -54,15 +54,13 @@ export default ({ store: { commit, state } }) => {
         drawXYZ(cloudRef.drawnLayer, xyz, false, id)
       },
 
-      drawFacilities(currentMark, depth) {
+      drawFacilities(currentMark) {
         return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
           resetPointLayer(cloudRef.drawnLayer)
           const facilites = res.data
           for (const facility of facilites) {
             for (const image of facility.relations.images)
               if (image.name == currentMark.name) {
-                const img = depth[image.direction].layer.drawn.image
-
                 drawNear(imgRef.drawnLayer, {
                   x: image.coordinates[0],
                   y: image.coordinates[1],
@@ -87,7 +85,6 @@ export default ({ store: { commit, state } }) => {
             drawNear(imgRef.selectedLayer, { x, y, color: 0xff5599ff, direction: data.name, id: 'selected' })
             const xyzRes = await this.$axios.get(`${data.url}/${x}/${y}`)
             const xyz = xyzRes.data
-
             commit('select', {
               xyz,
               type: 'Point',
