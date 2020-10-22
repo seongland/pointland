@@ -104,11 +104,12 @@ export const mutations = {
 }
 
 export const actions = {
-  async remove({ state, commit }, id) {
+  async remove({ commit }, id) {
     const app = this.$router.app
     const config = app.getAuthConfig()
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setEditing', false)
+    app.removeVector('drawnLayer', id)
     if (process.env.dev) console.log('Removed', res.data)
   }
 }

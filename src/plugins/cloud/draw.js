@@ -28,15 +28,19 @@ export function drawXYZ(layer, xyz, focus, id) {
   const geometry = layer.geometry
   const positions = geometry.attributes.position.array
   const ids = geometry.ids
+  const indexs = geometry.indexs
   const count = geometry.drawRange.count
   const xyzInCloud = [xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2]]
+
+  // remove
+  if (ids[id]) removePoint(layer, id)
 
   // add
   if (ids[id] === undefined) {
     positions[3 * count] = xyzInCloud[0]
     positions[3 * count + 1] = xyzInCloud[1]
     positions[3 * count + 2] = xyzInCloud[2]
-    geometry.setDrawRange(0, ++geometry.drawRange.count)
+    geometry.setDrawRange(geometry.drawRange.start, ++geometry.drawRange.count)
   }
   // Chnage Last
   else {
@@ -52,7 +56,36 @@ export function drawXYZ(layer, xyz, focus, id) {
     cloud.camera.position.set(xyzInCloud[0], xyzInCloud[1], xyzInCloud[2] + 20)
     cloud.focused = true
   }
-  ids[id] = id
+
+  // update
+  const index = geometry.drawRange.count - 1
+  indexs[index] = { id }
+  ids[id] = { index }
+}
+
+export function removePoint(layer, id) {
+  const geometry = layer.geometry
+  const ids = geometry.ids
+  const indexs = geometry.indexs
+  const positions = geometry.attributes.position.array
+  const start = geometry.drawRange.start
+
+  const index = ids[id].index
+  const substitute = indexs[start].id
+
+  // update geometry
+  positions[3 * index] = positions[3 * start]
+  positions[3 * index + 1] = positions[3 * start + 1]
+  positions[3 * index + 2] = positions[3 * start + 2]
+  geometry.attributes.position.needsUpdate = true
+  geometry.computeBoundingSphere()
+
+  // update info
+  ids[id] = undefined
+  ids[substitute] = {}
+  indexs[start] = undefined
+  indexs[index] = { id: substitute }
+  geometry.drawRange.start = start + 1
 }
 
 function drawHover(cloud) {
