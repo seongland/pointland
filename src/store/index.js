@@ -94,6 +94,10 @@ export const mutations = {
     state.selected = [feature]
   },
 
+  selectFeature(state, feature) {
+    state.selected = [feature]
+  },
+
   resetSelected(state) {
     state.selected = []
   },
@@ -110,6 +114,7 @@ export const actions = {
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setEditing', false)
     app.removeVector('drawnLayer', id)
+    app.resetSelected()
     if (process.env.dev) console.log('Removed', res.data)
   }
 }
