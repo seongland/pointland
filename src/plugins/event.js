@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import { ref as imgRef } from '~/plugins/image/init'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
 import { imageClick } from './image/event'
@@ -24,8 +23,11 @@ export default ({ store: { commit, state } }) => {
 
       async clickDrawn(feature) {
         const id = feature.getId()
-        commit('setEditTarget', id)
-        commit('setEditing', true)
+        const config = this.getAuthConfig()
+        const res = await this.$axios.get(`/api/facility?id=${id}`, config)
+        const facility = res.data[0]
+        this.selectXYZ([facility.properties.x, facility.properties.y, facility.properties.z], 'Point')
+        commit('selectFeature', facility)
       },
 
       async waitAvail(flag, callback, args) {
@@ -45,6 +47,20 @@ export default ({ store: { commit, state } }) => {
 
       async imageClick(event, depth) {
         return imageClick(event, depth, this.drawFromDepth)
+      },
+
+      keyUp(event) {
+        if (state.submit.show || state.edit.show) return
+        switch (event.key) {
+          case 'Delete':
+            const selected = state.selected
+            if (selected[0]?.id) {
+              commit('setEditTarget', selected[0].id)
+              commit('setEditing', true)
+            }
+            return
+        }
+        if (process.env.dev) console.log(event)
       },
 
       keyEvent(event) {
