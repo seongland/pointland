@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { ref as imgRef } from '~/plugins/image/init'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
 import { imageClick } from './image/event'
@@ -42,8 +43,8 @@ export default ({ store: { commit, state } }) => {
         this.waitAvail(this.checkMount, this.currentXYZ, [[markObj.x, markObj.y, markObj.alt]])
       },
 
-      async imageClick(event) {
-        return imageClick(event, this.depth, this.drawFromDepth)
+      async imageClick(event, depth) {
+        return imageClick(event, depth, this.drawFromDepth)
       },
 
       keyEvent(event) {

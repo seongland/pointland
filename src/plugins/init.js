@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { olInit } from '~/plugins/map/init'
 import { initCloud, purgeCloud } from './cloud/init'
+import { initImg } from './image/init'
 
 export default ({ $axios, store: { commit } }) => {
   Vue.mixin({
@@ -48,7 +49,9 @@ export default ({ $axios, store: { commit } }) => {
         }
         this.$root.map = olInit(opt, geoserver, workspace, layers)
         return this.$root.map
-      }
+      },
+
+      initImg: ({ front, back }) => initImg({ front, back })
     }
   })
 }
