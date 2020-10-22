@@ -50,7 +50,7 @@
           </v-list-item>
           <v-list-item link>
             <v-list-item-content>
-              <v-list-item-subtitle v-text="$store.state.ls.user.email" />
+              <v-list-item-subtitle v-text="$store.state.ls.user ? $store.state.ls.user.email : ''" />
             </v-list-item-content>
           </v-list-item>
         </v-list>
