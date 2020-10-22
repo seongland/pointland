@@ -24,7 +24,6 @@ export default ({ store: { commit, state } }) => {
       async clickDrawn(feature) {
         const id = feature.getId()
         commit('setEditTarget', id)
-        console.log(id)
         commit('setEditing', true)
       },
 

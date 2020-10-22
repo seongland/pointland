@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as imgRef } from '~/plugins/image/init'
-import { drawXY } from './map/draw'
+import { drawXY, removeVector } from './map/draw'
 import { ref as cloudRef } from './cloud/init'
-import { drawLas, drawXYZ } from './cloud/draw'
+import { drawLas, drawXYZ, removePoint } from './cloud/draw'
 import { resetPointLayer } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
@@ -11,6 +11,14 @@ import jimp from 'jimp/browser/lib/jimp'
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
+      removeVector(layerName, id) {
+        const mapLayer = mapRef[layerName]
+        const cloudLayer = cloudRef[layerName]
+        if (!mapLayer || !cloudLayer) return
+        removeVector(mapLayer, id)
+        removePoint(cloudLayer, id)
+      },
+
       drawLas: lasJson => drawLas(lasJson),
 
       selectXYZ(xyz, id) {
