@@ -9,7 +9,12 @@
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.front.uri" v-show="!loading">
-            <v-img id="front" v-show="show" :src="depth ? depth.front.uri : src.front.uri" @click="imageClick">
+            <v-img
+              id="front"
+              v-show="show"
+              :src="depth ? depth.front.uri : src.front.uri"
+              @click="imageClick($event, depth)"
+            >
               <v-img :src="depth ? depth.front.layer.drawn.uri : src.front.uri">
                 <v-img :src="depth ? depth.front.layer.selected.uri : src.front.uri"
               /></v-img>
@@ -20,7 +25,7 @@
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.back.uri" v-show="!loading">
-            <v-img id="back" v-show="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick">
+            <v-img id="back" v-show="show" :src="depth ? depth.back.uri : src.back.uri" @click="imageClick($event, depth)">
               <v-img :src="depth ? depth.back.layer.drawn.uri : src.back.uri">
                 <v-img :src="depth ? depth.back.layer.selected.uri : src.back.uri" />
               </v-img>
@@ -35,7 +40,6 @@
 </template>
 
 <script>
-import jimp from 'jimp/browser/lib/jimp'
 import { resetPointLayer } from '~/plugins/cloud/event'
 import { ref as cloudRef } from '~/plugins/cloud/init'
 
@@ -76,26 +80,12 @@ export default {
       const backP = this.$axios.post(backURL, { data: { mark: currentMark } })
       const [f, b] = await Promise.all([frontP, backP])
       const [front, back] = [f.data, b.data]
-      jimp.read(Buffer.from(front.uri.split(',')[1], 'base64')).then(image => {
-        front.image = image
-      })
-      jimp.read(Buffer.from(back.uri.split(',')[1], 'base64')).then(image => {
-        back.image = image
-      })
-      front.layer = { selected: { uri: undefined }, drawn: { uri: undefined } }
-      back.layer = { selected: { uri: undefined }, drawn: { uri: undefined } }
-      front.layer.selected.image = new jimp(front.width, front.height)
-      back.layer.selected.image = new jimp(back.width, back.height)
-      front.layer.drawn.image = new jimp(front.width, front.height)
-      back.layer.drawn.image = new jimp(back.width, back.height)
-      const depth = { front, back }
 
+      const depth = this.initImg({ front, back })
       this.drawFacilities(currentMark, depth)
 
       front.url = frontURL
       back.url = backURL
-      front.name = 'front'
-      back.name = 'back'
       this.$store.commit('setDepthLoading', false)
       return depth
     }

@@ -1,16 +1,28 @@
 import Vue from 'vue'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as imgRef } from '~/plugins/image/init'
-import { drawXY } from './map/draw'
 import { ref as cloudRef } from './cloud/init'
-import { drawLas, drawXYZ } from './cloud/draw'
+
+import { drawXY, removeFeature } from './map/draw'
+import { drawLas, drawXYZ, removePoint } from './cloud/draw'
 import { resetPointLayer } from './cloud/event'
+import { drawNear, erase } from './image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
+      removeVector(layerName, id) {
+        const mapLayer = mapRef[layerName]
+        const cloudLayer = cloudRef[layerName]
+        const imgLayer = imgRef[layerName]
+        if (!mapLayer || !cloudLayer) return
+        removeFeature(mapLayer, id)
+        removePoint(cloudLayer, id)
+        erase(imgLayer, id)
+      },
+
       drawLas: lasJson => drawLas(lasJson),
 
       selectXYZ(xyz, id) {
@@ -42,31 +54,20 @@ export default ({ store: { commit, state } }) => {
         drawXYZ(cloudRef.drawnLayer, xyz, false, id)
       },
 
-      drawNear(image, x, y, color) {
-        const list = [
-          [x, y],
-          [x - 1, y - 1],
-          [x + 1, y + 1],
-          [x + 1, y - 1],
-          [x - 1, y + 1],
-          [x, y - 1],
-          [x, y + 1],
-          [x + 1, y],
-          [x - 1, y]
-        ]
-        for (const coor of list) image.setPixelColor(color, ...coor)
-      },
-
-      drawFacilities(currentMark, depth) {
+      drawFacilities(currentMark) {
         return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
           resetPointLayer(cloudRef.drawnLayer)
           const facilites = res.data
           for (const facility of facilites) {
             for (const image of facility.relations.images)
               if (image.name == currentMark.name) {
-                const img = depth[image.direction].layer.drawn.image
-                this.drawNear(img, image.coordinates[0], image.coordinates[1], 0x9911ffff)
-                img.getBase64Async('image/png').then(uri => (depth[image.direction].layer.drawn.uri = uri))
+                drawNear(imgRef.drawnLayer, {
+                  x: image.coordinates[0],
+                  y: image.coordinates[1],
+                  color: 0x9911ffff,
+                  id: facility.id,
+                  direction: image.direction
+                })
               }
             const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
             this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
@@ -81,11 +82,9 @@ export default ({ store: { commit, state } }) => {
           if (targetLayer.object.type === 'Point') {
             this.resetSelectedExcept(data)
             data.layer.selected.image = new jimp(data.width, data.height)
-            this.drawNear(data.layer.selected.image, x, y, 0xff5599ff)
-            data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
+            drawNear(imgRef.selectedLayer, { x, y, color: 0xff5599ff, direction: data.name, id: 'selected' })
             const xyzRes = await this.$axios.get(`${data.url}/${x}/${y}`)
             const xyz = xyzRes.data
-
             commit('select', {
               xyz,
               type: 'Point',
@@ -106,13 +105,13 @@ export default ({ store: { commit, state } }) => {
 
       resetSelectedExcept(excepted) {
         let data
-        if (this.depth.front !== excepted) {
-          data = this.depth.front
+        if (imgRef.depth.front !== excepted) {
+          data = imgRef.depth.front
           data.layer.selected.image = new jimp(data.width, data.height)
           data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
         }
-        if (this.depth.back !== excepted) {
-          data = this.depth.back
+        if (imgRef.depth.back !== excepted) {
+          data = imgRef.depth.back
           data.layer.selected.image = new jimp(data.width, data.height)
           data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
         }

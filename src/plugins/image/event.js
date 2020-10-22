@@ -19,14 +19,6 @@ function checkNear(image, x, y) {
   }
 }
 
-function getImageData(event, depth) {
-  const path = event.path
-  ref.depth = depth
-  for (const element of path)
-    if (element.id === 'front') return depth.front
-    else if (element.id === 'back') return depth.back
-}
-
 export async function imageClick(event, depth, drawCallback) {
   const xRatio = event.offsetX / event.target.offsetWidth
   const yRatio = event.offsetY / event.target.offsetHeight
@@ -43,4 +35,12 @@ export async function imageClick(event, depth, drawCallback) {
     y = point[1]
   }
   drawCallback(x, y, data)
+}
+
+function getImageData(event, depth) {
+  const path = event.path
+  ref.depth = depth
+  for (const element of path)
+    if (element.id === 'front') return depth.front
+    else if (element.id === 'back') return depth.back
 }
