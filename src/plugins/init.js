@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import { olInit, setClickCB } from '~/plugins/map/init'
+import { olInit } from '~/plugins/map/init'
 import { initCloud, purgeCloud } from './cloud/init'
+import { initImg } from './image/init'
 
 export default ({ $axios, store: { commit } }) => {
   Vue.mixin({
@@ -29,6 +30,8 @@ export default ({ $axios, store: { commit } }) => {
         // Keyboard
         window.removeEventListener('keypress', this.keyEvent)
         window.addEventListener('keypress', this.keyEvent)
+        window.removeEventListener('keyup', this.keyUp)
+        window.addEventListener('keyup', this.keyUp)
       },
 
       async loadProjects(user, accessToken) {
@@ -40,11 +43,17 @@ export default ({ $axios, store: { commit } }) => {
         user.projects = projectResponses.map(res => res.data[0])
       },
 
-      olInit(geoserver, workspace, layers) {
-        this.$root.map = olInit(geoserver, workspace, layers)
-        setClickCB(this.clickMark)
+      olInit(opt, geoserver, workspace, layers) {
+        for (const config of this.mapOpt.layers.vector) {
+          config.callback = {}
+          if (config.name === 'markLayer') config.callback.click = this.clickMark
+          else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn
+        }
+        this.$root.map = olInit(opt, geoserver, workspace, layers)
         return this.$root.map
-      }
+      },
+
+      initImg: ({ front, back }) => initImg({ front, back })
     }
   })
 }

@@ -15,6 +15,10 @@ export const state = () => ({
     show: false,
     ing: false
   },
+  edit: {
+    ing: false,
+    id: undefined
+  },
   selected: []
 })
 
@@ -36,6 +40,12 @@ export const mutations = {
   },
   setSubmitting(state, value) {
     state.submit.ing = value
+  },
+  setEditing(state, value) {
+    state.edit.ing = value
+  },
+  setEditTarget(state, id) {
+    state.edit.id = id
   },
 
   async submit(state, { comment, args, type }) {
@@ -84,11 +94,27 @@ export const mutations = {
     state.selected = [feature]
   },
 
+  selectFeature(state, feature) {
+    state.selected = [feature]
+  },
+
   resetSelected(state) {
     state.selected = []
   },
 
   setLoading(state, value) {
     state.loading = value
+  }
+}
+
+export const actions = {
+  async remove({ commit }, id) {
+    const app = this.$router.app
+    const config = app.getAuthConfig()
+    const res = await this.$axios.delete(`/api/facility/${id}`, config)
+    commit('setEditing', false)
+    app.removeVector('drawnLayer', id)
+    app.resetSelected()
+    if (process.env.dev) console.log('Removed', res.data)
   }
 }

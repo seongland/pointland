@@ -19,6 +19,17 @@ export default ({ store: { commit, state } }) => {
         }
       },
 
+      getAuthConfig: () => ({ headers: { Authorization: state.ls.accessToken } }),
+
+      async clickDrawn(feature) {
+        const id = feature.getId()
+        const config = this.getAuthConfig()
+        const res = await this.$axios.get(`/api/facility?id=${id}`, config)
+        const facility = res.data[0]
+        this.selectXYZ([facility.properties.x, facility.properties.y, facility.properties.z], 'Point')
+        commit('selectFeature', facility)
+      },
+
       async waitAvail(flag, callback, args) {
         flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
       },
@@ -34,8 +45,22 @@ export default ({ store: { commit, state } }) => {
         this.waitAvail(this.checkMount, this.currentXYZ, [[markObj.x, markObj.y, markObj.alt]])
       },
 
-      async imageClick(event) {
-        return imageClick(event, this.depth, this.drawFromDepth)
+      async imageClick(event, depth) {
+        return imageClick(event, depth, this.drawFromDepth)
+      },
+
+      keyUp(event) {
+        if (state.submit.show || state.edit.show) return
+        switch (event.key) {
+          case 'Delete':
+            const selected = state.selected
+            if (selected[0]?.id) {
+              commit('setEditTarget', selected[0].id)
+              commit('setEditing', true)
+            }
+            return
+        }
+        if (process.env.dev) console.log(event)
       },
 
       keyEvent(event) {

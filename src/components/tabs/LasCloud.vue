@@ -27,6 +27,7 @@ export default {
   watch: {
     async currentMark(markObj) {
       const commit = this.$store.commit
+      if (!markObj?.lasList) return
       const lasList = markObj.lasList.split(':')
       for (const areaName of lasList) {
         if (this.lasList.includes(areaName)) continue

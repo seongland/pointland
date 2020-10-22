@@ -11,7 +11,7 @@ export const state = () => ({
   currentRound: undefined,
   currentSnap: undefined,
   currentMark: undefined,
-  rounds: [{ name: 'imms_20200910_000230' }]
+  rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }]
 })
 
 export const mutations = {
@@ -29,7 +29,9 @@ export const mutations = {
     state.prj = undefined
     state.prjId = undefined
     state.index = 0
-    state.currentMark = 0
+    state.currentMark = undefined
+    state.currentSnap = undefined
+    state.currentRound = undefined
     this.$router.push('/')
   },
 
@@ -64,7 +66,7 @@ export const mutations = {
   },
 
   setRounds(state, rounds) {
-    const roundIndex = state.rounds.findIndex(element => element.name === state.rounds.name)
+    const roundIndex = state.rounds.findIndex(element => element.name === state.currentRound?.name)
     state.rounds = rounds
 
     let roundObj

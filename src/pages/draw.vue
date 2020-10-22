@@ -50,7 +50,7 @@
           </v-list-item>
           <v-list-item link>
             <v-list-item-content>
-              <v-list-item-subtitle v-text="$store.state.ls.user.email" />
+              <v-list-item-subtitle v-text="$store.state.ls.user ? $store.state.ls.user.email : ''" />
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -97,9 +97,16 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
+
     <v-dialog v-if="submitting" v-model="showSubmit">
-      <input-data :layer="$store.state.targetLayer.object.layer" :type="$store.state.targetLayer.object.type"
-    /></v-dialog>
+      <input-data
+        :layer="targetLayer.object ? targetLayer.object.layer : ''"
+        :type="targetLayer.object ? targetLayer.object.type : ''"
+      />
+    </v-dialog>
+    <v-dialog v-if="editing" v-model="editing">
+      <edit-data :id="$store.state.edit.id" />
+    </v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>
@@ -112,22 +119,26 @@ import D from '~/assets/classes/morai/D'
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
+import EditData from '~/components/overlay/EditData'
 import InputData from '~/components/overlay/InputData'
 
 const classes = [A, B, C, D]
 
 export default {
   middleware: 'authentication',
-  components: { GeoMap, LasCloud, ImmsImage, InputData },
+  components: { GeoMap, LasCloud, ImmsImage, EditData, InputData },
   data: () => ({ classes }),
   fetchOnServer: false,
 
   async fetch() {
-    const currentRoundName = this.$store.state.ls.rounds[0].name
-    const res = await this.$axios.get(`/api/meta/${currentRoundName}`)
-    const roundObj = res.data
-    if (process.env.dev) console.log('Round Object', roundObj)
-    this.setRounds([roundObj])
+    const rounds = []
+    for (const round of this.$store.state.ls.rounds) {
+      const res = await this.$axios.get(`/api/meta/${round.name}`)
+      const roundObj = res.data
+      rounds.push(roundObj)
+    }
+    if (process.env.dev) console.log('Rounds', rounds)
+    this.setRounds(rounds)
   },
 
   async mounted() {
@@ -160,6 +171,14 @@ export default {
         this.$store.commit('setSubmitting', values)
       }
     },
+    editing: {
+      get() {
+        return this.$store.state.edit.ing
+      },
+      set(values) {
+        this.$store.commit('setEditing', values)
+      }
+    },
     currentRound: {
       get() {
         return this.$store.state.ls.currentRound
@@ -186,6 +205,9 @@ export default {
         if (process.env.dev) console.log('Set Mark', values)
         this.setMark(values)
       }
+    },
+    targetLayer() {
+      return this.$store.state.targetLayer
     },
     layerIndex: {
       get() {
