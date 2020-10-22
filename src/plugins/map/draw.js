@@ -58,7 +58,7 @@ function drawXY(layer, latlng, focus, id) {
   if (focus) setFocus(...latlng)
 }
 
-function removeVector(layer, id) {
+function removeFeature(layer, id) {
   /**
    * @summary - When Click Map
    */
@@ -132,4 +132,4 @@ function setDrawInteraction(layerObj) {
   ref.map.addInteraction(draw)
 }
 
-export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl, setDrawInteraction, makePointStyle, removeVector }
+export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl, setDrawInteraction, makePointStyle, removeFeature }
