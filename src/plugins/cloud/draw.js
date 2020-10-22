@@ -28,26 +28,18 @@ export function drawXYZ(layer, xyz, focus, id) {
   const geometry = layer.geometry
   const positions = geometry.attributes.position.array
   const ids = geometry.ids
-  const indexs = geometry.indexs
-  const count = geometry.drawRange.count
+  const indexes = geometry.indexes
   const xyzInCloud = [xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2]]
 
   // remove
   if (ids[id]) removePoint(layer, id)
+  const count = geometry.drawRange.count
 
   // add
-  if (ids[id] === undefined) {
-    positions[3 * count] = xyzInCloud[0]
-    positions[3 * count + 1] = xyzInCloud[1]
-    positions[3 * count + 2] = xyzInCloud[2]
-    geometry.setDrawRange(geometry.drawRange.start, ++geometry.drawRange.count)
-  }
-  // Chnage Last
-  else {
-    positions[3 * count - 3] = xyzInCloud[0]
-    positions[3 * count - 2] = xyzInCloud[1]
-    positions[3 * count - 1] = xyzInCloud[2]
-  }
+  positions[3 * (geometry.drawRange.start + count)] = xyzInCloud[0]
+  positions[3 * (geometry.drawRange.start + count) + 1] = xyzInCloud[1]
+  positions[3 * (geometry.drawRange.start + count) + 2] = xyzInCloud[2]
+  geometry.setDrawRange(geometry.drawRange.start, ++geometry.drawRange.count)
   geometry.attributes.position.needsUpdate = true
   geometry.computeBoundingSphere()
 
@@ -58,33 +50,36 @@ export function drawXYZ(layer, xyz, focus, id) {
   }
 
   // update
-  const index = geometry.drawRange.count - 1
-  indexs[index] = { id }
+  const index = geometry.drawRange.start + geometry.drawRange.count - 1
+  indexes[index] = { id }
   ids[id] = { index }
 }
 
 export function removePoint(layer, id) {
   const geometry = layer.geometry
   const ids = geometry.ids
-  const indexs = geometry.indexs
+  const indexes = geometry.indexes
   const positions = geometry.attributes.position.array
   const start = geometry.drawRange.start
 
   const index = ids[id].index
-  const substitute = indexs[start].id
+  const substitute = indexes[start].id
 
   // update geometry
   positions[3 * index] = positions[3 * start]
   positions[3 * index + 1] = positions[3 * start + 1]
   positions[3 * index + 2] = positions[3 * start + 2]
+  geometry.drawRange.count--
   geometry.attributes.position.needsUpdate = true
   geometry.computeBoundingSphere()
 
   // update info
   ids[id] = undefined
-  ids[substitute] = {}
-  indexs[start] = undefined
-  indexs[index] = { id: substitute }
+  ids[substitute] = { index: index }
+
+  indexes[index] = { id: substitute }
+  indexes[start] = undefined
+
   geometry.drawRange.start = start + 1
 }
 

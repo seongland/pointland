@@ -15,7 +15,7 @@ const layerConfig = {
     { name: 'markLayer', color: 0x22dd88, size: MARK_SIZE / 2, length: 10000, order: 1 },
     { name: 'currentLayer', color: 0x1188ff, size: MARK_SIZE, length: 1, order: 2 },
     { name: 'drawnLayer', color: 0x9911ff, size: SELECT_SIZE, length: 50000, order: 3 },
-    { name: 'selectedLayer', color: 0xff5599, size: SELECT_SIZE, length: SELECT_POINTS, order: 4 }
+    { name: 'selectedLayer', color: 0xff5599, size: SELECT_SIZE, length: 50000, order: 4 }
   ]
 }
 
