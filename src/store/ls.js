@@ -29,6 +29,7 @@ export const mutations = {
     state.prj = undefined
     state.prjId = undefined
     state.index = 0
+    state.rounds = [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }]
     state.currentMark = undefined
     state.currentSnap = undefined
     state.currentRound = undefined
