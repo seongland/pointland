@@ -73,40 +73,56 @@ export default ({ store: { commit, state } }) => {
               direction: image.direction
             })
           }
+
         const props = facility.properties
         let url
-        url = `/api/image/front/${props.x}/${props.y}/${props.z}`
-        url = `/api/image/back/${props.x}/${props.y}/${props.z}`
+        url = `/api/image/r/s/m/front/convert/${props.x}/${props.y}/${props.z}`
+        this.$axios.post(url, { data: { mark: currentMark } }).then(res => {
+          if (process.env.dev) console.log(res.data)
+        })
+        url = `/api/image/r/s/m/back/convert/${props.x}/${props.y}/${props.z}`
+        this.$axios.post(url, { data: { mark: currentMark } }).then(res => {
+          if (process.env.dev) console.log(res.data)
+        })
+
         const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
         this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
       },
 
       async drawFromDepth(x, y, data) {
         const targetLayer = this.$store.state.targetLayer
+        if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXY(data, x, y)
+      },
+
+      async drawSelectedXY(data, x, y) {
         const ls = this.$store.state.ls
-        if (targetLayer.object) {
-          if (targetLayer.object.type === 'Point') {
-            this.resetSelectedExcept(data)
-            data.layer.selected.image = new jimp(data.width, data.height)
-            drawNear(imgRef.selectedLayer, { x, y, color: 0xff5599ff, direction: data.name, id: 'selected' })
-            const xyzRes = await this.$axios.get(`${data.url}/${x}/${y}`)
-            const xyz = xyzRes.data
-            commit('select', {
-              xyz,
-              type: 'Point',
-              images: [
-                {
-                  round: ls.currentRound.name,
-                  snap: ls.currentSnap.name,
-                  name: ls.currentMark.name,
-                  direction: data.name,
-                  coordinates: [x, y]
-                }
-              ]
-            })
-            this.selectXYZ(xyz, 'Point')
-          }
-        }
+        this.resetSelectedExcept(data)
+        data.layer.selected.image = new jimp(data.width, data.height)
+        drawNear(imgRef.selectedLayer, { x, y, color: 0xff5599ff, direction: data.name, id: 'selected' })
+        const xyzRes = await this.$axios.get(`${data.url}/${x}/${y}`)
+        const xyz = xyzRes.data
+        commit('select', {
+          xyz,
+          type: 'Point',
+          images: [
+            {
+              round: ls.currentRound.name,
+              snap: ls.currentSnap.name,
+              name: ls.currentMark.name,
+              direction: data.name,
+              coordinates: [x, y]
+            }
+          ]
+        })
+        this.selectXYZ(xyz, 'Point')
+      },
+
+      async drawSelectedXYZ(xyz) {
+        commit('select', {
+          xyz,
+          type: 'Point'
+        })
+        this.selectXYZ(xyz, 'Point')
       },
 
       resetSelectedExcept(excepted) {
@@ -124,16 +140,14 @@ export default ({ store: { commit, state } }) => {
       },
 
       resetSelected() {
-        const depth = imgRef.depth
-        if (!depth) return
-        commit('setSubmitting', false)
-        commit('setShowSubmit', false)
-        for (const data of Object.values(depth)) {
-          data.layer.selected.image = new jimp(data.width, data.height)
-          data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
-        }
         mapRef.selectedLayer.getSource().clear()
         resetPointLayer(cloudRef.selectedLayer)
+        const depth = imgRef.depth
+        if (depth)
+          for (const data of Object.values(depth)) {
+            data.layer.selected.image = new jimp(data.width, data.height)
+            data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
+          }
         commit('resetSelected')
         if (process.env.dev) console.log(`Reset Selected`, state.selected)
       },

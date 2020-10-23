@@ -15,8 +15,8 @@ const router = express.Router()
 // get
 router.get('/:round/:snap/:mark/:direction', image)
 router.get('/:round/:snap/:mark/:direction/depth/:x/:y', imgtoxyz)
-router.get('/:direction/:x/:y/:z', xyztoimg)
 // post
+router.post('/:round/:snap/:mark/:direction/convert/:x/:y/:z', xyztoimg)
 router.post('/:round/:snap/:mark/:direction/depth', depthmap)
 
 function image(req, res) {
@@ -39,10 +39,19 @@ async function imgtoxyz(req, res) {
 }
 
 async function xyztoimg(req, res) {
+  let coor
   const markObj = req.body.data.mark
+  const direction = req.params.direction
   const xyz = [Number(req.params.x), Number(req.params.y), Number(req.params.z)]
-  console.log(Converter.convert(camType.front, markObj, xyz))
-  res.json({})
+  return res.json({})
+  try {
+    coor = Converter.convert(camType[direction], markObj, xyz)
+    console.log(coor)
+  } catch (e) {
+    console.log(e)
+    return res.json(e)
+  }
+  return res.json(coor)
 }
 
 export default router

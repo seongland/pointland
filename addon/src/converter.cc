@@ -17,7 +17,9 @@ Value convert(const Napi::CallbackInfo &info) {
   <summary>Round binding function, make round</summary>
   */
   Env env = info.Env();
+  Array coor = Array::New(env, (int)2);
   Point2d result;
+
   try {
     Object camType = info[0].As<Object>();
     Object markObj = info[1].As<Object>();
@@ -65,10 +67,42 @@ Value convert(const Napi::CallbackInfo &info) {
     // Mark Transform
     double markX = Number(env, markObj.Get("x"));
     double markY = Number(env, markObj.Get("y"));
-    double markZ = Number(env, markObj.Get("z"));
+    double markZ = Number(env, markObj.Get("alt"));
     double markRoll = Number(env, markObj.Get("roll"));
     double markPitch = Number(env, markObj.Get("pitch"));
     double markYaw = Number(env, markObj.Get("heading"));
+
+    cout << camX << endl;
+    cout << camY << endl;
+    cout << camZ << endl;
+    cout << camf << endl;
+    cout << camfw << endl;
+    cout << camfh << endl;
+    cout << camfb << endl;
+    cout << camYaw << endl;
+    cout << camRoll << endl;
+    cout << camPitch << endl;
+    cout << campp0 << endl;
+    cout << campp1 << endl;
+    cout << camk0 << endl;
+    cout << camk1 << endl;
+    cout << camk2 << endl;
+    cout << camk3 << endl;
+    cout << camk4 << endl;
+    cout << imgWidth << endl;
+    cout << imgHeight << endl;
+    cout << facilityX << endl;
+    cout << facilityY << endl;
+    cout << facilityZ << endl;
+    cout << markX << endl;
+    cout << markY << endl;
+    cout << markZ << endl;
+    cout << markRoll << endl;
+    cout << markPitch << endl;
+    cout << markYaw << endl;
+    cout << distance << endl;
+    cout << lensType << endl;
+    cout << "" << endl;
 
     // Cam Set
     struct Vector camV;
@@ -135,7 +169,13 @@ Value convert(const Napi::CallbackInfo &info) {
     result = converter.get()->xyzToImageCoor(camInfo, markPE, facilityP);
   } catch (const Error &e) {
     Error::New(env, e.Message()).ThrowAsJavaScriptException();
+    return coor;
   }
-  return Boolean::New(env, false);
+  double x = result.x;
+  double y = result.y;
+  coor.Set((uint32_t)0, Number::New(env, x));
+  coor.Set((uint32_t)1, Number::New(env, y));
+  cout << "before return" << x << y << endl;
+  return coor;
 }
 } // namespace Converter

@@ -79,7 +79,11 @@ async function round(req, res) {
       root: 'mms_test2/2020_imms/00_proj_hdmap/01_cto_output/Daejeon_KAIST/imms_20200909_231253',
       snaps: [
         { name: 'snap1', folder: 'snap1', image, pointcloud },
-        { name: 'snap2', folder: 'snap2', image, pointcloud }
+        { name: 'snap2', folder: 'snap2', image, pointcloud },
+        { name: 'snap3', folder: 'snap3', image, pointcloud },
+        { name: 'snap4', folder: 'snap4', image, pointcloud },
+        { name: 'snap5', folder: 'snap5', image, pointcloud },
+        { name: 'snap6', folder: 'snap6', image, pointcloud }
       ]
     }
   for (const snapObj of roundObj.snaps) {
