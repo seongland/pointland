@@ -107,15 +107,30 @@ export default ({ store: { commit, state } }) => {
               const controls = cloudRef.cloud.controls
               const offset = cloudRef.cloud.offset
               const camera = cloudRef.cloud.camera
-              camera.position.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2] + 20)
+              camera.position.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2] + 50)
               controls.target.set(markObj.x - offset[0], markObj.y - offset[1], markObj.alt - offset[2])
             }
             if (state.ls.currentMark) setFocus(state.ls.currentMark.lat, state.ls.currentMark.lon)
+            return
+          case 'f':
+          case 'F':
+            if (state.selected.length === 0) return
+            const target = state.selected[state.selected.length - 1]
+            const props = target.properties
+            const geom = target.geometry
+            if (index === 2) {
+              if (!cloudRef.cloud.offset) return
+              const controls = cloudRef.cloud.controls
+              const offset = cloudRef.cloud.offset
+              controls.target.set(props.x - offset[0], props.y - offset[1], props.z - offset[2])
+            }
+            if (target && mapRef.map) setFocus(geom.coordinates[0], geom.coordinates[1])
             return
 
           // Submit
           case 'Enter':
             if (state.allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
+              if (state.selected[0].id) return
               commit('setSubmitting', true)
               commit('setShowSubmit', true)
             }
