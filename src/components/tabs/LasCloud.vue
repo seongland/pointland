@@ -70,7 +70,8 @@ export default {
   mounted() {
     this.$root.cloud = this.initCloud({
       selectCallback: (xyz, point) => {
-        this.selectXYZ(xyz, uuid())
+        const targetLayer = this.$store.state.targetLayer
+        if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
       }
     })
   },

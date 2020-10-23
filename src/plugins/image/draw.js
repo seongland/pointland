@@ -21,6 +21,7 @@ export function drawNear(layer, { direction, x, y, color, id }) {
 
 export function erase(layer, id) {
   const transparent = 0x00000000
+  if (!ref.ids[id]) return
   const { direction, x, y } = ref.ids[id]
   drawNear(layer, { direction, x, y, color: transparent, id })
 }

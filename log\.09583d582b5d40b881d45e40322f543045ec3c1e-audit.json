@@ -1,0 +1,19 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 365
+    },
+    "auditLog": "log\\.09583d582b5d40b881d45e40322f543045ec3c1e-audit.json",
+    "files": [
+        {
+            "date": 1602841329768,
+            "name": "log\\stryx@stryx.co.kr-2020-10-16.log",
+            "hash": "47c7072db858a11160f3355740a89af9"
+        },
+        {
+            "date": 1603439137310,
+            "name": "log/stryx@stryx.co.kr-2020-10-23.log",
+            "hash": "ee4bd6fcebbcfd828d96225802c0c833"
+        }
+    ]
+}

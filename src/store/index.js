@@ -62,6 +62,7 @@ export const mutations = {
       headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
     })
     if (res.status === 201) {
+      this.commit('setSubmitting', false)
       this.commit('setShowSubmit', false)
       this.$router.app.resetSelected()
       this.$router.app.drawFacilities(state.ls.currentMark, imgRef.depth)

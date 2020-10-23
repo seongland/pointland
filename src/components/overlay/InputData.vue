@@ -18,19 +18,6 @@
 
         <v-divider />
 
-        <v-card-title v-text="`Image`" />
-
-        <v-card-text class="py-0"
-          ><span style="font-weight: bold">Round : </span> {{ ls.currentRound.name }} -
-          <span style="font-weight: bold">Snap : </span> {{ ls.currentSnap.name }} -
-          <span style="font-weight: bold">Mark : </span> {{ ls.currentMark.name }}
-        </v-card-text>
-
-        <v-card-text class="pt-0"
-          ><span style="font-weight: bold">Pixel X : </span> {{ relations.images[0].coordinates[0] }} -
-          <span style="font-weight: bold">Pixel Y : </span> {{ relations.images[0].coordinates[1] }}
-        </v-card-text>
-
         <v-card-title v-text="`Properties`" />
 
         <v-select
