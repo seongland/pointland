@@ -43,7 +43,7 @@ function initCloud({ selectCallback }) {
     ref.cloud.selectCallback = selectCallback
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
-    cloud.el.addEventListener('click', drawClick, false)
+    cloud.el.addEventListener('dblclick', drawClick, false)
 
     for (const config of layerConfig.pointLayers) cloud.scene.add(makePointLayer(config))
 
