@@ -108,6 +108,374 @@ async function round(req, res) {
               }
             }
           }
+        },
+        {
+          name: 'snap3',
+          folder: 'snap3',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
+        },
+        {
+          name: 'snap4',
+          folder: 'snap4',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
+        },
+        {
+          name: 'snap5',
+          folder: 'snap5',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
+        },
+        {
+          name: 'snap6',
+          folder: 'snap6',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
+        },
+        {
+          name: 'snap7',
+          folder: 'snap7',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
+        },
+        {
+          name: 'snap8',
+          folder: 'snap8',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
+        },
+        {
+          name: 'snap9',
+          folder: 'snap9',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
+        },
+        {
+          name: 'snap10',
+          folder: 'snap10',
+          image: {
+            formats: [
+              { type: 'img', folder: 'images', ext: 'jpg' },
+              { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'images_shp',
+              ext: 'dbf',
+              filter: 'lasList',
+              column: {
+                name: 'id_point',
+                seq: 'sequence',
+                lat: 'Latitude',
+                lon: 'Longitude',
+                alt: 'altitude',
+                heading: 'heading',
+                x: 'x_utm',
+                y: 'y_utm',
+                roll: 'roll',
+                pitch: 'pitch',
+                lasList: 'file_las'
+              },
+              prefix: {
+                front: '00',
+                back: '01'
+              },
+              sep: '_'
+            }
+          },
+          pointcloud: {
+            formats: [
+              { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+              { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+            ],
+            meta: {
+              folder: 'pointcloud_shp',
+              ext: 'dbf',
+              column: {
+                name: 'file_las'
+              }
+            }
+          }
         }
       ]
     }
