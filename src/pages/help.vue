@@ -25,9 +25,10 @@
           </v-card-text>
           <v-img src="/help/focus.png" />
           <v-card-text><span style="font-weight: bold">Enter</span> - 도화 데이터를 제출한다</v-card-text>
-          <v-card-text><span style="font-weight: bold">Space</span> - 현재 마크를 포커싱한다</v-card-text>
+          <v-card-text><span style="font-weight: bold">F</span> - 현재 선택한 포인트를 포커싱한다</v-card-text>
           <v-card-text> <span style="font-weight: bold">&lt;</span> - 이전 마크로 이동한다 </v-card-text>
           <v-card-text> <span style="font-weight: bold">&gt;</span> - 다음 마크로 이동한다 </v-card-text>
+          <v-card-text> <span style="font-weight: bold">Delete</span> - 맵에서 선택한 시설물을 삭제한다</v-card-text>
 
           <v-card-title>UI 단축키 </v-card-title>
           <v-card-text><span style="font-weight: bold">M</span> - 지도 뷰를 토글한다</v-card-text>
@@ -43,6 +44,9 @@
           <v-card-title>Caution </v-card-title>
           <v-divider />
           <v-card-text>1. 잘 작동하지 않을 때에는 새로고침을 한다</v-card-text>
+          <v-card-text>2. 이미지에서는 클릭, Cloud에서는 더블클릭으로 포인트를 선택한다</v-card-text>
+          <v-card-text>3. 레이어를 선택해야 포인트를 선택할 수 있다</v-card-text>
+          <v-card-text>4. 현재는 표지판, 신호등 레이어만 도화가 가능하다</v-card-text>
 
           <v-card-actions>
             <v-spacer></v-spacer>
