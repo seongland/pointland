@@ -124,7 +124,7 @@ export default ({ store: { commit, state } }) => {
               const offset = cloudRef.cloud.offset
               controls.target.set(props.x - offset[0], props.y - offset[1], props.z - offset[2])
             }
-            if (target && mapRef.map) setFocus(geom.coordinates[0], geom.coordinates[1])
+            if (target && mapRef.map) setFocus(geom.coordinates[1], geom.coordinates[0])
             return
 
           // Submit
