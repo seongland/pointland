@@ -106,6 +106,7 @@ export const mutations = {
   },
 
   setMark(state, markObj) {
+    if (!markObj) return
     markObj.snap = state.currentSnap.name
     state.currentMark = markObj
   }

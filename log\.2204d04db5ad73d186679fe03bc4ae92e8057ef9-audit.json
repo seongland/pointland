@@ -1,0 +1,84 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 365
+    },
+    "auditLog": "log\\.2204d04db5ad73d186679fe03bc4ae92e8057ef9-audit.json",
+    "files": [
+        {
+            "date": 1600848403063,
+            "name": "log\\All-2020-09-23.log",
+            "hash": "7638cd1a9fa2d19b77afbed9a0f4a5be"
+        },
+        {
+            "date": 1600911726831,
+            "name": "log\\All-2020-09-24.log",
+            "hash": "a1aa7d27849f1c114d2466e4cb0752a5"
+        },
+        {
+            "date": 1601012371642,
+            "name": "log\\All-2020-09-25.log",
+            "hash": "a871cf1874f9d2a8f5b8445e228df561"
+        },
+        {
+            "date": 1601261885444,
+            "name": "log\\All-2020-09-28.log",
+            "hash": "8548e59d7bd7521be821631e11ee1ec0"
+        },
+        {
+            "date": 1601359467564,
+            "name": "log\\All-2020-09-29.log",
+            "hash": "ca3075aa54de4ab4d3c9fc994b7f6212"
+        },
+        {
+            "date": 1601861695554,
+            "name": "log\\All-2020-10-05.log",
+            "hash": "9f13be71394b68fee99375734d6447b4"
+        },
+        {
+            "date": 1601955038246,
+            "name": "log\\All-2020-10-06.log",
+            "hash": "0e19321c566f313c77a809f6dc789300"
+        },
+        {
+            "date": 1602059749846,
+            "name": "log\\All-2020-10-07.log",
+            "hash": "df6ccdcfa46a7d10a8023fe146cc25ed"
+        },
+        {
+            "date": 1602123823283,
+            "name": "log\\All-2020-10-08.log",
+            "hash": "c7f18d0601c55e870098e835760072ee"
+        },
+        {
+            "date": 1602465683238,
+            "name": "log\\All-2020-10-12.log",
+            "hash": "9abeb729dca6c26015c8d655bfa40d82"
+        },
+        {
+            "date": 1602551144721,
+            "name": "log\\All-2020-10-13.log",
+            "hash": "2ba9eb5ec8194d0739dcfdcbe1e17e9e"
+        },
+        {
+            "date": 1602638135446,
+            "name": "log\\All-2020-10-14.log",
+            "hash": "ba8277fc96574c93e81e6a08eaad3dc8"
+        },
+        {
+            "date": 1602724048627,
+            "name": "log\\All-2020-10-15.log",
+            "hash": "7fbdffa3f894d7e0adbc08332b283872"
+        },
+        {
+            "date": 1602810273350,
+            "name": "log\\All-2020-10-16.log",
+            "hash": "5bf22df9130236b223e1b742245f66af"
+        },
+        {
+            "date": 1603439536421,
+            "name": "log/All-2020-10-23.log",
+            "hash": "e934e77ecc58b2deebc5336236c0ebca"
+        }
+    ]
+}

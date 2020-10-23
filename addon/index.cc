@@ -8,7 +8,7 @@ using namespace Napi;
 
 Object RegisterConvertor(Env env, Object exports) {
   Object Converter = Napi::Object::New(env);
-  Lidar.Set("init", Function::New(env, Converter::convert));
+  Converter.Set("convert", Function::New(env, Converter::convert));
   return Converter;
 }
 
