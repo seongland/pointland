@@ -58,21 +58,27 @@ export default ({ store: { commit, state } }) => {
         return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
           resetPointLayer(cloudRef.drawnLayer)
           const facilites = res.data
-          for (const facility of facilites) {
-            for (const image of facility.relations.images)
-              if (image.name == currentMark.name) {
-                drawNear(imgRef.drawnLayer, {
-                  x: image.coordinates[0],
-                  y: image.coordinates[1],
-                  color: 0x9911ffff,
-                  id: facility.id,
-                  direction: image.direction
-                })
-              }
-            const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
-            this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
-          }
+          for (const facility of facilites) this.drawFacility(facility, currentMark)
         })
+      },
+
+      drawFacility(facility, currentMark) {
+        for (const image of facility.relations.images)
+          if (image.name == currentMark.name) {
+            drawNear(imgRef.drawnLayer, {
+              x: image.coordinates[0],
+              y: image.coordinates[1],
+              color: 0x9911ffff,
+              id: facility.id,
+              direction: image.direction
+            })
+          }
+        const props = facility.properties
+        let url
+        url = `/api/image/front/${props.x}/${props.y}/${props.z}`
+        url = `/api/image/back/${props.x}/${props.y}/${props.z}`
+        const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
+        this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
       },
 
       async drawFromDepth(x, y, data) {
