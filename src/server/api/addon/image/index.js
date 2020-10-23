@@ -15,7 +15,7 @@ const router = express.Router()
 // get
 router.get('/:round/:snap/:mark/:direction', image)
 router.get('/:round/:snap/:mark/:direction/depth/:x/:y', imgtoxyz)
-router.get('/:round/:snap/:mark/:direction/depth/:x/:y/:z', xyztoimg)
+router.get('/:direction/:x/:y/:z', xyztoimg)
 // post
 router.post('/:round/:snap/:mark/:direction/depth', depthmap)
 
