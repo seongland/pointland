@@ -7,6 +7,8 @@ from gzip import open as o
 from sys import argv
 from pylas import read
 
+JUMP = 5
+
 if __name__ == "__main__":
   # make data
   path = loads(argv[1])
@@ -19,10 +21,10 @@ if __name__ == "__main__":
   y = (las.y - center[1]).tolist()
   z = (las.z - center[2]).tolist()
 
-  x_min = x[0::10]
-  y_min = y[0::10]
-  z_min = z[0::10]
-  i_min = intensity[0::10]
+  x_min = x[0::JUMP]
+  y_min = y[0::JUMP]
+  z_min = z[0::JUMP]
+  i_min = intensity[0::JUMP]
 
   x_json = dumps(x_min, indent=None, separators=(',',':'))
   y_json = dumps(y_min, indent=None, separators=(',',':'))

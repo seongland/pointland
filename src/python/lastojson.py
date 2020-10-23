@@ -7,6 +7,8 @@ from json import loads, dumps
 from sys import argv
 import pylas
 
+JUMP = 5
+
 if __name__ == "__main__":
   # make data
   path = loads(argv[1])
@@ -21,10 +23,10 @@ if __name__ == "__main__":
   y = (las.y - center[1]).tolist()
   z = (las.z - center[2]).tolist()
 
-  x_min = x[0::10]
-  y_min = y[0::10]
-  z_min = z[0::10]
-  i_min = intensity[0::10]
+  x_min = x[0::JUMP]
+  y_min = y[0::JUMP]
+  z_min = z[0::JUMP]
+  i_min = intensity[0::JUMP]
 
   las_min["x"] = x_min
   las_min["y"] = y_min

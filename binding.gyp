@@ -12,6 +12,7 @@
         "-fno-exceptions"
       ],
       "sources": [
+        "addon/index.cc",
         "addon/src/converter.cc"
       ],
       "include_dirs": [
