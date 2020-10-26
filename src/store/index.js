@@ -13,11 +13,13 @@ export const state = () => ({
   },
   submit: {
     show: false,
-    ing: false
+    ing: false,
+    loading: false
   },
   edit: {
     ing: false,
-    id: undefined
+    id: undefined,
+    loading: false
   },
   selected: []
 })
@@ -46,29 +48,6 @@ export const mutations = {
   },
   setEditTarget(state, id) {
     state.edit.id = id
-  },
-
-  async submit(state, { comment, args, type }) {
-    commit('setLoading', true)
-    let feature
-    if (type === 'Point') {
-      feature = state.selected[0]
-      feature.properties.comment = comment
-      if (args) for (const key of Object.keys(args)) feature.properties[key] = args[key]
-    }
-    feature.relations.maker = state.ls.user.email
-
-    if (process.env.dev) console.log('Result Feature', feature)
-    const res = await this.$axios.post('/api/facility', feature, {
-      headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
-    })
-    commit('setLoading', false)
-    if (res.status === 201) {
-      this.commit('setSubmitting', false)
-      this.commit('setShowSubmit', false)
-      this.$router.app.resetSelected()
-      this.$router.app.drawnFacilities(state.ls.currentMark, imgRef.depth)
-    } else return
   },
 
   setDepthLoading: (state, value) => (state.depth.loading = value),
@@ -111,26 +90,50 @@ export const mutations = {
 }
 
 export const actions = {
-  async remove({ commit }, id) {
-    commit('setLoading', true)
+  async submit({ commit, state }, { comment, args, type }) {
+    const app = this.$router.app
+    state.submit.loading = true
+    let feature
+    if (type === 'Point') {
+      feature = state.selected[0]
+      feature.properties.comment = comment
+      if (args) for (const key of Object.keys(args)) feature.properties[key] = args[key]
+    }
+    feature.relations.maker = state.ls.user.email
+
+    if (process.env.dev) console.log('Result Feature', feature)
+    const res = await this.$axios.post('/api/facility', feature, {
+      headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
+    })
+    state.submit.loading = false
+    if (res.status === 201) {
+      commit('setSubmitting', false)
+      commit('setShowSubmit', false)
+      app.resetSelected()
+      app.drawnFacilities(state.ls.currentMark, imgRef.depth)
+    } else return
+  },
+
+  async remove({ commit, state }, id) {
+    state.edit.loading = true
     const app = this.$router.app
     const config = app.getAuthConfig()
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setEditing', false)
-    commit('setLoading', false)
+    state.edit.loading = false
     app.removeVector('drawnLayer', id)
     app.resetSelected()
     if (process.env.dev) console.log('Removed', res.data)
   },
 
-  async edit({ commit }, id, facility) {
-    commit('setLoading', true)
+  async edit({ commit, state }, id, facility) {
+    state.edit.loading = true
     const app = this.$router.app
     const config = app.getAuthConfig()
     config.body = facility
     const res = await this.$axios.patch(`/api/facility/${id}`, config)
     commit('setEditing', false)
-    commit('setLoading', false)
+    state.edit.loading = false
     app.resetSelected()
     if (process.env.dev) console.log('Edited', res.data)
   }
