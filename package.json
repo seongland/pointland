@@ -34,6 +34,7 @@
     "jimp": "^0.16.1",
     "jimp-compact": "^0.16.1",
     "mongoose": "^5.10.1",
+    "neat-csv": "^5.2.0",
     "nuxt": "^2.0.0",
     "nuxt-vuex-localstorage": "^1.2.6",
     "ol": "^6.2.1",

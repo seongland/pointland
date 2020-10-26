@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { DBFFile } from 'dbffile'
 import { getRootByRound } from './round'
+import csv from 'neat-csv'
 
 export async function tablePath(round, snap, meta) {
   const root = getRootByRound(round)
@@ -14,16 +15,29 @@ export async function tablePath(round, snap, meta) {
 }
 
 export async function getTable(round, snap, meta) {
+  let records
   const path = await tablePath(round, snap, meta)
-  const records = await getDbfRecords(path)
+
+  if (meta.ext === 'dbf') records = await getDbfRecords(path)
+  else if (meta.ext === 'csv') records = await getCsvRecords(path)
+
   const table = records.map(record => {
     const tableElement = {}
-    for (const key of Object.keys(meta.column)) tableElement[key] = record[meta.column[key]]
+    for (const key of Object.keys(meta.column)) {
+      const columnName = meta.column[key].name
+      const type = meta.column[key].type
+      tableElement[key] = type(record[columnName])
+    }
     return tableElement
   })
   let filtered = table
   if (meta.filter) filtered = table.filter(record => record[meta.filter])
   return filtered
+}
+
+async function getCsvRecords(csvPath) {
+  const csvString = await fs.promises.readFile(csvPath)
+  return await csv(csvString)
 }
 
 export async function getDbfRecord(dbfPath, seq) {

@@ -20,21 +20,21 @@ async function round(req, res) {
       { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
     ],
     meta: {
-      folder: 'images_shp',
-      ext: 'dbf',
+      folder: 'auxiliary',
+      ext: 'csv',
       filter: 'lasList',
       column: {
-        name: 'id_point',
-        seq: 'sequence',
-        lat: 'Latitude',
-        lon: 'Longitude',
-        alt: 'altitude',
-        heading: 'heading',
-        x: 'x_utm',
-        y: 'y_utm',
-        roll: 'roll',
-        pitch: 'pitch',
-        lasList: 'file_las'
+        name: { name: 'id_point', type: String },
+        seq: { name: 'sequence', type: Number },
+        lat: { name: 'Latitude', type: Number },
+        lon: { name: 'Longitude', type: Number },
+        alt: { name: 'altitude', type: Number },
+        heading: { name: 'heading', type: Number },
+        x: { name: 'x_utm', type: Number },
+        y: { name: 'y_utm', type: Number },
+        roll: { name: 'roll', type: Number },
+        pitch: { name: 'pitch', type: Number },
+        lasList: { name: 'file_las_se', type: String }
       },
       prefix: {
         front: '00',
@@ -52,7 +52,7 @@ async function round(req, res) {
       folder: 'pointcloud_shp',
       ext: 'dbf',
       column: {
-        name: 'file_las'
+        name: { name: 'file_las', type: String }
       }
     }
   }

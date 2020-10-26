@@ -46,6 +46,9 @@ export default {
       const currentSnap = ls.currentSnap.name
       const commit = this.$store.commit
       const fetch = this.$axios
+      const fileExt = areaName.split('.').pop()
+      if (fileExt !== 'las') return
+
       if (process.env.dev) console.log('New Area', areaName)
       const root = `/api/pointcloud/${currentRound}/${currentSnap}/${areaName}`
       const check = await fetch(`${root}`)

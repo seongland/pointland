@@ -27,7 +27,7 @@
           <!-- 
           <v-btn @click="edit">Apply</v-btn>
            -->
-          <v-btn @click="remove">Remove</v-btn>
+          <v-btn @click="remove" :loading="$store.state.edit.loading">Remove</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>

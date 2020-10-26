@@ -38,7 +38,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="submit">Submit</v-btn>
+          <v-btn :loading="$store.state.submit.loading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -94,8 +94,8 @@ export default {
   },
   methods: {
     async submit() {
-      const commit = this.$store.commit
-      commit('submit', {
+      const dispatch = this.$store.dispatch
+      dispatch('submit', {
         comment: this.comment,
         type: 'Point',
         args: { layer: this.targetLayer.layer }
