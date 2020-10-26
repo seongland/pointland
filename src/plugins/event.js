@@ -49,20 +49,6 @@ export default ({ store: { commit, state } }) => {
         return imageClick(event, depth, this.drawFromDepth)
       },
 
-      keyUp(event) {
-        if (state.submit.show || state.edit.show) return
-        switch (event.key) {
-          case 'Delete':
-            const selected = state.selected
-            if (selected[0]?.id) {
-              commit('setEditTarget', selected[0].id)
-              commit('setEditing', true)
-            }
-            return
-        }
-        if (process.env.dev) console.log(event)
-      },
-
       keyEvent(event) {
         if (state.submit.show) return
         let seqIndex
@@ -130,9 +116,17 @@ export default ({ store: { commit, state } }) => {
           // Submit
           case 'Enter':
             if (state.allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
-              if (state.selected[0].id) return
-              commit('setSubmitting', true)
-              commit('setShowSubmit', true)
+              if (state.selected[0].id) {
+                const selected = state.selected
+                if (selected[0]?.id) {
+                  commit('setEditTarget', selected[0].id)
+                  commit('setEditing', true)
+                }
+                return
+              } else {
+                commit('setSubmitting', true)
+                commit('setShowSubmit', true)
+              }
             }
             return
         }

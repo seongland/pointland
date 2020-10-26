@@ -24,6 +24,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn @click="edit">Apply</v-btn>
           <v-btn @click="remove">Remove</v-btn>
         </v-card-actions>
       </v-card>
@@ -75,6 +76,9 @@ export default {
   methods: {
     async remove() {
       this.$store.dispatch('remove', this.id)
+    },
+    async edit() {
+      this.$store.dispatch('edit', this.id, this.facility)
     }
   }
 }

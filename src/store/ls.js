@@ -1,8 +1,15 @@
+/*
+ * @summary - Local Storage Module
+ */
+
 import { updateCtrl } from '~/plugins/cloud/init'
 
 const WAIT_RENDER = 500
 
 export const state = () => ({
+  /*
+   * @summary - Default State
+   */
   accessToken: undefined,
   user: undefined,
   prj: undefined,
@@ -15,6 +22,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  /*
+   * @summary - Simple local storage mutations
+   */
   login(state, { accessToken, user }) {
     state.user = user
     state.accessToken = accessToken
@@ -59,9 +69,7 @@ export const mutations = {
           window.dispatchEvent(new Event('resize'))
         }, WAIT_RENDER)
       })
-    } else if (index === 0) {
-      mapWrapper.classList.remove('small-map')
-    }
+    } else if (index === 0) mapWrapper.classList.remove('small-map')
 
     if (index === 2) setTimeout(() => updateCtrl())
   },
