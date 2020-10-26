@@ -36,5 +36,5 @@ export function depthmapPath(req) {
   let dir
   if (direction === 'front') dir = '00'
   if (direction === 'back') dir = '01'
-  return `${root}/${snap}/images_depthmap/${dir}_${mark}.${ext}`
+  return `${root}/${snap}/images_depthmap2/${dir}_${mark}.${ext}`
 }

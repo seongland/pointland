@@ -82,7 +82,7 @@ export default {
       const [front, back] = [f.data, b.data]
 
       const depth = this.initImg({ front, back })
-      this.drawFacilities(currentMark, depth)
+      this.drawnFacilities(currentMark, depth)
 
       front.url = frontURL
       back.url = backURL

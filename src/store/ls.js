@@ -115,6 +115,7 @@ export const mutations = {
 
   setMark(state, markObj) {
     if (!markObj) return
+    if (process.env.dev) console.log('Mark', markObj)
     markObj.snap = state.currentSnap.name
     state.currentMark = markObj
   }

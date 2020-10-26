@@ -73,7 +73,9 @@ async function round(req, res) {
         { name: 'snap8', folder: 'snap8', image, pointcloud },
         { name: 'snap9', folder: 'snap9', image, pointcloud },
         { name: 'snap10', folder: 'snap10', image, pointcloud },
-        { name: 'snap11', folder: 'snap11', image, pointcloud }
+        { name: 'snap11', folder: 'snap11', image, pointcloud },
+        { name: 'snap101', folder: 'snap101', image, pointcloud },
+        { name: 'snap103', folder: 'snap103', image, pointcloud }
       ]
     }
   else if (round === 'imms_20200909_231253')
@@ -87,7 +89,9 @@ async function round(req, res) {
         { name: 'snap3', folder: 'snap3', image, pointcloud },
         { name: 'snap4', folder: 'snap4', image, pointcloud },
         { name: 'snap5', folder: 'snap5', image, pointcloud },
-        { name: 'snap6', folder: 'snap6', image, pointcloud }
+        { name: 'snap6', folder: 'snap6', image, pointcloud },
+        { name: 'snap104', folder: 'snap104', image, pointcloud },
+        { name: 'snap105', folder: 'snap105', image, pointcloud }
       ]
     }
   for (const snapObj of roundObj.snaps) {
