@@ -30,8 +30,6 @@ export default ({ $axios, store: { commit } }) => {
         // Keyboard
         window.removeEventListener('keypress', this.keyEvent)
         window.addEventListener('keypress', this.keyEvent)
-        window.removeEventListener('keyup', this.keyUp)
-        window.addEventListener('keyup', this.keyUp)
       },
 
       async loadProjects(user, accessToken) {

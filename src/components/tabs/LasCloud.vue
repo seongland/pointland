@@ -1,10 +1,12 @@
+/* * @summary - vue point cloud component */
+
 <template>
   <div>
-    <!-- <v-toolbar class="pt-3 px-3" color="grey darken-4" dense>
+    <v-toolbar class="pt-3 px-3" color="grey darken-4" dense>
       <v-slider label="X" :value="0" :max="1" :min="-1" step="0.005" />
       <v-slider label="Y" :value="0" :max="1" :min="-1" step="0.005" />
       <v-slider label="Z" :value="0" :max="1" :min="-1" step="0.005" />
-    </v-toolbar> -->
+    </v-toolbar>
     <div id="las" />
   </div>
 </template>
@@ -71,7 +73,10 @@ export default {
     this.$root.cloud = this.initCloud({
       selectCallback: (xyz, point) => {
         const targetLayer = this.$store.state.targetLayer
-        if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
+        if (targetLayer.object)
+          if (targetLayer.object.type === 'Point') {
+            this.drawSelectedXYZ(xyz)
+          }
       }
     })
   },

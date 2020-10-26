@@ -1,6 +1,7 @@
 /*
- * <summary>index file from js</summary>
+ * @summary - cloud draw module
  */
+
 import { ref } from './init'
 import { firstLas, addLas, addPoints } from './event'
 

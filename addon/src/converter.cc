@@ -35,7 +35,7 @@ Value convert(const Napi::CallbackInfo &info) {
 
     // Cam Transform
     int lensType = Number(env, camType.Get("lens"));
-    int distance = Number(env, camType.Get("distance"));
+    double distance = Number(env, camType.Get("distance"));
 
     double camX = Number(env, t.Get("x"));
     double camY = Number(env, t.Get("y"));
@@ -71,38 +71,6 @@ Value convert(const Napi::CallbackInfo &info) {
     double markRoll = Number(env, markObj.Get("roll"));
     double markPitch = Number(env, markObj.Get("pitch"));
     double markYaw = Number(env, markObj.Get("heading"));
-
-    cout << camX << endl;
-    cout << camY << endl;
-    cout << camZ << endl;
-    cout << camf << endl;
-    cout << camfw << endl;
-    cout << camfh << endl;
-    cout << camfb << endl;
-    cout << camYaw << endl;
-    cout << camRoll << endl;
-    cout << camPitch << endl;
-    cout << campp0 << endl;
-    cout << campp1 << endl;
-    cout << camk0 << endl;
-    cout << camk1 << endl;
-    cout << camk2 << endl;
-    cout << camk3 << endl;
-    cout << camk4 << endl;
-    cout << imgWidth << endl;
-    cout << imgHeight << endl;
-    cout << facilityX << endl;
-    cout << facilityY << endl;
-    cout << facilityZ << endl;
-    cout << markX << endl;
-    cout << markY << endl;
-    cout << markZ << endl;
-    cout << markRoll << endl;
-    cout << markPitch << endl;
-    cout << markYaw << endl;
-    cout << distance << endl;
-    cout << lensType << endl;
-    cout << "" << endl;
 
     // Cam Set
     struct Vector camV;
@@ -175,7 +143,6 @@ Value convert(const Napi::CallbackInfo &info) {
   double y = result.y;
   coor.Set((uint32_t)0, Number::New(env, x));
   coor.Set((uint32_t)1, Number::New(env, y));
-  cout << "before return" << x << y << endl;
   return coor;
 }
 } // namespace Converter

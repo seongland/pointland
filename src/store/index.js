@@ -73,6 +73,7 @@ export const mutations = {
 
   select(state, { xyz, images, pointclouds, type }) {
     const feature = {
+      id: 'Point',
       relations: {
         images: [],
         pointclouds: []
@@ -117,5 +118,15 @@ export const actions = {
     app.removeVector('drawnLayer', id)
     app.resetSelected()
     if (process.env.dev) console.log('Removed', res.data)
+  },
+
+  async remove({ commit }, id, facility) {
+    const app = this.$router.app
+    const config = app.getAuthConfig()
+    config.body = facility
+    const res = await this.$axios.patch(`/api/facility/${id}`, config)
+    commit('setEditing', false)
+    app.resetSelected()
+    if (process.env.dev) console.log('Edited', res.data)
   }
 }

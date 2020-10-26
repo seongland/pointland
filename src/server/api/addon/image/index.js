@@ -1,5 +1,5 @@
 /*
- * <summary>image api entry point</summary>
+ * @summary - image api entry point
  */
 
 import express from 'express'
@@ -43,12 +43,9 @@ async function xyztoimg(req, res) {
   const markObj = req.body.data.mark
   const direction = req.params.direction
   const xyz = [Number(req.params.x), Number(req.params.y), Number(req.params.z)]
-  return res.json({})
   try {
     coor = Converter.convert(camType[direction], markObj, xyz)
-    console.log(coor)
   } catch (e) {
-    console.log(e)
     return res.json(e)
   }
   return res.json(coor)
