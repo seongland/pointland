@@ -49,6 +49,7 @@ export const mutations = {
   },
 
   async submit(state, { comment, args, type }) {
+    commit('setLoading', true)
     let feature
     if (type === 'Point') {
       feature = state.selected[0]
@@ -61,11 +62,12 @@ export const mutations = {
     const res = await this.$axios.post('/api/facility', feature, {
       headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
     })
+    commit('setLoading', false)
     if (res.status === 201) {
       this.commit('setSubmitting', false)
       this.commit('setShowSubmit', false)
       this.$router.app.resetSelected()
-      this.$router.app.drawFacilities(state.ls.currentMark, imgRef.depth)
+      this.$router.app.drawnFacilities(state.ls.currentMark, imgRef.depth)
     } else return
   },
 
@@ -73,7 +75,6 @@ export const mutations = {
 
   select(state, { xyz, images, pointclouds, type }) {
     const feature = {
-      id: 'Point',
       relations: {
         images: [],
         pointclouds: []
@@ -111,21 +112,25 @@ export const mutations = {
 
 export const actions = {
   async remove({ commit }, id) {
+    commit('setLoading', true)
     const app = this.$router.app
     const config = app.getAuthConfig()
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setEditing', false)
+    commit('setLoading', false)
     app.removeVector('drawnLayer', id)
     app.resetSelected()
     if (process.env.dev) console.log('Removed', res.data)
   },
 
-  async remove({ commit }, id, facility) {
+  async edit({ commit }, id, facility) {
+    commit('setLoading', true)
     const app = this.$router.app
     const config = app.getAuthConfig()
     config.body = facility
     const res = await this.$axios.patch(`/api/facility/${id}`, config)
     commit('setEditing', false)
+    commit('setLoading', false)
     app.resetSelected()
     if (process.env.dev) console.log('Edited', res.data)
   }

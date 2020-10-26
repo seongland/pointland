@@ -14,6 +14,8 @@ import { drawNear, erase } from './image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
+const POINT_ID = 'Point'
+
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
@@ -58,44 +60,44 @@ export default ({ store: { commit, state } }) => {
         drawXYZ(cloudRef.drawnLayer, xyz, false, id)
       },
 
-      drawFacilities(currentMark) {
+      drawnFacilities(currentMark) {
         return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
           resetPointLayer(cloudRef.drawnLayer)
           const facilites = res.data
-          for (const facility of facilites) this.drawFacility(facility, currentMark, imgRef.drawnLayer)
+          for (const facility of facilites) {
+            this.drawFacility(facility, currentMark, imgRef.drawnLayer)
+            const props = facility.properties
+            const xyz = [props.x, props.y, props.z]
+            this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
+          }
         })
       },
 
       drawFacility(facility, currentMark, layer) {
         const props = facility.properties
-        let url
-        url = `/api/image/r/s/m/front/convert/${props.x}/${props.y}/${props.z}`
-        this.$axios.post(url, { data: { mark: currentMark } }).then(res => {
-          const coor = res.data
-          if (coor[0] !== -1)
-            drawNear(layer, {
-              x: coor[0] / 4,
-              y: coor[1] / 4,
-              color: layer.color,
-              id: facility.id,
-              direction: 'front'
-            })
-        })
-        url = `/api/image/r/s/m/back/convert/${props.x}/${props.y}/${props.z}`
-        this.$axios.post(url, { data: { mark: currentMark } }).then(res => {
-          const coor = res.data
-          if (coor[0] !== -1)
-            drawNear(layer, {
-              x: coor[0] / 4,
-              y: coor[1] / 4,
-              color: layer.color,
-              id: facility.id,
-              direction: 'back'
-            })
-        })
+        let id
+        if (facility.id) id = facility.id
+        else id = POINT_ID
 
-        const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
-        this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
+        let url
+        for (const direction of ['front', 'back']) {
+          url = `/api/image/r/s/m/${direction}/convert/${props.x}/${props.y}/${props.z}`
+          this.$axios.post(url, { data: { mark: currentMark } }).then(res => {
+            const coor = res.data.coor
+            const width = res.data.width
+            const height = res.data.height
+            const wfactor = width / layer[direction].image.bitmap.width
+            const hfactor = height / layer[direction].image.bitmap.height
+            if (coor[0] !== -1)
+              drawNear(layer, {
+                x: coor[0] / wfactor,
+                y: coor[1] / hfactor,
+                color: layer.color,
+                id,
+                direction
+              })
+          })
+        }
       },
 
       async drawFromDepth(x, y, depthDir) {
@@ -107,7 +109,7 @@ export default ({ store: { commit, state } }) => {
         const ls = this.$store.state.ls
         this.resetSelectedExcept(depthDir)
         depthDir.layer.selected.image = new jimp(depthDir.width, depthDir.height)
-        drawNear(imgRef.selectedLayer, { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: 'Point' })
+        drawNear(imgRef.selectedLayer, { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: POINT_ID })
         const xyzRes = await this.$axios.get(`${depthDir.url}/${x}/${y}`)
         const xyz = xyzRes.data
         commit('select', {
@@ -123,7 +125,7 @@ export default ({ store: { commit, state } }) => {
             }
           ]
         })
-        this.selectXYZ(xyz, 'Point')
+        this.selectXYZ(xyz, POINT_ID)
       },
 
       async drawSelectedXYZ(xyz) {
@@ -132,7 +134,7 @@ export default ({ store: { commit, state } }) => {
           xyz,
           type: 'Point'
         })
-        this.selectXYZ(xyz, 'Point')
+        this.selectXYZ(xyz, POINT_ID)
         this.drawFacility(state.selected[0], state.ls.currentMark, imgRef.selectedLayer)
       },
 
@@ -168,6 +170,7 @@ export default ({ store: { commit, state } }) => {
         if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
         if (cloudRef.markLayer) resetPointLayer(cloudRef.markLayer)
         if (cloudRef.cloud.points) for (const pointLayer of cloudRef.cloud.points) resetPointLayer(pointLayer)
+        cloudRef.cloud.points = []
       }
     }
   })

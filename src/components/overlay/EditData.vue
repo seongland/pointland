@@ -24,7 +24,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <!-- 
           <v-btn @click="edit">Apply</v-btn>
+           -->
           <v-btn @click="remove">Remove</v-btn>
         </v-card-actions>
       </v-card>

@@ -5,7 +5,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { imagePath, depthmapPath } from './img'
-import { depthData, xyzAtDepthmap } from './depthmap'
+import { depthData2, depthData, xyzAtDepthmap, xyzAtDepthmap2 } from './depthmap'
 import { Converter } from '../../../../../build/Debug/tool'
 import { camType } from './config'
 
@@ -27,14 +27,14 @@ function image(req, res) {
 async function depthmap(req, res) {
   const path = depthmapPath(req)
   const markObj = req.body.data.mark
-  const data = await depthData(path, markObj)
-  res.json(data)
+  const depth = await depthData2(path, markObj)
+  res.json(depth)
 }
 
 async function imgtoxyz(req, res) {
   const [x, y] = [Number(req.params.x), Number(req.params.y)]
   const path = depthmapPath(req)
-  const xyz = await xyzAtDepthmap(path, x, y)
+  const xyz = await xyzAtDepthmap2(path, x, y)
   res.json([xyz.x, xyz.y, xyz.z])
 }
 
@@ -48,7 +48,11 @@ async function xyztoimg(req, res) {
   } catch (e) {
     return res.json(e)
   }
-  return res.json(coor)
+  return res.json({
+    coor,
+    width: camType[direction].iop.width,
+    height: camType[direction].iop.height
+  })
 }
 
 export default router

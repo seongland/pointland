@@ -26,19 +26,24 @@ export async function getLasList(root, markObj, snap) {
 
 export async function depthData(depthmapPath, markObj) {
   /*
-   * <summary>index file from js</summary>
+   * @summary - depthmap image version 1
    */
-  const point32652 = to32652(markObj.lon, markObj.lat)
+  const META_SIZE = 12
 
+  const point32652 = to32652(markObj.lon, markObj.lat)
   const fd = fs.openSync(depthmapPath, 'r')
-  const meta = Buffer.alloc(12)
-  fs.readSync(fd, meta, 0, 12, 0)
+  const meta = Buffer.alloc(META_SIZE)
+  fs.readSync(fd, meta, 0, META_SIZE, 0)
+
   const imageHeight = meta.slice(4, 8).readInt32LE()
   const imageWidth = meta.slice(8, 12).readInt32LE()
-  const xyzGap = imageHeight * imageWidth * 4
 
-  const { xOffset, yOffset, zOffset } = getOffsets(fd)
-  const { xBuffer, yBuffer, zBuffer } = getBuffers(imageWidth, imageHeight, fd, xyzGap)
+  const dimension = 3
+  const OFFSET_SIZE = dimension * 8
+  const HEAD_SIZE = META_SIZE + OFFSET_SIZE
+
+  const [xOffset, yOffset, zOffset] = getOffsets(fd, 3, META_SIZE)
+  const [xBuffer, yBuffer, zBuffer] = getBuffers(imageWidth, imageHeight, fd, dimension, HEAD_SIZE)
 
   let image = new jimp(imageWidth, imageHeight)
   for (let i = 0; i < imageWidth * imageHeight; i++) {
@@ -56,46 +61,121 @@ export async function depthData(depthmapPath, markObj) {
     height: imageHeight
   }
 }
-function getOffsets(fd) {
+
+export async function depthData2(depthmapPath) {
   /*
-   * <summary>index file from js</summary>
+   * @summary - depthmap image version 1
    */
-  const offset = Buffer.alloc(24)
-  fs.readSync(fd, offset, 0, 24, 12)
-  const xOffset = offset.slice(0, 8).readDoubleLE()
-  const yOffset = offset.slice(8, 16).readDoubleLE()
-  const zOffset = offset.slice(16, 24).readDoubleLE()
-  return { xOffset, yOffset, zOffset }
+  const META_SIZE = 16
+  const SPACE_DIM = 3
+  const OFFSET_SIZE = SPACE_DIM * 8
+  const HEAD_SIZE = META_SIZE + OFFSET_SIZE
+
+  const fd = fs.openSync(depthmapPath, 'r')
+  const meta = Buffer.alloc(META_SIZE)
+  fs.readSync(fd, meta, 0, META_SIZE, 0)
+
+  const imageHeight = meta.slice(4, 8).readInt32LE()
+  const imageWidth = meta.slice(8, 12).readInt32LE()
+  const dimension = meta.slice(12, 16).readInt32LE()
+
+  const buffers = getBuffers(imageWidth, imageHeight, fd, dimension, HEAD_SIZE)
+
+  let image = new jimp(imageWidth, imageHeight)
+  for (let i = 0; i < imageWidth * imageHeight; i++) {
+    const intensity = buffers[buffers.length - 2].readFloatLE(i * 4)
+    if (intensity === -1) continue
+    const color = jimp.rgbaToInt(intensity, intensity, intensity, 255)
+    image.setPixelColor(color, parseInt(i / imageHeight), parseInt(i % imageHeight))
+  }
+  fs.close(fd)
+  return {
+    uri: await image.getBase64Async('image/png'),
+    width: imageWidth,
+    height: imageHeight
+  }
 }
-function getBuffers(imageWidth, imageHeight, fd, xyzGap) {
-  const xBuffer = Buffer.alloc(4 * imageWidth * imageHeight)
-  const yBuffer = Buffer.alloc(4 * imageWidth * imageHeight)
-  const zBuffer = Buffer.alloc(4 * imageWidth * imageHeight)
-  fs.readSync(fd, xBuffer, 0, imageWidth * imageHeight * 4, 36)
-  fs.readSync(fd, yBuffer, 0, imageWidth * imageHeight * 4, 36 + xyzGap)
-  fs.readSync(fd, zBuffer, 0, imageWidth * imageHeight * 4, 36 + xyzGap * 2)
-  return { xBuffer, yBuffer, zBuffer }
+
+function getOffsets(fd, dimension, position) {
+  /*
+   * @summary - depthmap image get offset
+   */
+  const OFFSET_SIZE = 8
+  const offsets = []
+
+  const buffer = Buffer.alloc(dimension * OFFSET_SIZE)
+  fs.readSync(fd, buffer, 0, dimension * OFFSET_SIZE, position)
+
+  for (const index in new Array(dimension).fill(0)) {
+    const offset = buffer.slice(index * OFFSET_SIZE, (index + 1) * OFFSET_SIZE).readDoubleLE()
+    offsets.push(offset)
+  }
+  return offsets
+}
+
+function getBuffers(imageWidth, imageHeight, fd, dimension, position) {
+  /*
+   * @summary - depthmap image get offset
+   */
+  const SINGLE_SIZE = 4
+  const buffers = []
+  const xyzGap = imageHeight * imageWidth * 4
+
+  for (const index in new Array(dimension).fill(0)) {
+    const buffer = Buffer.alloc(imageWidth * imageHeight * SINGLE_SIZE)
+    fs.readSync(fd, buffer, 0, imageWidth * imageHeight * SINGLE_SIZE, position + xyzGap * index)
+    buffers.push(buffer)
+  }
+  return buffers
 }
 
 export async function xyzAtDepthmap(depthmapPath, x, y) {
   /*
-   * <summary>index file from js</summary>
+   * @summary - xyz to depthmap
    */
+  const META_SIZE = 12
   const fd = fs.openSync(depthmapPath, 'r')
   const meta = Buffer.alloc(12)
   fs.readSync(fd, meta, 0, 12, 0)
   const imageHeight = meta.slice(4, 8).readInt32LE()
   const imageWidth = meta.slice(8, 12).readInt32LE()
-  const xyzGap = imageHeight * imageWidth * 4
-
-  const { xOffset, yOffset, zOffset } = getOffsets(fd)
-  const { xBuffer, yBuffer, zBuffer } = getBuffers(imageWidth, imageHeight, fd, xyzGap)
-
+  const dimension = 3
+  const OFFSET_SIZE = dimension * 8
+  const HEAD_SIZE = META_SIZE + OFFSET_SIZE
+  const [xOffset, yOffset, zOffset] = getOffsets(fd, 3, META_SIZE)
+  const [xBuffer, yBuffer, zBuffer] = getBuffers(imageWidth, imageHeight, fd, dimension, HEAD_SIZE)
   const position = (x * imageHeight + y) * 4
-
   x = xBuffer.readFloatLE(position) + xOffset
   y = yBuffer.readFloatLE(position) + yOffset
   let z = zBuffer.readFloatLE(position) + zOffset
+  fs.close(fd)
+  return { x, y, z }
+}
+
+export async function xyzAtDepthmap2(depthmapPath, x, y) {
+  /*
+   * @summary - version 2
+   */
+  const META_SIZE = 16
+  const SPACE_DIM = 3
+  const OFFSET_SIZE = SPACE_DIM * 8
+  const HEAD_SIZE = META_SIZE + OFFSET_SIZE
+
+  const fd = fs.openSync(depthmapPath, 'r')
+  const meta = Buffer.alloc(META_SIZE)
+  fs.readSync(fd, meta, 0, META_SIZE, 0)
+
+  const imageHeight = meta.slice(4, 8).readInt32LE()
+  const imageWidth = meta.slice(8, 12).readInt32LE()
+  const dimension = meta.slice(12, 16).readInt32LE()
+
+  const [xOffset, yOffset, zOffset] = getOffsets(fd, 3, META_SIZE)
+  const buffers = getBuffers(imageWidth, imageHeight, fd, dimension, HEAD_SIZE)
+  const position = (x * imageHeight + y) * 4
+
+  x = buffers[0].readFloatLE(position) + xOffset
+  y = buffers[1].readFloatLE(position) + yOffset
+  let z = buffers[2].readFloatLE(position) + zOffset
   fs.close(fd)
   return { x, y, z }
 }
