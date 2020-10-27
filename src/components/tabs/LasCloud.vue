@@ -39,15 +39,13 @@ export default {
       const mainIndex = lasList.indexOf(markObj.mainArea)
       const loadList = [mainIndex, mainIndex - 1, mainIndex + 1, mainIndex + 2, mainIndex - 2]
 
-      // remove
+      // Make remove List
       const removeList = []
-      for (const las of this.lasList) {
-        if (!lasList.includes(las)) {
-          if (process.env.dev) console.log('Remove Area', las)
-          removeList.push(las)
-        }
-      }
+      for (const las of this.lasList) if (!lasList.includes(las)) removeList.push(las)
+
+      // Remove Las
       for (const las of removeList) {
+        if (process.env.dev) console.log('Remove Area', las)
         for (const i in ref.cloud.points)
           if (ref.cloud.points[i].name === las) {
             ref.cloud.scene.remove(ref.cloud.points[i])
@@ -57,7 +55,7 @@ export default {
         this.lasList.splice(this.lasList.indexOf(las), 1)
       }
 
-      // load
+      // load New las
       for (const index of loadList) {
         if (!lasList[index]) continue
         const areaName = lasList[index]
@@ -81,7 +79,7 @@ export default {
       const check = await fetch(`${root}`)
 
       if (check.data.cached) {
-        // Cancle
+        // Make Cancel token
         const xsrc = this.$axios.CancelToken.source()
         const ysrc = this.$axios.CancelToken.source()
         const zsrc = this.$axios.CancelToken.source()
@@ -106,6 +104,8 @@ export default {
         ]
         const srcList = [xsrc, ysrc, zsrc, csrc, isrc]
         this.apiList.push(srcList)
+
+        // Draw
         try {
           const [x, y, z, c, i] = await Promise.all(promises)
           commit('setLoading', true)

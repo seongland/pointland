@@ -9,6 +9,11 @@ export function lasPath(req) {
   return `${root}/${snap}/pointcloud/${area}`
 }
 
+export function lasToJson(lasPath, version) {
+  if (version === '1.2') {
+  }
+}
+
 export function cachePath(req) {
   const round = req.params.round
   const snap = req.params.snap

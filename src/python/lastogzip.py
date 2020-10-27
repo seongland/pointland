@@ -15,7 +15,7 @@ if __name__ == "__main__":
   cache = loads(argv[2])
   las = read(path)
 
-  center = [las.x.mean(), las.y.mean(),las.z.mean()]
+  center = las.header.offsets.tolist()
   intensity = las.intensity.tolist()
   x = (las.x - center[0]).tolist()
   y = (las.y - center[1]).tolist()

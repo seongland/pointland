@@ -15,7 +15,8 @@ if __name__ == "__main__":
   cache = loads(argv[2])
   las = pylas.read(path)
   las_min = {}
-  las_min["center"] = [las.x.mean(), las.y.mean(),las.z.mean()]
+  
+  las_min["center"] = las.header.offsets.tolist()
   intensity = las.intensity.tolist()
   center = [las.x.mean(), las.y.mean(),las.z.mean()]
 
