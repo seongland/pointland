@@ -84,7 +84,7 @@ export default ({ store: { commit, state } }) => {
         const promises = []
 
         for (const direction of ['front', 'back']) {
-          url = `/api/image/r/s/m/${direction}/convert/${props.x}/${props.y}/${props.z}`
+          url = `/api/image/convert/${direction}/${props.x}/${props.y}/${props.z}`
           promises.push(this.$axios.post(url, { data: { mark: currentMark } }))
         }
         const responses = await Promise.all(promises)

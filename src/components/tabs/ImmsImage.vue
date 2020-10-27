@@ -67,6 +67,7 @@ export default {
 
   asyncComputed: {
     async depth() {
+      const ls = this.$store.state.ls
       this.$store.commit('setDepthLoading', true)
       const currentMark = this.$store.state.ls.currentMark
       if (!currentMark)
@@ -74,8 +75,8 @@ export default {
           front: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } },
           back: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } }
         }
-      const frontURL = `${this.src.front.uri}/depth`
-      const backURL = `${this.src.back.uri}/depth`
+      const frontURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/front`
+      const backURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/back`
       const frontP = this.$axios.post(frontURL, { data: { mark: currentMark } })
       const backP = this.$axios.post(backURL, { data: { mark: currentMark } })
       const [f, b] = await Promise.all([frontP, backP])
