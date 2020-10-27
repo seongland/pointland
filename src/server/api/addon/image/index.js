@@ -8,6 +8,7 @@ import { imagePath, depthmapPath } from './img'
 import { depthData2, depthData, xyzAtDepthmap, xyzAtDepthmap2 } from './depthmap'
 import { Converter } from '../../../../../build/Debug/tool'
 import { camType } from './config'
+import fs from 'fs'
 
 dotenv.config()
 const router = express.Router()
@@ -21,11 +22,13 @@ router.post('/:round/:snap/:mark/:direction/depth', depthmap)
 
 function image(req, res) {
   const path = imagePath(req)
-  res.sendFile(path)
+  if (fs.existsSync(path)) return res.sendFile(path)
+  else res.json('')
 }
 
 async function depthmap(req, res) {
   const path = depthmapPath(req)
+  if (!fs.existsSync(path)) return res.json('')
   const markObj = req.body.data.mark
   const depth = await depthData2(path, markObj)
   res.json(depth)
@@ -51,7 +54,8 @@ async function xyztoimg(req, res) {
   return res.json({
     coor,
     width: camType[direction].iop.width,
-    height: camType[direction].iop.height
+    height: camType[direction].iop.height,
+    direction: direction
   })
 }
 

@@ -16,18 +16,24 @@ if __name__ == "__main__":
   las = pylas.read(path)
   las_min = {}
   
-  las_min["center"] = las.header.offsets.tolist()
+  center = las.header.offsets.tolist()
+  las_min["center"] = center
   intensity = las.intensity.tolist()
-  center = [las.x.mean(), las.y.mean(),las.z.mean()]
 
   x = (las.x - center[0]).tolist()
   y = (las.y - center[1]).tolist()
   z = (las.z - center[2]).tolist()
 
-  x_min = x[0::JUMP]
-  y_min = y[0::JUMP]
-  z_min = z[0::JUMP]
-  i_min = intensity[0::JUMP]
+  if (JUMP == 1):
+    x_min = x
+    y_min = y
+    z_min = z
+    i_min = intensity
+  else:
+    x_min = x[0::JUMP]
+    y_min = y[0::JUMP]
+    z_min = z[0::JUMP]
+    i_min = intensity[0::JUMP]
 
   las_min["x"] = x_min
   las_min["y"] = y_min
