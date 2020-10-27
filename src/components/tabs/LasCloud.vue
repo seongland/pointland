@@ -15,6 +15,7 @@
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { ref } from '~/plugins/cloud/init'
 import { v4 as uuid } from 'uuid'
+import consola from 'consola'
 
 export default {
   data: () => ({
@@ -45,7 +46,7 @@ export default {
 
       // Remove Las
       for (const las of removeList) {
-        if (process.env.dev) console.log('Remove Area', las)
+        if (process.env.dev) consola.info('Remove Area', las)
         for (const i in ref.cloud.points)
           if (ref.cloud.points[i].name === las) {
             ref.cloud.scene.remove(ref.cloud.points[i])
@@ -123,7 +124,7 @@ export default {
           commit('setLoading', false)
         })
       }
-      if (process.env.dev) console.log('New Area', areaName)
+      if (process.env.dev) consola.info('New Area', areaName)
       this.lasList.push(areaName)
     }
   },

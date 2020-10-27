@@ -10,7 +10,7 @@ import { ref as cloudRef } from './cloud/init'
 import { drawXY, removeFeature } from './map/draw'
 import { drawLas, drawXYZ, removePoint } from './cloud/draw'
 import { resetPointLayer } from './cloud/event'
-import { drawNear, erase } from './image/draw'
+import { drawNear, erase, updateImg } from './image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
@@ -61,42 +61,42 @@ export default ({ store: { commit, state } }) => {
       },
 
       drawnFacilities(currentMark) {
-        return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(res => {
+        return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(async res => {
           resetPointLayer(cloudRef.drawnLayer)
           const facilites = res.data
+          const promises = []
           for (const facility of facilites) {
-            this.drawFacility(facility, currentMark, imgRef.drawnLayer)
+            promises.push(this.drawFacility(facility, currentMark, imgRef.drawnLayer))
             const props = facility.properties
             const xyz = [props.x, props.y, props.z]
             this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
           }
+          await Promise.all(promises)
+          updateImg(imgRef.drawnLayer)
         })
       },
 
-      drawFacility(facility, currentMark, layer) {
+      async drawFacility(facility, currentMark, layer) {
         const props = facility.properties
-        let id
+        let id, url
         if (facility.id) id = facility.id
         else id = POINT_ID
+        const promises = []
 
-        let url
         for (const direction of ['front', 'back']) {
           url = `/api/image/r/s/m/${direction}/convert/${props.x}/${props.y}/${props.z}`
-          this.$axios.post(url, { data: { mark: currentMark } }).then(res => {
-            const coor = res.data.coor
-            const width = res.data.width
-            const height = res.data.height
-            const wfactor = width / layer[direction].image.bitmap.width
-            const hfactor = height / layer[direction].image.bitmap.height
-            if (coor[0] !== -1)
-              drawNear(layer, {
-                x: coor[0] / wfactor,
-                y: coor[1] / hfactor,
-                color: layer.color,
-                id,
-                direction
-              })
-          })
+          promises.push(this.$axios.post(url, { data: { mark: currentMark } }))
+        }
+        const responses = await Promise.all(promises)
+        for (const res of responses) {
+          const coor = res.data.coor
+          const width = res.data.width
+          const height = res.data.height
+          const direction = res.data.direction
+          const wfactor = width / layer[direction].image.bitmap.width
+          const hfactor = height / layer[direction].image.bitmap.height
+          if (coor[0] !== -1)
+            drawNear(layer, { x: coor[0] / wfactor, y: coor[1] / hfactor, color: layer.color, id, direction }, false)
         }
       },
 
@@ -109,7 +109,11 @@ export default ({ store: { commit, state } }) => {
         const ls = this.$store.state.ls
         this.resetSelectedExcept(depthDir)
         depthDir.layer.selected.image = new jimp(depthDir.width, depthDir.height)
-        drawNear(imgRef.selectedLayer, { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: POINT_ID })
+        drawNear(
+          imgRef.selectedLayer,
+          { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: POINT_ID },
+          true
+        )
         const xyzRes = await this.$axios.get(`${depthDir.url}/${x}/${y}`)
         const xyz = xyzRes.data
         commit('select', {

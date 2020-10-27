@@ -18,7 +18,7 @@ export const state = () => ({
   currentRound: undefined,
   currentSnap: undefined,
   currentMark: undefined,
-  rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }]
+  rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }, { name: 'imms_20201026_145535' }]
 })
 
 export const mutations = {
@@ -39,7 +39,7 @@ export const mutations = {
     state.prj = undefined
     state.prjId = undefined
     state.index = 0
-    state.rounds = [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }]
+    state.rounds = [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }, { name: 'imms_20201026_145535' }]
     state.currentMark = undefined
     state.currentSnap = undefined
     state.currentRound = undefined

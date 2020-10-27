@@ -1,6 +1,6 @@
 import { ref } from './init'
 
-export function drawNear(layer, { direction, x, y, color, id }) {
+export function drawNear(layer, { direction, x, y, color, id }, update) {
   const img = layer[direction].image
   const list = [
     [x, y],
@@ -16,7 +16,14 @@ export function drawNear(layer, { direction, x, y, color, id }) {
   if (!ref.ids) ref.ids = {}
   ref.ids[id] = { direction, x, y }
   for (const coor of list) img.setPixelColor(color, ...coor)
-  img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
+  if (update) img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
+}
+
+export function updateImg(layer) {
+  for (const direction of ['front', 'back']) {
+    const img = layer[direction].image
+    img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
+  }
 }
 
 export function erase(layer, id) {

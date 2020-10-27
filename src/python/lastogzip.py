@@ -15,16 +15,22 @@ if __name__ == "__main__":
   cache = loads(argv[2])
   las = read(path)
 
-  center = las.header.offsets.tolist()
+  center = [las.x.mean(), las.y.mean(),las.z.mean()]
   intensity = las.intensity.tolist()
   x = (las.x - center[0]).tolist()
   y = (las.y - center[1]).tolist()
   z = (las.z - center[2]).tolist()
 
-  x_min = x[0::JUMP]
-  y_min = y[0::JUMP]
-  z_min = z[0::JUMP]
-  i_min = intensity[0::JUMP]
+  if (JUMP == 1):
+    x_min = x
+    y_min = y
+    z_min = z
+    i_min = intensity
+  else:
+    x_min = x[0::JUMP]
+    y_min = y[0::JUMP]
+    z_min = z[0::JUMP]
+    i_min = intensity[0::JUMP]
 
   x_json = dumps(x_min, indent=None, separators=(',',':'))
   y_json = dumps(y_min, indent=None, separators=(',',':'))

@@ -15,7 +15,7 @@ export default app => {
       geometry: {
         $near: {
           $geometry: { type: 'Point', coordinates: [lng, lat] },
-          $maxDistance: 100
+          $maxDistance: 50
         }
       }
     })
