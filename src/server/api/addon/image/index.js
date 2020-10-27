@@ -17,8 +17,8 @@ const router = express.Router()
 router.get('/:round/:snap/:mark/:direction', image)
 router.get('/:round/:snap/:mark/:direction/depth/:x/:y', imgtoxyz)
 // post
-router.post('/:round/:snap/:mark/:direction/convert/:x/:y/:z', xyztoimg)
-router.post('/:round/:snap/:mark/:direction/depth', depthmap)
+router.post('/convert/:direction/:x/:y/:z', xyztoimg)
+router.post('/depth/:round/:snap/:mark/:direction', depthmap)
 
 function image(req, res) {
   const path = imagePath(req)

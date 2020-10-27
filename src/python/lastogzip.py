@@ -6,10 +6,12 @@ from json import loads, dumps
 from gzip import open as o
 from sys import argv
 from pylas import read
+# from numba import jit
 
 JUMP = 1
 
-if __name__ == "__main__":
+# @jit(parallel=True)
+def main(jump):
   # make data
   path = loads(argv[1])
   cache = loads(argv[2])
@@ -21,16 +23,16 @@ if __name__ == "__main__":
   y = (las.y - center[1]).tolist()
   z = (las.z - center[2]).tolist()
 
-  if (JUMP == 1):
+  if (jump == 1):
     x_min = x
     y_min = y
     z_min = z
     i_min = intensity
   else:
-    x_min = x[0::JUMP]
-    y_min = y[0::JUMP]
-    z_min = z[0::JUMP]
-    i_min = intensity[0::JUMP]
+    x_min = x[0::jump]
+    y_min = y[0::jump]
+    z_min = z[0::jump]
+    i_min = intensity[0::jump]
 
   x_json = dumps(x_min, indent=None, separators=(',',':'))
   y_json = dumps(y_min, indent=None, separators=(',',':'))
@@ -61,3 +63,6 @@ if __name__ == "__main__":
   z_file.close()
   c_file.close()
   i_file.close()
+
+if __name__ == "__main__":
+  main(JUMP)
