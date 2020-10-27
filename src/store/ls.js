@@ -85,6 +85,26 @@ export const mutations = {
     this.$router.app.setRound(roundObj)
   },
 
+  setSnap(state, snapObj) {
+    const previous = state.currentSnap
+    const app = this.$router.app
+    console.log(snapObj)
+    app.resetSnap()
+
+    let markIndex
+    if (state.currentSnap?.marks)
+      markIndex = state.currentSnap.marks.findIndex(element => element.name === state.currentMark.name)
+    state.currentSnap = snapObj
+
+    let markObj
+    if (markIndex >= 0 && state.currentMark.snap === snapObj.name) markObj = snapObj.marks[markIndex]
+    if (!markObj) markObj = snapObj.marks[0]
+
+    app.setMark(markObj)
+    previous.areas = undefined
+    previous.marks = undefined
+  },
+
   setRound(state, roundObj) {
     let snapIndex
     if (state.currentRound?.snaps)
@@ -96,21 +116,6 @@ export const mutations = {
     if (!snapObj) snapObj = roundObj.snaps[0]
 
     this.$router.app.setSnap(snapObj)
-  },
-
-  setSnap(state, snapObj) {
-    this.$router.app.resetSnap()
-    snapObj.round = state.currentRound.name
-    let markIndex
-    if (state.currentSnap?.marks)
-      markIndex = state.currentSnap.marks.findIndex(element => element.name === state.currentMark.name)
-    state.currentSnap = snapObj
-
-    let markObj
-    if (markIndex >= 0 && state.currentMark.snap === snapObj.name) markObj = snapObj.marks[markIndex]
-    if (!markObj) markObj = snapObj.marks[0]
-
-    this.$router.app.setMark(markObj)
   },
 
   setMark(state, markObj) {

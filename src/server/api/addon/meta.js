@@ -9,54 +9,55 @@ import { getTable } from './tool/table'
 dotenv.config()
 const router = express.Router()
 
-router.get('/:round', round)
+const image = {
+  formats: [
+    { type: 'img', folder: 'images', ext: 'jpg' },
+    { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
+  ],
+  meta: {
+    folder: 'auxiliary',
+    ext: 'csv',
+    filter: 'lasList',
+    column: {
+      name: { name: 'id_point', num: false },
+      seq: { name: 'sequence', num: true },
+      lat: { name: 'Latitude', num: true },
+      lon: { name: 'Longitude', num: true },
+      alt: { name: 'altitude', num: true },
+      heading: { name: 'heading', num: true },
+      x: { name: 'x_utm', num: true },
+      y: { name: 'y_utm', num: true },
+      roll: { name: 'roll', num: true },
+      pitch: { name: 'pitch', num: true },
+      lasList: { name: 'file_las_se', num: false }
+    },
+    prefix: {
+      front: '00',
+      back: '01'
+    },
+    sep: '_'
+  }
+}
+const pointcloud = {
+  formats: [
+    { type: 'pcd', folder: 'pointcloud', ext: 'las' },
+    { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
+  ],
+  meta: {
+    folder: 'pointcloud_shp',
+    ext: 'dbf',
+    column: {
+      name: { name: 'file_las', type: String }
+    }
+  }
+}
 
-async function round(req, res) {
-  let roundObj
+router.get('/:round', getRound)
+router.post('/:round/:snap', getSnap)
+
+async function getRound(req, res) {
   const round = req.params.round
-  const image = {
-    formats: [
-      { type: 'img', folder: 'images', ext: 'jpg' },
-      { type: 'depthmap', folder: 'images_depthmap', ext: 'bin' }
-    ],
-    meta: {
-      folder: 'auxiliary',
-      ext: 'csv',
-      filter: 'lasList',
-      column: {
-        name: { name: 'id_point', type: String },
-        seq: { name: 'sequence', type: Number },
-        lat: { name: 'Latitude', type: Number },
-        lon: { name: 'Longitude', type: Number },
-        alt: { name: 'altitude', type: Number },
-        heading: { name: 'heading', type: Number },
-        x: { name: 'x_utm', type: Number },
-        y: { name: 'y_utm', type: Number },
-        roll: { name: 'roll', type: Number },
-        pitch: { name: 'pitch', type: Number },
-        lasList: { name: 'file_las_se', type: String }
-      },
-      prefix: {
-        front: '00',
-        back: '01'
-      },
-      sep: '_'
-    }
-  }
-  const pointcloud = {
-    formats: [
-      { type: 'pcd', folder: 'pointcloud', ext: 'las' },
-      { type: 'depthmap', folder: 'images_depthmap_point', ext: 'bin' }
-    ],
-    meta: {
-      folder: 'pointcloud_shp',
-      ext: 'dbf',
-      column: {
-        name: { name: 'file_las', type: String }
-      }
-    }
-  }
-
+  let roundObj
   if (round === 'imms_20200910_000230')
     roundObj = {
       name: 'imms_20200910_000230',
@@ -94,25 +95,26 @@ async function round(req, res) {
         { name: 'snap105', folder: 'snap105', image, pointcloud }
       ]
     }
-  for (const snapObj of roundObj.snaps) {
-    try {
-      snapObj.marks = await getTable(roundObj.name, snapObj.name, snapObj.image.meta)
-    } catch (e) {
-      const index = roundObj.snaps.indexOf(snapObj)
-      roundObj.snaps.splice(index, 1)
-      console.log(e)
-    }
-  }
-  for (const snapObj of roundObj.snaps) {
-    try {
-      snapObj.areas = await getTable(roundObj.name, snapObj.name, snapObj.pointcloud.meta)
-    } catch (e) {
-      const index = roundObj.snaps.indexOf(snapObj)
-      roundObj.snaps.splice(index, 1)
-      console.log(e)
-    }
-  }
   res.json(roundObj)
+}
+
+async function getSnap(req, res) {
+  const roundName = req.params.round
+  const snapName = req.params.snap
+  const snapObj = req.body.data.snap
+  try {
+    snapObj.marks = await getTable(roundName, snapName, snapObj.image.meta)
+  } catch (e) {
+    console.log(e)
+    return res.json(false)
+  }
+  try {
+    snapObj.areas = await getTable(roundName, snapName, snapObj.pointcloud.meta)
+  } catch (e) {
+    console.log(e)
+    return res.json(false)
+  }
+  res.json(snapObj)
 }
 
 export default router

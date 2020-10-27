@@ -34,7 +34,15 @@ export default ({ store: { commit, state } }) => {
         flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
       },
 
-      setSnap(snapObj) {
+      async setSnap(snapObj) {
+        snapObj.round = state.ls.currentRound.name
+        const apiUrl = `/api/meta/${snapObj.round}/${snapObj.name}`
+        const config = this.getAuthConfig()
+        config.data = { snap: snapObj }
+        const fullSnap = await this.$axios.post(apiUrl, config)
+        snapObj.areas = fullSnap.areas
+        snapObj.marks = fullSnap.marks
+
         commit('ls/setSnap', snapObj)
         for (const mark of snapObj.marks)
           this.waitAvail(this.checkMount, this.markXYZ, [[mark.x, mark.y, mark.alt], mark.name])
