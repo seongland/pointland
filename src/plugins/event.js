@@ -39,9 +39,9 @@ export default ({ store: { commit, state } }) => {
         const apiUrl = `/api/meta/${snapObj.round}/${snapObj.name}`
         const config = this.getAuthConfig()
         config.data = { snap: snapObj }
-        const fullSnap = await this.$axios.post(apiUrl, config)
-        snapObj.areas = fullSnap.areas
-        snapObj.marks = fullSnap.marks
+        const snapRes = await this.$axios.post(apiUrl, config)
+        snapObj.areas = snapRes.data.areas
+        snapObj.marks = snapRes.data.marks
 
         commit('ls/setSnap', snapObj)
         for (const mark of snapObj.marks)
