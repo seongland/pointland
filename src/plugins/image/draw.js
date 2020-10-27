@@ -20,7 +20,6 @@ export function drawNear(layer, { direction, x, y, color, id }, update) {
 }
 
 export function updateImg(layer) {
-  console.log(ref.ids)
   for (const direction of ['front', 'back']) {
     const img = layer[direction].image
     img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
