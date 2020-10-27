@@ -23,7 +23,7 @@ export function addLas(lasJson, cloud, vertices) {
   for (const i in lasJson.x) vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
 }
 
-export function addPoints(lasJson, colors, vertices, cloud) {
+export function addPoints(lasJson, colors, vertices, cloud, name) {
   /*
    * <summary>index file from js</summary>
    */
@@ -45,6 +45,7 @@ export function addPoints(lasJson, colors, vertices, cloud) {
 
   if (cloud.points) cloud.points.push(points)
   else cloud.points = [points]
+  points.name = name
   return points
 }
 

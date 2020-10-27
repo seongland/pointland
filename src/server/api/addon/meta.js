@@ -29,6 +29,7 @@ const image = {
       y: { name: 'y_utm', num: true },
       roll: { name: 'roll', num: true },
       pitch: { name: 'pitch', num: true },
+      mainArea: { name: 'file_las_close', num: false },
       lasList: { name: 'file_las_se', num: false }
     },
     prefix: {
@@ -102,18 +103,17 @@ async function getSnap(req, res) {
   const roundName = req.params.round
   const snapName = req.params.snap
   const snapObj = req.body.data.snap
+  let markPromise, areaPromise
   try {
-    snapObj.marks = await getTable(roundName, snapName, snapObj.image.meta)
+    markPromise = getTable(roundName, snapName, snapObj.image.meta)
+    areaPromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
   } catch (e) {
     console.log(e)
     return res.json(false)
   }
-  try {
-    snapObj.areas = await getTable(roundName, snapName, snapObj.pointcloud.meta)
-  } catch (e) {
-    console.log(e)
-    return res.json(false)
-  }
+  const [marks, areas] = await Promise.all([markPromise, areaPromise])
+  snapObj.marks = marks
+  snapObj.areas = areas
   res.json(snapObj)
 }
 

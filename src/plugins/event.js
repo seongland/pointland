@@ -68,7 +68,6 @@ export default ({ store: { commit, state } }) => {
             }
             return
         }
-        if (process.env.dev) console.log(event)
       },
 
       keyEvent(event) {

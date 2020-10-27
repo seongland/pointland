@@ -88,8 +88,8 @@ export const mutations = {
   setSnap(state, snapObj) {
     const previous = state.currentSnap
     const app = this.$router.app
-    console.log(snapObj)
-    app.resetSnap()
+    if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) app.resetSnap()
+    if (process.env.dev) console.log('New Snap', snapObj)
 
     let markIndex
     if (state.currentSnap?.marks)
@@ -101,8 +101,10 @@ export const mutations = {
     if (!markObj) markObj = snapObj.marks[0]
 
     app.setMark(markObj)
-    previous.areas = undefined
-    previous.marks = undefined
+    if (previous) {
+      previous.areas = undefined
+      previous.marks = undefined
+    }
   },
 
   setRound(state, roundObj) {
