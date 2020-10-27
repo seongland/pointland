@@ -20,6 +20,7 @@ export function drawNear(layer, { direction, x, y, color, id }, update) {
 }
 
 export function updateImg(layer) {
+  console.log(ref.ids)
   for (const direction of ['front', 'back']) {
     const img = layer[direction].image
     img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
@@ -29,6 +30,8 @@ export function updateImg(layer) {
 export function erase(layer, id) {
   const transparent = 0x00000000
   if (!ref.ids[id]) return
-  const { direction, x, y } = ref.ids[id]
-  drawNear(layer, { direction, x, y, color: transparent, id })
+  const direction = ref.ids[id].direction
+  const x = ref.ids[id].x
+  const y = ref.ids[id].y
+  drawNear(layer, { direction, x, y, color: transparent, id }, true)
 }

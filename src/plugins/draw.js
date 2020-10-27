@@ -60,39 +60,42 @@ export default ({ store: { commit, state } }) => {
         drawXYZ(cloudRef.drawnLayer, xyz, false, id)
       },
 
+      drawnXYZs(xyzs, ids) {
+        for (const index in xyzs) this.drawnXYZ(xyzs[index], ids[index])
+      },
+
       drawnFacilities(currentMark) {
         return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(async res => {
           resetPointLayer(cloudRef.drawnLayer)
-          const facilites = res.data
-          const promises = []
-          for (const facility of facilites) {
-            promises.push(this.drawFacility(facility, currentMark, imgRef.drawnLayer))
+          const facilities = res.data
+          const [xyzs, ids] = [[], [], []]
+          for (const facility of facilities) {
             const props = facility.properties
-            const xyz = [props.x, props.y, props.z]
-            this.waitAvail(this.checkMount, this.drawnXYZ, [xyz, facility.id])
+            xyzs.push([props.x, props.y, props.z])
+            ids.push(facility.id)
           }
-          await Promise.all(promises)
+          await this.drawFacilities(facilities, currentMark, imgRef.drawnLayer)
           updateImg(imgRef.drawnLayer)
+          this.waitAvail(this.checkMount, this.drawnXYZs, [xyzs, ids])
         })
       },
 
-      async drawFacility(facility, currentMark, layer) {
-        const props = facility.properties
-        let id, url
-        if (facility.id) id = facility.id
-        else id = POINT_ID
-        const promises = []
-
-        for (const direction of ['front', 'back']) {
-          url = `/api/image/convert/${direction}/${props.x}/${props.y}/${props.z}`
-          promises.push(this.$axios.post(url, { data: { mark: currentMark } }))
+      async drawFacilities(facilites, currentMark, layer) {
+        const xyzds = []
+        for (const facility of facilites) {
+          let id = facility.id ? facility.id : POINT_ID
+          const props = facility.properties
+          xyzds.push({ x: props.x, y: props.y, z: props.z, d: 'front', id })
+          xyzds.push({ x: props.x, y: props.y, z: props.z, d: 'back', id })
         }
-        const responses = await Promise.all(promises)
-        for (const res of responses) {
-          const coor = res.data.coor
-          const width = res.data.width
-          const height = res.data.height
-          const direction = res.data.direction
+        const url = `/api/image/convert`
+        const fbRes = await this.$axios.post(url, { data: { mark: currentMark, xyzds } })
+        for (const result of fbRes.data) {
+          const id = result.id
+          const coor = result.coor
+          const width = result.width
+          const height = result.height
+          const direction = result.direction
           const wfactor = width / layer[direction].image.bitmap.width
           const hfactor = height / layer[direction].image.bitmap.height
           if (coor[0] !== -1)
@@ -114,7 +117,7 @@ export default ({ store: { commit, state } }) => {
           { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: POINT_ID },
           true
         )
-        const xyzRes = await this.$axios.get(`${depthDir.url}/${x}/${y}`)
+        const xyzRes = await this.$axios.post(`${depthDir.url}/${x}/${y}`)
         const xyz = xyzRes.data
         commit('select', {
           xyz,
@@ -139,7 +142,8 @@ export default ({ store: { commit, state } }) => {
           type: 'Point'
         })
         this.selectXYZ(xyz, POINT_ID)
-        this.drawFacility(state.selected[0], state.ls.currentMark, imgRef.selectedLayer)
+        await this.drawFacilities(state.selected, state.ls.currentMark, imgRef.selectedLayer)
+        updateImg(imgRef.selectedLayer)
       },
 
       resetSelectedExcept(excepted) {

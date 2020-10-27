@@ -135,10 +135,7 @@ export default {
     this.$root.cloud = this.initCloud({
       selectCallback: (xyz, point) => {
         const targetLayer = this.$store.state.targetLayer
-        if (targetLayer.object)
-          if (targetLayer.object.type === 'Point') {
-            this.drawSelectedXYZ(xyz)
-          }
+        if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
       }
     })
   },

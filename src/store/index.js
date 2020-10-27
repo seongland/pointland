@@ -50,6 +50,12 @@ export const mutations = {
     state.edit.id = id
   },
 
+  setState(state, { props, value }) {
+    let target = state
+    for (const prop of props) target = target[prop]
+    target = value
+  },
+
   setDepthLoading: (state, value) => (state.depth.loading = value),
 
   select(state, { xyz, images, pointclouds, type }) {
@@ -92,7 +98,7 @@ export const mutations = {
 export const actions = {
   async submit({ commit, state }, { comment, args, type }) {
     const app = this.$router.app
-    state.submit.loading = true
+    commit('setState', { value: true, props: ['submit', 'loading'] })
     let feature
     if (type === 'Point') {
       feature = state.selected[0]
@@ -105,7 +111,7 @@ export const actions = {
     const res = await this.$axios.post('/api/facility', feature, {
       headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
     })
-    state.submit.loading = false
+    commit('setState', { value: false, props: ['submit', 'loading'] })
     if (res.status === 201) {
       commit('setSubmitting', false)
       commit('setShowSubmit', false)
@@ -114,26 +120,26 @@ export const actions = {
     } else return
   },
 
-  async remove({ commit, state }, id) {
-    state.edit.loading = true
+  async remove({ commit }, id) {
+    commit('setState', { value: true, props: ['edit', 'loading'] })
     const app = this.$router.app
     const config = app.getAuthConfig()
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setEditing', false)
-    state.edit.loading = false
+    commit('setState', { value: true, props: ['edit', 'loading'] })
     app.removeVector('drawnLayer', id)
     app.resetSelected()
     if (process.env.dev) console.log('Removed', res.data)
   },
 
-  async edit({ commit, state }, id, facility) {
-    state.edit.loading = true
+  async edit({ commit }, id, facility) {
+    commit('setState', { value: true, props: ['edit', 'loading'] })
     const app = this.$router.app
     const config = app.getAuthConfig()
     config.data = facility
     const res = await this.$axios.patch(`/api/facility/${id}`, config)
     commit('setEditing', false)
-    state.edit.loading = false
+    commit('setState', { value: false, props: ['edit', 'loading'] })
     app.resetSelected()
     if (process.env.dev) console.log('Edited', res.data)
   }

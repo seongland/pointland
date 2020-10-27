@@ -26,7 +26,8 @@ export default ({ store: { commit, state } }) => {
         const config = this.getAuthConfig()
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
         const facility = res.data[0]
-        this.selectXYZ([facility.properties.x, facility.properties.y, facility.properties.z], 'Point')
+        const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
+        this.drawSelectedXYZ(xyz)
         commit('selectFeature', facility)
       },
 
