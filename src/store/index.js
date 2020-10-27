@@ -130,7 +130,7 @@ export const actions = {
     state.edit.loading = true
     const app = this.$router.app
     const config = app.getAuthConfig()
-    config.body = facility
+    config.data = facility
     const res = await this.$axios.patch(`/api/facility/${id}`, config)
     commit('setEditing', false)
     state.edit.loading = false
