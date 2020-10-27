@@ -13,11 +13,13 @@
 
 <script>
 import { xyto84 } from '~/server/api/addon/tool/coor'
+import { ref } from '~/plugins/cloud/init'
 import { v4 as uuid } from 'uuid'
 
 export default {
   data: () => ({
     lasList: [],
+    apiList: [],
     loading: false
   }),
 
@@ -28,12 +30,38 @@ export default {
   },
   watch: {
     async currentMark(markObj) {
+      for (const api of this.apiList) for (const src of api) src.cancel()
+      this.apiList = []
+
       const commit = this.$store.commit
       if (!markObj?.lasList) return
       const lasList = markObj.lasList.split(':')
-      for (const areaName of lasList) {
+      const mainIndex = lasList.indexOf(markObj.mainArea)
+      const loadList = [mainIndex, mainIndex - 1, mainIndex + 1, mainIndex + 2, mainIndex - 2]
+
+      // remove
+      const removeList = []
+      for (const las of this.lasList) {
+        if (!lasList.includes(las)) {
+          if (process.env.dev) console.log('Remove Area', las)
+          removeList.push(las)
+        }
+      }
+      for (const las of removeList) {
+        for (const i in ref.cloud.points)
+          if (ref.cloud.points[i].name === las) {
+            ref.cloud.scene.remove(ref.cloud.points[i])
+            ref.cloud.points.splice(i, 1)
+            break
+          }
+        this.lasList.splice(this.lasList.indexOf(las), 1)
+      }
+
+      // load
+      for (const index of loadList) {
+        if (!lasList[index]) continue
+        const areaName = lasList[index]
         if (this.lasList.includes(areaName)) continue
-        this.lasList.push(areaName)
         this.loadLas(areaName)
       }
     }
@@ -49,24 +77,54 @@ export default {
       const fileExt = areaName.split('.').pop()
       if (fileExt !== 'las') return
 
-      if (process.env.dev) console.log('New Area', areaName)
       const root = `/api/pointcloud/${currentRound}/${currentSnap}/${areaName}`
       const check = await fetch(`${root}`)
+
       if (check.data.cached) {
-        const promises = [fetch(`${root}/x`), fetch(`${root}/y`), fetch(`${root}/z`), fetch(`${root}/c`), fetch(`${root}/i`)]
-        const [x, y, z, c, i] = await Promise.all(promises)
-        commit('setLoading', true)
-        setTimeout(() => {
-          this.drawLas({ x: x.data, y: y.data, z: z.data, center: c.data, intensity: i.data })
-          commit('setLoading', false)
-        })
+        // Cancle
+        const xsrc = this.$axios.CancelToken.source()
+        const ysrc = this.$axios.CancelToken.source()
+        const zsrc = this.$axios.CancelToken.source()
+        const csrc = this.$axios.CancelToken.source()
+        const isrc = this.$axios.CancelToken.source()
+        const promises = [
+          fetch(`${root}/x`, {
+            cancelToken: xsrc.token
+          }),
+          fetch(`${root}/y`, {
+            cancelToken: ysrc.token
+          }),
+          fetch(`${root}/z`, {
+            cancelToken: zsrc.token
+          }),
+          fetch(`${root}/c`, {
+            cancelToken: csrc.token
+          }),
+          fetch(`${root}/i`, {
+            cancelToken: isrc.token
+          })
+        ]
+        const srcList = [xsrc, ysrc, zsrc, csrc, isrc]
+        this.apiList.push(srcList)
+        try {
+          const [x, y, z, c, i] = await Promise.all(promises)
+          commit('setLoading', true)
+          setTimeout(() => {
+            this.drawLas({ x: x.data, y: y.data, z: z.data, center: c.data, intensity: i.data }, areaName)
+            commit('setLoading', false)
+          })
+        } catch {
+          return
+        }
       } else {
         commit('setLoading', true)
         setTimeout(() => {
-          this.drawLas(check.data)
+          this.drawLas(check.data, areaName)
           commit('setLoading', false)
         })
       }
+      if (process.env.dev) console.log('New Area', areaName)
+      this.lasList.push(areaName)
     }
   },
 

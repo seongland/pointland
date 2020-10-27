@@ -7,7 +7,7 @@ import { firstLas, addLas, addPoints } from './event'
 
 const HOVER_COLOR = [0.8, 1, 1]
 
-function drawLas(lasJson) {
+function drawLas(lasJson, name) {
   /*
    * <summary>index file from js</summary>
    */
@@ -17,7 +17,7 @@ function drawLas(lasJson) {
 
   if (!cloud.offset) firstLas(cloud, lasJson, vertices)
   else addLas(lasJson, cloud, vertices)
-  addPoints(lasJson, colors, vertices, cloud)
+  addPoints(lasJson, colors, vertices, cloud, name)
   ref.loading = false
 }
 

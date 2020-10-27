@@ -29,7 +29,7 @@ export default ({ store: { commit, state } }) => {
         erase(imgLayer, id)
       },
 
-      drawLas: lasJson => drawLas(lasJson),
+      drawLas: (lasJson, name) => drawLas(lasJson, name),
 
       selectXYZ(xyz, id) {
         const lnglat = xyto84(xyz[0], xyz[1])
@@ -168,8 +168,11 @@ export default ({ store: { commit, state } }) => {
       resetSnap() {
         this.resetSelected()
         if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
+        if (mapRef.markLayer) mapRef.drawnLayer.getSource().clear()
         if (cloudRef.markLayer) resetPointLayer(cloudRef.markLayer)
-        if (cloudRef.cloud.points) for (const pointLayer of cloudRef.cloud.points) resetPointLayer(pointLayer)
+        if (cloudRef.markLayer) resetPointLayer(cloudRef.drawnLayer)
+        if (cloudRef.cloud.points) for (const pointLayer of cloudRef.cloud.points) cloudRef.cloud.scene.remove(pointLayer)
+
         cloudRef.cloud.points = []
       }
     }
