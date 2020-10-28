@@ -75,8 +75,8 @@ export const actions = {
     const res = await this.$axios.delete(`/api/facility/${id}`, config)
     commit('setState', { props: ['del', 'ing'], value: false })
     commit('setState', { props: ['del', 'loading'], value: false })
-    app.removeVector('drawnLayer', id)
     app.resetSelected()
+    app.removeVector('drawnLayer', id)
     if (process.env.dev) console.log('Removed', res.data)
   },
 
@@ -89,6 +89,7 @@ export const actions = {
     commit('setState', { props: ['edit', 'show'], value: false })
     commit('setState', { props: ['edit', 'loading'], value: false })
     app.resetSelected()
+    app.drawnFacilities(state.ls.currentMark, imgRef.depth)
     if (process.env.dev) console.log('Edited', res.data)
   }
 }

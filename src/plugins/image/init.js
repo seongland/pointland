@@ -15,16 +15,12 @@ export function initImg({ front, back }) {
   ref.selectedLayer = {
     front: front.layer.selected,
     back: back.layer.selected,
-    color: 0xff5599ff,
-    width: front.width,
-    height: back.width
+    color: 0xff5599ff
   }
   ref.drawnLayer = {
     front: front.layer.drawn,
     back: back.layer.drawn,
-    color: 0x9911ffff,
-    width: front.height,
-    height: back.height
+    color: 0x9911ffff
   }
   ref.depth = { front, back }
 
