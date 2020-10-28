@@ -110,7 +110,7 @@ export default ({ store: { commit, state } }) => {
 
       async drawSelectedXY(depthDir, x, y) {
         const ls = this.$store.state.ls
-        this.resetSelectedExcept(depthDir)
+        this.resetSelected()
         depthDir.layer.selected.image = new jimp(depthDir.width, depthDir.height)
         drawNear(
           imgRef.selectedLayer,
@@ -144,20 +144,6 @@ export default ({ store: { commit, state } }) => {
         this.selectXYZ(xyz, POINT_ID)
         await this.drawFacilities(state.selected, state.ls.currentMark, imgRef.selectedLayer)
         updateImg(imgRef.selectedLayer)
-      },
-
-      resetSelectedExcept(excepted) {
-        let data
-        if (imgRef.depth.front !== excepted) {
-          data = imgRef.depth.front
-          data.layer.selected.image = new jimp(data.width, data.height)
-          data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
-        }
-        if (imgRef.depth.back !== excepted) {
-          data = imgRef.depth.back
-          data.layer.selected.image = new jimp(data.width, data.height)
-          data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
-        }
       },
 
       resetSelected() {

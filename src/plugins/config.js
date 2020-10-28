@@ -22,13 +22,16 @@ export default ({ $axios }) => {
       ],
       mapOpt: {
         id: 'ol',
-        zoom: 15,
+        zoom: 20,
         zindex: 10,
-        center: [37.3595704, 127.105399],
+        center: {
+          latlng: [37.5293, 126.972],
+          lnglat: [126.972, 37.5293]
+        },
         type: 'satellite',
         layers: {
           geoserver: [
-            { name: 'tiffLayer', key: 'tiff', zindex: 11, focus: true },
+            { name: 'tiffLayer', key: 'tiff', zindex: 11 },
             { name: 'draftLayer', key: 'draft', zindex: 12 },
             { name: 'missionLayer', key: 'mission', zindex: 13 },
             { name: 'recordedLayer', key: 'recorded', zindex: 14 }

@@ -14,6 +14,7 @@ export function initImg({ front, back }) {
 
   ref.selectedLayer = { front: front.layer.selected, back: back.layer.selected, color: 0xff5599ff }
   ref.drawnLayer = { front: front.layer.drawn, back: back.layer.drawn, color: 0x9911ffff }
+  ref.depth = { front, back }
 
   front.layer.selected.image = new jimp(front.width, front.height)
   back.layer.selected.image = new jimp(back.width, back.height)

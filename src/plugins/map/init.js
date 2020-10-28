@@ -11,7 +11,6 @@ import { fromLonLat } from 'ol/proj'
 import { defaults, DragPan, MouseWheelZoom, PinchZoom } from 'ol/interaction'
 import { makeStyle } from './draw'
 import { makeNaverMap, makeTileLayer, makeVectorLayer } from '~/plugins/map/layer'
-import { INIT_ZOOM, START_POINT, MAP_ID } from '~/plugins/map/config'
 import { eventBind } from '~/plugins/map/event'
 
 export const ref = {}
@@ -38,7 +37,7 @@ function olInit(opt, geoserver, workspace, layers) {
     ref.layers = layers
   }
 
-  const map = makeOlMap(openlayers)
+  const map = makeOlMap(opt, openlayers)
   map.styles = styles
   map.naver = naver
   map.opt = opt
@@ -47,14 +46,14 @@ function olInit(opt, geoserver, workspace, layers) {
   return map
 }
 
-function makeOlMap(layers) {
+function makeOlMap(opt, layers) {
   /**
    * @summary - Make OpenLayers Main Map
    */
-  let center = fromLonLat(START_POINT)
-  let view = { projection: 'EPSG:3857', center: center, zoom: INIT_ZOOM, enableRotation: false }
+  let center = fromLonLat(opt.center.lnglat)
+  let view = { projection: 'EPSG:3857', center: center, zoom: opt.zoom, enableRotation: false }
   let mapOpt = {
-    target: MAP_ID,
+    target: opt.id,
     layers: layers,
     interactions: defaults({ dragPan: false }).extend([
       new DragPan({ kinetic: false }),
