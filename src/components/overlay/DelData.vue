@@ -4,8 +4,7 @@
       <v-card class="elevation-24">
         <v-card-title v-text="description" />
         <v-divider />
-        <v-card-title> Geometry </v-card-title>
-        <v-card-subtitle> {{ facility ? facility.geometry.type : '' }} </v-card-subtitle>
+        <v-card-title> {{ facility ? facility.geometry.type : '' }}</v-card-title>
         <v-card-text class="py-0">
           <span style="font-weight: bold">X : </span> {{ facility ? facility.properties.x : 0 }} -
           <span style="font-weight: bold">Y : </span> {{ facility ? facility.properties.y : 0 }} -
@@ -19,10 +18,8 @@
 
         <v-divider />
 
-        <v-card-title> Comment </v-card-title>
-        <v-card-text>
-          <v-card-text v-text="facility ? facility.properties.comment : ''" />
-        </v-card-text>
+        <v-card-title> Properties </v-card-title>
+        <v-card-text v-text="facility ? facility.properties.comment : ''" />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn @click="remove" :loading="$store.state.del.loading">Remove</v-btn>
@@ -70,7 +67,6 @@ export default {
     const res = await this.$axios.get(`/api/facility?id=${this.id}`, config)
     const facility = res.data[0]
     this.facility = facility
-    if (process.env.dev) console.log('Deleted is', facility)
   },
 
   methods: {

@@ -7,7 +7,7 @@ import { setFocus } from './map/event'
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
-      setLayer: data => commit('setLayer', data),
+      setLayer: data => commit('ls/setLayer', data),
       setRound: round => commit('ls/setRound', round),
       setRounds: rounds => commit('ls/setRounds', rounds),
       checkMount: () => mapRef.map !== undefined && cloudRef.cloud.offset !== undefined,
@@ -27,7 +27,7 @@ export default ({ store: { commit, state } }) => {
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
         const facility = res.data[0]
         const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
-        this.drawSelectedXYZ(xyz)
+        await this.drawSelectedXYZ(xyz)
         commit('selectFeature', facility)
       },
 
@@ -59,9 +59,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       keyUp(event) {
+        if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         switch (event.key) {
           case 'Delete':
-            if (state.submit.show || state.edit.show) return
             const selected = state.selected
             if (selected[0]?.id) {
               commit('setState', { props: ['del', 'id'], value: selected[0].id })
@@ -72,7 +72,7 @@ export default ({ store: { commit, state } }) => {
       },
 
       keyEvent(event) {
-        if (state.submit.show) return
+        if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         let seqIndex
         const ls = this.$store.state.ls
         const index = this.$store.state.ls.index
@@ -138,8 +138,7 @@ export default ({ store: { commit, state } }) => {
 
           // Submit
           case 'Enter':
-            if (state.del.ing) return
-            if (state.allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
+            if (state.selected.length > 0) {
               if (state.selected[0].id) {
                 const selected = state.selected
                 commit('setState', { props: ['edit', 'id'], value: selected[0].id })
@@ -147,6 +146,7 @@ export default ({ store: { commit, state } }) => {
                 commit('setState', { props: ['edit', 'show'], value: true })
                 return
               } else {
+                if (!state.allowedLayers.includes(state.ls.targetLayer.object?.layer)) return
                 commit('setState', { props: ['submit', 'ing'], value: true })
                 commit('setState', { props: ['submit', 'show'], value: true })
               }

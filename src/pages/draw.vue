@@ -221,11 +221,11 @@ export default {
       }
     },
     targetLayer() {
-      return this.$store.state.targetLayer
+      return this.$store.state.ls.targetLayer
     },
     layerIndex: {
       get() {
-        return this.$store.state.targetLayer.index
+        return this.$store.state.ls.targetLayer.index
       },
       set(values) {
         this.setLayer({ index: values })
