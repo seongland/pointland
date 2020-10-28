@@ -178,8 +178,8 @@ export default ({ store: { commit, state } }) => {
         if (process.env.dev) console.log(`Reset ${name}`)
       },
 
-      resetSnap() {
-        this.resetSelected()
+      async resetSnap() {
+        await this.resetSelected()
         if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
         if (mapRef.markLayer) mapRef.drawnLayer.getSource().clear()
         if (cloudRef.markLayer) resetPointLayer(cloudRef.markLayer)

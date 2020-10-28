@@ -36,6 +36,7 @@ export default ({ store: { commit, state } }) => {
       },
 
       async setSnap(snapObj) {
+        commit('setLoading', true)
         snapObj.round = state.ls.currentRound.name
         const apiUrl = `/api/meta/${snapObj.round}/${snapObj.name}`
         const config = this.getAuthConfig()
@@ -43,7 +44,8 @@ export default ({ store: { commit, state } }) => {
         const snapRes = await this.$axios.post(apiUrl, config)
         snapObj.areas = snapRes.data.areas
         snapObj.marks = snapRes.data.marks
-
+        const previous = state.ls.currentSnap
+        if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) await this.resetSnap()
         commit('ls/setSnap', snapObj)
         for (const mark of snapObj.marks)
           this.waitAvail(this.checkMount, this.markXYZ, [[mark.x, mark.y, mark.alt], mark.name])
