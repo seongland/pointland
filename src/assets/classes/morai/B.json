@@ -22,27 +22,36 @@
             {
               "data": "2",
               "name": "HDR_IndicationSignType",
-              "description": "지시표지"
+              "description": "지시표지",
+              "attributes": {
+                "SubType": {}
+              }
             },
             {
               "data": "3",
               "name": "HDR_RestrictionSignType",
-              "description": "규제표지"
+              "description": "규제표지",
+              "attributes": {
+                "SubType": {}
+              }
             },
             {
               "data": "4",
               "name": "HDR_AssistantSignType",
-              "description": "보조표지"
+              "description": "보조표지",
+              "attributes": {
+                "SubType": {}
+              }
             }
           ]
         },
         "Value": {
           "type": "Number",
-          "method": "typing"
+          "method": "type"
         },
         "Unit": {
           "type": "String",
-          "method": "typing"
+          "method": "type"
         },
         "Post": {
           "type": "Boolean",

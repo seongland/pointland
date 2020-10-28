@@ -42,10 +42,16 @@
 <script>
 import { resetPointLayer } from '~/plugins/cloud/event'
 import { ref as cloudRef } from '~/plugins/cloud/init'
+import { ref as imgRef } from '~/plugins/image/init'
+import { updateImg } from '~/plugins/image/draw'
 
 export default {
   data: () => ({
-    opacity: 1
+    opacity: 1,
+    depth: {
+      front: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } },
+      back: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } }
+    }
   }),
 
   computed: {
@@ -62,33 +68,15 @@ export default {
     },
     loading() {
       return this.$store.state.depth.loading
+    },
+    currentMark() {
+      return this.$store.state.ls.currentMark
     }
   },
 
-  asyncComputed: {
-    async depth() {
-      const ls = this.$store.state.ls
-      this.$store.commit('setDepthLoading', true)
-      const currentMark = this.$store.state.ls.currentMark
-      if (!currentMark)
-        return {
-          front: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } },
-          back: { uri: undefined, layer: { selected: { uri: undefined }, drawn: { uri: undefined } } }
-        }
-      const frontURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/front`
-      const backURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/back`
-      const frontP = this.$axios.post(frontURL, { data: { mark: currentMark } })
-      const backP = this.$axios.post(backURL, { data: { mark: currentMark } })
-      const [f, b] = await Promise.all([frontP, backP])
-      const [front, back] = [f.data, b.data]
-
-      const depth = this.initImg({ front, back })
-      this.drawnFacilities(currentMark, depth)
-
-      front.url = frontURL
-      back.url = backURL
-      this.$store.commit('setDepthLoading', false)
-      return depth
+  watch: {
+    async currentMark(markObj) {
+      this.setDepth(markObj)
     }
   },
 
@@ -98,6 +86,28 @@ export default {
       const back = document.getElementById('back')
       for (const child of front.children) if (child.children.length === 0) child.style.opacity = opacity
       for (const child of back.children) if (child.children.length === 0) child.style.opacity = opacity
+    },
+
+    async setDepth(currentMark) {
+      const state = this.$store.state
+      const ls = this.$store.state.ls
+      this.$store.commit('setDepthLoading', true)
+      const frontURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/front`
+      const backURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/back`
+      const frontP = this.$axios.post(frontURL, { data: { mark: currentMark } })
+      const backP = this.$axios.post(backURL, { data: { mark: currentMark } })
+      const [f, b] = await Promise.all([frontP, backP])
+      const [front, back] = [f.data, b.data]
+      const depth = this.initImg({ front, back })
+      front.url = frontURL
+      back.url = backURL
+      this.$store.commit('setDepthLoading', false)
+      this.depth = depth
+
+      // Draw
+      this.drawnFacilities(currentMark, depth)
+      await this.drawFacilities(state.selected, currentMark, imgRef.selectedLayer)
+      updateImg(imgRef.selectedLayer)
     }
   }
 }

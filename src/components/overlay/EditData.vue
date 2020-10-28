@@ -4,10 +4,9 @@
       <v-card class="elevation-24">
         <v-card-title v-text="description" />
         <v-divider />
-        <v-card-title> Geometry </v-card-title>
-        <v-card-subtitle> {{ facility ? facility.geometry.type : '' }} </v-card-subtitle>
-        <v-card-text class="py-0"
-          ><span style="font-weight: bold">X : </span> {{ facility ? facility.properties.x : 0 }} -
+        <v-card-title> {{ facility ? facility.geometry.type : '' }} </v-card-title>
+        <v-card-text class="py-0">
+          <span style="font-weight: bold">X : </span> {{ facility ? facility.properties.x : 0 }} -
           <span style="font-weight: bold">Y : </span> {{ facility ? facility.properties.y : 0 }} -
           <span style="font-weight: bold">Z : </span> {{ facility ? facility.properties.z : 0 }}
         </v-card-text>
@@ -19,9 +18,20 @@
 
         <v-divider />
 
-        <v-card-title> Comment </v-card-title>
+        <v-card-title> Properties </v-card-title>
+        <v-select
+          class="mx-2"
+          label="Layer"
+          solo
+          return-object
+          dense
+          v-model="targetLayer"
+          :items="sameTypes"
+          item-text="description"
+          item-value="description"
+        ></v-select>
         <v-card-text>
-          <v-card-text v-text="facility ? facility.properties.comment : ''" />
+          <v-text-field label="Comment" v-model="comment" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -46,14 +56,50 @@ export default {
     id: String
   },
   computed: {
-    description() {
-      if (!this.facility) return
+    comment: {
+      get() {
+        return this.facility ? this.facility.properties.comment : ''
+      },
+      set(value) {
+        this.facility.properties.comment = value
+      }
+    },
+    description: {
+      get() {
+        if (!this.facility) return
+        const allowedLayers = this.$store.state.allowedLayers
+        let types = []
+        for (const classObj of Object.values(classes))
+          for (const layerObj of classObj.layers)
+            if (this.facility.properties.layer === layerObj.layer && allowedLayers.includes(layerObj.layer))
+              return layerObj.description
+      },
+      set() {}
+    },
+    targetLayer: {
+      get() {
+        if (!this.facility) return
+        for (const classObj of Object.values(classes))
+          for (const layerObj of classObj.layers)
+            if (this.facility.properties.layer === layerObj.layer) {
+              this.description = layerObj.description
+              return layerObj
+            }
+      },
+      set(layerObj) {
+        this.description = layerObj.description
+        this.facility.properties.layer = layerObj.layer
+        return layerObj
+      }
+    },
+    sameTypes() {
+      if (!this.facility) return []
       const allowedLayers = this.$store.state.allowedLayers
       let types = []
       for (const classObj of Object.values(classes))
         for (const layerObj of classObj.layers)
-          if (this.facility.properties.layer === layerObj.layer && allowedLayers.includes(layerObj.layer))
-            return layerObj.description
+          if (this.facility.geometry.type === layerObj.type && allowedLayers.includes(layerObj.layer)) types.push(layerObj)
+      return types
     },
     relations() {
       return this.facility.relations
@@ -75,7 +121,7 @@ export default {
 
   methods: {
     async edit() {
-      this.$store.dispatch('edit', this.id, this.facility)
+      this.$store.dispatch('edit', this.facility)
     }
   }
 }

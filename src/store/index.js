@@ -1,10 +1,8 @@
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { ref as imgRef } from '~/plugins/image/init'
-import { setDrawInteraction } from '~/plugins/map/draw'
 
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
-  targetLayer: { index: undefined, object: undefined },
   allowedLayers: ['B1', 'C1'],
   loading: true,
   depth: { loading: false, on: true },
@@ -15,17 +13,6 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setLayer(state, { index, object }) {
-    if (index === undefined && object === undefined) {
-      state.targetLayer.index = undefined
-      state.targetLayer.object = undefined
-    }
-    if (index !== undefined) state.targetLayer.index = index
-    if (object !== undefined) {
-      state.targetLayer.object = object
-      setDrawInteraction(object)
-    }
-  },
   selectFeature(state, feature) {
     state.selected = [feature]
   },
@@ -93,12 +80,11 @@ export const actions = {
     if (process.env.dev) console.log('Removed', res.data)
   },
 
-  async edit({ commit }, id, facility) {
+  async edit({ commit }, facility) {
     commit('setState', { value: true, props: ['edit', 'loading'] })
     const app = this.$router.app
     const config = app.getAuthConfig()
-    config.data = facility
-    const res = await this.$axios.patch(`/api/facility/${id}`, config)
+    const res = await this.$axios.patch(`/api/facility/${facility.id}`, facility, config)
     commit('setState', { props: ['edit', 'ing'], value: false })
     commit('setState', { props: ['edit', 'show'], value: false })
     commit('setState', { props: ['edit', 'loading'], value: false })

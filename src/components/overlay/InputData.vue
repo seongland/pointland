@@ -4,10 +4,9 @@
       <v-card class="elevation-24">
         <v-card-title v-text="description" />
         <v-divider />
-        <v-card-title> Geometry </v-card-title>
-        <v-card-subtitle> {{ selected[0] ? selected[0].geometry.type : '' }} </v-card-subtitle>
-        <v-card-text class="py-0"
-          ><span style="font-weight: bold">X : </span> {{ selected[0].properties.x }} -
+        <v-card-title> {{ selected[0] ? selected[0].geometry.type : '' }}</v-card-title>
+        <v-card-text class="py-0">
+          <span style="font-weight: bold">X : </span> {{ selected[0].properties.x }} -
           <span style="font-weight: bold">Y : </span> {{ selected[0].properties.y }} -
           <span style="font-weight: bold">Z : </span> {{ selected[0].properties.z }}
         </v-card-text>
@@ -22,7 +21,7 @@
         <v-card-title v-text="`Properties`" />
 
         <v-select
-          class="mx-4"
+          class="mx-2"
           label="Layer"
           solo
           return-object
@@ -33,7 +32,7 @@
           item-value="description"
         ></v-select>
 
-        <v-card-title> Comment </v-card-title>
+        <v-card-title> Properties </v-card-title>
         <v-card-text>
           <v-text-field label="Comment" v-model="comment" />
         </v-card-text>

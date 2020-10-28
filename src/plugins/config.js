@@ -1,7 +1,4 @@
 import Vue from 'vue'
-import AsyncComputed from 'vue-async-computed'
-
-Vue.use(AsyncComputed)
 
 export default ({ $axios }) => {
   if (process.client) {

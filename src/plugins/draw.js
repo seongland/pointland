@@ -65,7 +65,12 @@ export default ({ store: { commit, state } }) => {
       },
 
       drawnFacilities(currentMark) {
-        return this.$axios.get(`/api/facility/near/${currentMark.lon}/${currentMark.lat}`).then(async res => {
+        let layer = state.ls.targetLayer?.object?.layer
+        let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}`
+        if (layer) url += `/${layer}`
+
+        return this.$axios.get(url).then(async res => {
+          await this.resetLayer('drawnLayer')
           resetPointLayer(cloudRef.drawnLayer)
           const facilities = res.data
           const [xyzs, ids] = [[], [], []]
@@ -104,13 +109,13 @@ export default ({ store: { commit, state } }) => {
       },
 
       async drawFromDepth(x, y, depthDir) {
-        const targetLayer = this.$store.state.targetLayer
+        const targetLayer = this.$store.state.ls.targetLayer
         if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXY(depthDir, x, y)
       },
 
       async drawSelectedXY(depthDir, x, y) {
         const ls = this.$store.state.ls
-        this.resetSelected()
+        await this.resetSelected()
         depthDir.layer.selected.image = new jimp(depthDir.width, depthDir.height)
         drawNear(
           imgRef.selectedLayer,
@@ -136,7 +141,7 @@ export default ({ store: { commit, state } }) => {
       },
 
       async drawSelectedXYZ(xyz) {
-        this.resetSelected()
+        await this.resetSelected()
         commit('select', {
           xyz,
           type: 'Point'
@@ -146,17 +151,31 @@ export default ({ store: { commit, state } }) => {
         updateImg(imgRef.selectedLayer)
       },
 
-      resetSelected() {
+      async resetSelected() {
         mapRef.selectedLayer.getSource().clear()
         resetPointLayer(cloudRef.selectedLayer)
         const depth = imgRef.depth
         if (depth)
           for (const data of Object.values(depth)) {
             data.layer.selected.image = new jimp(data.width, data.height)
-            data.layer.selected.image.getBase64Async('image/png').then(uri => (data.layer.selected.uri = uri))
+            const uri = await data.layer.selected.image.getBase64Async('image/png')
+            data.layer.selected.uri = uri
           }
         commit('resetSelected')
         if (process.env.dev) console.log(`Reset Selected`, state.selected)
+      },
+
+      async resetLayer(name) {
+        mapRef[name].getSource().clear()
+        resetPointLayer(cloudRef[name])
+        const imgLayer = imgRef[name]
+        if (imgLayer)
+          for (const direction of ['front', 'back']) {
+            imgLayer[direction].image = new jimp(imgLayer.width, imgLayer.height)
+            const uri = await imgLayer[direction].image.getBase64Async('image/png')
+            imgLayer[direction].uri = uri
+          }
+        if (process.env.dev) console.log(`Reset ${name}`)
       },
 
       resetSnap() {

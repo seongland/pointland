@@ -2,6 +2,7 @@
  * @summary - Local Storage Module
  */
 
+import { setDrawInteraction } from '~/plugins/map/draw'
 import { updateCtrl } from '~/plugins/cloud/init'
 
 const WAIT_RENDER = 500
@@ -18,6 +19,7 @@ export const state = () => ({
   currentRound: undefined,
   currentSnap: undefined,
   currentMark: undefined,
+  targetLayer: { index: undefined, object: undefined },
   rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }, { name: 'imms_20201026_145535' }]
 })
 
@@ -28,6 +30,21 @@ export const mutations = {
   login(state, { accessToken, user }) {
     state.user = user
     state.accessToken = accessToken
+  },
+
+  setLayer(state, { index, object }) {
+    const app = this.$router.app
+    if (index === undefined && object === undefined) {
+      state.targetLayer.index = undefined
+      state.targetLayer.object = undefined
+      app.drawnFacilities(state.currentMark)
+    }
+    if (index !== undefined) state.targetLayer.index = index
+    if (object !== undefined) {
+      state.targetLayer.object = object
+      setDrawInteraction(object)
+      app.drawnFacilities(state.currentMark)
+    }
   },
 
   logout(state) {

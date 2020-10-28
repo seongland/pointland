@@ -12,8 +12,20 @@ export function initImg({ front, back }) {
   front.layer = { selected: { uri: undefined }, drawn: { uri: undefined } }
   back.layer = { selected: { uri: undefined }, drawn: { uri: undefined } }
 
-  ref.selectedLayer = { front: front.layer.selected, back: back.layer.selected, color: 0xff5599ff }
-  ref.drawnLayer = { front: front.layer.drawn, back: back.layer.drawn, color: 0x9911ffff }
+  ref.selectedLayer = {
+    front: front.layer.selected,
+    back: back.layer.selected,
+    color: 0xff5599ff,
+    width: front.width,
+    height: back.width
+  }
+  ref.drawnLayer = {
+    front: front.layer.drawn,
+    back: back.layer.drawn,
+    color: 0x9911ffff,
+    width: front.height,
+    height: back.height
+  }
   ref.depth = { front, back }
 
   front.layer.selected.image = new jimp(front.width, front.height)
