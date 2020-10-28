@@ -159,21 +159,18 @@ export default {
         this.$store.commit('ls/setIndex', values)
       }
     },
+
     showSubmit: {
       get() {
         return this.$store.state.submit.show
       },
       set(value) {
         this.$store.commit('setState', { props: ['submit', 'show'], value })
-      }
-    },
-    submitting: {
-      get() {
-        return this.$store.state.submit.ing
-      },
-      set(value) {
         this.$store.commit('setState', { props: ['submit', 'ing'], value })
       }
+    },
+    submitting() {
+      return this.$store.state.submit.ing
     },
     showEdit: {
       get() {
@@ -181,15 +178,11 @@ export default {
       },
       set(value) {
         this.$store.commit('setState', { props: ['edit', 'show'], value })
-      }
-    },
-    editing: {
-      get() {
-        return this.$store.state.edit.ing
-      },
-      set(value) {
         this.$store.commit('setState', { props: ['edit', 'ing'], value })
       }
+    },
+    editing() {
+      return this.$store.state.edit.ing
     },
     deleting: {
       get() {
@@ -199,6 +192,7 @@ export default {
         this.$store.commit('setState', { props: ['del', 'ing'], value })
       }
     },
+
     currentRound: {
       get() {
         return this.$store.state.ls.currentRound

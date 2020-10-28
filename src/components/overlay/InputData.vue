@@ -5,6 +5,7 @@
         <v-card-title v-text="description" />
         <v-divider />
         <v-card-title> Geometry </v-card-title>
+        <v-card-subtitle> {{ selected[0] ? selected[0].geometry.type : '' }} </v-card-subtitle>
         <v-card-text class="py-0"
           ><span style="font-weight: bold">X : </span> {{ selected[0].properties.x }} -
           <span style="font-weight: bold">Y : </span> {{ selected[0].properties.y }} -

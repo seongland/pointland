@@ -122,6 +122,7 @@ function updateMarker(layer, lat, lng, id) {
 }
 
 function setDrawInteraction(layerObj) {
+  return
   if (ref.map.draw) ref.map.removeInteraction(ref.map.draw)
   const source = ref.drawLayer.getSource()
   const draw = new Draw({

@@ -5,6 +5,7 @@
         <v-card-title v-text="description" />
         <v-divider />
         <v-card-title> Geometry </v-card-title>
+        <v-card-subtitle> {{ facility ? facility.geometry.type : '' }} </v-card-subtitle>
         <v-card-text class="py-0"
           ><span style="font-weight: bold">X : </span> {{ facility ? facility.properties.x : 0 }} -
           <span style="font-weight: bold">Y : </span> {{ facility ? facility.properties.y : 0 }} -
