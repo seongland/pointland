@@ -6,6 +6,12 @@ import { setDrawInteraction } from '~/plugins/map/draw'
 import { updateCtrl } from '~/plugins/cloud/init'
 
 const WAIT_RENDER = 500
+const rounds = [
+  { name: 'imms_20200909_231253' },
+  { name: 'imms_20200910_000230' },
+  { name: 'imms_20201026_145535' },
+  { name: 'imms_20201026_153812' }
+]
 
 export const state = () => ({
   /*
@@ -20,12 +26,7 @@ export const state = () => ({
   currentSnap: undefined,
   currentMark: undefined,
   targetLayer: { index: undefined, object: undefined },
-  rounds: [
-    { name: 'imms_20200909_231253' },
-    { name: 'imms_20200910_000230' },
-    { name: 'imms_20201026_145535' },
-    { name: 'imms_20201026_145535' }
-  ]
+  rounds
 })
 
 export const mutations = {
@@ -61,7 +62,7 @@ export const mutations = {
     state.prj = undefined
     state.prjId = undefined
     state.index = 0
-    state.rounds = [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }, { name: 'imms_20201026_145535' }]
+    state.rounds = rounds
     state.currentMark = undefined
     state.currentSnap = undefined
     state.currentRound = undefined
@@ -108,7 +109,6 @@ export const mutations = {
   setSnap(state, snapObj) {
     const previous = state.currentSnap
     const app = this.$router.app
-    if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) app.resetSnap()
     if (process.env.dev) console.log('New Snap', snapObj)
 
     let markIndex

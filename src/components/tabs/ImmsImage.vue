@@ -91,6 +91,8 @@ export default {
     async setDepth(currentMark) {
       const state = this.$store.state
       const ls = this.$store.state.ls
+      if (!ls.accessToken) return
+
       this.$store.commit('setDepthLoading', true)
       const frontURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/front`
       const backURL = `/api/image/depth/${ls.currentRound.name}/${ls.currentSnap.name}/${ls.currentMark.name}/back`
@@ -101,13 +103,13 @@ export default {
       const depth = this.initImg({ front, back })
       front.url = frontURL
       back.url = backURL
-      this.$store.commit('setDepthLoading', false)
       this.depth = depth
 
       // Draw
       this.drawnFacilities(currentMark, depth)
       await this.drawFacilities(state.selected, currentMark, imgRef.selectedLayer)
       updateImg(imgRef.selectedLayer)
+      this.$store.commit('setDepthLoading', false)
     }
   }
 }

@@ -80,7 +80,7 @@ export const actions = {
     if (process.env.dev) console.log('Removed', res.data)
   },
 
-  async edit({ commit }, facility) {
+  async edit({ commit, state }, facility) {
     commit('setState', { value: true, props: ['edit', 'loading'] })
     const app = this.$router.app
     const config = app.getAuthConfig()

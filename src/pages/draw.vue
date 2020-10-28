@@ -111,6 +111,9 @@
       <edit-data :id="$store.state.edit.id" />
     </v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
+    <v-overlay :value="$store.state.depth.loading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular
+    ></v-overlay>
   </div>
 </template>
 
