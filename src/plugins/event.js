@@ -64,8 +64,8 @@ export default ({ store: { commit, state } }) => {
           case 'Delete':
             const selected = state.selected
             if (selected[0]?.id) {
-              commit('setEditTarget', selected[0].id)
-              commit('setEditing', true)
+              this.$store.commit('setState', { props: ['del', 'id'], value: selected[0].id })
+              this.$store.commit('setState', { props: ['del', 'ing'], value: true })
             }
             return
         }
@@ -140,15 +140,14 @@ export default ({ store: { commit, state } }) => {
           case 'Enter':
             if (state.allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
               if (state.selected[0].id) {
-                // const selected = state.selected
-                // if (selected[0]?.id) {
-                //   commit('setEditTarget', selected[0].id)
-                //   commit('setEditing', true)
-                // }
+                const selected = state.selected
+                this.$store.commit('setState', { props: ['edit', 'id'], value: selected[0].id })
+                this.$store.commit('setState', { props: ['edit', 'ing'], value: true })
+                this.$store.commit('setState', { props: ['edit', 'show'], value: true })
                 return
               } else {
-                commit('setSubmitting', true)
-                commit('setShowSubmit', true)
+                this.$store.commit('setState', { props: ['submit', 'ing'], value: true })
+                this.$store.commit('setState', { props: ['submit', 'show'], value: true })
               }
             }
             return

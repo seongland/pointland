@@ -104,7 +104,10 @@
         :type="targetLayer.object ? targetLayer.object.type : ''"
       />
     </v-dialog>
-    <v-dialog v-if="editing" v-model="editing">
+    <v-dialog v-if="deleting" v-model="deleting">
+      <del-data :id="$store.state.del.id" />
+    </v-dialog>
+    <v-dialog v-if="editing" v-model="showEdit">
       <edit-data :id="$store.state.edit.id" />
     </v-dialog>
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
@@ -119,14 +122,15 @@ import D from '~/assets/classes/morai/D'
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
-import EditData from '~/components/overlay/EditData'
 import InputData from '~/components/overlay/InputData'
+import EditData from '~/components/overlay/EditData'
+import DelData from '~/components/overlay/DelData'
 
 const classes = [A, B, C, D]
 
 export default {
   middleware: 'authentication',
-  components: { GeoMap, LasCloud, ImmsImage, EditData, InputData },
+  components: { GeoMap, LasCloud, ImmsImage, InputData, EditData, DelData },
   data: () => ({ classes }),
   fetchOnServer: false,
 
@@ -159,24 +163,40 @@ export default {
       get() {
         return this.$store.state.submit.show
       },
-      set(values) {
-        this.$store.commit('setShowSubmit', values)
+      set(value) {
+        this.$store.commit('setState', { props: ['submit', 'show'], value })
       }
     },
     submitting: {
       get() {
         return this.$store.state.submit.ing
       },
-      set(values) {
-        this.$store.commit('setSubmitting', values)
+      set(value) {
+        this.$store.commit('setState', { props: ['submit', 'ing'], value })
+      }
+    },
+    showEdit: {
+      get() {
+        return this.$store.state.edit.show
+      },
+      set(value) {
+        this.$store.commit('setState', { props: ['edit', 'show'], value })
       }
     },
     editing: {
       get() {
         return this.$store.state.edit.ing
       },
-      set(values) {
-        this.$store.commit('setEditing', values)
+      set(value) {
+        this.$store.commit('setState', { props: ['edit', 'ing'], value })
+      }
+    },
+    deleting: {
+      get() {
+        return this.$store.state.del.ing
+      },
+      set(value) {
+        this.$store.commit('setState', { props: ['del', 'ing'], value })
       }
     },
     currentRound: {
