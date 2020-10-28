@@ -20,7 +20,12 @@ export const state = () => ({
   currentSnap: undefined,
   currentMark: undefined,
   targetLayer: { index: undefined, object: undefined },
-  rounds: [{ name: 'imms_20200909_231253' }, { name: 'imms_20200910_000230' }, { name: 'imms_20201026_145535' }]
+  rounds: [
+    { name: 'imms_20200909_231253' },
+    { name: 'imms_20200910_000230' },
+    { name: 'imms_20201026_145535' },
+    { name: 'imms_20201026_145535' }
+  ]
 })
 
 export const mutations = {

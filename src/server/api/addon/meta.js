@@ -110,6 +110,18 @@ async function getRound(req, res) {
         { name: 'snap111', folder: 'snap111', image, pointcloud }
       ]
     }
+  else if (round === 'imms_20201026_153812')
+    roundObj = {
+      name: 'imms_20201026_145535',
+      nas: { id: '10.2.0.108' },
+      root: 'mms_test2/2020_imms/00_proj_hdmap/01_cto_output/Daejeon_KAIST/imms_20201026_145535',
+      snaps: [
+        { name: 'snap113', folder: 'snap113', image, pointcloud },
+        { name: 'snap114', folder: 'snap114', image, pointcloud },
+        { name: 'snap115', folder: 'snap115', image, pointcloud },
+        { name: 'snap116', folder: 'snap116', image, pointcloud }
+      ]
+    }
   res.json(roundObj)
 }
 
