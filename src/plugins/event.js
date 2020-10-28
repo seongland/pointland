@@ -59,13 +59,13 @@ export default ({ store: { commit, state } }) => {
       },
 
       keyUp(event) {
-        if (state.submit.show || state.edit.show) return
         switch (event.key) {
           case 'Delete':
+            if (state.submit.show || state.edit.show) return
             const selected = state.selected
             if (selected[0]?.id) {
-              this.$store.commit('setState', { props: ['del', 'id'], value: selected[0].id })
-              this.$store.commit('setState', { props: ['del', 'ing'], value: true })
+              commit('setState', { props: ['del', 'id'], value: selected[0].id })
+              commit('setState', { props: ['del', 'ing'], value: true })
             }
             return
         }
@@ -138,16 +138,17 @@ export default ({ store: { commit, state } }) => {
 
           // Submit
           case 'Enter':
+            if (state.del.ing) return
             if (state.allowedLayers.includes(state.targetLayer.object?.layer) && state.selected.length > 0) {
               if (state.selected[0].id) {
                 const selected = state.selected
-                this.$store.commit('setState', { props: ['edit', 'id'], value: selected[0].id })
-                this.$store.commit('setState', { props: ['edit', 'ing'], value: true })
-                this.$store.commit('setState', { props: ['edit', 'show'], value: true })
+                commit('setState', { props: ['edit', 'id'], value: selected[0].id })
+                commit('setState', { props: ['edit', 'ing'], value: true })
+                commit('setState', { props: ['edit', 'show'], value: true })
                 return
               } else {
-                this.$store.commit('setState', { props: ['submit', 'ing'], value: true })
-                this.$store.commit('setState', { props: ['submit', 'show'], value: true })
+                commit('setState', { props: ['submit', 'ing'], value: true })
+                commit('setState', { props: ['submit', 'show'], value: true })
               }
             }
             return

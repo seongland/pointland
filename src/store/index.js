@@ -1,32 +1,16 @@
-import { setDrawInteraction } from '~/plugins/map/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { ref as imgRef } from '~/plugins/image/init'
+import { setDrawInteraction } from '~/plugins/map/draw'
 
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
   targetLayer: { index: undefined, object: undefined },
   allowedLayers: ['B1', 'C1'],
   loading: true,
-  depth: {
-    loading: false,
-    on: true
-  },
-  submit: {
-    show: false,
-    ing: false,
-    loading: false
-  },
-  edit: {
-    show: false,
-    ing: false,
-    id: undefined,
-    loading: false
-  },
-  delete: {
-    ing: false,
-    id: undefined,
-    loading: false
-  },
+  depth: { loading: false, on: true },
+  submit: { show: false, ing: false, loading: false },
+  edit: { show: false, ing: false, id: undefined, loading: false },
+  del: { ing: false, id: undefined, loading: false },
   selected: []
 })
 
@@ -39,7 +23,7 @@ export const mutations = {
     if (index !== undefined) state.targetLayer.index = index
     if (object !== undefined) {
       state.targetLayer.object = object
-      // setDrawInteraction(object)
+      setDrawInteraction(object)
     }
   },
   selectFeature(state, feature) {
@@ -55,28 +39,18 @@ export const mutations = {
 
   setState(state, { props, value }) {
     let target = state
-    for (const prop of props) target = target[prop]
-    target = value
+    for (const i in props)
+      if (Number(i) === props.length - 1) target[props[i]] = value
+      else target = target[props[i]]
   },
 
   select(state, { xyz, images, pointclouds, type }) {
     const feature = {
-      relations: {
-        images: [],
-        pointclouds: []
-      },
+      relations: { images: [], pointclouds: [] },
       geometry: {},
-      properties: {
-        x: xyz[0],
-        y: xyz[1],
-        z: xyz[2]
-      }
+      properties: { x: xyz[0], y: xyz[1], z: xyz[2] }
     }
-    if (type === 'Point')
-      feature.geometry = {
-        type: 'Point',
-        coordinates: xyto84(xyz[0], xyz[1])
-      }
+    if (type === 'Point') feature.geometry = { type: 'Point', coordinates: xyto84(xyz[0], xyz[1]) }
     if (images?.length > 0) feature.relations.images.push(...images)
     if (pointclouds?.length > 0) feature.relations.pointclouds.push(...pointclouds)
     state.selected = [feature]
@@ -96,9 +70,8 @@ export const actions = {
     feature.relations.maker = state.ls.user.email
 
     if (process.env.dev) console.log('Result Feature', feature)
-    const res = await this.$axios.post('/api/facility', feature, {
-      headers: { 'Content-Type': 'application/json', Authorization: state.ls.accessToken }
-    })
+    const config = app.getAuthConfig()
+    const res = await this.$axios.post('/api/facility', feature, config)
     commit('setState', { props: ['submit', 'loading'], value: false })
     if (res.status === 201) {
       commit('setState', { props: ['submit', 'ing'], value: false })
@@ -128,7 +101,7 @@ export const actions = {
     const res = await this.$axios.patch(`/api/facility/${id}`, config)
     commit('setState', { props: ['edit', 'ing'], value: false })
     commit('setState', { props: ['edit', 'show'], value: false })
-    commit('setState', { value: false, props: ['edit', 'loading'] })
+    commit('setState', { props: ['edit', 'loading'], value: false })
     app.resetSelected()
     if (process.env.dev) console.log('Edited', res.data)
   }
