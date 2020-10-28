@@ -171,7 +171,7 @@ export default ({ store: { commit, state } }) => {
         const imgLayer = imgRef[name]
         if (imgLayer)
           for (const direction of ['front', 'back']) {
-            imgLayer[direction].image = new jimp(imgLayer.width, imgLayer.height)
+            imgLayer[direction].image = new jimp(imgRef.depth[direction].width, imgRef.depth[direction].height)
             const uri = await imgLayer[direction].image.getBase64Async('image/png')
             imgLayer[direction].uri = uri
           }
