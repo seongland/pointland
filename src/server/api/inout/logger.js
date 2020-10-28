@@ -1,5 +1,5 @@
-import { transports, createLogger, format } from "winston"
-import "winston-daily-rotate-file"
+import { transports, createLogger, format } from 'winston'
+import 'winston-daily-rotate-file'
 
 // Logger per User
 const userLoggerCache = {}
@@ -9,17 +9,18 @@ function getUserLogger(email) {
 
   const newTransport = new transports.DailyRotateFile({
     filename: `log/${email}-%DATE%.log`,
-    datePattern: "YYYY-MM-DD",
+    datePattern: 'YYYY-MM-DD',
     zippedArchive: false,
-    maxSize: "10m",
-    maxFiles: "365d"
+    maxSize: '10m',
+    maxFiles: '365d',
+    auditFile: 'log/audit.json'
   })
 
   const newLogger = createLogger({
-    level: "debug",
+    level: 'debug',
     format: format.combine(
       format.timestamp({
-        format: "YYYY-MM-DD HH:mm:ss"
+        format: 'YYYY-MM-DD HH:mm:ss'
       }),
       format.splat(),
       format.simple()
@@ -32,19 +33,20 @@ function getUserLogger(email) {
 
 // All logger
 const allTransport = new transports.DailyRotateFile({
-  filename: "log/All-%DATE%.log",
-  datePattern: "YYYY-MM-DD",
+  filename: 'log/All-%DATE%.log',
+  datePattern: 'YYYY-MM-DD',
   zippedArchive: false,
-  maxSize: "10m",
-  maxFiles: "365d"
+  maxSize: '10m',
+  maxFiles: '365d',
+  auditFile: 'log/audit.json'
 })
 
 const logger = createLogger({
   // debug or info
-  level: "debug",
+  level: 'debug',
   format: format.combine(
     format.timestamp({
-      format: "YYYY-MM-DD HH:mm:ss"
+      format: 'YYYY-MM-DD HH:mm:ss'
     }),
     format.splat(),
     format.simple()

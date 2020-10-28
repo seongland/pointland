@@ -112,7 +112,7 @@ function makeNaverMap(mapConfig) {
   /**
    * @summary - Make Naver Map
    */
-  let naverGPS = new naver.maps.LatLng(...mapConfig.center)
+  let naverGPS = new naver.maps.LatLng(...mapConfig.center.latlng)
   let naverMapOption = {
     center: naverGPS,
     zoom: 15,

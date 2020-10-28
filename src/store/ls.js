@@ -61,8 +61,6 @@ export const mutations = {
       mapWrapper.style.opacity = 0
       setTimeout(() => {
         mapWrapper.classList.add('small-map')
-        mapWrapper.classList.add('bottom')
-        mapWrapper.classList.add('left')
         setTimeout(() => {
           mapWrapper.style.opacity = 1
           mapWrapper.style.transitionDuration = '500ms'

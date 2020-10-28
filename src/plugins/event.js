@@ -102,6 +102,7 @@ export default ({ store: { commit, state } }) => {
             if (index === 0) return
             const mapWrapper = document.getElementById('global-map')?.parentElement
             if (!mapWrapper) return
+            if (!mapWrapper.classList.contains('small-map')) return mapWrapper.classList.add('small-map')
             if (this.tabs[0].show) mapWrapper.setAttribute('style', 'z-index:-1 !important')
             else mapWrapper.setAttribute('style', 'z-index:5 !important')
             this.tabs[0].show = !this.tabs[0].show

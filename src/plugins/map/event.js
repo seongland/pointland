@@ -51,7 +51,7 @@ function mapClick(e) {
   closest.callback.click(closest)
 }
 
-function getNearDraft(coor, size) {
+export function getNearDraft(coor, size) {
   /**
    * @summary - Get Near Features & Get nearest feature
    */

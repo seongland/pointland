@@ -39,7 +39,6 @@ export async function imageClick(event, depth, drawCallback) {
 
 function getImageData(event, depth) {
   const path = event.path
-  ref.depth = depth
   for (const element of path)
     if (element.id === 'front') return depth.front
     else if (element.id === 'back') return depth.back
