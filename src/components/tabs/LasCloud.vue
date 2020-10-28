@@ -18,11 +18,7 @@ import { v4 as uuid } from 'uuid'
 import consola from 'consola'
 
 export default {
-  data: () => ({
-    lasList: [],
-    apiList: [],
-    loading: false
-  }),
+  data: () => ({ lasList: [], apiList: [], loading: false }),
 
   computed: {
     currentMark() {
