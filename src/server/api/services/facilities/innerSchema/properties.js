@@ -10,9 +10,9 @@ export default new mongoose.Schema(
     Orientation: { type: String },
     Type: { type: String },
     SubType: { type: String },
-    Value: { type: Number },
+    Value: { type: String },
     Unit: { type: String },
-    Post: { type: String },
+    Post: { type: Boolean },
 
     layer: { type: String },
     version: { type: String, default: 'morai' }

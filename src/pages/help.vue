@@ -24,11 +24,15 @@
             <span style="font-weight: bold">Space</span> - 현재 마크로 이동한다 (포인트클라우드 뷰가 이상할 때 사용한다)
           </v-card-text>
           <v-img src="/help/focus.png" />
+          <v-card-text><span style="font-weight: bold">1</span> - Map View로 이동한다</v-card-text>
+          <v-card-text><span style="font-weight: bold">2</span> - Image View로 이동한다</v-card-text>
+          <v-card-text><span style="font-weight: bold">3</span> - Cloud View로 이동한다 </v-card-text>
+
           <v-card-text><span style="font-weight: bold">Enter</span> - 도화 데이터를 제출한다</v-card-text>
           <v-card-text><span style="font-weight: bold">F</span> - 현재 선택한 포인트를 포커싱한다</v-card-text>
-          <v-card-text> <span style="font-weight: bold">&lt;</span> - 이전 마크로 이동한다 </v-card-text>
-          <v-card-text> <span style="font-weight: bold">&gt;</span> - 다음 마크로 이동한다 </v-card-text>
-          <v-card-text> <span style="font-weight: bold">Delete</span> - 맵에서 선택한 시설물을 삭제한다</v-card-text>
+          <v-card-text><span style="font-weight: bold">&lt;</span> - 이전 마크로 이동한다 </v-card-text>
+          <v-card-text><span style="font-weight: bold">&gt;</span> - 다음 마크로 이동한다 </v-card-text>
+          <v-card-text><span style="font-weight: bold">Delete</span> - 맵에서 선택한 시설물을 삭제한다</v-card-text>
 
           <v-card-title>UI 단축키 </v-card-title>
           <v-card-text><span style="font-weight: bold">M</span> - 지도 뷰를 토글한다</v-card-text>

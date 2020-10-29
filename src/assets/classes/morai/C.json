@@ -5,7 +5,79 @@
       "layer": "C1",
       "type": "Point",
       "description": "신호등",
-      "name": "TRAFFICLIGHT"
+      "name": "TRAFFICLIGHT",
+      "attributes": {
+        "Type": {
+          "type": "String",
+          "method": "select",
+          "candidates": [
+            {
+              "data": "1",
+              "description": "차량횡형-삼색등"
+            },
+            {
+              "data": "2",
+              "description": "차량횡형-사색등A"
+            },
+            {
+              "data": "3",
+              "description": "차량횡형-사색등B"
+            },
+            {
+              "data": "4",
+              "description": "차량횡형-화살표삼색등"
+            },
+            {
+              "data": "5",
+              "description": "차량종형-삼색등"
+            },
+            {
+              "data": "6",
+              "description": "차량종형-화살표삼색등"
+            },
+            {
+              "data": "7",
+              "description": "차량종형-사색등"
+            },
+            {
+              "data": "8",
+              "description": "버스삼색등"
+            },
+            {
+              "data": "9",
+              "description": "가변형 가변등"
+            },
+            {
+              "data": "10",
+              "description": "경보형 가변등"
+            },
+            {
+              "data": "11",
+              "description": "보행등"
+            },
+            {
+              "data": "12",
+              "description": "자전거종형-삼색등"
+            },
+            {
+              "data": "13",
+              "description": "자전거종형-이색등"
+            },
+            {
+              "data": "14",
+              "description": "차량보조등-종형삼색등"
+            },
+            {
+              "data": "15",
+              "description": "차량보조등-종형사색등"
+            },
+            {
+              "data": "99",
+              "description": "기타 신호등 유형"
+            }
+          ]
+        }
+      }
     },
     {
       "layer": "C3",
