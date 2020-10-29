@@ -214,16 +214,12 @@
                       "description": "자전거전용차로"
                     },
                     {
-                      "data": "301",
-                      "description": "자동차전용도로"
-                    },
-                    {
-                      "data": "310",
-                      "description": "좌우회전"
-                    },
-                    {
                       "data": "325",
                       "description": "자전거횡단도"
+                    },
+                    {
+                      "data": "311",
+                      "description": "유턴"
                     },
                     {
                       "data": "303",
@@ -232,6 +228,14 @@
                     {
                       "data": "329",
                       "description": "비보호좌회전"
+                    },
+                    {
+                      "data": "310",
+                      "description": "좌우회전"
+                    },
+                    {
+                      "data": "301",
+                      "description": "자동차전용도로"
                     },
                     {
                       "data": "330",
@@ -268,10 +272,6 @@
                     {
                       "data": "30923",
                       "description": "좌회전 및 유턴"
-                    },
-                    {
-                      "data": "311",
-                      "description": "유턴"
                     },
                     {
                       "data": "312",
