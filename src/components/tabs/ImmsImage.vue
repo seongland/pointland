@@ -94,6 +94,7 @@ export default {
   watch: {
     async currentMark(markObj) {
       this.setDepth(markObj)
+      this.opacity.layer = 1
     }
   },
 
@@ -137,7 +138,6 @@ export default {
       updateImg(imgRef.selectedLayer)
       this.$store.commit('setDepthLoading', false)
       this.setDepthOpacity(this.depth.opacity)
-      this.setLayerOpacity(this.layer.opacity)
     }
   }
 }

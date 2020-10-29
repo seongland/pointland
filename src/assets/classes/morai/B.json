@@ -226,6 +226,10 @@
                       "description": "자전거/보행자 겸용도로"
                     },
                     {
+                      "data": "322",
+                      "description": "횡단보도"
+                    },
+                    {
                       "data": "329",
                       "description": "비보호좌회전"
                     },
@@ -318,10 +322,6 @@
                       "description": "보행자 전용도로"
                     },
                     {
-                      "data": "322",
-                      "description": "횡단보도"
-                    },
-                    {
                       "data": "323",
                       "description": "노인보호 (노인보호구역안)"
                     },
@@ -373,6 +373,10 @@
                     {
                       "data": "211",
                       "description": "진입금지"
+                    },
+                    {
+                      "data": "226",
+                      "description": "서행"
                     },
                     {
                       "data": "227",
@@ -437,10 +441,6 @@
                     {
                       "data": "225",
                       "description": "최저속도제한"
-                    },
-                    {
-                      "data": "226",
-                      "description": "서행"
                     },
                     {
                       "data": "228",

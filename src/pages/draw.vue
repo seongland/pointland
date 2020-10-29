@@ -156,10 +156,10 @@ export default {
   computed: {
     index: {
       get() {
-        return this.$store.state.ls.index
+        return this.$store.state.index
       },
       set(values) {
-        this.$store.commit('ls/setIndex', values)
+        this.$store.commit('setIndex', values)
       }
     },
 

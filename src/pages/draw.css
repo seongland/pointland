@@ -26,10 +26,10 @@
 
 .small-map {
   position: fixed !important;
-  width: 400px !important;
+  width: 30em !important;
   bottom: 10px !important;
   right: 10px !important;
-  height: 300px !important;
+  height: 20em !important;
   z-index: 5 !important;
   display: block !important;
   overflow: hidden !important;
