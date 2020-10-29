@@ -80,7 +80,7 @@ export default ({ store: { commit, state } }) => {
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         let seqIndex
         const ls = this.$store.state.ls
-        const index = this.$store.state.ls.index
+        const index = this.$store.state.index
         switch (event.key) {
           // change seq
           case ',':
@@ -95,11 +95,11 @@ export default ({ store: { commit, state } }) => {
 
           // change tabs
           case '1':
-            return commit('ls/setIndex', Number(event.key) - 1)
+            return commit('setIndex', Number(event.key) - 1)
           case '2':
-            return commit('ls/setIndex', Number(event.key) - 1)
+            return commit('setIndex', Number(event.key) - 1)
           case '3':
-            return commit('ls/setIndex', Number(event.key) - 1)
+            return commit('setIndex', Number(event.key) - 1)
 
           // Toggle
           case 'm':
