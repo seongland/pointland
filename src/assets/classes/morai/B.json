@@ -606,6 +606,11 @@
                   ]
                 }
               }
+            },
+            {
+              "data": "9",
+              "name": "HDR_OtherSignType",
+              "description": "기타표지"
             }
           ]
         },
