@@ -9,6 +9,8 @@
 
           <v-card-title>예시</v-card-title>
           <v-divider />
+          <v-card-text><span style="font-weight: bold">전체</span></v-card-text>
+          <v-img src="/example/total.jpg" />
           <v-card-text><span style="font-weight: bold">표지판</span></v-card-text>
           <v-img src="/example/B1_SAFETYSIGN_1.png" />
           <v-img src="/example/B1_SAFETYSIGN_2.png" />
