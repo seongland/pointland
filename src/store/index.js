@@ -1,9 +1,13 @@
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { ref as imgRef } from '~/plugins/image/init'
+import { updateCtrl } from '~/plugins/cloud/init'
+
+const WAIT_RENDER = 500
 
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
   allowedLayers: ['B1', 'C1'],
+  index: 1,
   loading: true,
   depth: { loading: false, on: true },
   submit: { show: false, ing: false, loading: false },
@@ -29,6 +33,32 @@ export const mutations = {
     for (const i in props)
       if (Number(i) === props.length - 1) target[props[i]] = value
       else target = target[props[i]]
+  },
+
+  setIndex(state, index) {
+    /**
+     * @summary - change tab  & resize because of canvas error
+     */
+    if (state.index === index) return
+    const previous = state.index
+    state.index = index
+    const mapWrapper = document.getElementById('global-map')?.parentElement
+    if (!mapWrapper) return
+    setTimeout(() => window.dispatchEvent(new Event('resize')))
+
+    if (previous === 0) {
+      mapWrapper.style.opacity = 0
+      setTimeout(() => {
+        mapWrapper.classList.add('small-map')
+        setTimeout(() => {
+          mapWrapper.style.opacity = 1
+          mapWrapper.style.transitionDuration = '500ms'
+          window.dispatchEvent(new Event('resize'))
+        }, WAIT_RENDER)
+      })
+    } else if (index === 0) mapWrapper.classList.remove('small-map')
+
+    if (index === 2) setTimeout(() => updateCtrl())
   },
 
   select(state, { xyz, images, pointclouds, type }) {

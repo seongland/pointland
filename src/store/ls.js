@@ -3,9 +3,6 @@
  */
 
 import { setDrawInteraction } from '~/plugins/map/draw'
-import { updateCtrl } from '~/plugins/cloud/init'
-
-const WAIT_RENDER = 500
 const rounds = [
   { name: 'imms_20200909_231253' },
   { name: 'imms_20200910_000230' },
@@ -21,7 +18,6 @@ export const state = () => ({
   user: undefined,
   prj: undefined,
   prjId: undefined,
-  index: 0,
   currentRound: undefined,
   currentSnap: undefined,
   currentMark: undefined,
@@ -69,32 +65,6 @@ export const mutations = {
     this.$router.push('/')
   },
 
-  setIndex(state, index) {
-    /**
-     * @summary - change tab  & resize because of canvas error
-     */
-    if (state.index === index) return
-    const previous = state.index
-    state.index = index
-    const mapWrapper = document.getElementById('global-map')?.parentElement
-    if (!mapWrapper) return
-    setTimeout(() => window.dispatchEvent(new Event('resize')))
-
-    if (previous === 0) {
-      mapWrapper.style.opacity = 0
-      setTimeout(() => {
-        mapWrapper.classList.add('small-map')
-        setTimeout(() => {
-          mapWrapper.style.opacity = 1
-          mapWrapper.style.transitionDuration = '500ms'
-          window.dispatchEvent(new Event('resize'))
-        }, WAIT_RENDER)
-      })
-    } else if (index === 0) mapWrapper.classList.remove('small-map')
-
-    if (index === 2) setTimeout(() => updateCtrl())
-  },
-
   setRounds(state, rounds) {
     const roundIndex = state.rounds.findIndex(element => element.name === state.currentRound?.name)
     state.rounds = rounds
@@ -104,6 +74,19 @@ export const mutations = {
     if (!roundObj) roundObj = rounds[0]
 
     this.$router.app.setRound(roundObj)
+  },
+
+  setRound(state, roundObj) {
+    let snapIndex
+    if (state.currentRound?.snaps)
+      snapIndex = state.currentRound.snaps.findIndex(element => element.name === state.currentSnap.name)
+    state.currentRound = roundObj
+
+    let snapObj
+    if (snapIndex >= 0 && state.currentSnap.round === roundObj.name) snapObj = roundObj.snaps[snapIndex]
+    if (!snapObj) snapObj = roundObj.snaps[0]
+
+    this.$router.app.setSnap(snapObj)
   },
 
   setSnap(state, snapObj) {
@@ -120,24 +103,11 @@ export const mutations = {
     if (markIndex >= 0 && state.currentMark.snap === snapObj.name) markObj = snapObj.marks[markIndex]
     if (!markObj) markObj = snapObj.marks[0]
 
-    app.setMark(markObj)
     if (previous) {
       previous.areas = undefined
       previous.marks = undefined
     }
-  },
-
-  setRound(state, roundObj) {
-    let snapIndex
-    if (state.currentRound?.snaps)
-      snapIndex = state.currentRound.snaps.findIndex(element => element.name === state.currentSnap.name)
-    state.currentRound = roundObj
-
-    let snapObj
-    if (snapIndex >= 0 && state.currentSnap.round === roundObj.name) snapObj = roundObj.snaps[snapIndex]
-    if (!snapObj) snapObj = roundObj.snaps[0]
-
-    this.$router.app.setSnap(snapObj)
+    app.setMark(markObj)
   },
 
   setMark(state, markObj) {

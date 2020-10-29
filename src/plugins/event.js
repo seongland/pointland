@@ -70,6 +70,9 @@ export default ({ store: { commit, state } }) => {
               commit('setState', { props: ['del', 'ing'], value: true })
             }
             return
+          case 'Escape':
+            this.resetSelected()
+            return
         }
       },
 
