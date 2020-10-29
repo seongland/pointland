@@ -16,7 +16,184 @@
               "name": "HDR_CautionSignType",
               "description": "주의표지",
               "attributes": {
-                "SubType": {}
+                "SubType": {
+                  "type": "String",
+                  "method": "select",
+                  "candidates": [
+                    {
+                      "data": "101",
+                      "description": "+자형교차로"
+                    },
+                    {
+                      "data": "102",
+                      "description": "T자형교차로"
+                    },
+                    {
+                      "data": "103",
+                      "description": "Y자형교차로"
+                    },
+                    {
+                      "data": "104",
+                      "description": "ㅏ자형교차로"
+                    },
+                    {
+                      "data": "105",
+                      "description": "ㅓ자형교차로"
+                    },
+                    {
+                      "data": "109",
+                      "description": "회전형교차로"
+                    },
+                    {
+                      "data": "111",
+                      "description": "우로굽은도로"
+                    },
+                    {
+                      "data": "112",
+                      "description": "좌로굽은도로"
+                    },
+                    {
+                      "data": "113",
+                      "description": "우좌로이중굽은도로"
+                    },
+                    {
+                      "data": "114",
+                      "description": "좌우로이중굽은도로"
+                    },
+                    {
+                      "data": "116",
+                      "description": "오르막경사"
+                    },
+                    {
+                      "data": "117",
+                      "description": "내리막경사"
+                    },
+                    {
+                      "data": "106",
+                      "description": "우선도로"
+                    },
+                    {
+                      "data": "107",
+                      "description": "우합류도로"
+                    },
+                    {
+                      "data": "108",
+                      "description": "좌합류도로"
+                    },
+                    {
+                      "data": "115",
+                      "description": "2방향통행"
+                    },
+                    {
+                      "data": "118",
+                      "description": "도로폭이좁아짐"
+                    },
+                    {
+                      "data": "119",
+                      "description": "우측차로없어짐"
+                    },
+                    {
+                      "data": "120",
+                      "description": "좌측차로없어짐"
+                    },
+                    {
+                      "data": "120",
+                      "description": "좌측차로없어짐"
+                    },
+                    {
+                      "data": "121",
+                      "description": "우측방동행"
+                    },
+                    {
+                      "data": "122",
+                      "description": "양측방통행"
+                    },
+                    {
+                      "data": "123",
+                      "description": "중앙분리대시작"
+                    },
+                    {
+                      "data": "124",
+                      "description": "중앙분리대끝남"
+                    },
+                    {
+                      "data": "135",
+                      "description": "도로공사중"
+                    },
+                    {
+                      "data": "141",
+                      "description": "상습정체구간"
+                    },
+                    {
+                      "data": "110",
+                      "description": "철길건널목"
+                    },
+                    {
+                      "data": "125",
+                      "description": "신호기"
+                    },
+                    {
+                      "data": "138",
+                      "description": "터널"
+                    },
+                    {
+                      "data": "13823",
+                      "description": "교량"
+                    },
+                    {
+                      "data": "132",
+                      "description": "횡단보도"
+                    },
+                    {
+                      "data": "133",
+                      "description": "어린이보호"
+                    },
+                    {
+                      "data": "134",
+                      "description": "자전거"
+                    },
+                    {
+                      "data": "126",
+                      "description": "미끄러운도로"
+                    },
+                    {
+                      "data": "128",
+                      "description": "노면고르지못함"
+                    },
+                    {
+                      "data": "129",
+                      "description": "과속방지턱"
+                    },
+                    {
+                      "data": "127",
+                      "description": "강변도로"
+                    },
+                    {
+                      "data": "130",
+                      "description": "낙석도로"
+                    },
+                    {
+                      "data": "137",
+                      "description": "횡풍"
+                    },
+                    {
+                      "data": "136",
+                      "description": "비행기"
+                    },
+                    {
+                      "data": "139",
+                      "description": "야생동물보호"
+                    },
+                    {
+                      "data": "140",
+                      "description": "위험"
+                    },
+                    {
+                      "data": "199",
+                      "description": "기타표지"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -24,7 +201,152 @@
               "name": "HDR_IndicationSignType",
               "description": "지시표지",
               "attributes": {
-                "SubType": {}
+                "SubType": {
+                  "type": "String",
+                  "method": "select",
+                  "candidates": [
+                    {
+                      "data": "301",
+                      "description": "자동차전용도로"
+                    },
+                    {
+                      "data": "302",
+                      "description": "자전거전용도로"
+                    },
+                    {
+                      "data": "318",
+                      "description": "자전거전용차로"
+                    },
+                    {
+                      "data": "303",
+                      "description": "자전거/보행자 겸용도로"
+                    },
+                    {
+                      "data": "330",
+                      "description": "버스전용차로"
+                    },
+                    {
+                      "data": "331",
+                      "description": "다인승차량전용차로"
+                    },
+                    {
+                      "data": "304",
+                      "description": "회전교차로"
+                    },
+                    {
+                      "data": "305",
+                      "description": "직진"
+                    },
+                    {
+                      "data": "306",
+                      "description": "우회전"
+                    },
+                    {
+                      "data": "307",
+                      "description": "좌회전"
+                    },
+                    {
+                      "data": "308",
+                      "description": "직진 및 우회전"
+                    },
+                    {
+                      "data": "309",
+                      "description": "직진 및 좌회전"
+                    },
+                    {
+                      "data": "30923",
+                      "description": "좌회전 및 유턴"
+                    },
+                    {
+                      "data": "310",
+                      "description": "좌우회전"
+                    },
+                    {
+                      "data": "311",
+                      "description": "유턴"
+                    },
+                    {
+                      "data": "329",
+                      "description": "비보호좌회전"
+                    },
+                    {
+                      "data": "312",
+                      "description": "양측방통행"
+                    },
+                    {
+                      "data": "313",
+                      "description": "우측면통행"
+                    },
+                    {
+                      "data": "314",
+                      "description": "좌측면통행"
+                    },
+                    {
+                      "data": "315",
+                      "description": "진행방향별 통행구분"
+                    },
+                    {
+                      "data": "317",
+                      "description": "자전거나란히통행허용"
+                    },
+                    {
+                      "data": "333",
+                      "description": "우회로"
+                    },
+                    {
+                      "data": "316",
+                      "description": "통행우선"
+                    },
+                    {
+                      "data": "332",
+                      "description": "일방통행(우측)"
+                    },
+                    {
+                      "data": "326",
+                      "description": "일방통행(좌측)"
+                    },
+                    {
+                      "data": "327",
+                      "description": "일방통행(직진)"
+                    },
+                    {
+                      "data": "328",
+                      "description": "보행자 전용도로"
+                    },
+                    {
+                      "data": "322",
+                      "description": "횡단보도"
+                    },
+                    {
+                      "data": "323",
+                      "description": "노인보호 (노인보호구역안)"
+                    },
+                    {
+                      "data": "324",
+                      "description": "어린이보호 (어린이보호구역안)"
+                    },
+                    {
+                      "data": "32424",
+                      "description": "장애인보호 (장애인보호구역안)"
+                    },
+                    {
+                      "data": "325",
+                      "description": "자전거횡단도"
+                    },
+                    {
+                      "data": "319",
+                      "description": "주차장"
+                    },
+                    {
+                      "data": "320",
+                      "description": "자전거 주차장"
+                    },
+                    {
+                      "data": "399",
+                      "description": "기타 지시표지"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -32,7 +354,128 @@
               "name": "HDR_RestrictionSignType",
               "description": "규제표지",
               "attributes": {
-                "SubType": {}
+                "SubType": {
+                  "type": "String",
+                  "method": "select",
+                  "candidates": [
+                    {
+                      "data": "201",
+                      "description": "통행금지"
+                    },
+                    {
+                      "data": "202",
+                      "description": "자동차 통행금지"
+                    },
+                    {
+                      "data": "203",
+                      "description": "화물자동차 통행금지"
+                    },
+                    {
+                      "data": "204",
+                      "description": "이륜자동차 및 원동기장치 자전거 통행금지"
+                    },
+                    {
+                      "data": "205",
+                      "description": "자동차 이륜자동차 및 원동기장치 자전거 통행금지"
+                    },
+                    {
+                      "data": "206",
+                      "description": "자동차 이륜자동차 및 원동기장치 자전거 통행금지"
+                    },
+                    {
+                      "data": "207",
+                      "description": "경운기트랙터 및 손수레 통행금지"
+                    },
+                    {
+                      "data": "210",
+                      "description": "자전거 통행금지"
+                    },
+                    {
+                      "data": "231",
+                      "description": "위험물적재차량 통행금지"
+                    },
+                    {
+                      "data": "220",
+                      "description": "차중량제한"
+                    },
+                    {
+                      "data": "221",
+                      "description": "차높이제한"
+                    },
+                    {
+                      "data": "222",
+                      "description": "차폭제한"
+                    },
+                    {
+                      "data": "223",
+                      "description": "차간거리확보"
+                    },
+                    {
+                      "data": "224",
+                      "description": "최고속도제한"
+                    },
+                    {
+                      "data": "224",
+                      "description": "최고속도제한"
+                    },
+                    {
+                      "data": "225",
+                      "description": "최저속도제한"
+                    },
+                    {
+                      "data": "226",
+                      "description": "서행"
+                    },
+                    {
+                      "data": "227",
+                      "description": "일시정지"
+                    },
+                    {
+                      "data": "228",
+                      "description": "양보"
+                    },
+                    {
+                      "data": "211",
+                      "description": "진입금지"
+                    },
+                    {
+                      "data": "212",
+                      "description": "직진금지"
+                    },
+                    {
+                      "data": "213",
+                      "description": "우회전금지"
+                    },
+                    {
+                      "data": "214",
+                      "description": "좌회전금지"
+                    },
+                    {
+                      "data": "216",
+                      "description": "유턴금지"
+                    },
+                    {
+                      "data": "217",
+                      "description": "앞지르기금지"
+                    },
+                    {
+                      "data": "218",
+                      "description": "정차주차금지"
+                    },
+                    {
+                      "data": "219",
+                      "description": "주차금지"
+                    },
+                    {
+                      "data": "219",
+                      "description": "보행자 통행금지"
+                    },
+                    {
+                      "data": "299",
+                      "description": "기타 규제표지"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -40,18 +483,145 @@
               "name": "HDR_AssistantSignType",
               "description": "보조표지",
               "attributes": {
-                "SubType": {}
+                "SubType": {
+                  "type": "String",
+                  "method": "select",
+                  "candidates": [
+                    {
+                      "data": "401",
+                      "description": "거리(앞부터)"
+                    },
+                    {
+                      "data": "402",
+                      "description": "거리(여기부터)"
+                    },
+                    {
+                      "data": "403",
+                      "description": "구역"
+                    },
+                    {
+                      "data": "404",
+                      "description": "일자"
+                    },
+                    {
+                      "data": "405",
+                      "description": "시간(시작,끝)"
+                    },
+                    {
+                      "data": "406",
+                      "description": "시간(이내)"
+                    },
+                    {
+                      "data": "407",
+                      "description": "신호동화상태"
+                    },
+                    {
+                      "data": "408",
+                      "description": "전방우선도로"
+                    },
+                    {
+                      "data": "409",
+                      "description": "안전속도"
+                    },
+                    {
+                      "data": "410",
+                      "description": "기상상태"
+                    },
+                    {
+                      "data": "411",
+                      "description": "노면상태"
+                    },
+                    {
+                      "data": "412",
+                      "description": "교통규제"
+                    },
+                    {
+                      "data": "413",
+                      "description": "통행규제"
+                    },
+                    {
+                      "data": "414",
+                      "description": "차량한정"
+                    },
+                    {
+                      "data": "415",
+                      "description": "통행주의"
+                    },
+                    {
+                      "data": "41523",
+                      "description": "충돌주의"
+                    },
+                    {
+                      "data": "416",
+                      "description": "표지설명"
+                    },
+                    {
+                      "data": "417",
+                      "description": "구간시작"
+                    },
+                    {
+                      "data": "418",
+                      "description": "구간내"
+                    },
+                    {
+                      "data": "419",
+                      "description": "구간끝"
+                    },
+                    {
+                      "data": "420",
+                      "description": "우방향"
+                    },
+                    {
+                      "data": "421",
+                      "description": "좌방향"
+                    },
+                    {
+                      "data": "422",
+                      "description": "전방"
+                    },
+                    {
+                      "data": "423",
+                      "description": "중량"
+                    },
+                    {
+                      "data": "424",
+                      "description": "노폭"
+                    },
+                    {
+                      "data": "425",
+                      "description": "거리"
+                    },
+                    {
+                      "data": "427",
+                      "description": "해제"
+                    },
+                    {
+                      "data": "428",
+                      "description": "견인지역"
+                    },
+                    {
+                      "data": "499",
+                      "description": "기타 보조표지"
+                    }
+                  ]
+                }
               }
             }
           ]
         },
         "Value": {
-          "type": "Number",
+          "type": "String",
           "method": "type"
         },
         "Unit": {
           "type": "String",
-          "method": "type"
+          "method": "select",
+          "candidates": [
+            {
+              "data": "km/h",
+              "description": "시속"
+            }
+          ]
         },
         "Post": {
           "type": "Boolean",
@@ -60,10 +630,7 @@
             {
               "data": true,
               "name": "Vertical_Post",
-              "description": "세로 기둥",
-              "attributes": {
-                "SubType": {}
-              }
+              "description": "세로 기둥"
             },
             {
               "data": false,

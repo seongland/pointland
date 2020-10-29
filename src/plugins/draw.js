@@ -110,7 +110,11 @@ export default ({ store: { commit, state } }) => {
 
       async drawFromDepth(x, y, depthDir) {
         const targetLayer = this.$store.state.ls.targetLayer
-        if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXY(depthDir, x, y)
+        commit('setLoading', true)
+        console.time('xy')
+        if (targetLayer.object) if (targetLayer.object.type === 'Point') await this.drawSelectedXY(depthDir, x, y)
+        commit('setLoading', false)
+        console.timeEnd('xy')
       },
 
       async drawSelectedXY(depthDir, x, y) {

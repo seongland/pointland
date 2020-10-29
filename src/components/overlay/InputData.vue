@@ -30,11 +30,53 @@
           :items="sameTypes"
           item-text="description"
           item-value="description"
-        ></v-select>
+        />
 
-        <v-card-title> Properties </v-card-title>
+        <!-- properties -->
+        <div v-for="[name, object] in Object.entries(targetLayer.attributes)" :key="name">
+          <v-select
+            class="mx-2"
+            :label="name"
+            solo
+            dense
+            v-if="object.method === 'select'"
+            :items="object.candidates"
+            item-text="description"
+            item-value="data"
+            v-model="selected[0].properties[name]"
+          />
+          <v-card-text v-else-if="object.method === 'type'">
+            <v-text-field class="pt-0 mt-0" :label="name" v-model="selected[0].properties[name]" />
+          </v-card-text>
+
+          <!-- Inner  Properties -->
+          <div
+            v-for="[prop, sub] in selected[0].properties[name] !== undefined && object.candidates
+              ? Object.entries(
+                  object.candidates.filter(c => c.data === selected[0].properties[name])[0].attributes
+                    ? object.candidates.filter(c => c.data === selected[0].properties[name])[0].attributes
+                    : {}
+                )
+              : []"
+            :key="prop"
+          >
+            <v-select
+              class="mx-2"
+              :label="prop"
+              solo
+              dense
+              v-if="sub.method === 'select'"
+              :items="sub.candidates"
+              item-text="description"
+              item-value="data"
+              v-model="selected[0].properties[prop]"
+            />
+          </div>
+        </div>
+
+        <!-- Comment -->
         <v-card-text>
-          <v-text-field label="Comment" v-model="comment" />
+          <v-text-field label="Comment" class="pt-0 mt-0" v-model="comment" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -54,7 +96,7 @@ import D from '~/assets/classes/morai/D'
 const classes = [A, B, C, D]
 
 export default {
-  data: () => ({ comment: undefined, description: undefined }),
+  data: () => ({ comment: undefined, description: undefined, targetLayer: { attributes: {} } }),
   props: {
     layer: String,
     type: String
@@ -62,20 +104,6 @@ export default {
   computed: {
     relations() {
       return this.$store.state.selected[0].relations
-    },
-    targetLayer: {
-      get() {
-        for (const classObj of Object.values(classes))
-          for (const layerObj of classObj.layers)
-            if (this.layer === layerObj.layer) {
-              this.description = layerObj.description
-              return layerObj
-            }
-      },
-      set(layerObj) {
-        this.description = layerObj.description
-        return layerObj
-      }
     },
     sameTypes() {
       const allowedLayers = this.$store.state.allowedLayers
@@ -88,10 +116,26 @@ export default {
     ls() {
       return this.$store.state.ls
     },
-    selected() {
-      return this.$store.state.selected
+    selected: {
+      get() {
+        return this.$store.state.selected
+      },
+      set(a, b) {
+        console.log(a, b)
+      }
     }
   },
+
+  watch: {
+    layer(layer) {
+      this.updateTarget(layer)
+    }
+  },
+
+  mounted() {
+    this.updateTarget(this.layer)
+  },
+
   methods: {
     async submit() {
       const dispatch = this.$store.dispatch
@@ -100,6 +144,15 @@ export default {
         type: 'Point',
         args: { layer: this.targetLayer.layer }
       })
+    },
+
+    updateTarget(layer) {
+      for (const classObj of Object.values(classes))
+        for (const layerObj of classObj.layers)
+          if (layer === layerObj.layer) {
+            this.description = layerObj.description
+            this.targetLayer = layerObj
+          }
     }
   }
 }
