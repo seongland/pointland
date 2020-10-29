@@ -64,25 +64,24 @@ export default ({ store: { commit, state } }) => {
         for (const index in xyzs) this.drawnXYZ(xyzs[index], ids[index])
       },
 
-      drawnFacilities(currentMark) {
+      async drawnFacilities(currentMark) {
         let layer = state.ls.targetLayer?.object?.layer
         let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}`
         if (layer) url += `/${layer}`
 
-        return this.$axios.get(url).then(async res => {
-          await this.resetLayer('drawnLayer')
-          resetPointLayer(cloudRef.drawnLayer)
-          const facilities = res.data
-          const [xyzs, ids] = [[], [], []]
-          for (const facility of facilities) {
-            const props = facility.properties
-            xyzs.push([props.x, props.y, props.z])
-            ids.push(facility.id)
-          }
-          await this.drawFacilities(facilities, currentMark, imgRef.drawnLayer)
-          updateImg(imgRef.drawnLayer)
-          this.waitAvail(this.checkMount, this.drawnXYZs, [xyzs, ids])
-        })
+        const res = await this.$axios.get(url)
+        await this.resetLayer('drawnLayer')
+        resetPointLayer(cloudRef.drawnLayer)
+        const facilities = res.data
+        const [xyzs, ids] = [[], [], []]
+        for (const facility of facilities) {
+          const props = facility.properties
+          xyzs.push([props.x, props.y, props.z])
+          ids.push(facility.id)
+        }
+        await this.drawFacilities(facilities, currentMark, imgRef.drawnLayer)
+        updateImg(imgRef.drawnLayer)
+        this.waitAvail(this.checkMount, this.drawnXYZs, [xyzs, ids])
       },
 
       async drawFacilities(facilites, currentMark, layer) {

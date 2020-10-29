@@ -21,6 +21,22 @@
                   "method": "select",
                   "candidates": [
                     {
+                      "data": "129",
+                      "description": "과속방지턱"
+                    },
+                    {
+                      "data": "111",
+                      "description": "우로굽은도로"
+                    },
+                    {
+                      "data": "112",
+                      "description": "좌로굽은도로"
+                    },
+                    {
+                      "data": "132",
+                      "description": "횡단보도"
+                    },
+                    {
                       "data": "101",
                       "description": "+자형교차로"
                     },
@@ -43,14 +59,6 @@
                     {
                       "data": "109",
                       "description": "회전형교차로"
-                    },
-                    {
-                      "data": "111",
-                      "description": "우로굽은도로"
-                    },
-                    {
-                      "data": "112",
-                      "description": "좌로굽은도로"
                     },
                     {
                       "data": "113",
@@ -141,10 +149,6 @@
                       "description": "교량"
                     },
                     {
-                      "data": "132",
-                      "description": "횡단보도"
-                    },
-                    {
                       "data": "133",
                       "description": "어린이보호"
                     },
@@ -159,10 +163,6 @@
                     {
                       "data": "128",
                       "description": "노면고르지못함"
-                    },
-                    {
-                      "data": "129",
-                      "description": "과속방지턱"
                     },
                     {
                       "data": "127",
@@ -206,10 +206,6 @@
                   "method": "select",
                   "candidates": [
                     {
-                      "data": "301",
-                      "description": "자동차전용도로"
-                    },
-                    {
                       "data": "302",
                       "description": "자전거전용도로"
                     },
@@ -218,8 +214,24 @@
                       "description": "자전거전용차로"
                     },
                     {
+                      "data": "301",
+                      "description": "자동차전용도로"
+                    },
+                    {
+                      "data": "310",
+                      "description": "좌우회전"
+                    },
+                    {
+                      "data": "325",
+                      "description": "자전거횡단도"
+                    },
+                    {
                       "data": "303",
                       "description": "자전거/보행자 겸용도로"
+                    },
+                    {
+                      "data": "329",
+                      "description": "비보호좌회전"
                     },
                     {
                       "data": "330",
@@ -258,16 +270,8 @@
                       "description": "좌회전 및 유턴"
                     },
                     {
-                      "data": "310",
-                      "description": "좌우회전"
-                    },
-                    {
                       "data": "311",
                       "description": "유턴"
-                    },
-                    {
-                      "data": "329",
-                      "description": "비보호좌회전"
                     },
                     {
                       "data": "312",
@@ -330,10 +334,6 @@
                       "description": "장애인보호 (장애인보호구역안)"
                     },
                     {
-                      "data": "325",
-                      "description": "자전거횡단도"
-                    },
-                    {
                       "data": "319",
                       "description": "주차장"
                     },
@@ -358,6 +358,26 @@
                   "type": "String",
                   "method": "select",
                   "candidates": [
+                    {
+                      "data": "224",
+                      "description": "최고속도제한"
+                    },
+                    {
+                      "data": "218",
+                      "description": "정차주차금지"
+                    },
+                    {
+                      "data": "219",
+                      "description": "주차금지"
+                    },
+                    {
+                      "data": "211",
+                      "description": "진입금지"
+                    },
+                    {
+                      "data": "227",
+                      "description": "일시정지"
+                    },
                     {
                       "data": "201",
                       "description": "통행금지"
@@ -415,10 +435,6 @@
                       "description": "최고속도제한"
                     },
                     {
-                      "data": "224",
-                      "description": "최고속도제한"
-                    },
-                    {
                       "data": "225",
                       "description": "최저속도제한"
                     },
@@ -427,16 +443,8 @@
                       "description": "서행"
                     },
                     {
-                      "data": "227",
-                      "description": "일시정지"
-                    },
-                    {
                       "data": "228",
                       "description": "양보"
-                    },
-                    {
-                      "data": "211",
-                      "description": "진입금지"
                     },
                     {
                       "data": "212",
@@ -459,14 +467,6 @@
                       "description": "앞지르기금지"
                     },
                     {
-                      "data": "218",
-                      "description": "정차주차금지"
-                    },
-                    {
-                      "data": "219",
-                      "description": "주차금지"
-                    },
-                    {
                       "data": "219",
                       "description": "보행자 통행금지"
                     },
@@ -487,6 +487,22 @@
                   "type": "String",
                   "method": "select",
                   "candidates": [
+                    {
+                      "data": "411",
+                      "description": "노면상태"
+                    },
+                    {
+                      "data": "499",
+                      "description": "기타 보조표지"
+                    },
+                    {
+                      "data": "418",
+                      "description": "구간내"
+                    },
+                    {
+                      "data": "425",
+                      "description": "거리"
+                    },
                     {
                       "data": "401",
                       "description": "거리(앞부터)"
@@ -528,10 +544,6 @@
                       "description": "기상상태"
                     },
                     {
-                      "data": "411",
-                      "description": "노면상태"
-                    },
-                    {
                       "data": "412",
                       "description": "교통규제"
                     },
@@ -560,10 +572,6 @@
                       "description": "구간시작"
                     },
                     {
-                      "data": "418",
-                      "description": "구간내"
-                    },
-                    {
                       "data": "419",
                       "description": "구간끝"
                     },
@@ -588,20 +596,12 @@
                       "description": "노폭"
                     },
                     {
-                      "data": "425",
-                      "description": "거리"
-                    },
-                    {
                       "data": "427",
                       "description": "해제"
                     },
                     {
                       "data": "428",
                       "description": "견인지역"
-                    },
-                    {
-                      "data": "499",
-                      "description": "기타 보조표지"
                     }
                   ]
                 }
