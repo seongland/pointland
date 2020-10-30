@@ -13,6 +13,7 @@
           "candidates": [
             {
               "data": "1",
+              "url": "/example/B1/1.png",
               "name": "HDR_CautionSignType",
               "description": "주의표지",
               "attributes": {
@@ -156,14 +157,17 @@
                     },
                     {
                       "data": "110",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_10.png",
                       "description": "철길건널목"
                     },
                     {
                       "data": "125",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_25.png",
                       "description": "신호기"
                     },
                     {
                       "data": "138",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_38.png",
                       "description": "터널"
                     },
                     {
@@ -172,42 +176,52 @@
                     },
                     {
                       "data": "133",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_33.png",
                       "description": "어린이보호"
                     },
                     {
                       "data": "134",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_34.png",
                       "description": "자전거"
                     },
                     {
                       "data": "126",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_26.png",
                       "description": "미끄러운도로"
                     },
                     {
                       "data": "128",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_28.png",
                       "description": "노면고르지못함"
                     },
                     {
                       "data": "127",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_27.png",
                       "description": "강변도로"
                     },
                     {
                       "data": "130",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_30.png",
                       "description": "낙석도로"
                     },
                     {
                       "data": "137",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_37.png",
                       "description": "횡풍"
                     },
                     {
                       "data": "136",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_36.png",
                       "description": "비행기"
                     },
                     {
                       "data": "139",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_39.png",
                       "description": "야생동물보호"
                     },
                     {
                       "data": "140",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_40.png",
                       "description": "위험"
                     },
                     {
@@ -220,6 +234,7 @@
             },
             {
               "data": "2",
+              "url": "/example/B1/2.png",
               "name": "HDR_IndicationSignType",
               "description": "지시표지",
               "attributes": {
@@ -229,6 +244,7 @@
                   "candidates": [
                     {
                       "data": "302",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_01.png",
                       "description": "자전거전용도로"
                     },
                     {
@@ -378,6 +394,7 @@
             {
               "data": "3",
               "name": "HDR_RestrictionSignType",
+              "url": "/example/B1/3.png",
               "description": "규제표지",
               "attributes": {
                 "SubType": {
@@ -506,6 +523,7 @@
             },
             {
               "data": "4",
+              "url": "/example/B1/4.png",
               "name": "HDR_AssistantSignType",
               "description": "보조표지",
               "attributes": {

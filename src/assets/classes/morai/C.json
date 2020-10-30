@@ -13,63 +13,77 @@
           "candidates": [
             {
               "data": "1",
-              "url": "/example/C1/",
+              "url": "/example/C1/20301.png",
               "description": "차량횡형-삼색등"
             },
             {
               "data": "2",
+              "url": "/example/C1/20302.png",
               "description": "차량횡형-사색등A"
             },
             {
               "data": "3",
+              "url": "/example/C1/20303.png",
               "description": "차량횡형-사색등B"
             },
             {
               "data": "4",
+              "url": "/example/C1/20304.png",
               "description": "차량횡형-화살표삼색등"
             },
             {
               "data": "5",
+              "url": "/example/C1/20305.png",
               "description": "차량종형-삼색등"
             },
             {
               "data": "6",
+              "url": "/example/C1/20306.png",
               "description": "차량종형-화살표삼색등"
             },
             {
               "data": "7",
+              "url": "/example/C1/20307.png",
               "description": "차량종형-사색등"
             },
             {
               "data": "8",
+              "url": "/example/C1/20308.png",
               "description": "버스삼색등"
             },
             {
               "data": "9",
+              "url": "/example/C1/20309.png",
               "description": "가변형 가변등"
             },
             {
               "data": "10",
+              "url": "/example/C1/20310.png",
               "description": "경보형 가변등"
             },
             {
               "data": "11",
+              "url": "/example/C1/20311.png",
               "description": "보행등"
             },
             {
               "data": "12",
+              "url": "/example/C1/20312.png",
               "description": "자전거종형-삼색등"
             },
             {
               "data": "13",
+              "url": "/example/C1/20313.png",
               "description": "자전거종형-이색등"
             },
             {
               "data": "14",
+              "url": "/example/C1/20314.png",
               "description": "차량보조등-종형삼색등"
             },
             {
               "data": "15",
+              "url": "/example/C1/20315.png",
               "description": "차량보조등-종형사색등"
             },
             {

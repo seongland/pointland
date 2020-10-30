@@ -45,6 +45,10 @@
             item-value="data"
             v-model="facility.properties[name]"
           >
+            <template v-slot:item="{ item }">
+              <v-img :src="item.url" max-width="50" min-width="50" class="mr-3" />
+              {{ item.description }}
+            </template>
           </v-select>
           <v-card-text v-else-if="object.method === 'type'">
             <v-text-field class="pt-0 mt-0" :label="name" v-model="facility.properties[name]" />
@@ -73,7 +77,7 @@
               v-model="facility.properties[prop]"
             >
               <template v-slot:item="{ item }">
-                <img :src="item.url" />
+                <v-img :src="item.url" max-width="50" min-width="50" class="mr-3" />
                 {{ item.description }}
               </template>
             </v-select>
