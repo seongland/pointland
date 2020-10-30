@@ -71,7 +71,12 @@
               item-text="description"
               item-value="data"
               v-model="facility.properties[prop]"
-            />
+            >
+              <template v-slot:item="{ item }">
+                <img :src="item.url" />
+                {{ item.description }}
+              </template>
+            </v-select>
           </div>
         </div>
 
