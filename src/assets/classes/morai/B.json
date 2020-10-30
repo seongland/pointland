@@ -22,110 +22,132 @@
                   "candidates": [
                     {
                       "data": "129",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_29.png",
                       "description": "과속방지턱"
                     },
                     {
                       "data": "111",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_11.png",
                       "description": "우로굽은도로"
                     },
                     {
                       "data": "112",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_12.png",
                       "description": "좌로굽은도로"
                     },
                     {
                       "data": "132",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_32.png",
                       "description": "횡단보도"
                     },
                     {
                       "data": "101",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_1.png",
                       "description": "+자형교차로"
                     },
                     {
                       "data": "102",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_2.png",
                       "description": "T자형교차로"
                     },
                     {
                       "data": "103",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_3.png",
                       "description": "Y자형교차로"
                     },
                     {
                       "data": "104",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_4.png",
                       "description": "ㅏ자형교차로"
                     },
                     {
                       "data": "105",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_5.png",
                       "description": "ㅓ자형교차로"
                     },
                     {
                       "data": "109",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_9.png",
                       "description": "회전형교차로"
                     },
                     {
                       "data": "113",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_13.png",
                       "description": "우좌로이중굽은도로"
                     },
                     {
                       "data": "114",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_14.png",
                       "description": "좌우로이중굽은도로"
                     },
                     {
                       "data": "116",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_16.png",
                       "description": "오르막경사"
                     },
                     {
                       "data": "117",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_17.png",
                       "description": "내리막경사"
                     },
                     {
                       "data": "106",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_6.png",
                       "description": "우선도로"
                     },
                     {
                       "data": "107",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_7.png",
                       "description": "우합류도로"
                     },
                     {
                       "data": "108",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_8.png",
                       "description": "좌합류도로"
                     },
                     {
                       "data": "115",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_15.png",
                       "description": "2방향통행"
                     },
                     {
                       "data": "118",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_18.png",
                       "description": "도로폭이좁아짐"
                     },
                     {
                       "data": "119",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_19.png",
                       "description": "우측차로없어짐"
                     },
                     {
                       "data": "120",
-                      "description": "좌측차로없어짐"
-                    },
-                    {
-                      "data": "120",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_20.png",
                       "description": "좌측차로없어짐"
                     },
                     {
                       "data": "121",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_21.png",
                       "description": "우측방동행"
                     },
                     {
                       "data": "122",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_22.png",
                       "description": "양측방통행"
                     },
                     {
                       "data": "123",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_23.png",
                       "description": "중앙분리대시작"
                     },
                     {
                       "data": "124",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_24.png",
                       "description": "중앙분리대끝남"
                     },
                     {
                       "data": "135",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign01_35.png",
                       "description": "도로공사중"
                     },
                     {
@@ -292,6 +314,10 @@
                     {
                       "data": "315",
                       "description": "진행방향별 통행구분"
+                    },
+                    {
+                      "data": "321",
+                      "description": "자전거및보행자 통행구분"
                     },
                     {
                       "data": "317",
