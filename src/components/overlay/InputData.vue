@@ -44,7 +44,12 @@
             item-text="description"
             item-value="data"
             v-model="selected[0].properties[name]"
-          />
+          >
+            <template v-slot:item="{ item }">
+              <v-img :src="item.url" max-width="50" min-width="50" class="mr-3" />
+              {{ item.description }}
+            </template></v-select
+          >
           <v-card-text v-else-if="object.method === 'type'">
             <v-text-field class="pt-0 mt-0" :label="name" v-model="selected[0].properties[name]" />
           </v-card-text>
@@ -70,7 +75,12 @@
               item-text="description"
               item-value="data"
               v-model="selected[0].properties[prop]"
-            />
+            >
+              <template v-slot:item="{ item }">
+                <v-img :src="item.url" max-width="50" min-width="50" class="mr-3" />
+                {{ item.description }}
+              </template></v-select
+            >
           </div>
         </div>
 
