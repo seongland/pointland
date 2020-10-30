@@ -244,71 +244,87 @@
                   "candidates": [
                     {
                       "data": "302",
-                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_01.png",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_2.png",
                       "description": "자전거전용도로"
                     },
                     {
                       "data": "318",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_18.png",
                       "description": "자전거전용차로"
                     },
                     {
                       "data": "325",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_26.png",
                       "description": "자전거횡단도"
                     },
                     {
                       "data": "311",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_11.png",
                       "description": "유턴"
                     },
                     {
                       "data": "303",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_3.png",
                       "description": "자전거/보행자 겸용도로"
                     },
                     {
                       "data": "322",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_22.png",
                       "description": "횡단보도"
                     },
                     {
                       "data": "329",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_30.png",
                       "description": "비보호좌회전"
                     },
                     {
                       "data": "310",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_10.png",
                       "description": "좌우회전"
                     },
                     {
                       "data": "301",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_1.png",
                       "description": "자동차전용도로"
                     },
                     {
                       "data": "330",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_31.png",
                       "description": "버스전용차로"
                     },
                     {
                       "data": "331",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_32.png",
                       "description": "다인승차량전용차로"
                     },
                     {
                       "data": "304",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_4.png",
                       "description": "회전교차로"
                     },
                     {
                       "data": "305",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_5.png",
                       "description": "직진"
                     },
                     {
                       "data": "306",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_6.png",
                       "description": "우회전"
                     },
                     {
                       "data": "307",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_7.png",
                       "description": "좌회전"
                     },
                     {
                       "data": "308",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_8.png",
                       "description": "직진 및 우회전"
                     },
                     {
                       "data": "309",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_9.png",
                       "description": "직진 및 좌회전"
                     },
                     {
@@ -317,70 +333,87 @@
                     },
                     {
                       "data": "312",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_12.png",
                       "description": "양측방통행"
                     },
                     {
                       "data": "313",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_13.png",
                       "description": "우측면통행"
                     },
                     {
                       "data": "314",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_14.png",
                       "description": "좌측면통행"
                     },
                     {
                       "data": "315",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_15.png",
                       "description": "진행방향별 통행구분"
                     },
                     {
                       "data": "321",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_17.png",
                       "description": "자전거및보행자 통행구분"
                     },
                     {
                       "data": "317",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_34.png",
                       "description": "자전거나란히통행허용"
                     },
                     {
                       "data": "333",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_16.png",
                       "description": "우회로"
                     },
                     {
                       "data": "316",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_33.png",
                       "description": "통행우선"
                     },
                     {
                       "data": "332",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_27.png",
                       "description": "일방통행(우측)"
                     },
                     {
                       "data": "326",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_28.png",
                       "description": "일방통행(좌측)"
                     },
                     {
                       "data": "327",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_29.png",
                       "description": "일방통행(직진)"
                     },
                     {
                       "data": "328",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_21.png",
                       "description": "보행자 전용도로"
                     },
                     {
                       "data": "323",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_23.png",
                       "description": "노인보호 (노인보호구역안)"
                     },
                     {
                       "data": "324",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_24.png",
                       "description": "어린이보호 (어린이보호구역안)"
                     },
                     {
                       "data": "32424",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_25.png",
                       "description": "장애인보호 (장애인보호구역안)"
                     },
                     {
                       "data": "319",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_019.png",
                       "description": "주차장"
                     },
                     {
                       "data": "320",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign03_20.png",
                       "description": "자전거 주차장"
                     },
                     {
@@ -403,114 +436,137 @@
                   "candidates": [
                     {
                       "data": "224",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_21.png",
                       "description": "최고속도제한"
                     },
                     {
                       "data": "218",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_15.png",
                       "description": "정차주차금지"
                     },
                     {
                       "data": "219",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_16.png",
                       "description": "주차금지"
                     },
                     {
                       "data": "211",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_9.png",
                       "description": "진입금지"
                     },
                     {
                       "data": "226",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_23.png",
                       "description": "서행"
                     },
                     {
                       "data": "227",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_24.png",
                       "description": "일시정지"
                     },
                     {
                       "data": "201",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_1.png",
                       "description": "통행금지"
                     },
                     {
                       "data": "202",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_2.png",
                       "description": "자동차 통행금지"
                     },
                     {
                       "data": "203",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_3.png",
                       "description": "화물자동차 통행금지"
                     },
                     {
                       "data": "204",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_4.png",
                       "description": "승합자동차 통행금지"
                     },
                     {
                       "data": "205",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_5.png",
                       "description": "이륜자동차 및 원동기장치 자전거 통행금지"
                     },
                     {
                       "data": "206",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_6.png",
                       "description": "자동차 이륜자동차 및 원동기장치 자전거 통행금지"
                     },
                     {
                       "data": "207",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_7.png",
                       "description": "경운기트랙터 및 손수레 통행금지"
                     },
                     {
                       "data": "210",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_8.png",
                       "description": "자전거 통행금지"
                     },
                     {
                       "data": "231",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_27.png",
                       "description": "위험물적재차량 통행금지"
                     },
                     {
                       "data": "220",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_17.png",
                       "description": "차중량제한"
                     },
                     {
                       "data": "221",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_18.png",
                       "description": "차높이제한"
                     },
                     {
                       "data": "222",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_19.png",
                       "description": "차폭제한"
                     },
                     {
                       "data": "223",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_20.png",
                       "description": "차간거리확보"
                     },
                     {
-                      "data": "224",
-                      "description": "최고속도제한"
-                    },
-                    {
                       "data": "225",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_22.png",
                       "description": "최저속도제한"
                     },
                     {
                       "data": "228",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_25.png",
                       "description": "양보"
                     },
                     {
                       "data": "212",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_10.png",
                       "description": "직진금지"
                     },
                     {
                       "data": "213",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_11.png",
                       "description": "우회전금지"
                     },
                     {
                       "data": "214",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_12.png",
                       "description": "좌회전금지"
                     },
                     {
                       "data": "216",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_13.png",
                       "description": "유턴금지"
                     },
                     {
                       "data": "217",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_14.png",
                       "description": "앞지르기금지"
                     },
                     {
                       "data": "230",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign02_26.png",
                       "description": "보행자 통행금지"
                     },
                     {
@@ -533,74 +589,87 @@
                   "candidates": [
                     {
                       "data": "411",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_11.png",
                       "description": "노면상태"
                     },
                     {
-                      "data": "499",
-                      "description": "기타 보조표지"
-                    },
-                    {
                       "data": "418",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_18.png",
                       "description": "구간내"
                     },
                     {
                       "data": "425",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_25.png",
                       "description": "거리"
                     },
                     {
                       "data": "401",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_1.png",
                       "description": "거리(앞부터)"
                     },
                     {
                       "data": "402",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_2.png",
                       "description": "거리(여기부터)"
                     },
                     {
                       "data": "403",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_3.png",
                       "description": "구역"
                     },
                     {
                       "data": "404",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_4.png",
                       "description": "일자"
                     },
                     {
                       "data": "405",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_5.png",
                       "description": "시간(시작,끝)"
                     },
                     {
                       "data": "406",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_6.png",
                       "description": "시간(이내)"
                     },
                     {
                       "data": "407",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_7.png",
                       "description": "신호동화상태"
                     },
                     {
                       "data": "408",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_8.png",
                       "description": "전방우선도로"
                     },
                     {
                       "data": "409",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_9.png",
                       "description": "안전속도"
                     },
                     {
                       "data": "410",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_10.png",
                       "description": "기상상태"
                     },
                     {
                       "data": "412",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_12.png",
                       "description": "교통규제"
                     },
                     {
                       "data": "413",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_13.png",
                       "description": "통행규제"
                     },
                     {
                       "data": "414",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_14.png",
                       "description": "차량한정"
                     },
                     {
                       "data": "415",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_15.png",
                       "description": "통행주의"
                     },
                     {
@@ -609,43 +678,57 @@
                     },
                     {
                       "data": "416",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_16.png",
                       "description": "표지설명"
                     },
                     {
                       "data": "417",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_17.png",
                       "description": "구간시작"
                     },
                     {
                       "data": "419",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_19.png",
                       "description": "구간끝"
                     },
                     {
                       "data": "420",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_20.png",
                       "description": "우방향"
                     },
                     {
                       "data": "421",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_21.png",
                       "description": "좌방향"
                     },
                     {
                       "data": "422",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_22.png",
                       "description": "전방"
                     },
                     {
                       "data": "423",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_23.png",
                       "description": "중량"
                     },
                     {
                       "data": "424",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_24.png",
                       "description": "노폭"
                     },
                     {
                       "data": "427",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_26.png",
                       "description": "해제"
                     },
                     {
                       "data": "428",
+                      "url": "https://bike.bucheon.go.kr/files/web154/images/sign/sign04_27.png",
                       "description": "견인지역"
+                    },
+                    {
+                      "data": "499",
+                      "description": "기타 보조표지"
                     }
                   ]
                 }
