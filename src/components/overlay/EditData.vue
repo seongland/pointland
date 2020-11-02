@@ -1,25 +1,37 @@
 <template>
   <v-row align="center" justify="center">
     <v-col lg="6" md="8" sm="12">
-      <v-card class="elevation-24">
-        <v-card-title v-text="description" />
+      <v-card class="elevation-24" v-if="facility.id">
+        <v-card-title v-text="facility.geometry.type" />
         <v-divider />
-        <v-card-title> {{ facility.id ? facility.geometry.type : '' }} </v-card-title>
+        <v-card-text class="pb-0">
+          <span style="font-weight: bold">Maked : </span> {{ createdAt }} - <span style="font-weight: bold">Maker : </span>
+          {{ createdBy }}
+        </v-card-text>
+
         <v-card-text class="py-0">
-          <span style="font-weight: bold">X : </span> {{ facility.id ? facility.properties.x : 0 }} -
-          <span style="font-weight: bold">Y : </span> {{ facility.id ? facility.properties.y : 0 }} -
-          <span style="font-weight: bold">Z : </span> {{ facility.id ? facility.properties.z : 0 }}
+          <span style="font-weight: bold">Edited : </span> {{ editedAt }} - <span style="font-weight: bold">Editor : </span>
+          {{ editedBy }}
+        </v-card-text>
+
+        <!-- Geometry -->
+        <v-card-text class="py-0">
+          <span style="font-weight: bold">X : </span> {{ facility.properties.x }} -
+          <span style="font-weight: bold">Y : </span> {{ facility.properties.y }} -
+          <span style="font-weight: bold">Z : </span> {{ facility.properties.z }}
         </v-card-text>
 
         <v-card-text class="pt-0">
-          <span style="font-weight: bold">Longitude : </span> {{ facility.id ? facility.geometry.coordinates[0] : 0 }} -
-          <span style="font-weight: bold">Latitude : </span> {{ facility.id ? facility.geometry.coordinates[1] : 0 }}
+          <span style="font-weight: bold">Longitude : </span> {{ facility.geometry.coordinates[0] }} -
+          <span style="font-weight: bold">Latitude : </span> {{ facility.geometry.coordinates[1] }}
         </v-card-text>
 
         <v-divider />
 
+        <!-- Properties -->
         <v-card-title> Properties </v-card-title>
 
+        <!-- Layer -->
         <v-select
           class="mx-2"
           label="Layer"
@@ -32,7 +44,7 @@
           item-value="description"
         />
 
-        <!-- properties -->
+        <!-- Properties -->
         <div v-for="[name, object] in Object.entries(targetLayer.attributes)" :key="name">
           <v-select
             class="mx-2"
@@ -44,14 +56,21 @@
             item-text="description"
             item-value="data"
             v-model="facility.properties[name]"
+            clearable
+            :placeholder="object.placeholder"
           >
             <template v-slot:item="{ item }">
-              <v-img :src="item.url" max-width="50" min-width="50" class="mr-3" />
+              <v-img v-if="item.url" :src="item.url" max-width="50" min-width="50" class="mr-3" />
               {{ item.description }}
             </template>
           </v-select>
           <v-card-text v-else-if="object.method === 'type'">
-            <v-text-field class="pt-0 mt-0" :label="name" v-model="facility.properties[name]" />
+            <v-text-field
+              class="pt-0 mt-0"
+              :label="name"
+              v-model="facility.properties[name]"
+              :placeholder="object.placeholder"
+            />
           </v-card-text>
 
           <!-- Inner  Properties -->
@@ -74,10 +93,12 @@
               :items="sub.candidates"
               item-text="description"
               item-value="data"
+              :placeholder="sub.placeholder"
               v-model="facility.properties[prop]"
+              clearable
             >
               <template v-slot:item="{ item }">
-                <v-img :src="item.url" max-width="50" min-width="50" class="mr-3" />
+                <v-img v-if="item.url" :src="item.url" max-width="50" min-width="50" class="mr-3" />
                 {{ item.description }}
               </template>
             </v-select>
@@ -86,11 +107,13 @@
 
         <!-- Comment -->
         <v-card-text>
-          <v-text-field class="pt-0 mt-0" label="Comment" v-model="comment" />
+          <v-text-field class="pt-0 mt-0" label="Comment" v-model="comment" placeholder="추가정보" />
         </v-card-text>
         <v-card-actions>
+          <v-checkbox v-model="facility.relations.located" label="위치 보정" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="facility.relations.proped" label="속성값 입력" dense class="mx-2"></v-checkbox>
           <v-spacer></v-spacer>
-          <v-btn @click="edit">Apply</v-btn>
+          <v-btn @click="edit" class="mr-2">Apply</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -104,9 +127,10 @@ import C from '~/assets/classes/morai/C'
 import D from '~/assets/classes/morai/D'
 
 const classes = [A, B, C, D]
+const DFT_USER = 'stryx@stryx.co.kr'
 
 export default {
-  data: () => ({ facility: { properties: {} } }),
+  data: () => ({ facility: { properties: {} }, createdBy: undefined, editedBy: undefined }),
   props: {
     id: String
   },
@@ -161,16 +185,40 @@ export default {
     },
     ls() {
       return this.$store.state.ls
+    },
+    createdAt() {
+      if (!this.facility.created_at) return
+      const date = new Date(Date.parse(this.facility.created_at))
+      const full = date.toString()
+      const list = full.split(' ')
+      return list.splice(0, 5).reduce((pre, post) => `${post} ${pre}`)
+    },
+    editedAt() {
+      if (!this.facility.edited_at) return
+      const date = new Date(Date.parse(this.facility.edited_at))
+      const full = date.toString()
+      const list = full.split(' ')
+      return list.splice(0, 5).reduce((pre, post) => `${post} ${pre}`)
     }
   },
 
   fetchOnServer: false,
 
   async fetch() {
+    const get = this.$axios.get
     const config = this.getAuthConfig()
-    const res = await this.$axios.get(`/api/facility?id=${this.id}`, config)
+    const res = await get(`/api/facility?id=${this.id}`, config)
     const facility = res.data[0]
     this.facility = facility
+
+    // Get Drawer
+    if (facility.created_by)
+      get(`/api/user?id=${facility.created_by}`, config).then(res => (this.createdBy = res.data[0].email))
+    else this.createdBy = DFT_USER
+    if (facility.edited_by)
+      get(`/api/user?id=${facility.edited_by}`, config).then(res => (this.editedBy = res.data[0].email))
+    else this.editedBy = DFT_USER
+
     if (process.env.dev) console.log('Editing is', facility)
   },
 

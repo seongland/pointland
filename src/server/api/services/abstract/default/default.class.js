@@ -19,6 +19,7 @@ export default class HidraService extends Service {
       id = uuid()
       body = { ...body, id }
     }
+    body.created_by = meta.user.id
     const result = super.create(body, meta)
     return result
   }
