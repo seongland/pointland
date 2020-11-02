@@ -1,8 +1,8 @@
 /**
  * @summary - default feathers class
  */
-import { Service } from "feathers-mongoose"
-import { v4 as uuid } from "uuid"
+import { Service } from 'feathers-mongoose'
+import { v4 as uuid } from 'uuid'
 
 export default class HidraService extends Service {
   setup(app) {
@@ -34,7 +34,6 @@ export default class HidraService extends Service {
 
   patch(id, body, meta) {
     body.edited_by = meta.user.id
-    body.edited_by_table = "user"
     return super.patch(id, body, meta)
   }
 }

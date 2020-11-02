@@ -1,11 +1,9 @@
 const defaultProperties = {
   // Main Data
   id: { type: String, required: true, unique: true },
-  description: { type: String, default: undefined },
 
   // Revision Data
-  edited_by: { type: String, default: undefined },
-  edited_by_table: { type: String, default: undefined }
+  edited_by: { type: String, default: undefined }
 }
 
 export const defaultOptions = {
