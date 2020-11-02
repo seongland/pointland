@@ -9,7 +9,7 @@
       "attributes": {
         "Type": {
           "type": "String",
-          "placeholder": "대분류",
+          "placeholder": "분류",
           "method": "select",
           "optional": false,
           "candidates": [

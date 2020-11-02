@@ -40,23 +40,23 @@
           <v-card-text class="py-0" v-if="facility.properties[name] !== undefined && object.candidates">
             <span style="font-weight: bold">{{ object.placeholder }} </span> -
             {{ object.candidates.filter(c => c.data === facility.properties[name])[0].description }}
-          </v-card-text>
 
-          <div
-            v-for="[prop, sub] in facility.properties[name] && object.candidates
-              ? Object.entries(
-                  object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
-                    ? object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
-                    : {}
-                )
-              : []"
-            :key="prop"
-          >
-            <v-card-text v-if="facility.properties[prop] !== undefined && sub.candidates">
-              <span style="font-weight: bold">{{ sub.placeholder }} </span> -
-              {{ sub.candidates.filter(c => c.data === facility.properties[prop])[0].description }}
-            </v-card-text>
-          </div>
+            <span
+              v-for="[prop, sub] in facility.properties[name] && object.candidates
+                ? Object.entries(
+                    object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
+                      ? object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
+                      : {}
+                  )
+                : []"
+              :key="prop"
+            >
+              <span v-if="facility.properties[prop] !== undefined && sub.candidates">
+                <span style="font-weight: bold">{{ sub.placeholder }} </span> -
+                {{ sub.candidates.filter(c => c.data === facility.properties[prop])[0].description }}
+              </span>
+            </span>
+          </v-card-text>
         </div>
 
         <!-- Comment -->

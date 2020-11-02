@@ -110,8 +110,8 @@
           <v-text-field class="pt-0 mt-0" label="Comment" v-model="comment" placeholder="추가정보" />
         </v-card-text>
         <v-card-actions>
-          <v-checkbox v-model="facility.relations.located" label="위치 보정" dense class="mx-2"></v-checkbox>
-          <v-checkbox v-model="facility.relations.proped" label="속성값 입력" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="facility.relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="facility.relations.proped" label="속성값 입력 완료" dense class="mx-2"></v-checkbox>
           <v-spacer></v-spacer>
           <v-btn @click="edit" class="mr-2">Apply</v-btn>
         </v-card-actions>
