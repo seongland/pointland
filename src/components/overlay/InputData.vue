@@ -98,8 +98,8 @@
           <v-text-field label="Comment" class="pt-0 mt-0" v-model="comment" placeholder="추가정보" />
         </v-card-text>
         <v-card-actions>
-          <v-checkbox v-model="selected[0].relations.located" label="위치 보정" dense class="mx-2"></v-checkbox>
-          <v-checkbox v-model="selected[0].relations.proped" label="속성값 입력" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="selected[0].relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="selected[0].relations.proped" label="속성값 입력 완료" dense class="mx-2"></v-checkbox>
           <v-spacer></v-spacer>
           <v-btn :loading="$store.state.submit.loading" @click="submit">Submit</v-btn>
         </v-card-actions>
