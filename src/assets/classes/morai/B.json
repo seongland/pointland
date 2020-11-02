@@ -9,7 +9,9 @@
       "attributes": {
         "Type": {
           "type": "String",
+          "placeholder": "대분류",
           "method": "select",
+          "optional": false,
           "candidates": [
             {
               "data": "1",
@@ -19,6 +21,8 @@
               "attributes": {
                 "SubType": {
                   "type": "String",
+                  "placeholder": "소분류",
+                  "optional": false,
                   "method": "select",
                   "candidates": [
                     {
@@ -741,12 +745,35 @@
             }
           ]
         },
+        "Post": {
+          "type": "Boolean",
+          "optional": false,
+          "method": "select",
+          "placeholder": "위치",
+          "candidates": [
+            {
+              "data": true,
+              "name": "Vertical_Post",
+              "description": "세로 기둥"
+            },
+            {
+              "data": false,
+              "name": "Horizontal_Post",
+              "description": "가로 기둥"
+            }
+          ]
+        },
         "Value": {
           "type": "String",
-          "method": "type"
+          "optional": true,
+          "placeholder": "수치값",
+          "method": "type",
+          "attributes": {}
         },
         "Unit": {
           "type": "String",
+          "optional": true,
+          "placeholder": "단위",
           "method": "select",
           "candidates": [
             {
@@ -760,22 +787,6 @@
             {
               "data": "t",
               "description": "톤"
-            }
-          ]
-        },
-        "Post": {
-          "type": "Boolean",
-          "method": "select",
-          "candidates": [
-            {
-              "data": true,
-              "name": "Vertical_Post",
-              "description": "세로 기둥"
-            },
-            {
-              "data": false,
-              "name": "Horizontal_Post",
-              "description": "가로 기둥"
             }
           ]
         }

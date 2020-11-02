@@ -3,6 +3,7 @@ const defaultProperties = {
   id: { type: String, required: true, unique: true },
 
   // Revision Data
+  created_by: { type: String, default: undefined },
   edited_by: { type: String, default: undefined }
 }
 

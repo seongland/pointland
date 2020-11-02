@@ -10,6 +10,8 @@
         "Type": {
           "type": "String",
           "method": "select",
+          "placeholder": "대분류",
+          "optional": false,
           "candidates": [
             {
               "data": "1",

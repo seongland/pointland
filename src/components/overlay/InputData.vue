@@ -4,7 +4,7 @@
       <v-card class="elevation-24">
         <v-card-title v-text="description" />
         <v-divider />
-        <v-card-title> {{ selected[0] ? selected[0].geometry.type : '' }}</v-card-title>
+        <v-card-title> {{ selected[0].geometry.type }}</v-card-title>
         <v-card-text class="py-0">
           <span style="font-weight: bold">X : </span> {{ selected[0].properties.x }} -
           <span style="font-weight: bold">Y : </span> {{ selected[0].properties.y }} -
@@ -42,7 +42,9 @@
             v-if="object.method === 'select'"
             :items="object.candidates"
             item-text="description"
+            clearable
             item-value="data"
+            :placeholder="object.placeholder"
             v-model="selected[0].properties[name]"
           >
             <template v-slot:item="{ item }">
@@ -51,7 +53,12 @@
             </template></v-select
           >
           <v-card-text v-else-if="object.method === 'type'">
-            <v-text-field class="pt-0 mt-0" :label="name" v-model="selected[0].properties[name]" />
+            <v-text-field
+              class="pt-0 mt-0"
+              :label="name"
+              v-model="selected[0].properties[name]"
+              :placeholder="object.placeholder"
+            />
           </v-card-text>
 
           <!-- Inner  Properties -->
@@ -74,6 +81,8 @@
               :items="sub.candidates"
               item-text="description"
               item-value="data"
+              :placeholder="sub.placeholder"
+              clearable
               v-model="selected[0].properties[prop]"
             >
               <template v-slot:item="{ item }">
@@ -86,9 +95,11 @@
 
         <!-- Comment -->
         <v-card-text>
-          <v-text-field label="Comment" class="pt-0 mt-0" v-model="comment" />
+          <v-text-field label="Comment" class="pt-0 mt-0" v-model="comment" placeholder="추가정보" />
         </v-card-text>
         <v-card-actions>
+          <v-checkbox v-model="selected[0].relations.located" label="위치 보정" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="selected[0].relations.proped" label="속성값 입력" dense class="mx-2"></v-checkbox>
           <v-spacer></v-spacer>
           <v-btn :loading="$store.state.submit.loading" @click="submit">Submit</v-btn>
         </v-card-actions>
