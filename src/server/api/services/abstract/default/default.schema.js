@@ -12,7 +12,7 @@ export const defaultOptions = {
     updatedAt: 'edited_at'
   },
   versionKey: false,
-  strict: 'throw'
+  strict: false
 }
 
 export default app => {
