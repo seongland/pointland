@@ -752,6 +752,14 @@
             {
               "data": "km/h",
               "description": "시속"
+            },
+            {
+              "data": "m",
+              "description": "미터"
+            },
+            {
+              "data": "t",
+              "description": "톤"
             }
           ]
         },

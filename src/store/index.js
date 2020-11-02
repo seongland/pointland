@@ -84,7 +84,6 @@ export const actions = {
       feature.properties.comment = comment
       if (args) for (const key of Object.keys(args)) feature.properties[key] = args[key]
     }
-    feature.relations.maker = state.ls.user.email
 
     if (process.env.dev) console.log('Result Feature', feature)
     const config = app.getAuthConfig()
