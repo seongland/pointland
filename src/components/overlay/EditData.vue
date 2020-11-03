@@ -32,46 +32,67 @@
         <v-card-title> Properties </v-card-title>
 
         <!-- Layer -->
-        <v-select
-          class="mx-2"
-          label="Layer"
-          solo
-          return-object
-          dense
-          v-model="targetLayer"
-          :items="sameTypes"
-          item-text="description"
-          item-value="description"
-        />
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-select
+              class="mx-2"
+              label="Layer"
+              solo
+              return-object
+              dense
+              v-bind="attrs"
+              v-on="on"
+              v-model="targetLayer"
+              :items="sameTypes"
+              item-text="description"
+              item-value="description"
+            />
+          </template>
+          <span>시설물의 종류를 변경합니다</span>
+        </v-tooltip>
 
         <!-- Properties -->
         <div v-for="[name, object] in Object.entries(targetLayer.attributes)" :key="name">
-          <v-select
-            class="mx-2"
-            :label="name"
-            solo
-            dense
-            v-if="object.method === 'select'"
-            :items="object.candidates"
-            item-text="description"
-            item-value="data"
-            v-model="facility.properties[name]"
-            clearable
-            :placeholder="object.placeholder"
-          >
-            <template v-slot:item="{ item }">
-              <v-img v-if="item.url" :src="item.url" max-width="50" min-width="50" class="mr-3" />
-              {{ item.description }}
+          <v-tooltip top v-if="object.method === 'select'">
+            <template v-slot:activator="{ on, attrs }">
+              <v-select
+                class="mx-2"
+                :label="name"
+                solo
+                dense
+                v-bind="attrs"
+                v-on="on"
+                :items="object.candidates"
+                item-text="description"
+                item-value="data"
+                v-model="facility.properties[name]"
+                clearable
+                :placeholder="object.placeholder"
+              >
+                <template v-slot:item="{ item }">
+                  <v-img v-if="item.url" :src="item.url" max-width="50" min-width="50" class="mr-3" />
+                  {{ item.description }}
+                </template>
+              </v-select>
             </template>
-          </v-select>
-          <v-card-text v-else-if="object.method === 'type'">
-            <v-text-field
-              class="pt-0 mt-0"
-              :label="name"
-              v-model="facility.properties[name]"
-              :placeholder="object.placeholder"
-            />
-          </v-card-text>
+            <span>{{ object.tooltip }}</span>
+          </v-tooltip>
+
+          <v-tooltip top v-else-if="object.method === 'type'">
+            <template v-slot:activator="{ on, attrs }">
+              <v-card-text>
+                <v-text-field
+                  class="pt-0 mt-0"
+                  :label="name"
+                  v-bind="attrs"
+                  v-on="on"
+                  v-model="facility.properties[name]"
+                  :placeholder="object.placeholder"
+                />
+              </v-card-text>
+            </template>
+            <span>{{ object.tooltip }}</span>
+          </v-tooltip>
 
           <!-- Inner  Properties -->
           <div
@@ -84,31 +105,50 @@
               : []"
             :key="prop"
           >
-            <v-select
-              class="mx-2"
-              :label="prop"
-              solo
-              dense
-              v-if="sub.method === 'select'"
-              :items="sub.candidates"
-              item-text="description"
-              item-value="data"
-              :placeholder="sub.placeholder"
-              v-model="facility.properties[prop]"
-              clearable
-            >
-              <template v-slot:item="{ item }">
-                <v-img v-if="item.url" :src="item.url" max-width="50" min-width="50" class="mr-3" />
-                {{ item.description }}
+            <v-tooltip top v-if="sub.method === 'select'">
+              <template v-slot:activator="{ on, attrs }">
+                <v-select
+                  class="mx-2"
+                  :label="prop"
+                  solo
+                  dense
+                  :items="sub.candidates"
+                  item-text="description"
+                  v-bind="attrs"
+                  v-on="on"
+                  item-value="data"
+                  :placeholder="sub.placeholder"
+                  v-model="facility.properties[prop]"
+                  clearable
+                >
+                  <template v-slot:item="{ item }">
+                    <v-img v-if="item.url" :src="item.url" max-width="50" min-width="50" class="mr-3" />
+                    {{ item.description }}
+                  </template>
+                </v-select>
               </template>
-            </v-select>
+              <span>{{ sub.tooltip }}</span>
+            </v-tooltip>
           </div>
         </div>
 
         <!-- Comment -->
-        <v-card-text>
-          <v-text-field class="pt-0 mt-0" label="Comment" v-model="comment" placeholder="추가정보" />
-        </v-card-text>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-card-text>
+              <v-text-field
+                class="pt-0 mt-0"
+                label="Comment"
+                v-bind="attrs"
+                v-on="on"
+                v-model="comment"
+                placeholder="추가정보"
+              />
+            </v-card-text>
+          </template>
+          <span>예외사항이나 추가적인 정보를 상세히 기입합니다</span>
+        </v-tooltip>
+
         <v-card-actions>
           <v-checkbox v-model="facility.relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
           <v-checkbox v-model="facility.relations.proped" label="속성값 입력 완료" dense class="mx-2"></v-checkbox>
