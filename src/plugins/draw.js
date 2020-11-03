@@ -19,7 +19,12 @@ const POINT_ID = 'Point'
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
+      drawLas: (lasJson, name) => drawLas(lasJson, name),
+
       removeVector(layerName, id) {
+        /*
+         * @summary - Rmove One Vector from All layer by id
+         */
         const mapLayer = mapRef[layerName]
         const cloudLayer = cloudRef[layerName]
         const imgLayer = imgRef[layerName]
@@ -29,9 +34,10 @@ export default ({ store: { commit, state } }) => {
         erase(imgLayer, id)
       },
 
-      drawLas: (lasJson, name) => drawLas(lasJson, name),
-
       selectXYZ(xyz, id) {
+        /*
+         * @summary - Draw Selected Facility
+         */
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
         drawXY(mapRef.selectedLayer, latlng, false, id)
@@ -39,6 +45,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       markXYZ(xyz, id) {
+        /*
+         * @summary - Draw Mark
+         */
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
         drawXY(mapRef.markLayer, latlng, false, id)
@@ -46,6 +55,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       currentXYZ(xyz) {
+        /*
+         * @summary - Draw Current Mark
+         */
         resetPointLayer(cloudRef.currentLayer)
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
@@ -54,6 +66,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       drawnXYZ(xyz, id) {
+        /*
+         * @summary - Draw drawn Facility
+         */
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
         drawXY(mapRef.drawnLayer, latlng, false, id)
@@ -61,10 +76,16 @@ export default ({ store: { commit, state } }) => {
       },
 
       drawnXYZs(xyzs, ids) {
+        /*
+         * @summary - Draw drawn Facilities
+         */
         for (const index in xyzs) this.drawnXYZ(xyzs[index], ids[index])
       },
 
       async drawnFacilities(currentMark) {
+        /*
+         * @summary - Get & Draw drawn Facilities
+         */
         let layer = state.ls.targetLayer?.object?.layer
         let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}`
         if (layer) url += `/${layer}`
@@ -85,6 +106,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       async drawFacilities(facilites, currentMark, layer) {
+        /*
+         * @summary - Draw facilities to image
+         */
         const xyzds = []
         for (const facility of facilites) {
           let id = facility.id ? facility.id : POINT_ID

@@ -1,94 +1,16 @@
 <template>
   <div class="wrapper">
-    <v-tabs v-model="index" class="header">
-      <v-subheader v-text="title + ' ' + meta.version" />
-      <v-spacer />
-      <v-tab v-for="tab in tabs" :key="tab.name"> {{ tab.name }} </v-tab>
-      <v-spacer />
-      <v-select
-        class="mt-1 mr-2 rounds"
-        label="Round"
-        solo
-        :items="$store.state.ls.rounds"
-        item-text="name"
-        item-value="name"
-        v-model="currentRound"
-        return-object
-        dense
-      ></v-select>
-      <v-select
-        class="mt-1 mr-4 snaps"
-        label="Snap"
-        solo
-        :items="currentRound ? currentRound.snaps : []"
-        item-text="name"
-        item-value="name"
-        v-model="currentSnap"
-        return-object
-        dense
-      ></v-select>
-      <v-select
-        class="mt-1 mr-4 marks"
-        label="Mark"
-        solo
-        :items="currentSnap ? currentSnap.marks : []"
-        item-text="name"
-        item-value="name"
-        v-model="currentMark"
-        return-object
-        dense
-      ></v-select>
-    </v-tabs>
+    <!-- header -->
+    <tab-header />
 
+    <!-- sidebar -->
+    <v-card class="sidebar">
+      <facility-table v-if="index === 0" />
+      <layer-list />
+    </v-card>
+
+    <!-- body -->
     <v-card class="main wrapper">
-      <v-navigation-drawer permanent expand-on-hover app color="grey darken-4">
-        <v-list>
-          <v-list-item class="px-2">
-            <v-list-item-avatar>
-              <v-img src="/profile.png"></v-img>
-            </v-list-item-avatar>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-content>
-              <v-list-item-subtitle v-text="$store.state.ls.user ? $store.state.ls.user.email : ''" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-
-        <v-divider></v-divider>
-
-        <v-list nav dense>
-          <v-list-item-group v-model="layerIndex" color="primary">
-            <div v-for="classObj in classes" :key="classObj.class">
-              <v-list-item
-                link
-                v-for="layerObj in classObj.layers"
-                :key="layerObj.layer"
-                @click="setLayer({ object: layerObj })"
-              >
-                <v-list-item-icon v-text="layerObj.layer" />
-                <v-list-item-title v-text="layerObj.description" />
-                <v-list-item-subtitle v-text="layerObj.type" />
-              </v-list-item>
-              <v-divider></v-divider>
-            </div>
-          </v-list-item-group>
-
-          <v-list>
-            <v-list-item link>
-              <v-list-item-content>
-                <v-list-item-subtitle v-text="`Help`" @click="$router.push('/help')" />
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item link>
-              <v-list-item-content>
-                <v-list-item-subtitle v-text="`Logout`" @click="$store.commit('ls/logout')" />
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-list>
-      </v-navigation-drawer>
-
       <v-tabs-items v-model="index" class="wrapper">
         <v-tab-item v-for="(tab, i) in tabs" :key="i" class="wrapper" eager>
           <geo-map id="global-map" v-if="tab.type === 'map'" class="wrapper" />
@@ -98,6 +20,7 @@
       </v-tabs-items>
     </v-card>
 
+    <!-- overlay -->
     <v-dialog v-if="submitting" v-model="showSubmit">
       <input-data
         :layer="targetLayer.object ? targetLayer.object.layer : ''"
@@ -110,31 +33,29 @@
     <v-dialog v-if="editing" v-model="showEdit">
       <edit-data :id="$store.state.edit.id" />
     </v-dialog>
+
+    <!-- loading -->
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
     <v-overlay :value="$store.state.depth.loading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular
-    ></v-overlay>
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 
 <script>
-import A from '~/assets/classes/morai/A'
-import B from '~/assets/classes/morai/B'
-import C from '~/assets/classes/morai/C'
-import D from '~/assets/classes/morai/D'
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
 import InputData from '~/components/overlay/InputData'
 import EditData from '~/components/overlay/EditData'
 import DelData from '~/components/overlay/DelData'
-
-const classes = [A, B, C, D]
+import FacilityTable from '~/components/sidebar/FacilityTable'
+import LayerList from '~/components/sidebar/LayerList'
+import TabHeader from '~/components/header/TabHeader'
 
 export default {
   middleware: 'authentication',
-  components: { GeoMap, LasCloud, ImmsImage, InputData, EditData, DelData },
-  data: () => ({ classes }),
+  components: { TabHeader, GeoMap, LasCloud, ImmsImage, InputData, EditData, DelData, FacilityTable, LayerList },
   fetchOnServer: false,
 
   async fetch() {
@@ -162,7 +83,6 @@ export default {
         this.$store.commit('setIndex', values)
       }
     },
-
     showSubmit: {
       get() {
         return this.$store.state.submit.show
@@ -195,44 +115,8 @@ export default {
         this.$store.commit('setState', { props: ['del', 'ing'], value })
       }
     },
-
-    currentRound: {
-      get() {
-        return this.$store.state.ls.currentRound
-      },
-      set(values) {
-        if (process.env.dev) console.log('Set Round', values)
-        this.setRound(values)
-      }
-    },
-    currentSnap: {
-      get() {
-        return this.$store.state.ls.currentSnap
-      },
-      set(values) {
-        if (process.env.dev) console.log('Set Snap', values)
-        this.setSnap(values)
-      }
-    },
-    currentMark: {
-      get() {
-        return this.$store.state.ls.currentMark
-      },
-      set(values) {
-        if (process.env.dev) console.log('Set Mark', values)
-        this.setMark(values)
-      }
-    },
     targetLayer() {
       return this.$store.state.ls.targetLayer
-    },
-    layerIndex: {
-      get() {
-        return this.$store.state.ls.targetLayer.index
-      },
-      set(values) {
-        this.setLayer({ index: values })
-      }
     }
   }
 }
