@@ -749,6 +749,7 @@
           "type": "Boolean",
           "optional": false,
           "method": "select",
+          "tooltip": "표지판이 기둥의 어디에 있는지 입력합니다",
           "placeholder": "위치",
           "candidates": [
             {
@@ -766,6 +767,7 @@
         "Value": {
           "type": "String",
           "optional": true,
+          "tooltip": "속도제한 등 수치값이 있을 때 입력합니다",
           "placeholder": "수치값",
           "method": "type",
           "attributes": {}
@@ -774,6 +776,7 @@
           "type": "String",
           "optional": true,
           "placeholder": "단위",
+          "tooltip": "수치값의 단위를 입력합니다",
           "method": "select",
           "candidates": [
             {
