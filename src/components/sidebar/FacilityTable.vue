@@ -25,7 +25,7 @@
                 v-on="on"
                 solo
                 dense
-                label="작업 타겟"
+                label="전체 작업"
                 :items="filters"
                 item-text="label"
                 item-value="task"
@@ -37,7 +37,18 @@
 
       <v-divider></v-divider>
 
-      <v-list><v-data-table class="mx-5" @click:row="clickRow" :headers="headers" :items="items" /> </v-list>
+      <v-list>
+        <v-data-table
+          @page-count="pageCount = $event"
+          hide-default-footer
+          class="mx-5"
+          :page.sync="page"
+          @click:row="clickRow"
+          :headers="headers"
+          :items="items"
+        />
+        <v-pagination v-model="page" :length="pageCount" />
+      </v-list>
 
       <v-divider></v-divider>
 
@@ -58,6 +69,8 @@ import { ref as imgRef } from '~/plugins/image/init'
 
 export default {
   data: () => ({
+    page: 1,
+    pageCount: 10,
     show: false,
     mini: false,
     filters: [
