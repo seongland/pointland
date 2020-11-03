@@ -9,7 +9,7 @@ export default new mongoose.Schema(
 
     Orientation: { type: String },
     Type: { type: String },
-    SubType: { type: String },
+    SubType: { type: mongoose.Mixed },
     Value: { type: String },
     Unit: { type: String },
     Post: { type: Boolean },

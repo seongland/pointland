@@ -8,6 +8,7 @@ export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
   allowedLayers: ['B1', 'C1'],
   index: 1,
+  facilities: [],
   loading: true,
   depth: { loading: false, on: true },
   submit: { show: false, ing: false, loading: false },
@@ -52,7 +53,6 @@ export const mutations = {
         mapWrapper.classList.add('small-map')
         setTimeout(() => {
           mapWrapper.style.opacity = 1
-          mapWrapper.style.transitionDuration = '500ms'
           window.dispatchEvent(new Event('resize'))
         }, WAIT_RENDER)
       })

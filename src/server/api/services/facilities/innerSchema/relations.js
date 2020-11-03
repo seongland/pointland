@@ -6,8 +6,8 @@ export default new mongoose.Schema(
   {
     images: { type: [imageSchema] },
     pointclouds: { type: [pcdSchema] },
-    located: { type: Boolean },
-    proped: { type: Boolean },
+    located: { type: Boolean, default: false },
+    proped: { type: Boolean, default: false },
     maker: { type: String, default: 'Stryx' }
   },
   { _id: false }

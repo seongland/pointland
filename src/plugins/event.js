@@ -11,33 +11,60 @@ export default ({ store: { commit, state } }) => {
       setRound: round => commit('ls/setRound', round),
       setRounds: rounds => commit('ls/setRounds', rounds),
       checkMount: () => mapRef.map !== undefined && cloudRef.cloud.offset !== undefined,
+      getAuthConfig: () => ({ headers: { Authorization: state.ls.accessToken } }),
+
+      async waitAvail(flag, callback, args) {
+        /*
+         * @summary - Wait for mount template function
+         */
+        flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
+      },
 
       clickMark(feature) {
+        /*
+         * @summary - Map Click Mark Callback
+         */
         if (feature) {
           const markId = feature.getId()
           for (const markObj of state.ls.currentSnap.marks) if (markObj.name === markId) this.setMark(markObj)
         }
       },
 
-      getAuthConfig: () => ({ headers: { Authorization: state.ls.accessToken } }),
-
       async clickDrawn(feature) {
+        /*
+         * @summary - Map Click Drawn Callback
+         */
         const id = feature.getId()
+        this.selectID(id)
+      },
+
+      async selectID(id) {
+        /*
+         * @summary - Select by Document ID
+         */
         const config = this.getAuthConfig()
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
         const facility = res.data[0]
+        this.selectFacility(facility)
+      },
+
+      async selectFacility(facility) {
+        /*
+         * @summary - Select by Facility Document
+         */
         const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
         await this.drawSelectedXYZ(xyz)
         commit('selectFeature', facility)
       },
 
-      async waitAvail(flag, callback, args) {
-        flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
-      },
-
       async setSnap(snapObj) {
+        /*
+         * @summary - Set Snap
+         */
         commit('setLoading', true)
         snapObj.round = state.ls.currentRound.name
+
+        // Get Snap Object
         const apiUrl = `/api/meta/${snapObj.round}/${snapObj.name}`
         const config = this.getAuthConfig()
         config.data = { snap: snapObj }
@@ -45,6 +72,8 @@ export default ({ store: { commit, state } }) => {
         snapObj.areas = snapRes.data.areas
         snapObj.marks = snapRes.data.marks
         const previous = state.ls.currentSnap
+
+        // Check Previous
         if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) await this.resetSnap()
         commit('ls/setSnap', snapObj)
         for (const mark of snapObj.marks)
@@ -52,6 +81,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       setMark(markObj) {
+        /*
+         * @summary - Set Mark
+         */
         commit('ls/setMark', markObj)
         this.waitAvail(this.checkMount, this.currentXYZ, [[markObj.x, markObj.y, markObj.alt]])
       },
@@ -61,6 +93,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       keyUp(event) {
+        /*
+         * @summary - Special Callback
+         */
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         switch (event.key) {
           case 'Delete':
@@ -77,6 +112,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       keyEvent(event) {
+        /*
+         * @summary - Normal Key Callback
+         */
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         let seqIndex
         const ls = this.$store.state.ls
