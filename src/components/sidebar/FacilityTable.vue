@@ -46,7 +46,16 @@
           @click:row="clickRow"
           :headers="headers"
           :items="items"
-        />
+        >
+          <template v-for="h in headers" v-slot:[`header.${h.value}`]="{ header }">
+            <v-tooltip top :key="h.value">
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{ header.text }}</span>
+              </template>
+              <span>{{ header.tooltip }}</span>
+            </v-tooltip>
+          </template>
+        </v-data-table>
         <v-pagination v-model="page" :length="pageCount" />
       </v-list>
 
@@ -78,10 +87,11 @@ export default {
       { label: '위치보정', task: { data: false, prop: 'located' } }
     ],
     headers: [
-      { text: 'Index', value: 'index' },
-      { text: 'Layer', value: 'properties.layer' },
-      { text: '속성입력', value: 'relations.proped' },
-      { text: '위치보정', value: 'relations.located' }
+      { align: 'center', text: '참조', value: 'index' },
+      { align: 'center', text: '레이어', value: 'properties.layer' },
+      { align: 'center', text: '이미지', value: 'relations.visible', tooltip: '시야각 내 확인 가능' },
+      { align: 'center', text: '속성입력', value: 'relations.proped', tooltip: '속성값 입력 완료' },
+      { align: 'center', text: '위치보정', value: 'relations.located', tooltip: '위치 보정 완료' }
     ]
   }),
   computed: {

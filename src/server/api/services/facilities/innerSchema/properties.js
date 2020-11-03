@@ -13,6 +13,10 @@ export default new mongoose.Schema(
     Value: { type: String },
     Unit: { type: String },
     Post: { type: Boolean },
+    Orientation: { type: String },
+
+    LinkID: { type: String },
+    NodeID: { type: String },
 
     layer: { type: String },
     version: { type: String, default: 'morai' }

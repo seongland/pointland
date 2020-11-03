@@ -102,7 +102,7 @@ export default ({ store: { commit, state } }) => {
 
         // Filter Facilities
         const task = state.ls.targetTask
-        let filteredFacilities = facilities.filter(item => item.relations.visible)
+        let filteredFacilities = facilities
         if (task) filteredFacilities = filteredFacilities.filter(item => item.relations[task.prop] === task.data)
         commit('setState', { props: ['facilities'], value: filteredFacilities })
 

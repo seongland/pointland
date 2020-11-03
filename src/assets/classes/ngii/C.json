@@ -10,7 +10,7 @@
         "Type": {
           "type": "String",
           "method": "select",
-          "placeholder": "분류",
+          "placeholder": "대분류",
           "optional": false,
           "candidates": [
             {
@@ -91,63 +91,6 @@
             {
               "data": "99",
               "description": "기타 신호등 유형"
-            }
-          ]
-        },
-        "User": {
-          "type": "String",
-          "method": "select",
-          "placeholder": "사용자",
-          "optional": false,
-          "candidates": [
-            {
-              "data": "car",
-              "description": "일반 차량용"
-            },
-            {
-              "data": "bus",
-              "description": "버스 전용"
-            },
-            {
-              "data": "pedestrian",
-              "description": "보행자용"
-            }
-          ]
-        },
-        "SubType": {
-          "type": "Array",
-          "method": "multiselect",
-          "tooltip": "왼->오, 위-> 아래 순서로 표기하되 보행자 신호의 경우 표기하지 않는다",
-          "placeholder": "신호순서",
-          "optional": false,
-          "candidates": [
-            {
-              "data": "red",
-              "description": "일반 차량용"
-            },
-            {
-              "data": "yellow",
-              "description": "버스 전용"
-            },
-            {
-              "data": "pedestrian",
-              "description": "보행자용"
-            }
-          ]
-        },
-        "Orientation": {
-          "type": "String",
-          "method": "select",
-          "placeholder": "신호등 모양",
-          "optional": false,
-          "candidates": [
-            {
-              "data": "horizontal",
-              "description": "횡형 신호등"
-            },
-            {
-              "data": "vertical",
-              "description": "종형 신호등"
             }
           ]
         }
