@@ -42,8 +42,12 @@
       <v-divider></v-divider>
 
       <v-card class="mx-5 my-2">
-        <v-card-text>속성값 입력 필요 - {{ items.filter(item => !item.relations.proped).length }} </v-card-text>
-        <v-card-text>위치보정 필요 - {{ items.filter(item => !item.relations.located).length }} </v-card-text>
+        <v-card-text v-if="!targetTask || targetTask.prop === 'proped'"
+          >속성값 입력 필요 - {{ items.filter(item => !item.relations.proped).length }}
+        </v-card-text>
+        <v-card-text v-if="!targetTask || targetTask.prop === 'located'"
+          >위치보정 필요 - {{ items.filter(item => !item.relations.located).length }}
+        </v-card-text>
       </v-card>
     </div>
   </v-navigation-drawer>
