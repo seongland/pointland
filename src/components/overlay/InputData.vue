@@ -141,8 +141,8 @@
 
         <!-- Actions -->
         <v-card-actions>
-          <v-checkbox v-model="selected[0].relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
           <v-checkbox v-model="selected[0].relations.proped" label="속성값 입력 완료" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="selected[0].relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
           <v-spacer></v-spacer>
           <v-btn class="mr-2" :loading="$store.state.submit.loading" @click="submit">Submit</v-btn>
         </v-card-actions>

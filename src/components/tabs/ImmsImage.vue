@@ -13,7 +13,7 @@
         />
         <v-slider
           class="pt-5 px-5"
-          label="Layer"
+          label="Facilities"
           v-model="opacity.layer"
           :max="1"
           :min="0"

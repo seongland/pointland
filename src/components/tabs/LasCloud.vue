@@ -53,12 +53,15 @@ export default {
       }
 
       // load New las
+      let loadCount = 0
       for (const index of loadList) {
         if (!lasList[index]) continue
         const areaName = lasList[index]
         if (this.lasList.includes(areaName)) continue
         this.loadLas(areaName)
+        loadCount++
       }
+      if (loadCount === 0) commit('setLoading', false)
     }
   },
 

@@ -5,7 +5,7 @@
 
     <!-- sidebar -->
     <v-card class="sidebar">
-      <facility-table v-if="index === 0" />
+      <facility-table />
       <layer-list />
     </v-card>
 

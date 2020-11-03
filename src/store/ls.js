@@ -22,6 +22,7 @@ export const state = () => ({
   currentSnap: undefined,
   currentMark: undefined,
   targetLayer: { index: undefined, object: undefined },
+  targetTask: undefined,
   rounds
 })
 
@@ -103,7 +104,7 @@ export const mutations = {
     if (markIndex >= 0 && state.currentMark.snap === snapObj.name) markObj = snapObj.marks[markIndex]
     if (!markObj) markObj = snapObj.marks[0]
 
-    if (previous) {
+    if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) {
       previous.areas = undefined
       previous.marks = undefined
     }

@@ -90,27 +90,38 @@ export default ({ store: { commit, state } }) => {
         let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}`
         if (layer) url += `/${layer}`
 
-        const res = await this.$axios.get(url)
+        // reset
         await this.resetLayer('drawnLayer')
         resetPointLayer(cloudRef.drawnLayer)
+
+        // Draw to Image
+        const res = await this.$axios.get(url)
         const facilities = res.data
-        const [xyzs, ids] = [[], [], []]
-        for (const facility of facilities) {
+        await this.drawFacilities(facilities, currentMark, imgRef.drawnLayer)
+        updateImg(imgRef.drawnLayer)
+
+        // Filter Facilities
+        const task = state.ls.targetTask
+        let filteredFacilities = facilities.filter(item => item.relations.visible)
+        if (task) filteredFacilities = filteredFacilities.filter(item => item.relations[task.prop] === task.data)
+        commit('setState', { props: ['facilities'], value: filteredFacilities })
+
+        // Draw to Map and Cloud
+        const [xyzs, ids] = [[], []]
+        for (const facility of filteredFacilities) {
           const props = facility.properties
           xyzs.push([props.x, props.y, props.z])
           ids.push(facility.id)
         }
-        await this.drawFacilities(facilities, currentMark, imgRef.drawnLayer)
-        updateImg(imgRef.drawnLayer)
         this.waitAvail(this.checkMount, this.drawnXYZs, [xyzs, ids])
       },
 
-      async drawFacilities(facilites, currentMark, layer) {
+      async drawFacilities(facilities, currentMark, layer) {
         /*
          * @summary - Draw facilities to image
          */
         const xyzds = []
-        for (const facility of facilites) {
+        for (const facility of facilities) {
           let id = facility.id ? facility.id : POINT_ID
           const props = facility.properties
           xyzds.push({ x: props.x, y: props.y, z: props.z, d: 'front', id })
@@ -118,7 +129,10 @@ export default ({ store: { commit, state } }) => {
         }
         const url = `/api/image/convert`
         const fbRes = await this.$axios.post(url, { data: { mark: currentMark, xyzds } })
-        for (const result of fbRes.data) {
+
+        // Draw to image
+        for (const i in fbRes.data) {
+          const result = fbRes.data[i]
           const id = result.id
           const coor = result.coor
           const width = result.width
@@ -126,12 +140,21 @@ export default ({ store: { commit, state } }) => {
           const direction = result.direction
           const wfactor = width / layer[direction].image.bitmap.width
           const hfactor = height / layer[direction].image.bitmap.height
-          if (coor[0] !== -1)
-            drawNear(layer, { x: coor[0] / wfactor, y: coor[1] / hfactor, color: layer.color, id, direction }, false)
+
+          // Set Visible Property
+          const index = Math.floor(i / 2)
+          if (coor[0] !== -1) {
+            const drawOption = { x: coor[0] / wfactor, y: coor[1] / hfactor, color: layer.color, id, direction }
+            drawNear(layer, drawOption, false)
+            facilities[index].relations.visible = true
+          } else if (!facilities[index].relations.visible) facilities[index].relations.visible = false
         }
       },
 
       async drawFromDepth(x, y, depthDir) {
+        /*
+         * @summary - Callback From Image click
+         */
         const targetLayer = this.$store.state.ls.targetLayer
         commit('setLoading', true)
         console.time('xy')
@@ -141,6 +164,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       async drawSelectedXY(depthDir, x, y) {
+        /*
+         * @summary - Callback From Depth Select
+         */
         const ls = this.$store.state.ls
         await this.resetSelected()
         depthDir.layer.selected.image = new jimp(depthDir.width, depthDir.height)
@@ -168,6 +194,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       async drawSelectedXYZ(xyz) {
+        /*
+         * @summary - Callback From Clodu
+         */
         await this.resetSelected()
         commit('select', {
           xyz,
@@ -179,6 +208,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       async resetSelected() {
+        /*
+         * @summary - Reset Selected and Selected Layer
+         */
         mapRef.selectedLayer.getSource().clear()
         resetPointLayer(cloudRef.selectedLayer)
         const depth = imgRef.depth
@@ -193,6 +225,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       async resetLayer(name) {
+        /*
+         * @summary - Reset Layer
+         */
         mapRef[name].getSource().clear()
         resetPointLayer(cloudRef[name])
         const imgLayer = imgRef[name]
@@ -206,6 +241,9 @@ export default ({ store: { commit, state } }) => {
       },
 
       async resetSnap() {
+        /*
+         * @summary - Reset Snap for New Snap
+         */
         await this.resetSelected()
         if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
         if (mapRef.markLayer) mapRef.drawnLayer.getSource().clear()
