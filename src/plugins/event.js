@@ -3,6 +3,7 @@ import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
 import { imageClick } from './image/event'
 import { setFocus } from './map/event'
+import { setFocusXYZ } from './cloud/event'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
@@ -28,6 +29,18 @@ export default ({ store: { commit, state } }) => {
           const markId = feature.getId()
           for (const markObj of state.ls.currentSnap.marks) if (markObj.name === markId) this.setMark(markObj)
         }
+      },
+
+      clickProcessed(feature) {
+        /*
+         * @summary - Map Click Processed geoserver mark
+         */
+        const roundName = feature.get('round')
+        const snapName = feature.get('snap')
+        const markName = feature.get('name')
+        if (process.env.dev) console.log(roundName, snapName, markName)
+        for (const roundObj of state.ls.rounds)
+          if (roundObj.name === roundName) this.setRound({ ...roundObj, snap: snapName, mark: markName })
       },
 
       async clickDrawn(feature) {
@@ -57,6 +70,22 @@ export default ({ store: { commit, state } }) => {
         commit('selectFeature', facility)
       },
 
+      dragSelected(event) {
+        const controls = cloudRef.cloud.controls
+        controls.enabled = !event.value
+        if (controls.enabled) {
+          const transform = cloudRef.cloud.transform
+          const moved = transform.object.position
+          const props = state.selected[0].properties
+          const xyz = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
+          commit('updateGeom', xyz)
+          this.selectFacility(state.selected[0])
+        }
+      },
+
+      layerSelected: () => state.ls.targetLayer.object,
+      layerUnSelected: () => !state.ls.targetLayer.object,
+
       async setSnap(snapObj) {
         /*
          * @summary - Set Snap
@@ -74,10 +103,13 @@ export default ({ store: { commit, state } }) => {
         const previous = state.ls.currentSnap
 
         // Check Previous
-        if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) await this.resetSnap()
+        if (previous && !(snapObj.name === previous.name && previous.round === snapObj.round)) await this.resetSnap()
         commit('ls/setSnap', snapObj)
         for (const mark of snapObj.marks)
           this.waitAvail(this.checkMount, this.markXYZ, [[mark.x, mark.y, mark.alt], mark.name])
+
+        const currentMark = state.ls.currentMark
+        this.waitAvail(this.checkMount, setFocusXYZ, [[currentMark.x, currentMark.y, currentMark.alt]])
       },
 
       setMark(markObj) {
@@ -118,7 +150,7 @@ export default ({ store: { commit, state } }) => {
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         let seqIndex
         const ls = this.$store.state.ls
-        const index = this.$store.state.index
+        const index = this.$store.state.ls.index
         switch (event.key) {
           // change seq
           case ',':
@@ -133,11 +165,11 @@ export default ({ store: { commit, state } }) => {
 
           // change tabs
           case '1':
-            return commit('setIndex', Number(event.key) - 1)
+            return commit('ls/setIndex', Number(event.key) - 1)
           case '2':
-            return commit('setIndex', Number(event.key) - 1)
+            return commit('ls/setIndex', Number(event.key) - 1)
           case '3':
-            return commit('setIndex', Number(event.key) - 1)
+            return commit('ls/setIndex', Number(event.key) - 1)
 
           // Toggle
           case 'm':

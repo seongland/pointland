@@ -6,8 +6,14 @@ import { initImg } from './image/init'
 export default ({ $axios, store: { commit } }) => {
   Vue.mixin({
     methods: {
-      initCloud: option => initCloud(option),
       purgeCloud: () => purgeCloud(),
+
+      initCloud(option) {
+        const cloud = initCloud(option)
+        const transform = cloud.transform
+        transform.removeEventListener('dragging-changed', this.dragSelected)
+        transform.addEventListener('dragging-changed', this.dragSelected)
+      },
 
       async reloadUser() {
         this.meta.version = process.env.version
@@ -48,6 +54,10 @@ export default ({ $axios, store: { commit } }) => {
           config.callback = {}
           if (config.name === 'markLayer') config.callback.click = this.clickMark
           else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn
+        }
+        for (const config of this.mapOpt.layers.geoserver) {
+          config.callback = {}
+          if (config.name === 'processedLayer') config.callback.click = this.clickProcessed
         }
         this.$root.map = olInit(opt, geoserver, workspace, layers)
         return this.$root.map

@@ -34,7 +34,8 @@ export default {
       if (!markObj?.lasList) return
       const lasList = markObj.lasList.split(':')
       const mainIndex = lasList.indexOf(markObj.mainArea)
-      const loadList = [mainIndex, mainIndex - 1, mainIndex + 1, mainIndex + 2, mainIndex - 2]
+      let loadList = [mainIndex, mainIndex - 1, mainIndex + 1, mainIndex + 2, mainIndex - 2]
+      if (process.env.dev) loadList = [mainIndex, mainIndex - 1, mainIndex + 1]
 
       // Make remove List
       const removeList = []

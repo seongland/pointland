@@ -85,16 +85,7 @@
           </v-tooltip>
 
           <!-- Inner  Properties -->
-          <div
-            v-for="[prop, sub] in selected[0].properties[name] !== undefined && object.candidates
-              ? Object.entries(
-                  object.candidates.filter(c => c.data === selected[0].properties[name])[0].attributes
-                    ? object.candidates.filter(c => c.data === selected[0].properties[name])[0].attributes
-                    : {}
-                )
-              : []"
-            :key="prop"
-          >
+          <div v-for="[prop, sub] in innerProps(selected[0], object, name)" :key="prop">
             <v-tooltip top v-if="sub.method === 'select'">
               <template v-slot:activator="{ on, attrs }">
                 <v-select
@@ -208,6 +199,13 @@ export default {
         type: 'Point',
         args: { layer: this.targetLayer.layer }
       })
+    },
+
+    innerProps(facility, object, name) {
+      if (facility.properties[name] === undefined || !object.candidates) return []
+      const target = object.candidates.filter(c => c.data === facility.properties[name])[0]
+      if (!target?.attributes) return []
+      return Object.entries(target.attributes)
     },
 
     updateTarget(layer) {

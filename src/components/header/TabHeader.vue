@@ -45,10 +45,10 @@ export default {
   computed: {
     index: {
       get() {
-        return this.$store.state.index
+        return this.$store.state.ls.index
       },
       set(values) {
-        this.$store.commit('setIndex', values)
+        this.$store.commit('ls/setIndex', values)
       }
     },
     currentRound: {

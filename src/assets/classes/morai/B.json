@@ -769,8 +769,7 @@
           "optional": true,
           "tooltip": "속도제한 등 수치값이 있을 때 입력합니다",
           "placeholder": "수치값",
-          "method": "type",
-          "attributes": {}
+          "method": "type"
         },
         "Unit": {
           "type": "String",

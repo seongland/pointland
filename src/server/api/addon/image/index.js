@@ -5,7 +5,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { imagePath, depthmapPath } from './img'
-import { depthData2, depthData, xyzAtDepthmap, xyzAtDepthmap2 } from './depthmap'
+import { depthData2, xyzAtDepthmap2 } from './depthmap'
 import { Converter } from '../../../../../build/Debug/tool'
 import { camType } from './config'
 import fs from 'fs'

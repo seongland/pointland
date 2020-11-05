@@ -1,0 +1,10 @@
+{
+  "postgis": {
+    "dbsln": "postgresql",
+    "url": "app.stryx.co.kr",
+    "port": 15432,
+    "id": "meegi",
+    "password": "15651",
+    "schema": "gisdb"
+  }
+}
