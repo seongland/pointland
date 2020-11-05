@@ -95,16 +95,7 @@
           </v-tooltip>
 
           <!-- Inner  Properties -->
-          <div
-            v-for="[prop, sub] in facility.properties[name] !== undefined && object.candidates
-              ? Object.entries(
-                  object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
-                    ? object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
-                    : {}
-                )
-              : []"
-            :key="prop"
-          >
+          <div v-for="[prop, sub] in innerProps(facility, object, name)" :key="prop">
             <v-tooltip top v-if="sub.method === 'select'">
               <template v-slot:activator="{ on, attrs }">
                 <v-select
@@ -247,8 +238,7 @@ export default {
   async fetch() {
     const get = this.$axios.get
     const config = this.getAuthConfig()
-    const res = await get(`/api/facility?id=${this.id}`, config)
-    const facility = res.data[0]
+    const facility = this.$store.state.selected[0]
     this.facility = facility
 
     // Get Drawer
@@ -263,6 +253,13 @@ export default {
   },
 
   methods: {
+    innerProps(facility, object, name) {
+      if (facility.properties[name] === undefined || !object.candidates) return []
+      const target = object.candidates.filter(c => c.data === facility.properties[name])[0]
+      if (!target?.attributes) return []
+      return Object.entries(target.attributes)
+    },
+
     async edit() {
       this.$store.dispatch('edit', this.facility)
     }

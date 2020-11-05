@@ -23,6 +23,13 @@ export function addLas(lasJson, cloud, vertices) {
   for (const i in lasJson.x) vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
 }
 
+export function setFocusXYZ(xyz) {
+  const offset = ref.cloud.offset
+  const xyzInCloud = [xyz[0] - offset[0], xyz[1] - offset[1], xyz[2] - offset[2]]
+  ref.cloud.controls.target.set(...xyzInCloud)
+  ref.cloud.camera.position.set(xyzInCloud[0], xyzInCloud[1], xyzInCloud[2] + 50)
+}
+
 export function addPoints(lasJson, colors, vertices, cloud, name) {
   /*
    * <summary>index file from js</summary>
@@ -54,6 +61,5 @@ export function firstLas(cloud, lasJson, vertices) {
    * <summary>index file from js</summary>
    */
   cloud.offset = lasJson.center
-  cloud.controls.target.set(0, 0, 0.1)
   for (const i in lasJson.x) vertices.push(lasJson.x[i], lasJson.y[i], lasJson.z[i])
 }

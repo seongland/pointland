@@ -19,11 +19,11 @@ export default ({ $axios }) => {
       ],
       mapOpt: {
         id: 'ol',
-        zoom: 20,
+        zoom: 19,
         zindex: 10,
         center: {
-          latlng: [37.5293, 126.972],
-          lnglat: [126.972, 37.5293]
+          latlng: [37.5, 126.9],
+          lnglat: [126.9, 37.5]
         },
         type: 'satellite',
         layers: {
@@ -68,7 +68,7 @@ export default ({ $axios }) => {
               type: 'Point',
               zindex: 25,
               style: {
-                color: '#ff5599',
+                color: '#FF8C00',
                 radius: 2
               }
             }

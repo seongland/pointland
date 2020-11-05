@@ -26,6 +26,10 @@ export async function getTable(round, snap, meta) {
     for (const key of Object.keys(meta.column)) {
       const columnName = meta.column[key].name
       const num = meta.column[key].num
+
+      tableElement['round'] = round
+      tableElement['snap'] = snap
+
       if (num) tableElement[key] = Number(record[columnName])
       else tableElement[key] = record[columnName]
     }
