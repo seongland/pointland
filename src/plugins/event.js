@@ -57,6 +57,19 @@ export default ({ store: { commit, state } }) => {
         commit('selectFeature', facility)
       },
 
+      dragSelected(event) {
+        const controls = cloudRef.cloud.controls
+        controls.enabled = !event.value
+        if (controls.enabled) {
+          const transform = cloudRef.cloud.transform
+          const moved = transform.object.position
+          const props = state.selected[0].properties
+          const xyz = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
+          commit('updateGeom', xyz)
+          this.selectFacility(state.selected[0])
+        }
+      },
+
       async setSnap(snapObj) {
         /*
          * @summary - Set Snap

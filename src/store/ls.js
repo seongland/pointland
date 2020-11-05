@@ -64,9 +64,6 @@ export const mutations = {
     state.prjId = undefined
     state.index = 1
     state.rounds = rounds
-    state.currentMark = undefined
-    state.currentSnap = undefined
-    state.currentRound = undefined
     this.$router.push('/')
   },
 

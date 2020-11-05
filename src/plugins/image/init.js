@@ -15,7 +15,7 @@ export function initImg({ front, back }) {
   ref.selectedLayer = {
     front: front.layer.selected,
     back: back.layer.selected,
-    color: 0xff5599ff
+    color: 0xff8c00ff
   }
   ref.drawnLayer = {
     front: front.layer.drawn,

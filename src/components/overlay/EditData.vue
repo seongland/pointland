@@ -95,16 +95,7 @@
           </v-tooltip>
 
           <!-- Inner  Properties -->
-          <div
-            v-for="[prop, sub] in facility.properties[name] !== undefined && object.candidates
-              ? Object.entries(
-                  object.candidates.filter(c => c.data === facility.properties[name]).length
-                    ? object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
-                    : {}
-                )
-              : []"
-            :key="prop"
-          >
+          <div v-for="[prop, sub] in innerProps(facility, object, name)" :key="prop">
             <v-tooltip top v-if="sub.method === 'select'">
               <template v-slot:activator="{ on, attrs }">
                 <v-select
@@ -262,6 +253,13 @@ export default {
   },
 
   methods: {
+    innerProps(facility, object, name) {
+      if (facility.properties[name] === undefined || !object.candidates) return []
+      const target = object.candidates.filter(c => c.data === facility.properties[name])[0]
+      if (!target?.attributes) return []
+      return Object.entries(target.attributes)
+    },
+
     async edit() {
       this.$store.dispatch('edit', this.facility)
     }

@@ -6,8 +6,14 @@ import { initImg } from './image/init'
 export default ({ $axios, store: { commit } }) => {
   Vue.mixin({
     methods: {
-      initCloud: option => initCloud(option),
       purgeCloud: () => purgeCloud(),
+
+      initCloud: option => {
+        const cloud = initCloud(option)
+        const transform = cloud.transform
+        transform.removeEventListener('dragging-changed', this.dragSelected)
+        transform.addEventListener('dragging-changed', this.dragSelected)
+      },
 
       async reloadUser() {
         this.meta.version = process.env.version
