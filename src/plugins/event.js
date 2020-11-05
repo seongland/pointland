@@ -3,6 +3,7 @@ import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
 import { imageClick } from './image/event'
 import { setFocus } from './map/event'
+import { setFocusXYZ } from './cloud/event'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
@@ -91,6 +92,9 @@ export default ({ store: { commit, state } }) => {
         commit('ls/setSnap', snapObj)
         for (const mark of snapObj.marks)
           this.waitAvail(this.checkMount, this.markXYZ, [[mark.x, mark.y, mark.alt], mark.name])
+
+        const currentMark = state.ls.currentMark
+        this.waitAvail(this.checkMount, setFocusXYZ, [[currentMark.x, currentMark.y, currentMark.alt]])
       },
 
       setMark(markObj) {

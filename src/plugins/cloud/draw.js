@@ -45,10 +45,6 @@ export function drawXYZ(layer, xyz, focus, id) {
   geometry.computeBoundingSphere()
 
   if (focus) cloud.controls.target.set(...xyzInCloud)
-  if (!cloud.focused) {
-    cloud.camera.position.set(xyzInCloud[0], xyzInCloud[1], xyzInCloud[2] + 20)
-    cloud.focused = true
-  }
 
   // update
   const index = geometry.drawRange.start + geometry.drawRange.count - 1
