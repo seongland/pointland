@@ -55,6 +55,10 @@ export default ({ $axios, store: { commit } }) => {
           if (config.name === 'markLayer') config.callback.click = this.clickMark
           else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn
         }
+        for (const config of this.mapOpt.layers.geoserver) {
+          config.callback = {}
+          if (config.name === 'processedLayer') config.callback.click = this.clickProcessed
+        }
         this.$root.map = olInit(opt, geoserver, workspace, layers)
         return this.$root.map
       },

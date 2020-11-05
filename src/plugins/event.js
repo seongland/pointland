@@ -31,6 +31,18 @@ export default ({ store: { commit, state } }) => {
         }
       },
 
+      clickProcessed(feature) {
+        /*
+         * @summary - Map Click Processed geoserver mark
+         */
+        const roundName = feature.get('round')
+        const snapName = feature.get('snap')
+        const markName = feature.get('name')
+        if (process.env.dev) console.log(roundName, snapName, markName)
+        for (const roundObj of state.ls.rounds)
+          if (roundObj.name === roundName) this.setRound({ ...roundObj, snap: snapName, mark: markName })
+      },
+
       async clickDrawn(feature) {
         /*
          * @summary - Map Click Drawn Callback
@@ -70,6 +82,9 @@ export default ({ store: { commit, state } }) => {
           this.selectFacility(state.selected[0])
         }
       },
+
+      layerSelected: () => state.ls.targetLayer.object,
+      layerUnSelected: () => !state.ls.targetLayer.object,
 
       async setSnap(snapObj) {
         /*
@@ -124,7 +139,6 @@ export default ({ store: { commit, state } }) => {
             return
           case 'Escape':
             this.resetSelected()
-            cloudRef.cloud.transform.detach(cloudRef.selectedLayer)
             return
         }
       },
