@@ -6,7 +6,6 @@
 import { transform } from 'ol/proj'
 import { GeoJSON } from 'ol/format'
 import { ref } from './init'
-import { drawLine } from './draw'
 import { ZOOM_DURATION, START_ZOOM } from './config'
 import { Vector } from 'ol/source'
 
@@ -112,7 +111,7 @@ function bboxFilter(coor, size) {
   /**
    * @summary - Round Shaped D-WITHIN CQL filter
    */
-  const factor = size[0] / 5000
+  const factor = size[0] / 10
   return `CQL_FILTER=BBOX(geom, ${coor[0] - factor}, ${coor[1] - factor}, ${coor[0] + factor}, ${coor[1] + factor})`
 }
 
