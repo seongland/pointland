@@ -41,7 +41,36 @@ export default ({ store: { commit, state } }) => {
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
         drawXY(mapRef.selectedLayer, latlng, false, id)
+
+        const transform = cloudRef.cloud.transform
+        transform.removeEventListener('dragging-changed', this.dragSelected)
+        transform.addEventListener('dragging-changed', this.dragSelected)
+
+        transform.position.x = xyz[0] - cloudRef.cloud.offset[0]
+        transform.position.y = xyz[1] - cloudRef.cloud.offset[1]
+        transform.position.z = xyz[2] - cloudRef.cloud.offset[2]
+        transform.attach(cloudRef.selectedLayer)
+
+        const object = cloudRef.selectedLayer
+        object.updateMatrix()
+        object.geometry.applyMatrix4(object.matrix)
+        object.position.set(0, 0, 0)
+        object.updateMatrix()
+
         drawXYZ(cloudRef.selectedLayer, xyz, false, id)
+      },
+
+      dragSelected(event) {
+        const controls = cloudRef.cloud.controls
+        controls.enabled = !event.value
+        if (controls.enabled) {
+          const transform = cloudRef.cloud.transform
+          const moved = transform.object.position
+          const props = state.selected[0].properties
+          const xyz = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
+          commit('updateGeom', xyz)
+          this.selectFacility(state.selected[0])
+        }
       },
 
       markXYZ(xyz, id) {

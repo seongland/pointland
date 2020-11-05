@@ -74,7 +74,7 @@ export default ({ store: { commit, state } }) => {
         const previous = state.ls.currentSnap
 
         // Check Previous
-        if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) await this.resetSnap()
+        if (previous && !(snapObj.name === previous.name && previous.round === snapObj.round)) await this.resetSnap()
         commit('ls/setSnap', snapObj)
         for (const mark of snapObj.marks)
           this.waitAvail(this.checkMount, this.markXYZ, [[mark.x, mark.y, mark.alt], mark.name])
@@ -107,6 +107,7 @@ export default ({ store: { commit, state } }) => {
             return
           case 'Escape':
             this.resetSelected()
+            cloudRef.cloud.transform.detach(cloudRef.selectedLayer)
             return
         }
       },
@@ -118,7 +119,7 @@ export default ({ store: { commit, state } }) => {
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         let seqIndex
         const ls = this.$store.state.ls
-        const index = this.$store.state.index
+        const index = this.$store.state.ls.index
         switch (event.key) {
           // change seq
           case ',':
@@ -133,11 +134,11 @@ export default ({ store: { commit, state } }) => {
 
           // change tabs
           case '1':
-            return commit('setIndex', Number(event.key) - 1)
+            return commit('ls/setIndex', Number(event.key) - 1)
           case '2':
-            return commit('setIndex', Number(event.key) - 1)
+            return commit('ls/setIndex', Number(event.key) - 1)
           case '3':
-            return commit('setIndex', Number(event.key) - 1)
+            return commit('ls/setIndex', Number(event.key) - 1)
 
           // Toggle
           case 'm':

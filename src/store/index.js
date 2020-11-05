@@ -1,13 +1,9 @@
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { ref as imgRef } from '~/plugins/image/init'
-import { updateCtrl } from '~/plugins/cloud/init'
-
-const WAIT_RENDER = 500
 
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
   allowedLayers: ['B1', 'C1'],
-  index: 1,
   facilities: [],
   loading: true,
   depth: { loading: false, on: true },
@@ -36,31 +32,6 @@ export const mutations = {
       else target = target[props[i]]
   },
 
-  setIndex(state, index) {
-    /**
-     * @summary - change tab  & resize because of canvas error
-     */
-    if (state.index === index) return
-    const previous = state.index
-    state.index = index
-    const mapWrapper = document.getElementById('global-map')?.parentElement
-    if (!mapWrapper) return
-    setTimeout(() => window.dispatchEvent(new Event('resize')))
-
-    if (previous === 0) {
-      mapWrapper.style.opacity = 0
-      setTimeout(() => {
-        mapWrapper.classList.add('small-map')
-        setTimeout(() => {
-          mapWrapper.style.opacity = 1
-          window.dispatchEvent(new Event('resize'))
-        }, WAIT_RENDER)
-      })
-    } else if (index === 0) mapWrapper.classList.remove('small-map')
-
-    if (index === 2) setTimeout(() => updateCtrl())
-  },
-
   select(state, { xyz, images, pointclouds, type }) {
     const feature = {
       relations: { images: [], pointclouds: [] },
@@ -71,6 +42,13 @@ export const mutations = {
     if (images?.length > 0) feature.relations.images.push(...images)
     if (pointclouds?.length > 0) feature.relations.pointclouds.push(...pointclouds)
     state.selected = [feature]
+  },
+
+  updateGeom(state, xyz) {
+    state.selected[0].properties.x = xyz[0]
+    state.selected[0].properties.y = xyz[1]
+    state.selected[0].properties.z = xyz[2]
+    state.selected[0].geometry.coordinates = xyto84(xyz[0], xyz[1])
   }
 }
 
