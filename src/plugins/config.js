@@ -31,7 +31,8 @@ export default ({ $axios }) => {
             { name: 'tiffLayer', key: 'tiff', zindex: 11 },
             { name: 'draftLayer', key: 'draft', zindex: 12 },
             { name: 'missionLayer', key: 'mission', zindex: 13 },
-            { name: 'recordedLayer', key: 'recorded', zindex: 14 }
+            { name: 'recordedLayer', key: 'recorded', zindex: 14 },
+            { name: 'processedLayer', key: 'processed', zindex: 15 }
           ],
           vector: [
             {
@@ -40,7 +41,7 @@ export default ({ $axios }) => {
               zindex: 21,
               style: {
                 color: '#22dd88',
-                radius: 2
+                radius: 5
               }
             },
             {
@@ -49,7 +50,7 @@ export default ({ $axios }) => {
               zindex: 22,
               style: {
                 color: '#18f',
-                radius: 5
+                radius: 6
               }
             },
             {
