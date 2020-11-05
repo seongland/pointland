@@ -42,6 +42,7 @@ export default ({ store: { commit, state } }) => {
         const latlng = lnglat.reverse()
         drawXY(mapRef.selectedLayer, latlng, false, id)
 
+        const transform = cloudRef.cloud.transform
         transform.position.x = xyz[0] - cloudRef.cloud.offset[0]
         transform.position.y = xyz[1] - cloudRef.cloud.offset[1]
         transform.position.z = xyz[2] - cloudRef.cloud.offset[2]

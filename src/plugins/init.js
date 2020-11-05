@@ -8,7 +8,7 @@ export default ({ $axios, store: { commit } }) => {
     methods: {
       purgeCloud: () => purgeCloud(),
 
-      initCloud: option => {
+      initCloud(option) {
         const cloud = initCloud(option)
         const transform = cloud.transform
         transform.removeEventListener('dragging-changed', this.dragSelected)
