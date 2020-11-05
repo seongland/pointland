@@ -19,11 +19,11 @@ export default ({ $axios }) => {
       ],
       mapOpt: {
         id: 'ol',
-        zoom: 20,
+        zoom: 19,
         zindex: 10,
         center: {
-          latlng: [37.5293, 126.972],
-          lnglat: [126.972, 37.5293]
+          latlng: [37.5, 126.9],
+          lnglat: [126.9, 37.5]
         },
         type: 'satellite',
         layers: {
@@ -31,7 +31,8 @@ export default ({ $axios }) => {
             { name: 'tiffLayer', key: 'tiff', zindex: 11 },
             { name: 'draftLayer', key: 'draft', zindex: 12 },
             { name: 'missionLayer', key: 'mission', zindex: 13 },
-            { name: 'recordedLayer', key: 'recorded', zindex: 14 }
+            { name: 'recordedLayer', key: 'recorded', zindex: 14 },
+            { name: 'processedLayer', key: 'processed', zindex: 15 }
           ],
           vector: [
             {
@@ -40,7 +41,7 @@ export default ({ $axios }) => {
               zindex: 21,
               style: {
                 color: '#22dd88',
-                radius: 2
+                radius: 5
               }
             },
             {
@@ -49,7 +50,7 @@ export default ({ $axios }) => {
               zindex: 22,
               style: {
                 color: '#18f',
-                radius: 5
+                radius: 6
               }
             },
             {
@@ -67,7 +68,7 @@ export default ({ $axios }) => {
               type: 'Point',
               zindex: 25,
               style: {
-                color: '#ff5599',
+                color: '#FF8C00',
                 radius: 2
               }
             }
