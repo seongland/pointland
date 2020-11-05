@@ -4,7 +4,8 @@
 
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
-import { SELECT_SIZE, SELECT_POINTS, MARK_SIZE, MARK_POINTS } from './config'
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
+import { SELECT_SIZE, MARK_SIZE } from './config'
 import { drawHover, drawClick } from './draw'
 import { makePointLayer } from './layer'
 
@@ -15,7 +16,7 @@ const layerConfig = {
     { name: 'markLayer', color: 0x22dd88, size: MARK_SIZE / 2, length: 10000, order: 1 },
     { name: 'currentLayer', color: 0x1188ff, size: MARK_SIZE, length: 1, order: 2 },
     { name: 'drawnLayer', color: 0x9911ff, size: SELECT_SIZE, length: 5000, order: 3 },
-    { name: 'selectedLayer', color: 0xff5599, size: SELECT_SIZE, length: 500, order: 4 }
+    { name: 'selectedLayer', color: 0xff5599, size: SELECT_SIZE, length: 1, order: 4 }
   ]
 }
 
@@ -35,6 +36,7 @@ function initCloud({ selectCallback }) {
     cloud.el.appendChild(cloud.renderer.domElement)
     cloud.el.cloud = cloud
     cloud.controls = makeControls(cloud.camera, cloud.renderer)
+    cloud.transform = makeTransform(cloud.camera, cloud.renderer, cloud.scene)
     cloud.axis = true
     cloud.mouse = new THREE.Vector2()
     cloud.raycaster = new THREE.Raycaster()
@@ -115,6 +117,17 @@ function makeControls(camera, renderer) {
   controls.minDistance = 0.3
   controls.maxDistance = 0.3 * 1000
   return controls
+}
+
+function makeTransform(camera, renderer, scene) {
+  /**
+   * @summary - Make Controls
+   */
+  const transform = new TransformControls(camera, renderer.domElement)
+  transform.setMode('translate')
+  transform.setSize(0.1)
+  scene.add(transform)
+  return transform
 }
 
 function animate() {

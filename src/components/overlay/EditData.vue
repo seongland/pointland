@@ -98,7 +98,7 @@
           <div
             v-for="[prop, sub] in facility.properties[name] !== undefined && object.candidates
               ? Object.entries(
-                  object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
+                  object.candidates.filter(c => c.data === facility.properties[name]).length
                     ? object.candidates.filter(c => c.data === facility.properties[name])[0].attributes
                     : {}
                 )
@@ -247,8 +247,7 @@ export default {
   async fetch() {
     const get = this.$axios.get
     const config = this.getAuthConfig()
-    const res = await get(`/api/facility?id=${this.id}`, config)
-    const facility = res.data[0]
+    const facility = this.$store.state.selected[0]
     this.facility = facility
 
     // Get Drawer

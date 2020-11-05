@@ -88,7 +88,7 @@
           <div
             v-for="[prop, sub] in selected[0].properties[name] !== undefined && object.candidates
               ? Object.entries(
-                  object.candidates.filter(c => c.data === selected[0].properties[name])[0].attributes
+                  object.candidates.filter(c => c.data === selected[0].properties[name]).length
                     ? object.candidates.filter(c => c.data === selected[0].properties[name])[0].attributes
                     : {}
                 )
