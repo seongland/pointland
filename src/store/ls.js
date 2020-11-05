@@ -96,7 +96,7 @@ export const mutations = {
     if (process.env.dev) console.log('New Snap', snapObj)
 
     let markIndex
-    if (state.currentSnap?.marks)
+    if (state.currentSnap?.marks && state.currentMark)
       markIndex = state.currentSnap.marks.findIndex(element => element.name === state.currentMark.name)
     state.currentSnap = snapObj
 
@@ -104,7 +104,7 @@ export const mutations = {
     if (markIndex >= 0 && state.currentMark.snap === snapObj.name) markObj = snapObj.marks[markIndex]
     if (!markObj) markObj = snapObj.marks[0]
 
-    if (!(previous && snapObj.name === previous.name && previous.round === snapObj.round)) {
+    if (previous &&  !(snapObj.name === previous.name && previous.round === snapObj.round)) {
       previous.areas = undefined
       previous.marks = undefined
     }
