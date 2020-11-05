@@ -24,17 +24,21 @@ function eventBind(map) {
   return { loc: changeMapLoc(map), zoom: ChangeMapRatio(map) }
 }
 
-function mapClick(e) {
+async function mapClick(e) {
   /**
    * @summary - When Click Map
    */
-  const vectorOpts = ref.map.opt.layers.vector
+  const tmpSrc = vectorCallback(e)
+  const features = await geoserverCallback(e)
 
-  let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
-  let extent = e.map.getView().calculateExtent()
-  let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
-  let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
-  let size = rightTop.map((e, i) => e - leftBottom[i])
+  for (const feature of features) tmpSrc.addFeature(feature)
+
+  const closest = tmpSrc.getClosestFeatureToCoordinate(e.coordinate)
+  closest.callback.click(closest)
+}
+
+function vectorCallback(e) {
+  const vectorOpts = ref.map.opt.layers.vector
 
   const tmpSrc = new Vector()
   for (const opt of vectorOpts) {
@@ -47,27 +51,36 @@ function mapClick(e) {
       }
     }
   }
-  const closest = tmpSrc.getClosestFeatureToCoordinate(e.coordinate)
-  closest.callback.click(closest)
+  return tmpSrc
 }
 
-export function getNearDraft(coor, size) {
+async function geoserverCallback(e) {
+  let extent = e.map.getView().calculateExtent()
+  let leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
+  let rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
+
+  let coor = transform(e.coordinate, 'EPSG:3857', 'EPSG:4326')
+  let size = rightTop.map((e, i) => e - leftBottom[i])
+
+  const features = []
+  const opts = ref.map.opt.layers.geoserver
+  for (const layerServer of opts)
+    if (layerServer.callback.click) features.push(...(await getNearFeatures(coor, size, layerServer)))
+  return features
+}
+
+export async function getNearFeatures(coor, size, layerServer) {
   /**
    * @summary - Get Near Features & Get nearest feature
    */
-  const draftURL =
+  const url =
     `${ref.geoserver}/${ref.workspace}/ows?service=WFS&version=1.0.0` +
-    `&request=GetFeature&typeName=${ref.layers.draft}&outputFormat=application%2Fjson&`
-  fetch(draftURL + bboxFilter(coor, size), { method: 'GET', mode: 'cors' })
-    .then(function(response) {
-      return response.json()
-    })
-    .then(function(json) {
-      const features = new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(json)
-      if (features.length < 1) return
-      const index = getNearestLineIndex(coor, features)
-      drawLine(features[index])
-    })
+    `&request=GetFeature&typeName=${ref.layers[layerServer.key]}&outputFormat=application%2Fjson&`
+  const res = await fetch(url + bboxFilter(coor, size), { method: 'GET', mode: 'cors' })
+  const json = await res.json()
+  const features = new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(json)
+  for (const feature of features) feature.callback = layerServer.callback
+  return features
 }
 
 function getNearestLineIndex(coor, features) {
@@ -99,7 +112,7 @@ function bboxFilter(coor, size) {
   /**
    * @summary - Round Shaped D-WITHIN CQL filter
    */
-  const factor = size[0] / 10000
+  const factor = size[0] / 5000
   return `CQL_FILTER=BBOX(geom, ${coor[0] - factor}, ${coor[1] - factor}, ${coor[0] + factor}, ${coor[1] + factor})`
 }
 

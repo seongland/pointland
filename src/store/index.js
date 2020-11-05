@@ -1,5 +1,6 @@
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { ref as imgRef } from '~/plugins/image/init'
+import { ref as cloudRef } from '~/plugins/cloud/init'
 
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
@@ -19,6 +20,7 @@ export const mutations = {
   },
   resetSelected(state) {
     state.selected = []
+    if (cloudRef.cloud) cloudRef.cloud.transform.detach(cloudRef.selectedLayer)
   },
   setLoading(state, value) {
     state.loading = value

@@ -6,6 +6,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { getTable } from './tool/table'
 import { PythonShell } from 'python-shell'
+import { approximatelyEquals } from 'ol/extent'
 
 const DIV_FACTOR = 100
 
@@ -85,6 +86,7 @@ async function getRound(req, res) {
         { name: 'snap10', folder: 'snap10', image, pointcloud },
         { name: 'snap11', folder: 'snap11', image, pointcloud },
         { name: 'snap101', folder: 'snap101', image, pointcloud },
+        { name: 'snap102', folder: 'snap102', image, pointcloud },
         { name: 'snap103', folder: 'snap103', image, pointcloud }
       ]
     }
@@ -148,7 +150,7 @@ async function getSnap(req, res) {
   }
   const [marks, areas] = await Promise.all([markPromise, areaPromise])
   snapObj.marks = marks
-  snapObj.areas = areas
+  snapObj.areas = approximatelyEquals
 
   // uploadMarks(marks, snapName, roundName)
 
