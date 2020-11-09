@@ -132,6 +132,31 @@ async function getRound(req, res) {
         { name: 'snap116', folder: 'snap116', image, pointcloud }
       ]
     }
+    else if (round === 'imms_20201106_172834')
+    roundObj = {
+      name: 'imms_20201106_172834',
+      nas: { id: '10.2.0.108' },
+      root: 'mms_test2/2020_imms/00_proj_hdmap/01_cto_output/Daejeon_KAIST/imms_20201106_172834',
+      snaps: [
+        { name: 'snap1', folder: 'snap1', image, pointcloud },
+        { name: 'snap2', folder: 'snap2', image, pointcloud },
+        { name: 'snap3', folder: 'snap3', image, pointcloud },
+        { name: 'snap5', folder: 'snap5', image, pointcloud },
+        { name: 'snap6', folder: 'snap6', image, pointcloud },
+        { name: 'snap7', folder: 'snap7', image, pointcloud },
+        { name: 'snap8', folder: 'snap8', image, pointcloud },
+        { name: 'snap10', folder: 'snap10', image, pointcloud },
+        { name: 'snap11', folder: 'snap11', image, pointcloud },
+        { name: 'snap12', folder: 'snap12', image, pointcloud },
+        { name: 'snap13', folder: 'snap13', image, pointcloud },
+        { name: 'snap14', folder: 'snap14', image, pointcloud },
+        { name: 'snap15', folder: 'snap15', image, pointcloud },
+        { name: 'snap16', folder: 'snap16', image, pointcloud },
+        { name: 'snap17', folder: 'snap17', image, pointcloud },
+        { name: 'snap18', folder: 'snap18', image, pointcloud },
+        { name: 'snap19', folder: 'snap19', image, pointcloud }
+      ]
+    }
   res.json(roundObj)
 }
 
