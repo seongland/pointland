@@ -19,8 +19,24 @@ const GEO_JSON_TEMPLATE_32652 = {
 
 export default app => {
   const near = async (req, res) => {
+    const lng = req.params.lng
+    const lat = req.params.lat
+    const distance = Number(req.params.distance)
     const facilityService = app.service('facility')
-    const facilities = await facilityService.Model.find()
+
+    let query = {}
+    if (distance > 0)
+      query.$and = [
+        {
+          geometry: {
+            $near: {
+              $geometry: { type: 'Point', coordinates: [lng, lat] },
+              $maxDistance: distance
+            }
+          }
+        }
+      ]
+    const facilities = await facilityService.Model.find(query)
     res.json(facilities)
   }
 
@@ -28,20 +44,22 @@ export default app => {
     const lng = req.params.lng
     const lat = req.params.lat
     const layer = req.params.layer
+    const distance = Number(req.params.distance)
     const facilityService = app.service('facility')
-    const query = {
-      $and: [
+
+    let query = {}
+    if (distance > 0)
+      query.$and = [
         {
           geometry: {
             $near: {
               $geometry: { type: 'Point', coordinates: [lng, lat] },
-              $maxDistance: 50
+              $maxDistance: distance
             }
           }
         },
         { 'properties.layer': { $eq: layer } }
       ]
-    }
     const facilities = await facilityService.Model.find(query)
     res.json(facilities)
   }
@@ -49,6 +67,7 @@ export default app => {
   const exporter = async (req, res) => {
     const layer = req.params.layer
     const crs = req.params.crs
+    const distance = Number(req.params.distance)
     const facilityService = app.service('facility')
     const facilities = await facilityService.Model.find({ 'properties.layer': layer })
     let geoJson
@@ -70,6 +89,6 @@ export default app => {
 
   app.get('/facility/export/:layer', exporter)
   app.get('/facility/export/:layer/:crs', exporter)
-  app.get('/facility/near/:lng/:lat', near)
-  app.get('/facility/near/:lng/:lat/:layer', nearLayer)
+  app.get('/facility/near/:lng/:lat/:distance', near)
+  app.get('/facility/near/:lng/:lat/:distance/:layer', nearLayer)
 }
