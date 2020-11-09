@@ -103,7 +103,7 @@ export default ({ store: { commit, state } }) => {
          * @summary - Get & Draw drawn Facilities
          */
         let layer = state.ls.targetLayer?.object?.layer
-        let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}`
+        let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}/${state.distance.max}`
         if (layer) url += `/${layer}`
 
         // reset

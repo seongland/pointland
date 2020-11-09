@@ -15,8 +15,8 @@
       <v-list>
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-list-item
-              ><v-select
+            <v-list-item>
+              <v-select
                 attach
                 clearable
                 class="mt-5"
@@ -29,7 +29,20 @@
                 :items="filters"
                 item-text="label"
                 item-value="task"
-            /></v-list-item>
+              />
+              <v-select
+                class="mt-5 ml-5"
+                attach
+                clearable
+                solo
+                dense
+                v-model="maxDistance"
+                label="전체"
+                item-text="label"
+                item-value="data"
+                :items="distances"
+              />
+            </v-list-item>
           </template>
           <span>작업 목표를 설정하여 시설물을 필터링합니다</span>
         </v-tooltip>
@@ -68,6 +81,9 @@
         <v-card-text v-if="!targetTask || targetTask.prop === 'located'"
           >위치보정 필요 - {{ items.filter(item => !item.relations.located).length }}
         </v-card-text>
+        <v-card-text v-if="!targetTask || targetTask.prop === 'reported'"
+          >검토 필요 - {{ items.filter(item => !item.relations.reported).length }}
+        </v-card-text>
       </v-card>
     </div>
   </v-navigation-drawer>
@@ -84,7 +100,13 @@ export default {
     mini: false,
     filters: [
       { label: '속성값 입력', task: { data: false, prop: 'proped' } },
-      { label: '위치보정', task: { data: false, prop: 'located' } }
+      { label: '위치보정', task: { data: false, prop: 'located' } },
+      { label: '추가 데이터 필요', task: { data: true, prop: 'reported' } }
+    ],
+    distances: [
+      { label: '50m', data: 50 },
+      { label: '500m', data: 500 },
+      { label: '전체', data: 0 }
     ],
     headers: [
       { align: 'center', text: '참조', value: 'index' },
@@ -104,6 +126,15 @@ export default {
       },
       set(targetTask) {
         this.$store.commit('setState', { props: ['ls', 'targetTask'], value: targetTask })
+        this.drawnFacilities(this.$store.state.ls.currentMark, imgRef.depth)
+      }
+    },
+    maxDistance: {
+      get() {
+        return this.$store.state.distance.max
+      },
+      set(value) {
+        this.$store.commit('setState', { props: ['distance', 'max'], value })
         this.drawnFacilities(this.$store.state.ls.currentMark, imgRef.depth)
       }
     }
