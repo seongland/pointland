@@ -6,7 +6,6 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { getTable } from './tool/table'
 import { PythonShell } from 'python-shell'
-import { approximatelyEquals } from 'ol/extent'
 
 const DIV_FACTOR = 100
 
@@ -64,6 +63,7 @@ const pointcloud = {
 
 router.get('/:round', getRound)
 router.post('/:round/:snap', getSnap)
+router.post('/:round/:snap/upload', uploadSnap)
 
 async function getRound(req, res) {
   const round = req.params.round
@@ -132,7 +132,7 @@ async function getRound(req, res) {
         { name: 'snap116', folder: 'snap116', image, pointcloud }
       ]
     }
-    else if (round === 'imms_20201106_172834')
+  else if (round === 'imms_20201106_172834')
     roundObj = {
       name: 'imms_20201106_172834',
       nas: { id: '10.2.0.108' },
@@ -175,14 +175,32 @@ async function getSnap(req, res) {
   }
   const [marks, areas] = await Promise.all([markPromise, areaPromise])
   snapObj.marks = marks
-  snapObj.areas = approximatelyEquals
-
-  // uploadMarks(marks, snapName, roundName)
+  snapObj.areas = areas
 
   res.json(snapObj)
 }
 
-export default router
+async function uploadSnap(req, res) {
+  const roundName = req.params.round
+  const snapName = req.params.snap
+  const snapObj = req.body.data.snap
+
+  let markPromise, areaPromise
+  try {
+    markPromise = getTable(roundName, snapName, snapObj.image.meta)
+    areaPromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
+  } catch (e) {
+    console.log(e)
+    return res.json(false)
+  }
+  const [marks, areas] = await Promise.all([markPromise, areaPromise])
+  snapObj.marks = marks
+  snapObj.areas = areas
+
+  uploadMarks(marks, snapName, roundName)
+
+  res.json(snapObj)
+}
 
 function uploadMarks(marks, snapName, roundName) {
   const length = marks.length
@@ -204,3 +222,5 @@ function uploadMarks(marks, snapName, roundName) {
     })
   }
 }
+
+export default router

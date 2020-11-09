@@ -11,6 +11,7 @@ export default new mongoose.Schema(
     Type: { type: String },
     SubType: { type: mongoose.Mixed },
     Value: { type: String },
+    User: { type: String },
     Unit: { type: String },
     Post: { type: Boolean },
     Orientation: { type: String },

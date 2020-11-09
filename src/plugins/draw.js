@@ -46,6 +46,9 @@ export default ({ store: { commit, state } }) => {
         transform.position.x = xyz[0] - cloudRef.cloud.offset[0]
         transform.position.y = xyz[1] - cloudRef.cloud.offset[1]
         transform.position.z = xyz[2] - cloudRef.cloud.offset[2]
+        transform.scale.x = 1
+        transform.scale.y = 1
+        transform.scale.z = 1
         transform.attach(cloudRef.selectedLayer)
 
         const object = cloudRef.selectedLayer
@@ -107,17 +110,17 @@ export default ({ store: { commit, state } }) => {
         await this.resetLayer('drawnLayer')
         resetPointLayer(cloudRef.drawnLayer)
 
-        // Draw to Image
+        // get Facilities
         const res = await this.$axios.get(url)
         const facilities = res.data
-        await this.drawFacilities(facilities, currentMark, imgRef.drawnLayer)
-        updateImg(imgRef.drawnLayer)
-
-        // Filter Facilities
         const task = state.ls.targetTask
         let filteredFacilities = facilities
         if (task) filteredFacilities = filteredFacilities.filter(item => item.relations[task.prop] === task.data)
         commit('setState', { props: ['facilities'], value: filteredFacilities })
+
+        // Draw to Image
+        await this.drawFacilities(filteredFacilities, currentMark, imgRef.drawnLayer)
+        updateImg(imgRef.drawnLayer)
 
         // Draw to Map and Cloud
         const [xyzs, ids] = [[], []]

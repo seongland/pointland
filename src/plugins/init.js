@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import { olInit } from '~/plugins/map/init'
-import { initCloud, purgeCloud } from './cloud/init'
-import { initImg } from './image/init'
+import { olInit, ref as mapRef } from '~/plugins/map/init'
+import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
+import { initImg, ref as imgRef } from './image/init'
 
 export default ({ $axios, store: { commit } }) => {
   Vue.mixin({
@@ -9,6 +9,7 @@ export default ({ $axios, store: { commit } }) => {
       purgeCloud: () => purgeCloud(),
 
       initCloud(option) {
+        this.$root.cloudRef = cloudRef
         const cloud = initCloud(option)
         const transform = cloud.transform
         transform.removeEventListener('dragging-changed', this.dragSelected)
@@ -50,6 +51,7 @@ export default ({ $axios, store: { commit } }) => {
       },
 
       olInit(opt, geoserver, workspace, layers) {
+        this.$root.mapRef = mapRef
         for (const config of this.mapOpt.layers.vector) {
           config.callback = {}
           if (config.name === 'markLayer') config.callback.click = this.clickMark
@@ -63,7 +65,10 @@ export default ({ $axios, store: { commit } }) => {
         return this.$root.map
       },
 
-      initImg: ({ front, back }) => initImg({ front, back })
+      initImg({ front, back }) {
+        this.$root.imgRef = imgRef
+        return initImg({ front, back })
+      }
     }
   })
 }
