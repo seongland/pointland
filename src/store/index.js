@@ -11,7 +11,8 @@ export const state = () => ({
   submit: { show: false, ing: false, loading: false },
   edit: { show: false, ing: false, id: undefined, loading: false },
   del: { ing: false, id: undefined, loading: false },
-  selected: []
+  selected: [],
+  history: []
 })
 
 export const mutations = {
