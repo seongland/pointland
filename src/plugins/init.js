@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { olInit, ref as mapRef } from '~/plugins/map/init'
 import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
 import { initImg, ref as imgRef } from './image/init'
+import https from 'https'
 
 export default ({ $axios, store: { commit } }) => {
   Vue.mixin({
@@ -44,8 +45,7 @@ export default ({ $axios, store: { commit } }) => {
       async loadProjects(user, accessToken) {
         const projectPromises = []
         const config = { headers: { Authorization: accessToken } }
-        for (const i in user.projects)
-          projectPromises.push($axios.get(`${process.env.twr}/api/projects?id=${user.projects[i].id}`, config))
+        for (const i in user.projects) projectPromises.push($axios.get(`/api/projects?id=${user.projects[i].id}`, config))
         const projectResponses = await Promise.all(projectPromises)
         user.projects = projectResponses.map(res => res.data[0])
       },

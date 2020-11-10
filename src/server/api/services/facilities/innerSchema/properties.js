@@ -15,6 +15,9 @@ export default new mongoose.Schema(
     Unit: { type: String },
     Post: { type: Boolean },
     Orientation: { type: String },
+    NodeType: { type: String },
+    StopLine: { type: String },
+    ID: { type: String },
 
     LinkID: { type: String },
     NodeID: { type: String },

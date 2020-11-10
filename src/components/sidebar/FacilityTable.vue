@@ -33,7 +33,6 @@
               <v-select
                 class="mt-5 ml-5"
                 attach
-                clearable
                 solo
                 dense
                 v-model="maxDistance"

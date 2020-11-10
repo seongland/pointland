@@ -32,6 +32,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn @click="signup()">
+              SIGNUP
+            </v-btn>
             <v-btn @click="onSubmit(email, password)">
               Login
             </v-btn>
@@ -72,12 +75,14 @@ export default {
 
     async login(email, password) {
       const loginData = JSON.stringify({ strategy: STRATEGY, email, password })
-      const res = await this.$axios
-        .post('/api/authentication', loginData, CTT_JSON)
-        .catch(() => {
-          this.error = true
-        })
+      const res = await this.$axios.post('/api/authentication', loginData, CTT_JSON).catch(() => {
+        this.error = true
+      })
       return res?.data
+    },
+
+    signup() {
+      this.$router.push(`/signup`)
     }
   }
 }
