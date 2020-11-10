@@ -2,7 +2,6 @@ import Vue from 'vue'
 import { olInit, ref as mapRef } from '~/plugins/map/init'
 import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
 import { initImg, ref as imgRef } from './image/init'
-import https from 'https'
 
 export default ({ $axios, store: { commit } }) => {
   Vue.mixin({
