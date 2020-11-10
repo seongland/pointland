@@ -53,6 +53,7 @@ export const mutations = {
       setDrawInteraction(object)
       app.drawnFacilities(state.currentMark)
     }
+    app.resetSelected()
   },
 
   logout(state) {

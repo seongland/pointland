@@ -5,6 +5,8 @@ import { imageClick } from './image/event'
 import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
 
+const ID_SEP = '_'
+
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
@@ -47,25 +49,45 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Map Click Drawn Callback
          */
-        const id = feature.getId()
-        this.selectID(id)
+        let id, index, index2
+        id = feature.getId()
+        const idSet = id.split(ID_SEP)
+        if (idSet.length > 1) {
+          id = idSet[0]
+          index = Number(idSet[1])
+          index2 = Number(idSet[2])
+        }
+        this.selectID(id, index, index2)
       },
 
-      async selectID(id) {
+      async selectID(id, index, index2) {
         /*
          * @summary - Select by Document ID
          */
         const config = this.getAuthConfig()
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
         const facility = res.data[0]
-        this.selectFacility(facility)
+        this.selectFacility(facility, index, index2)
       },
 
-      async selectFacility(facility) {
+      async selectFacility(facility, index, index2) {
         /*
          * @summary - Select by Facility Document
          */
-        const xyz = [facility.properties.x, facility.properties.y, facility.properties.z]
+        let xyz
+        if (!index) index = 0
+        if (!index2) index = 0
+        if (!facility.index) facility.index = index
+        if (!facility.index2) facility.index2 = index2
+        console.log(index, index2)
+
+        const geom = facility.geometry
+        const props = facility.properties
+
+        if (geom.type === 'Point') xyz = [props.x, props.y, props.z]
+        else if (geom.type === 'LineString') xyz = props.xyzs[index]
+        else if (geom.type === 'Polygon') xyz = props.xyzs[index][index2]
+
         await this.drawSelectedXYZ(xyz)
         commit('selectFeature', facility)
       },
@@ -74,12 +96,23 @@ export default ({ store: { commit, state } }) => {
         const controls = cloudRef.cloud.controls
         controls.enabled = !event.value
         if (controls.enabled) {
+          let position
           const transform = cloudRef.cloud.transform
           const moved = transform.object.position
           const props = state.selected[0].properties
-          const xyz = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
-          commit('updateGeom', xyz)
-          this.selectFacility(state.selected[0])
+          const geom = state.selected[0].geometry
+
+          if (geom.type === 'Point') position = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
+          else if (geom.type === 'LineString') {
+            const xyz = props.xyzs[state.selected[0].index]
+            position = [xyz[0] + moved.x, xyz[1] + moved.y, xyz[2] + moved.z]
+          } else if (geom.type === 'Polygon') {
+            const xyz = props.xyzs[state.selected[0].index][state.selected[0].index2]
+            position = [xyz[0] + moved.x, xyz[1] + moved.y, xyz[2] + moved.z]
+          }
+
+          commit('updateGeom', position)
+          this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2)
         }
       },
 
@@ -202,13 +235,31 @@ export default ({ store: { commit, state } }) => {
             const target = state.selected[state.selected.length - 1]
             const props = target.properties
             const geom = target.geometry
+
+            // Focus Lidar
             if (index === 2) {
               if (!cloudRef.cloud.offset) return
               const controls = cloudRef.cloud.controls
               const offset = cloudRef.cloud.offset
-              controls.target.set(props.x - offset[0], props.y - offset[1], props.z - offset[2])
+              if (target.geometry.type === 'Point')
+                controls.target.set(props.x - offset[0], props.y - offset[1], props.z - offset[2])
+              else if (target.geometry.type === 'LineString') {
+                const xyz = target.properties.xyzs[target.index]
+                controls.target.set(xyz[0] - offset[0], xyz[1] - offset[1], xyz[2] - offset[2])
+              } else if (target.geometry.type === 'Polygon') {
+                const xyz = target.properties.xyzs[target.index][target.index2]
+                controls.target.set(xyz[0] - offset[0], xyz[1] - offset[1], xyz[2] - offset[2])
+              }
             }
-            if (target && mapRef.map) setFocus(geom.coordinates[1], geom.coordinates[0])
+
+            // Focus Map
+            if (target && mapRef.map) {
+              if (target.geometry.type === 'Point') setFocus(geom.coordinates[1], geom.coordinates[0])
+              else if (target.geometry.type === 'LineString')
+                setFocus(geom.coordinates[target.index][1], geom.coordinates[target.index][0])
+              else if (target.geometry.type === 'Polygon')
+                setFocus(geom.coordinates[target.index][target.index2][1], geom.coordinates[target.index][target.index2][0])
+            }
             return
 
           // Submit

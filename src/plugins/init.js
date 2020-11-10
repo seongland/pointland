@@ -17,7 +17,6 @@ export default ({ $axios, store: { commit } }) => {
       },
 
       async reloadUser() {
-        this.meta.version = process.env.version
         const ls = this.$store.state.ls
         const accessToken = ls.accessToken
         const config = { headers: { Authorization: accessToken } }

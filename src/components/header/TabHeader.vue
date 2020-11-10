@@ -1,6 +1,6 @@
 <template>
   <v-tabs v-model="index" class="header">
-    <v-subheader v-text="title + ' ' + meta.version" />
+    <v-subheader v-text="identifier" />
     <v-spacer />
     <v-tab v-for="tab in tabs" :key="tab.name"> {{ tab.name }} </v-tab>
     <v-spacer />
@@ -51,6 +51,9 @@ export default {
         this.$store.commit('ls/setIndex', values)
       }
     },
+    identifier() {
+      return this.title + ' ' + this.meta.version
+    },
     currentRound: {
       get() {
         return this.$store.state.ls.currentRound
@@ -78,6 +81,10 @@ export default {
         this.setMark(values)
       }
     }
+  },
+
+  async mounted() {
+    this.meta.version = process.env.version
   }
 }
 </script>

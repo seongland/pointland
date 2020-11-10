@@ -15,6 +15,7 @@ import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
 const POINT_ID = 'Point'
+const ID_SEP = '_'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
@@ -42,22 +43,25 @@ export default ({ store: { commit, state } }) => {
         const latlng = lnglat.reverse()
         drawXY(mapRef.selectedLayer, latlng, false, id)
 
-        const transform = cloudRef.cloud.transform
-        transform.position.x = xyz[0] - cloudRef.cloud.offset[0]
-        transform.position.y = xyz[1] - cloudRef.cloud.offset[1]
-        transform.position.z = xyz[2] - cloudRef.cloud.offset[2]
-        transform.scale.x = 1
-        transform.scale.y = 1
-        transform.scale.z = 1
-        transform.attach(cloudRef.selectedLayer)
-
+        // move transform instead of point layer (transformControler size error)
         const object = cloudRef.selectedLayer
         object.updateMatrix()
         object.geometry.applyMatrix4(object.matrix)
-        object.position.set(0, 0, 0)
+        object.position.set(
+          xyz[0] - cloudRef.cloud.offset[0],
+          xyz[1] - cloudRef.cloud.offset[1],
+          xyz[2] - cloudRef.cloud.offset[2]
+        )
         object.updateMatrix()
 
-        drawXYZ(cloudRef.selectedLayer, xyz, false, id)
+        const transform = cloudRef.cloud.transform
+        transform.position.x = 0
+        transform.position.y = 0
+        transform.position.z = 0
+        transform.attach(cloudRef.selectedLayer)
+
+        // draw to 0 (offset)
+        drawXYZ(cloudRef.selectedLayer, cloudRef.cloud.offset, false, id)
       },
 
       markXYZ(xyz, id) {
@@ -102,18 +106,21 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Get & Draw drawn Facilities
          */
-        commit('setLoading', true)
+        let facilities
         let layer = state.ls.targetLayer?.object?.layer
-        let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}/${state.distance.max}`
-        if (layer) url += `/${layer}`
+        if (layer) {
+          commit('setLoading', true)
+          let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}/${state.distance.max}/${layer}`
 
-        // reset
-        await this.resetLayer('drawnLayer')
-        resetPointLayer(cloudRef.drawnLayer)
+          // reset
+          await this.resetLayer('drawnLayer')
+          resetPointLayer(cloudRef.drawnLayer)
 
-        // get Facilities
-        const res = await this.$axios.get(url)
-        const facilities = res.data
+          // get Facilities
+          const res = await this.$axios.get(url)
+          facilities = res.data
+        } else facilities = []
+
         const task = state.ls.targetTask
         let filteredFacilities = facilities
         if (task) filteredFacilities = filteredFacilities.filter(item => item.relations[task.prop] === task.data)
@@ -127,10 +134,29 @@ export default ({ store: { commit, state } }) => {
         const [xyzs, ids] = [[], []]
         for (const facility of filteredFacilities) {
           const props = facility.properties
-          xyzs.push([props.x, props.y, props.z])
-          ids.push(facility.id)
+          if (facility.geometry.type === 'Point') {
+            xyzs.push([props.x, props.y, props.z])
+            ids.push(facility.id)
+          } else if (facility.geometry.type === 'LineString') {
+            for (const index in props.xyzs) {
+              const xyz = props.xyzs[index]
+              xyzs.push(xyz)
+              let id = facility.id + ID_SEP + index
+              ids.push(id)
+            }
+          } else if (facility.geometry.type === 'Polygon') {
+            for (const index in props.xyzs) {
+              const polyline = props.xyzs[index]
+              for (const index2 in polyline) {
+                const xyz = polyline[index2]
+                xyzs.push(xyz)
+                let id = facility.id + ID_SEP + index + ID_SEP + index2
+                ids.push(id)
+              }
+            }
+          }
         }
-        this.waitAvail(this.checkMount, this.drawnXYZs, [xyzs, ids])
+        this.drawnXYZs(xyzs, ids)
         commit('setLoading', false)
       },
 
@@ -138,20 +164,42 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Draw facilities to image
          */
-        const xyzds = []
-        for (const facility of facilities) {
-          let id = facility.id ? facility.id : POINT_ID
+        const xyzdis = []
+        for (const i in facilities) {
+          const facility = facilities[i]
           const props = facility.properties
-          xyzds.push({ x: props.x, y: props.y, z: props.z, d: 'front', id })
-          xyzds.push({ x: props.x, y: props.y, z: props.z, d: 'back', id })
+          if (facility.geometry.type === 'Point') {
+            let id = facility.id
+            const props = facility.properties
+            xyzdis.push({ x: props.x, y: props.y, z: props.z, d: 'front', id, i })
+            xyzdis.push({ x: props.x, y: props.y, z: props.z, d: 'back', id, i })
+          } else if (facility.geometry.type === 'LineString') {
+            for (const index in props.xyzs) {
+              const xyz = props.xyzs[index]
+              let id = facility.id + ID_SEP + index
+              xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'front', id, i })
+              xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'back', id, i })
+            }
+          } else if (facility.geometry.type === 'Polygon') {
+            for (const index in props.xyzs) {
+              const polyline = props.xyzs[index]
+              for (const index2 in polyline) {
+                const xyz = props.xyzs[index][index2]
+                let id = facility.id + ID_SEP + index + ID_SEP + index2
+                xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'front', id, i })
+                xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'back', id, i })
+              }
+            }
+          }
         }
         const url = `/api/image/convert`
-        const fbRes = await this.$axios.post(url, { data: { mark: currentMark, xyzds } })
+        const fbRes = await this.$axios.post(url, { data: { mark: currentMark, xyzdis } })
 
         // Draw to image
         for (const i in fbRes.data) {
           const result = fbRes.data[i]
           const id = result.id
+          const index = result.i
           const coor = result.coor
           const width = result.width
           const height = result.height
@@ -160,7 +208,6 @@ export default ({ store: { commit, state } }) => {
           const hfactor = height / layer[direction].image.bitmap.height
 
           // Set Visible Property
-          const index = Math.floor(i / 2)
           if (coor[0] !== -1) {
             const drawOption = { x: coor[0] / wfactor, y: coor[1] / hfactor, color: layer.color, id, direction }
             drawNear(layer, drawOption, false)

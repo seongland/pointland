@@ -9,47 +9,14 @@
           {{ createdBy }}
         </v-card-text>
 
-        <v-card-text class="py-0">
+        <v-card-text class="pt-0">
           <span style="font-weight: bold">Edited : </span> {{ editedAt }} - <span style="font-weight: bold">Editor : </span>
           {{ editedBy }}
         </v-card-text>
-
-        <!-- Geometry -->
-        <v-card-text class="py-0">
-          <span style="font-weight: bold">X : </span> {{ facility.properties.x }} -
-          <span style="font-weight: bold">Y : </span> {{ facility.properties.y }} -
-          <span style="font-weight: bold">Z : </span> {{ facility.properties.z }}
-        </v-card-text>
-
-        <v-card-text class="pt-0">
-          <span style="font-weight: bold">Longitude : </span> {{ facility.geometry.coordinates[0] }} -
-          <span style="font-weight: bold">Latitude : </span> {{ facility.geometry.coordinates[1] }}
-        </v-card-text>
-
         <v-divider />
 
         <!-- Properties -->
         <v-card-title> Properties </v-card-title>
-
-        <!-- Layer -->
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-select
-              class="mx-2"
-              label="Layer"
-              solo
-              return-object
-              dense
-              v-bind="attrs"
-              v-on="on"
-              v-model="targetLayer"
-              :items="sameTypes"
-              item-text="description"
-              item-value="description"
-            />
-          </template>
-          <span>시설물의 종류를 변경합니다</span>
-        </v-tooltip>
 
         <!-- Properties -->
         <div v-for="[name, object] in Object.entries(targetLayer.attributes)" :key="name">
@@ -178,12 +145,10 @@ export default {
     description: {
       get() {
         if (!this.facility.id) return
-        const allowedLayers = this.$store.state.allowedLayers
         let types = []
         for (const classObj of Object.values(classes))
           for (const layerObj of classObj.layers)
-            if (this.facility.properties.layer === layerObj.layer && allowedLayers.includes(layerObj.layer))
-              return layerObj.description
+            if (this.facility.properties.layer === layerObj.layer) return layerObj.description
       },
       set() {}
     },
@@ -202,15 +167,6 @@ export default {
         this.facility.properties.layer = layerObj.layer
         return layerObj
       }
-    },
-    sameTypes() {
-      if (!this.facility.id) return []
-      const allowedLayers = this.$store.state.allowedLayers
-      let types = []
-      for (const classObj of Object.values(classes))
-        for (const layerObj of classObj.layers)
-          if (this.facility.geometry.type === layerObj.type && allowedLayers.includes(layerObj.layer)) types.push(layerObj)
-      return types
     },
     relations() {
       return this.facility.relations

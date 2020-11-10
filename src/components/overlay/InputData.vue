@@ -5,18 +5,6 @@
         <!-- Geometry -->
         <v-card-title> {{ selected[0].geometry.type }}</v-card-title>
         <v-divider />
-        <v-card-text class="pb-0">
-          <span style="font-weight: bold">X : </span> {{ selected[0].properties.x }} -
-          <span style="font-weight: bold">Y : </span> {{ selected[0].properties.y }} -
-          <span style="font-weight: bold">Z : </span> {{ selected[0].properties.z }}
-        </v-card-text>
-
-        <v-card-text class="pt-0">
-          <span style="font-weight: bold">Longitude : </span> {{ selected[0].geometry.coordinates[0] }} -
-          <span style="font-weight: bold">Latitude : </span> {{ selected[0].geometry.coordinates[1] }}
-        </v-card-text>
-
-        <v-divider />
 
         <!-- Properties -->
         <v-card-title v-text="`Properties`" />
