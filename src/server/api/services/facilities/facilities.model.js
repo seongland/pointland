@@ -8,9 +8,9 @@ export default app => {
   const mongooseClient = app.get('mongooseClient')
   const facilityProps = {
     type: { type: String, default: 'Feature' },
-    relations: { type: relationsSchema },
-    properties: { type: propertiesSchema },
-    geometry: { type: geometrySchema }
+    relations: { type: relationsSchema, required: true },
+    properties: { type: propertiesSchema, required: true },
+    geometry: { type: geometrySchema, required: true }
   }
   const facilitySchema = defaultSchema(app).add(facilityProps)
   facilitySchema.index({ geometry: '2dsphere' })

@@ -102,6 +102,7 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Get & Draw drawn Facilities
          */
+        commit('setLoading', true)
         let layer = state.ls.targetLayer?.object?.layer
         let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}/${state.distance.max}`
         if (layer) url += `/${layer}`
@@ -130,6 +131,7 @@ export default ({ store: { commit, state } }) => {
           ids.push(facility.id)
         }
         this.waitAvail(this.checkMount, this.drawnXYZs, [xyzs, ids])
+        commit('setLoading', false)
       },
 
       async drawFacilities(facilities, currentMark, layer) {

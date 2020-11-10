@@ -2,14 +2,12 @@
  * @summary - facility api addon end point module
  */
 
+import { xyto84 } from '../tool/coor'
+import { v4 as uuid } from 'uuid'
+
 const GEO_JSON_TEMPLATE_4326 = {
   type: 'FeatureCollection',
-  crs: {
-    type: 'name',
-    properties: {
-      name: 'epsg:4326'
-    }
-  }
+  crs: { type: 'name', properties: { name: 'epsg:4326' } }
 }
 
 const GEO_JSON_TEMPLATE_32652 = {
@@ -67,7 +65,6 @@ export default app => {
   const exporter = async (req, res) => {
     const layer = req.params.layer
     const crs = req.params.crs
-    const distance = Number(req.params.distance)
     const facilityService = app.service('facility')
     const facilities = await facilityService.Model.find({ 'properties.layer': layer })
     let geoJson
@@ -87,8 +84,35 @@ export default app => {
     res.json(geoJson)
   }
 
+  const importer = async (req, res) => {
+    const layer = req.params.layer
+    const facilities = req.body.features
+    const crs = req.params.crs
+    const facilityService = app.service('facility')
+    const promises = []
+
+    for (const facility of facilities) {
+      const props = facility.properties
+      const geom = facility.geometry
+      props.layer = layer
+      facility.id = uuid()
+      facility.relations = {}
+      if (crs === '32652') {
+        props.x = geom.coordinates[0]
+        props.y = geom.coordinates[1]
+        props.z = geom.coordinates[2]
+      }
+      geom.coordinates = xyto84(props.x, props.y)
+      props.layer = layer
+      promises.push(facilityService.Model.create(facility))
+    }
+    res.json(await Promise.all(promises))
+  }
+
   app.get('/facility/export/:layer', exporter)
   app.get('/facility/export/:layer/:crs', exporter)
   app.get('/facility/near/:lng/:lat/:distance', near)
   app.get('/facility/near/:lng/:lat/:distance/:layer', nearLayer)
+
+  app.post('/facility/import/:layer/:crs', importer)
 }

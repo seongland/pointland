@@ -1,6 +1,8 @@
 const colors = require('vuetify/es5/util/colors').default
 const package = require('./package.json')
 const dotenv = require('dotenv')
+const fs = require('fs')
+const path = require('path')
 
 dotenv.config()
 
@@ -77,6 +79,12 @@ module.exports = {
           success: colors.green.accent3
         }
       }
+    }
+  },
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.crt'))
     }
   },
   io: {
