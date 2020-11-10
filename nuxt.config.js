@@ -81,12 +81,12 @@ module.exports = {
       }
     }
   },
-  server: {
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.key')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.crt'))
-    }
-  },
+  // server: {
+  //   https: {
+  //     key: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.key')),
+  //     cert: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.crt'))
+  //   }
+  // },
   io: {
     server: {
       ioSvc: 'src/server/io'
