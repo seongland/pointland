@@ -9,21 +9,9 @@
           {{ createdBy }}
         </v-card-text>
 
-        <v-card-text class="py-0">
+        <v-card-text class="pt-0">
           <span style="font-weight: bold">Edited : </span> {{ editedAt }} - <span style="font-weight: bold">Editor : </span>
           {{ editedBy }}
-        </v-card-text>
-
-        <!-- Geometry -->
-        <v-card-text class="py-0">
-          <span style="font-weight: bold">X : </span> {{ facility.properties.x }} -
-          <span style="font-weight: bold">Y : </span> {{ facility.properties.y }} -
-          <span style="font-weight: bold">Z : </span> {{ facility.properties.z }}
-        </v-card-text>
-
-        <v-card-text class="pt-0">
-          <span style="font-weight: bold">Longitude : </span> {{ facility.geometry.coordinates[0] }} -
-          <span style="font-weight: bold">Latitude : </span> {{ facility.geometry.coordinates[1] }}
         </v-card-text>
 
         <v-divider />

@@ -49,10 +49,23 @@ export const mutations = {
   },
 
   updateGeom(state, xyz) {
-    state.selected[0].properties.x = xyz[0]
-    state.selected[0].properties.y = xyz[1]
-    state.selected[0].properties.z = xyz[2]
-    state.selected[0].geometry.coordinates = xyto84(xyz[0], xyz[1])
+    const geom = state.selected[0].geometry
+    const props = state.selected[0].properties
+    const index = state.selected[0].index
+    const index2 = state.selected[0].index2
+
+    if (geom.type === 'Point') {
+      props.x = xyz[0]
+      props.y = xyz[1]
+      props.z = xyz[2]
+      geom.coordinates = xyto84(xyz[0], xyz[1])
+    } else if (geom.type === 'LineString') {
+      props.xyzs[index] = xyz
+      geom.coordinates[index] = xyto84(xyz[0], xyz[1], xyz[2])
+    } else if (geom.type === 'Polygon') {
+      props.xyzs[index][index2] = xyz
+      geom.coordinates[index][index2] = xyto84(xyz[0], xyz[1], xyz[2])
+    }
   }
 }
 

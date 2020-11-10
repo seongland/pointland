@@ -39,25 +39,28 @@ export default app => {
   }
 
   const nearLayer = async (req, res) => {
+    let query
     const lng = req.params.lng
     const lat = req.params.lat
     const layer = req.params.layer
     const distance = Number(req.params.distance)
     const facilityService = app.service('facility')
 
-    let query = {}
     if (distance > 0)
-      query.$and = [
-        {
-          geometry: {
-            $near: {
-              $geometry: { type: 'Point', coordinates: [lng, lat] },
-              $maxDistance: distance
+      query = {
+        $and: [
+          {
+            geometry: {
+              $near: {
+                $geometry: { type: 'Point', coordinates: [lng, lat] },
+                $maxDistance: distance
+              }
             }
-          }
-        },
-        { 'properties.layer': { $eq: layer } }
-      ]
+          },
+          { 'properties.layer': { $eq: layer } }
+        ]
+      }
+    else query = { 'properties.layer': { $eq: layer } }
     const facilities = await facilityService.Model.find(query)
     res.json(facilities)
   }
@@ -97,12 +100,41 @@ export default app => {
       props.layer = layer
       facility.id = uuid()
       facility.relations = {}
+
+      // geometry
       if (crs === '32652') {
-        props.x = geom.coordinates[0]
-        props.y = geom.coordinates[1]
-        props.z = geom.coordinates[2]
+        if (facility.type === 'Point') {
+          props.x = geom.coordinates[0]
+          props.y = geom.coordinates[1]
+          props.z = geom.coordinates[2]
+          geom.coordinates = xyto84(props.x, props.y)
+        } else if (geom.type === 'MultiLineString' && geom.coordinates.length === 1) {
+          geom.type = 'LineString'
+          geom.coordinates = geom.coordinates[0]
+          props.xyzs = []
+          for (const xyz of geom.coordinates) {
+            props.xyzs.push([xyz[0], xyz[1], xyz[2]])
+            const lnglat = xyto84(xyz[0], xyz[1])
+            xyz[0] = lnglat[0]
+            xyz[1] = lnglat[1]
+          }
+        } else if (geom.type === 'MultiPolygon' && geom.coordinates.length === 1) {
+          geom.type = 'Polygon'
+          geom.coordinates = geom.coordinates[0]
+          props.xyzs = []
+          for (const polyline of geom.coordinates) {
+            const tempArray = []
+            props.xyzs.push(tempArray)
+            for (const xyz of polyline) {
+              tempArray.push([xyz[0], xyz[1], xyz[2]])
+              const lnglat = xyto84(xyz[0], xyz[1])
+              xyz[0] = lnglat[0]
+              xyz[1] = lnglat[1]
+            }
+          }
+        }
       }
-      geom.coordinates = xyto84(props.x, props.y)
+
       props.layer = layer
       promises.push(facilityService.Model.create(facility))
     }

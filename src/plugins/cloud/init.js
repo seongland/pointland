@@ -119,7 +119,7 @@ function makeControls(camera, renderer) {
   return controls
 }
 
-function makeTransform(camera, renderer, scene) {
+export function makeTransform(camera, renderer, scene) {
   /**
    * @summary - Make Controls
    */

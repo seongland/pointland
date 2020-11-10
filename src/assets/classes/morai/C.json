@@ -157,13 +157,15 @@
       "layer": "C3",
       "type": "LineString",
       "description": "차량방호안전시설",
-      "name": "VEHICLEPROTECTIONSAFETY"
+      "name": "VEHICLEPROTECTIONSAFETY",
+      "attributes": {}
     },
     {
       "layer": "C4",
       "type": "Polygon",
       "description": "과속방지턱",
-      "name": "SPEEDBUMP"
+      "name": "SPEEDBUMP",
+      "attributes": {}
     }
   ]
 }

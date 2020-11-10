@@ -68,19 +68,22 @@
       "layer": "A2",
       "description": "주행경로링크",
       "type": "LineString",
-      "name": "LINK"
+      "name": "LINK",
+      "attributes": {}
     },
     {
       "layer": "A3",
       "description": "구간",
       "type": "Polygon",
-      "name": "DRIVEWAYSECTION"
+      "name": "DRIVEWAYSECTION",
+      "attributes": {}
     },
     {
       "layer": "A5",
       "description": "주차슬롯",
       "type": "Polygon",
-      "name": "PARKINGLOT"
+      "name": "PARKINGLOT",
+      "attributes": {}
     }
   ]
 }

@@ -63,16 +63,18 @@ async function xyztoimg(req, res) {
 async function xyzstoimg(req, res) {
   let coor
   const markObj = req.body.data.mark
-  const xyzds = req.body.data.xyzds
+  const xyzdis = req.body.data.xyzdis
   const results = []
-  for (const xyzd of xyzds) {
-    const direction = xyzd.d
-    const id = xyzd.id
-    const xyz = [xyzd.x, xyzd.y, xyzd.z]
+  for (const xyzdi of xyzdis) {
+    const direction = xyzdi.d
+    const i = xyzdi.i
+    const id = xyzdi.id
+    const xyz = [xyzdi.x, xyzdi.y, xyzdi.z]
     coor = Converter.convert(camType[direction], markObj, xyz)
     results.push({
       id,
       coor,
+      i,
       width: camType[direction].iop.width,
       height: camType[direction].iop.height,
       direction: direction

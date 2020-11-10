@@ -798,19 +798,22 @@
       "layer": "B2",
       "type": "LineString",
       "description": "차선",
-      "name": "SURFACELineStringMARK"
+      "name": "SURFACELineStringMARK",
+      "attributes": {}
     },
     {
       "layer": "B3",
       "type": "Polygon",
       "description": "노면표시",
-      "name": "SURFACEMARK"
+      "name": "SURFACEMARK",
+      "attributes": {}
     },
     {
       "layer": "B4",
       "type": "Polygon",
       "description": "횡단보도",
-      "name": "CROSSWALK"
+      "name": "CROSSWALK",
+      "attributes": {}
     }
   ]
 }
