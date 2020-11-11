@@ -6,12 +6,12 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { imagePath, depthmapPath } from './img'
 import { depthData2, xyzAtDepthmap2 } from './depthmap'
-import { Converter } from '../../../../../build/Debug/tool'
 import { camType } from './config'
 import fs from 'fs'
 
 dotenv.config()
 const router = express.Router()
+const { Converter } = require(process.cwd() + '/build/Debug/tool')
 
 // get
 router.get('/:round/:snap/:mark/:direction', image)

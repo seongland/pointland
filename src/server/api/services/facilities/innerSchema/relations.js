@@ -9,6 +9,7 @@ export default new mongoose.Schema(
     reported: { type: Boolean, default: false },
     located: { type: Boolean, default: false },
     proped: { type: Boolean, default: false },
+    related: { type: Boolean, default: false },
     maker: { type: String, default: 'Stryx' }
   },
   { _id: false }

@@ -11,7 +11,7 @@
     app
     color="grey darken-4"
   >
-    <div v-show="!mini && !$store.state.loading">
+    <div v-show="!mini ? !$store.state.loading : false">
       <v-list>
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
@@ -81,7 +81,7 @@
           >위치보정 필요 - {{ items.filter(item => !item.relations.located).length }}
         </v-card-text>
         <v-card-text v-if="!targetTask || targetTask.prop === 'reported'"
-          >검토 필요 - {{ items.filter(item => !item.relations.reported).length }}
+          >추가 데이터 필요 - {{ items.filter(item => item.relations.reported).length }}
         </v-card-text>
       </v-card>
     </div>

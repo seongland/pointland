@@ -76,10 +76,9 @@ export default ({ store: { commit, state } }) => {
          */
         let xyz
         if (!index) index = 0
-        if (!index2) index = 0
+        if (!index2) index2 = 0
         if (!facility.index) facility.index = index
         if (!facility.index2) facility.index2 = index2
-        console.log(index, index2)
 
         const geom = facility.geometry
         const props = facility.properties

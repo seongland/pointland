@@ -2,6 +2,7 @@
  * @summary - cloud draw module
  */
 
+import * as THREE from 'three'
 import { ref } from './init'
 import { firstLas, addLas, addPoints } from './event'
 
@@ -112,6 +113,41 @@ function drawHover(cloud) {
 
   // change color
   changeColor(colors, index, HOVER_COLOR, attributes)
+}
+
+export function drawLoop(xyzs) {
+  /*
+   * <summary>draw polygon</summary>
+   */
+  const cloud = ref.cloud
+  for (const coordinates of xyzs) {
+    const geometry = new THREE.BufferGeometry()
+    const material = new THREE.LineBasicMaterial({ color: 0xaa66ff, linewidth: ref.lineWidth })
+    const positions = []
+    for (const xyz of coordinates)
+      positions.push(xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2])
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    geometry.computeBoundingSphere()
+    const loop = new THREE.LineLoop(geometry, material)
+    cloud.scene.add(loop)
+    cloud.loops.push(loop)
+  }
+}
+
+export function drawLine(xyzs) {
+  /*
+   * <summary>draw LineString</summary>
+   */
+  const cloud = ref.cloud
+  const geometry = new THREE.BufferGeometry()
+  const material = new THREE.LineBasicMaterial({ color: 0xaa66ff, linewidth: ref.lineWidth })
+  const positions = []
+  for (const xyz of xyzs) positions.push(xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2])
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+  geometry.computeBoundingSphere()
+  const line = new THREE.Line(geometry, material)
+  cloud.scene.add(line)
+  cloud.lines.push(line)
 }
 
 function changeColor(colors, index, color, attributes) {

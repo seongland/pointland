@@ -11,6 +11,14 @@ export function resetPointLayer(layer) {
   geometry.computeBoundingSphere()
 }
 
+export function removeLineLoops() {
+  const cloud = ref.cloud
+  if (cloud.lines) for (const line of cloud.lines) cloud.scene.remove(line)
+  if (cloud.loops) for (const loop of cloud.loops) cloud.scene.remove(loop)
+  cloud.lines = []
+  cloud.loops = []
+}
+
 export function addLas(lasJson, cloud, vertices) {
   /*
    * <summary>index file from js</summary>
@@ -51,7 +59,6 @@ export function addPoints(lasJson, colors, vertices, cloud, name) {
   cloud.scene.add(points)
 
   if (cloud.points) cloud.points.push(points)
-  else cloud.points = [points]
   points.name = name
   return points
 }

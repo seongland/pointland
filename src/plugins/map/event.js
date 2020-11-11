@@ -8,6 +8,7 @@ import { GeoJSON } from 'ol/format'
 import { ref } from './init'
 import { ZOOM_DURATION, START_ZOOM } from './config'
 import { Vector } from 'ol/source'
+import Point from 'ol/geom/Point'
 
 function eventBind(map) {
   /**
@@ -43,7 +44,9 @@ function vectorCallback(e) {
   for (const opt of vectorOpts) {
     const layer = ref[opt.name]
     if (opt?.callback?.click) {
-      const feature = layer.getSource().getClosestFeatureToCoordinate(e.coordinate)
+      const feature = layer
+        .getSource()
+        .getClosestFeatureToCoordinate(e.coordinate, feature => feature.getGeometry() instanceof Point)
       if (feature) {
         feature.callback = opt.callback
         tmpSrc.addFeature(feature)

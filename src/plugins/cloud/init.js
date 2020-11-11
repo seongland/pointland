@@ -9,7 +9,7 @@ import { SELECT_SIZE, MARK_SIZE } from './config'
 import { drawHover, drawClick } from './draw'
 import { makePointLayer } from './layer'
 
-export const ref = { cloudSize: 0.05, pointSize: 1 }
+export const ref = { cloud: null, cloudSize: 0.05, pointSize: 1, lineWidth: 0.01 }
 
 const layerConfig = {
   pointLayers: [
@@ -26,7 +26,7 @@ function initCloud({ selectCallback }) {
    * @params {String} id - dom id for append
    * @params {Object} socket - socket io object to render real time
    */
-  const cloud = {}
+  const cloud = { points: [], lines: [], loops: [] }
   cloud.el = document.getElementById('las')
   if (cloud.el && window) {
     // Make Space
@@ -139,7 +139,7 @@ function animate() {
   const id = requestAnimationFrame(animate)
 
   cloud.raycaster.setFromCamera(cloud.mouse, cloud.camera)
-  if (cloud.points) drawHover(cloud)
+  if (cloud.points.length > 0) drawHover(cloud)
 
   cloud.controls.update()
   cloud.renderer.render(cloud.scene, cloud.camera)
