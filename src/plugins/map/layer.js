@@ -5,12 +5,13 @@
 
 import { Tile, Vector as VectorLayer } from 'ol/layer'
 import { TileWMS, XYZ, Vector } from 'ol/source'
-import { makePointStyle } from './draw'
+import { makePointStyle, makeLineStyle } from './draw'
 import { ZINDEX_PVR } from '~/plugins/map/config'
 import { NAVER_ID } from '~/plugins/map/config'
 import { ref } from './init'
 import WMSCapabilities from 'ol/format/WMSCapabilities'
 import { transformExtent } from 'ol/proj'
+import Point from 'ol/geom/Point'
 
 function makeGoogleLayer() {
   /**
@@ -88,20 +89,33 @@ function makeGSLayer() {
   return new Tile(tile)
 }
 
-const makeVectorLayer = ({ style, zindex, name, type }) => {
+const makeVectorLayer = ({ style, zindex, name }) => {
   /**
    * @summary - Make Vector Layer Tempalte
    */
-  let vectorStyle
-  if (type === 'Point')
-    vectorStyle = makePointStyle({
-      color: style.color,
-      radius: style.radius
-    })
+  let pointStyle, multiStyle
+  if (style) {
+    if (style.point)
+      pointStyle = makePointStyle({
+        color: style.point.color,
+        radius: style.point.radius
+      })
+    if (style.line)
+      multiStyle = makeLineStyle({
+        color: style.line.color,
+        width: style.line.width,
+        fill: style?.polygon.fill
+      })
+  }
+
   const vectorSrc = new Vector()
   const vectorLayer = new VectorLayer({
     source: vectorSrc,
-    style: vectorStyle
+    style: feature => {
+      const geometry = feature.getGeometry()
+      if (geometry instanceof Point) return pointStyle
+      else return multiStyle
+    }
   })
   if (zindex) vectorLayer.setZIndex(zindex)
   if (name) ref[name] = vectorLayer

@@ -791,6 +791,20 @@
               "description": "톤"
             }
           ]
+        },
+        "Ref_Lane": {
+          "type": "Number",
+          "optional": false,
+          "placeholder": "참조차로수",
+          "tooltip": "참조해야하는 전체차로수",
+          "method": "type"
+        },
+        "LinkID": {
+          "type": "String",
+          "optional": false,
+          "placeholder": "B1",
+          "tooltip": "참조 경로",
+          "method": "B1"
         }
       }
     },

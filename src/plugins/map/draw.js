@@ -45,6 +45,17 @@ function makePointStyle({ color, radius }) {
   return style
 }
 
+function makeLineStyle({ color, width, fill }) {
+  /**
+   * @summary - Make Diverse Style
+   * @function
+   */
+  const filled = new Fill({ color: fill })
+  const stroke = new Stroke({ color, width })
+  const style = new Style({ stroke, fill: filled })
+  return style
+}
+
 function drawLine(feature) {
   ref.drawMissionLayer.getSource().addFeature(feature)
 }
@@ -133,4 +144,14 @@ function setDrawInteraction(layerObj) {
   ref.map.addInteraction(draw)
 }
 
-export { drawLine, makeStyle, drawXY, drawXYs, subtractVhcl, setDrawInteraction, makePointStyle, removeFeature }
+export {
+  makeLineStyle,
+  drawLine,
+  makeStyle,
+  drawXY,
+  drawXYs,
+  subtractVhcl,
+  setDrawInteraction,
+  makePointStyle,
+  removeFeature
+}

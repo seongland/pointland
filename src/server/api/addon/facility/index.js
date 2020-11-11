@@ -3,7 +3,6 @@
  */
 
 import { xyto84 } from '../tool/coor'
-import { v4 as uuid } from 'uuid'
 
 const GEO_JSON_TEMPLATE_4326 = {
   type: 'FeatureCollection',
@@ -98,7 +97,7 @@ export default app => {
       const props = facility.properties
       const geom = facility.geometry
       props.layer = layer
-      facility.id = uuid()
+      facility.id = props.id ? props.id : props.ID
       facility.relations = {}
 
       // geometry
