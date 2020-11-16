@@ -79,7 +79,7 @@
           <v-tooltip top v-else-if="object.method === 'relate'">
             <template v-slot:activator="{ on, attrs }">
               <v-row align="center" justify="space-around">
-                <v-btn outlined class="mx-3 mb-8" v-bind="attrs" v-on="on" @click="relateFacility(object.target)">
+                <v-btn outlined class="mx-3 mb-5" v-bind="attrs" v-on="on" @click="relateFacility(object.target)">
                   {{ object.placeholder }}
                 </v-btn>
               </v-row>
@@ -120,11 +120,13 @@
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-card-text>
-              <v-text-field
+              <v-textarea
                 class="pt-0 mt-0"
                 label="Comment"
                 v-bind="attrs"
+                outlined
                 v-on="on"
+                rows="2"
                 v-model="comment"
                 placeholder="추가정보"
               />

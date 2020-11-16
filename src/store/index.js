@@ -8,6 +8,7 @@ export const state = () => ({
   facilities: [],
   loading: true,
   distance: { max: 50 },
+  visible: { transform: 50 },
   depth: { loading: false, on: true },
   submit: { show: false, ing: false, loading: false, target: undefined },
   edit: { show: false, ing: false, id: undefined, loading: false, target: undefined },

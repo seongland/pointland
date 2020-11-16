@@ -115,7 +115,7 @@ function makeControls(camera, renderer) {
   controls.panSpeed = 2
   controls.staticMoving = true
   controls.minDistance = 0.3
-  controls.maxDistance = 0.3 * 1000
+  controls.maxDistance = 0.3 * 5000
   return controls
 }
 
