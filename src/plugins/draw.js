@@ -54,6 +54,8 @@ export default ({ store: { commit, state } }) => {
         transform.setSize(factor)
 
         transform.attach(cloudRef.selectedLayer)
+        transform.visible = state.visible.transform
+        transform.enabled = state.visible.transform
 
         const object = cloudRef.selectedLayer
         object.updateMatrix()

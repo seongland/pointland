@@ -64,7 +64,7 @@
           <v-row align="center" justify="center">
             <v-switch v-model="showMark" class="mt-5 ml-5" dense label="MARKS" @change="toggleMarks" />
             <v-switch v-model="showCloud" class="mt-5 ml-5" dense label="CLOUD" @change="toggleCloud" />
-            <v-switch v-model="showTransform" class="mt-5 ml-5" dense label="TRANSFORM" @change="toggleTransform" />
+            <v-switch v-model="showTransform" class="mt-5 ml-5" dense label="TRANSFORM" />
           </v-row>
         </v-list-item>
       </v-list>
@@ -122,7 +122,6 @@ export default {
     show: false,
     mini: false,
     showCloud: true,
-    showTransform: false,
     showMark: true,
     mode: 'select',
     filters: [
@@ -164,6 +163,20 @@ export default {
         this.$store.commit('setState', { props: ['distance', 'max'], value })
         this.drawnFacilities(this.$store.state.ls.currentMark)
       }
+    },
+    showTransform: {
+      get() {
+        return this.$store.state.visible.transform
+      },
+      set(value) {
+        console.log('asdasd')
+        if (this.$store.state.selected.length > 0) {
+          cloudRef.cloud.transform.visible = value
+          cloudRef.cloud.transform.enabled = value
+        }
+        console.log('asdasd')
+        this.$store.commit('setState', { props: ['visible', 'transform'], value })
+      }
     }
   },
   watch: {
@@ -190,9 +203,6 @@ export default {
       mapRef?.recordedLayer.setVisible(value)
       mapRef?.markLayer.setVisible(value)
       mapRef?.currentLayer.setVisible(value)
-    },
-    toggleTransform(value) {
-      if (this.$store.state.selected.length > 0) cloudRef.cloud.transform.visible = value
     }
   }
 }

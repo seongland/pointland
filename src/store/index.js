@@ -1,5 +1,4 @@
 import { xyto84 } from '~/server/api/addon/tool/coor'
-import { ref as imgRef } from '~/plugins/image/init'
 import { ref as cloudRef } from '~/plugins/cloud/init'
 
 export const state = () => ({
@@ -8,7 +7,7 @@ export const state = () => ({
   facilities: [],
   loading: true,
   distance: { max: 50 },
-  visible: { transform: 50 },
+  visible: { transform: false },
   depth: { loading: false, on: true },
   submit: { show: false, ing: false, loading: false, target: undefined },
   edit: { show: false, ing: false, id: undefined, loading: false, target: undefined },
