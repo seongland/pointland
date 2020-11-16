@@ -102,12 +102,12 @@ export default ({ store: { commit, state } }) => {
         for (const index in xyzs) this.drawnXYZ(xyzs[index], ids[index])
       },
 
-      async drawnFacilities(currentMark) {
+      async drawnFacilities(currentMark, layer) {
         /*
          * @summary - Get & Draw drawn Facilities
          */
         let facilities
-        let layer = state.ls.targetLayer?.object?.layer
+        if (!layer) layer = state.ls.targetLayer?.object?.layer
         if (layer) {
           commit('setLoading', true)
           let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}/${state.distance.max}/${layer}`

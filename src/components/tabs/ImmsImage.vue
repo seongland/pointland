@@ -131,7 +131,7 @@ export default {
 
       // Draw
       const promises = []
-      promises.push(this.drawnFacilities(currentMark, depth))
+      promises.push(this.drawnFacilities(currentMark))
       promises.push(this.drawToImage(state.selected, currentMark, imgRef.selectedLayer))
       await Promise.all(promises)
 

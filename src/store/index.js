@@ -9,8 +9,8 @@ export const state = () => ({
   loading: true,
   distance: { max: 50 },
   depth: { loading: false, on: true },
-  submit: { show: false, ing: false, loading: false },
-  edit: { show: false, ing: false, id: undefined, loading: false },
+  submit: { show: false, ing: false, loading: false, target: undefined },
+  edit: { show: false, ing: false, id: undefined, loading: false, target: undefined },
   del: { ing: false, id: undefined, loading: false },
   selected: [],
   history: []
@@ -88,7 +88,7 @@ export const actions = {
       commit('setState', { props: ['submit', 'ing'], value: false })
       commit('setState', { props: ['submit', 'show'], value: false })
       app.resetSelected()
-      app.drawnFacilities(state.ls.currentMark, imgRef.depth)
+      app.drawnFacilities(state.ls.currentMark)
     } else return
   },
 
@@ -113,7 +113,7 @@ export const actions = {
     commit('setState', { props: ['edit', 'show'], value: false })
     commit('setState', { props: ['edit', 'loading'], value: false })
     app.resetSelected()
-    app.drawnFacilities(state.ls.currentMark, imgRef.depth)
+    app.drawnFacilities(state.ls.currentMark)
     if (process.env.dev) console.log('Edited', res.data)
   }
 }

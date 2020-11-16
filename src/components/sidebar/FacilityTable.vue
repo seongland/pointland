@@ -125,7 +125,7 @@ export default {
       },
       set(targetTask) {
         this.$store.commit('setState', { props: ['ls', 'targetTask'], value: targetTask })
-        this.drawnFacilities(this.$store.state.ls.currentMark, imgRef.depth)
+        this.drawnFacilities(this.$store.state.ls.currentMark)
       }
     },
     maxDistance: {
@@ -134,7 +134,7 @@ export default {
       },
       set(value) {
         this.$store.commit('setState', { props: ['distance', 'max'], value })
-        this.drawnFacilities(this.$store.state.ls.currentMark, imgRef.depth)
+        this.drawnFacilities(this.$store.state.ls.currentMark)
       }
     }
   },
