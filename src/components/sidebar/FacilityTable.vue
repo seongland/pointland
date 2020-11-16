@@ -13,13 +13,25 @@
   >
     <div v-show="!mini ? !$store.state.loading : false">
       <v-list>
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <v-list-item>
+        <v-list-item>
+          <v-select
+            attach
+            clearable
+            class="mt-5"
+            v-model="targetTask"
+            solo
+            dense
+            label="전체 작업"
+            :items="filters"
+            item-text="label"
+            item-value="task"
+          />
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
               <v-select
                 attach
                 clearable
-                class="mt-5"
+                class="ml-5 mt-5"
                 v-model="targetTask"
                 v-bind="attrs"
                 v-on="on"
@@ -30,21 +42,31 @@
                 item-text="label"
                 item-value="task"
               />
-              <v-select
-                class="mt-5 ml-5"
-                attach
-                solo
-                dense
-                v-model="maxDistance"
-                label="전체"
-                item-text="label"
-                item-value="data"
-                :items="distances"
-              />
-            </v-list-item>
-          </template>
-          <span>작업 목표를 설정하여 시설물을 필터링합니다</span>
-        </v-tooltip>
+            </template>
+            <span>작업 목표를 설정하여 시설물을 필터링합니다</span>
+          </v-tooltip>
+          <v-select
+            class="mt-5 ml-5"
+            attach
+            solo
+            dense
+            v-model="maxDistance"
+            label="전체"
+            item-text="label"
+            item-value="data"
+            :items="distances"
+          />
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item>
+          <v-row align="center" justify="center">
+            <v-switch v-model="showMark" class="mt-5 ml-5" dense label="MARKS" @change="toggleMarks" />
+            <v-switch v-model="showCloud" class="mt-5 ml-5" dense label="CLOUD" @change="toggleCloud" />
+            <v-switch v-model="showTransform" class="mt-5 ml-5" dense label="TRANSFORM" @change="toggleTransform" />
+          </v-row>
+        </v-list-item>
       </v-list>
 
       <v-divider></v-divider>
@@ -89,7 +111,9 @@
 </template>
 
 <script>
+import { ref as mapRef } from '~/plugins/map/init'
 import { ref as imgRef } from '~/plugins/image/init'
+import { ref as cloudRef } from '~/plugins/cloud/init'
 
 export default {
   data: () => ({
@@ -97,6 +121,10 @@ export default {
     pageCount: 10,
     show: false,
     mini: false,
+    showCloud: true,
+    showTransform: false,
+    showMark: true,
+    mode: 'select',
     filters: [
       { label: '속성값 입력', task: { data: false, prop: 'proped' } },
       { label: '위치보정', task: { data: false, prop: 'located' } },
@@ -149,6 +177,22 @@ export default {
   methods: {
     clickRow(facility) {
       this.selectFacility(facility)
+    },
+
+    toggleCloud(value) {
+      for (const points of cloudRef.cloud.points) points.visible = value
+      mapRef?.tiffLayer.setVisible(value)
+    },
+    toggleMarks(value) {
+      cloudRef.currentLayer.visible = value
+      cloudRef.markLayer.visible = value
+      mapRef?.processedLayer.setVisible(value)
+      mapRef?.recordedLayer.setVisible(value)
+      mapRef?.markLayer.setVisible(value)
+      mapRef?.currentLayer.setVisible(value)
+    },
+    toggleTransform(value) {
+      if (this.$store.state.selected.length > 0) cloudRef.cloud.transform.visible = value
     }
   }
 }
