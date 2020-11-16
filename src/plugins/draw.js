@@ -320,7 +320,6 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Reset Snap for New Snap
          */
-        await this.resetSelected()
         if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
         if (mapRef.markLayer) mapRef.drawnLayer.getSource().clear()
         if (cloudRef.markLayer) resetPointLayer(cloudRef.markLayer)

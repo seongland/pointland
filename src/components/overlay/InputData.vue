@@ -3,7 +3,11 @@
     <v-col lg="6" md="8" sm="12">
       <v-card class="elevation-24">
         <!-- Geometry -->
-        <v-card-title> {{ selected[0].geometry.type }}</v-card-title>
+        <v-card-title>
+          {{ facility.geometry.type }}
+          {{ facility.index !== undefined ? `- ` + facility.index : '' }}
+          {{ facility.index2 !== undefined ? `- ` + facility.index2 : '' }}
+        </v-card-title>
         <v-divider />
 
         <!-- Properties -->
@@ -43,7 +47,7 @@
                 :items="object.candidates"
                 item-text="description"
                 item-value="data"
-                v-model="selected[0].properties[name]"
+                v-model="facility.properties[name]"
                 clearable
                 :placeholder="object.placeholder"
               >
@@ -64,7 +68,7 @@
                   :label="name"
                   v-bind="attrs"
                   v-on="on"
-                  v-model="selected[0].properties[name]"
+                  v-model="facility.properties[name]"
                   :placeholder="object.placeholder"
                 />
               </v-card-text>
@@ -84,7 +88,7 @@
           </v-tooltip>
 
           <!-- Inner  Properties -->
-          <div v-for="[prop, sub] in innerProps(selected[0], object, name)" :key="prop">
+          <div v-for="[prop, sub] in innerProps(facility, object, name)" :key="prop">
             <v-tooltip top v-if="sub.method === 'select'">
               <template v-slot:activator="{ on, attrs }">
                 <v-select
@@ -98,7 +102,7 @@
                   v-on="on"
                   item-value="data"
                   :placeholder="sub.placeholder"
-                  v-model="selected[0].properties[prop]"
+                  v-model="facility.properties[prop]"
                   clearable
                 >
                   <template v-slot:item="{ item }">
@@ -131,9 +135,9 @@
 
         <!-- Actions -->
         <v-card-actions>
-          <v-checkbox v-model="selected[0].relations.proped" label="속성값 입력 완료" dense class="mx-2"></v-checkbox>
-          <v-checkbox v-model="selected[0].relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
-          <v-checkbox v-model="selected[0].relations.reported" label="추가 데이터 필요" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="facility.relations.proped" label="속성값 입력 완료" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="facility.relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="facility.relations.reported" label="추가 데이터 필요" dense class="mx-2"></v-checkbox>
           <v-spacer></v-spacer>
           <v-btn class="mr-2" :loading="$store.state.submit.loading" @click="submit">Submit</v-btn>
         </v-card-actions>
@@ -171,13 +175,8 @@ export default {
     ls() {
       return this.$store.state.ls
     },
-    selected: {
-      get() {
-        return this.$store.state.selected
-      },
-      set(a, b) {
-        console.log(a, b)
-      }
+    facility() {
+      return this.$store.state.selected[0]
     }
   },
 
