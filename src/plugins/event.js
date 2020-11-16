@@ -4,6 +4,7 @@ import { ref as cloudRef } from './cloud/init'
 import { imageClick } from './image/event'
 import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
+import { xyto84 } from '~/server/api/addon/tool/coor'
 
 const ID_SEP = '_'
 
@@ -243,6 +244,8 @@ export default ({ store: { commit, state, $router } }) => {
             }
             if (state.ls.currentMark) setFocus(state.ls.currentMark.lat, state.ls.currentMark.lon)
             return
+
+          // Focus Selected
           case 'f':
           case 'F':
             if (state.selected.length === 0) return
@@ -265,7 +268,6 @@ export default ({ store: { commit, state, $router } }) => {
                 controls.target.set(xyz[0] - offset[0], xyz[1] - offset[1], xyz[2] - offset[2])
               }
             }
-
             // Focus Map
             if (target && mapRef.map) {
               if (target.geometry.type === 'Point') setFocus(geom.coordinates[1], geom.coordinates[0])
@@ -273,6 +275,26 @@ export default ({ store: { commit, state, $router } }) => {
                 setFocus(geom.coordinates[target.index][1], geom.coordinates[target.index][0])
               else if (target.geometry.type === 'Polygon')
                 setFocus(geom.coordinates[target.index][target.index2][1], geom.coordinates[target.index][target.index2][0])
+            }
+            return
+
+          // Focus Hover
+          case 'h':
+          case 'h':
+            if (!cloudRef.cloud.currentHover) return
+            const hovered = cloudRef.cloud.currentHover.point
+            console.log(hovered)
+
+            // Focus Lidar
+            if (index === 2) {
+              if (!cloudRef.cloud.offset) return
+              const controls = cloudRef.cloud.controls
+              const offset = cloudRef.cloud.offset
+              controls.target.set(hovered.x, hovered.y, hovered.z)
+
+              // Focus Map
+              const lnglat = xyto84(hovered.x + offset[0], hovered.y + offset[1])
+              if (mapRef.map) setFocus(...lnglat.reverse())
             }
             return
 
