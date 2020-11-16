@@ -2,7 +2,11 @@
   <v-row align="center" justify="center">
     <v-col lg="6" md="8" sm="12">
       <v-card class="elevation-24" v-if="facility.id">
-        <v-card-title v-text="facility.geometry.type" />
+        <v-card-title>
+          {{ facility.geometry.type }}
+          {{ facility.index !== undefined ? `- ` + facility.index : '' }}
+          {{ facility.index2 !== undefined ? `- ` + facility.index2 : '' }}
+        </v-card-title>
         <v-divider />
         <v-card-text class="pb-0">
           <span style="font-weight: bold">Maked : </span> {{ createdAt }} - <span style="font-weight: bold">Maker : </span>

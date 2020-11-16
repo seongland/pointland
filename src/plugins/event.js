@@ -85,17 +85,20 @@ export default ({ store: { commit, state, $router } }) => {
          * @summary - Select by Facility Document
          */
         let xyz
-        if (!index) index = 0
-        if (!index2) index2 = 0
-        if (!facility.index) facility.index = index
-        if (!facility.index2) facility.index2 = index2
 
         const geom = facility.geometry
         const props = facility.properties
 
         if (geom.type === 'Point') xyz = [props.x, props.y, props.z]
-        else if (geom.type === 'LineString') xyz = props.xyzs[index]
-        else if (geom.type === 'Polygon') xyz = props.xyzs[index][index2]
+        else if (geom.type === 'LineString') {
+          if (!index) index = 0
+          if (!facility.index) facility.index = index
+          xyz = props.xyzs[index]
+        } else if (geom.type === 'Polygon') {
+          if (!index2) index2 = 0
+          if (!facility.index2) facility.index2 = index2
+          xyz = props.xyzs[index][index2]
+        }
 
         await this.drawSelectedXYZ(xyz)
         commit('selectFeature', facility)
