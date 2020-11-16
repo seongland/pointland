@@ -7,7 +7,7 @@ import { setFocusXYZ } from './cloud/event'
 
 const ID_SEP = '_'
 
-export default ({ store: { commit, state } }) => {
+export default ({ store: { commit, state, $router } }) => {
   Vue.mixin({
     methods: {
       setLayer: data => commit('ls/setLayer', data),
@@ -56,6 +56,16 @@ export default ({ store: { commit, state } }) => {
           id = idSet[0]
           index = Number(idSet[1])
           index2 = Number(idSet[2])
+        }
+        if (state.submit.ing) {
+          commit('setState', { props: ['submit', 'show'], value: true })
+          commit('setState', { props: ['selected', 0, 'properties', state.submit.target], value: id })
+          return this.drawnFacilities(state.ls.currentMark)
+        }
+        if (state.edit.ing) {
+          commit('setState', { props: ['edit', 'show'], value: true })
+          commit('setState', { props: ['selected', 0, 'properties', state.edit.target], value: id })
+          return this.drawnFacilities(state.ls.currentMark)
         }
         this.selectID(id, index, index2)
       },
@@ -160,6 +170,7 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Special Callback
          */
+        if ($router.currentRoute.name !== 'draw') return
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         switch (event.key) {
           case 'Delete':
@@ -179,6 +190,7 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Normal Key Callback
          */
+        if ($router.currentRoute.name !== 'draw') return
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         let seqIndex
         const ls = this.$store.state.ls

@@ -72,6 +72,17 @@
             <span>{{ object.tooltip }}</span>
           </v-tooltip>
 
+          <v-tooltip top v-else-if="object.method === 'relate'">
+            <template v-slot:activator="{ on, attrs }">
+              <v-row align="center" justify="space-around">
+                <v-btn outlined class="mx-3 mb-8" v-bind="attrs" v-on="on" @click="relateFacility(object.target)">
+                  {{ object.placeholder }}
+                </v-btn>
+              </v-row>
+            </template>
+            <span>{{ object.tooltip }}</span>
+          </v-tooltip>
+
           <!-- Inner  Properties -->
           <div v-for="[prop, sub] in innerProps(selected[0], object, name)" :key="prop">
             <v-tooltip top v-if="sub.method === 'select'">

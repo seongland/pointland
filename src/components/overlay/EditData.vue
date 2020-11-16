@@ -61,6 +61,18 @@
             <span>{{ object.tooltip }}</span>
           </v-tooltip>
 
+          <v-tooltip top v-else-if="object.method === 'relate'">
+            <template v-slot:activator="{ on, attrs }">
+              <v-row align="center" justify="space-around">
+                <v-btn outlined class="mx-3 mb-8" v-bind="attrs" v-on="on" @click="relateFacility(name, object.target)">
+                  {{ object.placeholder }}
+                </v-btn>
+                {{ facility.properties[name] }}
+              </v-row>
+            </template>
+            <span>{{ object.tooltip }}</span>
+          </v-tooltip>
+
           <!-- Inner  Properties -->
           <div v-for="[prop, sub] in innerProps(facility, object, name)" :key="prop">
             <v-tooltip top v-if="sub.method === 'select'">
@@ -219,6 +231,14 @@ export default {
 
     async edit() {
       this.$store.dispatch('edit', this.facility)
+    },
+
+    async relateFacility(property, layer) {
+      const commit = await this.$store.commit
+      const state = await this.$store.state
+      commit('setState', { props: ['edit', 'show'], value: false })
+      commit('setState', { props: ['edit', 'target'], value: property })
+      this.drawnFacilities(state.ls.currentMark, layer)
     }
   }
 }

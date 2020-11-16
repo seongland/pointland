@@ -19,15 +19,15 @@ export const state = () => ({
    * @summary - Default State
    */
   index: 1,
-  accessToken: undefined,
-  user: undefined,
-  prj: undefined,
-  prjId: undefined,
-  currentRound: undefined,
-  currentSnap: undefined,
-  currentMark: undefined,
-  targetLayer: { index: undefined, object: undefined },
-  targetTask: undefined,
+  accessToken: null,
+  user: null,
+  prj: null,
+  prjId: null,
+  currentRound: null,
+  currentSnap: null,
+  currentMark: null,
+  targetLayer: { index: null, object: null },
+  targetTask: null,
   rounds
 })
 

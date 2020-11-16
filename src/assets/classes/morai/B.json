@@ -802,9 +802,10 @@
         "LinkID": {
           "type": "String",
           "optional": false,
-          "placeholder": "B1",
-          "tooltip": "참조 경로",
-          "method": "B1"
+          "placeholder": "참조 경로",
+          "tooltip": "참조하는 A2 주행경로링크",
+          "target": "A2",
+          "method": "relate"
         }
       }
     },
