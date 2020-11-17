@@ -100,6 +100,9 @@
         <v-card-text v-if="!targetTask || targetTask.prop === 'located'"
           >위치보정 필요 - {{ items.filter(item => !item.relations.located).length }}
         </v-card-text>
+        <v-card-text v-if="!targetTask || targetTask.prop === 'related'"
+          >시설물 연결 필요 - {{ items.filter(item => item.relations.related).length }}
+        </v-card-text>
         <v-card-text v-if="!targetTask || targetTask.prop === 'reported'"
           >추가 데이터 필요 - {{ items.filter(item => item.relations.reported).length }}
         </v-card-text>
@@ -124,7 +127,8 @@ export default {
     filters: [
       { label: '속성값 입력', task: { data: false, prop: 'proped' } },
       { label: '위치보정', task: { data: false, prop: 'located' } },
-      { label: '추가 데이터 필요', task: { data: true, prop: 'reported' } }
+      { label: '추가 데이터 필요', task: { data: true, prop: 'reported' } },
+      { label: '시설물 연결', task: { data: false, prop: 'related' } },
     ],
     distances: [
       { label: '50m', data: 50 },
@@ -136,7 +140,8 @@ export default {
       { align: 'center', text: '레이어', value: 'properties.layer' },
       { align: 'center', text: '이미지', value: 'relations.visible', tooltip: '시야각 내 확인 가능' },
       { align: 'center', text: '속성입력', value: 'relations.proped', tooltip: '속성값 입력 완료' },
-      { align: 'center', text: '위치보정', value: 'relations.located', tooltip: '위치 보정 완료' }
+      { align: 'center', text: '위치보정', value: 'relations.located', tooltip: '위치 보정 완료' },
+      { align: 'center', text: '시설물연결', value: 'relations.related', tooltip: '시설물 연결 완료' }
     ]
   }),
   computed: {

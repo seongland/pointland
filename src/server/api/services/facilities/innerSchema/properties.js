@@ -9,9 +9,6 @@ export default new mongoose.Schema(
     xyzs: { type: [Array] },
 
     // Morai
-    id: { type: String },
-    ID: { type: String },
-
     Type: { type: String },
     SubType: { type: mongoose.Mixed },
     NodeType: { type: String },
@@ -27,7 +24,6 @@ export default new mongoose.Schema(
     StopLine: { type: String },
     RelatedSig: { type: String },
     Orientation: { type: String },
-    Orientation: { type: String },
 
     NodeID: { type: String },
     LinkID: { type: String },
@@ -41,10 +37,12 @@ export default new mongoose.Schema(
 
     Ref_Line: { type: Number },
 
-    // Meta
+    // Stryx
     comment: { type: String },
-    layer: { type: String },
-    version: { type: String, default: 'morai' }
+
+    // Meta
+    layer: { type: String, index: true },
+    version: { type: String, default: 'morai', index: true }
   },
   { _id: false }
 )
