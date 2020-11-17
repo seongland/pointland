@@ -47,8 +47,10 @@ export default ({ store: { commit, state } }) => {
         transform.position.x = xyz[0] - cloudRef.cloud.offset[0]
         transform.position.y = xyz[1] - cloudRef.cloud.offset[1]
         transform.position.z = xyz[2] - cloudRef.cloud.offset[2]
+        const pos = transform.position
 
-        let factor = 3 / Math.abs(transform.position.x) + Math.abs(transform.position.y) + Math.abs(transform.position.z)
+        const divider = Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)
+        let factor = 3 / divider
         if (factor > 0.2) factor = 0.2
         transform.setSize(factor)
 

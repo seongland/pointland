@@ -139,6 +139,7 @@
         <v-card-actions>
           <v-checkbox v-model="facility.relations.proped" label="속성값 입력 완료" dense class="mx-2"></v-checkbox>
           <v-checkbox v-model="facility.relations.located" label="위치 보정 완료" dense class="mx-2"></v-checkbox>
+          <v-checkbox v-model="facility.relations.related" label="시설물 연결 완료" dense class="mx-2"></v-checkbox>
           <v-checkbox v-model="facility.relations.reported" label="추가 데이터 필요" dense class="mx-2"></v-checkbox>
           <v-spacer></v-spacer>
           <v-btn class="mr-2" :loading="$store.state.submit.loading" @click="submit">Submit</v-btn>
