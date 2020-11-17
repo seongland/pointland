@@ -5,22 +5,12 @@
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
-import { SELECT_SIZE, MARK_SIZE } from './config'
-import { drawHover, drawClick } from './draw'
+import { drawHover, click3D } from './draw'
 import { makePointLayer } from './layer'
 
 export const ref = { cloud: null, cloudSize: 0.05, pointSize: 1, lineWidth: 0.01 }
 
-const layerConfig = {
-  pointLayers: [
-    { name: 'markLayer', color: 0x22dd88, size: MARK_SIZE / 2, length: 10000, order: 1 },
-    { name: 'currentLayer', color: 0x1188ff, size: MARK_SIZE, length: 1, order: 2 },
-    { name: 'drawnLayer', color: 0x9911ff, size: SELECT_SIZE, length: 5000, order: 3 },
-    { name: 'selectedLayer', color: 0xff8c00, size: SELECT_SIZE, length: 1, order: 4 }
-  ]
-}
-
-function initCloud({ selectCallback }) {
+function initCloud(cloudOpt) {
   /**
    * @summary - Make Point Cloud
    * @params {String} id - dom id for append
@@ -30,6 +20,7 @@ function initCloud({ selectCallback }) {
   cloud.el = document.getElementById('las')
   if (cloud.el && window) {
     // Make Space
+    cloud.opt = cloudOpt
     cloud.camera = makeCamera(cloud.el)
     cloud.scene = makeScene(cloud.camera)
     cloud.renderer = makeRenderer(cloud.el)
@@ -40,14 +31,13 @@ function initCloud({ selectCallback }) {
     cloud.axis = true
     cloud.mouse = new THREE.Vector2()
     cloud.raycaster = new THREE.Raycaster()
-    cloud.raycaster.params.Points.threshold = 0.03
     ref.cloud = cloud
-    ref.cloud.selectCallback = selectCallback
+    ref.cloud.selectCallback = cloudOpt.selectCallback
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
-    cloud.el.addEventListener('dblclick', drawClick, false)
+    cloud.el.addEventListener('dblclick', click3D, false)
 
-    for (const config of layerConfig.pointLayers) cloud.scene.add(makePointLayer(config))
+    for (const config of cloudOpt.pointLayers) cloud.scene.add(makePointLayer(config))
 
     // Add To Canvas
     cloud.id = animate()

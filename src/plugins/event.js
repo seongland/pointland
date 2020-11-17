@@ -6,8 +6,6 @@ import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 
-const ID_SEP = '_'
-
 export default ({ store: { commit, state, $router } }) => {
   Vue.mixin({
     methods: {
@@ -50,9 +48,10 @@ export default ({ store: { commit, state, $router } }) => {
         /*
          * @summary - Map Click Drawn Callback
          */
-        let id, index, index2
-        id = feature.getId()
-        const idSet = id.split(ID_SEP)
+        let id, vid, index, index2
+        vid = feature.getId()
+        const idSet = vid.split(this.idSep)
+        id = vid
         if (idSet.length > 1) {
           id = idSet[0]
           index = Number(idSet[1])
@@ -283,7 +282,6 @@ export default ({ store: { commit, state, $router } }) => {
           case 'h':
             if (!cloudRef.cloud.currentHover) return
             const hovered = cloudRef.cloud.currentHover.point
-            console.log(hovered)
 
             // Focus Lidar
             if (index === 2) {

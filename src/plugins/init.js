@@ -3,13 +3,45 @@ import { olInit, ref as mapRef } from '~/plugins/map/init'
 import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
 import { initImg, ref as imgRef } from './image/init'
 
-export default ({ $axios, store: { commit } }) => {
+export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
       purgeCloud: () => purgeCloud(),
 
       initCloud(option) {
         this.$root.cloudRef = cloudRef
+
+        // Set Cloud Callback
+        for (const layerOpt of option.pointLayers)
+          if (layerOpt.name === 'markLayer') {
+            // Mark 3D Click Callback
+            layerOpt.callback.click = intersect => {
+              let name = intersect.object.geometry.indexes[intersect.index].id
+              for (const markObj of state.ls.currentSnap.marks) if (markObj.name === name) this.setMark(markObj)
+            }
+            layerOpt.callback.filter = () => state.mode === 'select'
+          } else if (layerOpt.name === 'drawnLayer') {
+            // Facility 3D Click Callback
+            layerOpt.callback.click = intersect => {
+              let id, index, index2
+              let vid = intersect.object.geometry.indexes[intersect.index].id
+              const idSet = vid.split(this.idSep)
+              id = vid
+              if (idSet.length > 1) {
+                id = idSet[0]
+                index = Number(idSet[1])
+                index2 = Number(idSet[2])
+              }
+              console.log(id, index, index2)
+              this.selectID(id, index, index2)
+            }
+            layerOpt.callback.filter = () => state.mode === 'select'
+          }
+        option.selectCallback = (xyz, point) => {
+          const targetLayer = this.$store.state.ls.targetLayer
+          if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
+        }
+
         const cloud = initCloud(option)
         const transform = cloud.transform
         transform.removeEventListener('dragging-changed', this.dragSelected)
@@ -49,14 +81,13 @@ export default ({ $axios, store: { commit } }) => {
       },
 
       olInit(opt, geoserver, workspace, layers) {
+        // Set Map Callback
         this.$root.mapRef = mapRef
         for (const config of this.mapOpt.layers.vector) {
-          config.callback = {}
           if (config.name === 'markLayer') config.callback.click = this.clickMark
           else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn
         }
         for (const config of this.mapOpt.layers.geoserver) {
-          config.callback = {}
           if (config.name === 'processedLayer') config.callback.click = this.clickProcessed
         }
         this.$root.map = olInit(opt, geoserver, workspace, layers)
