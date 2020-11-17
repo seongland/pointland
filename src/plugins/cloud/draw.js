@@ -181,7 +181,7 @@ function click3D() {
       targets.push(ref[layerOpt.name])
     }
 
-  cloud.raycaster.params.Points.threshold = 0.5
+  cloud.raycaster.params.Points.threshold = 1
   const intersects = cloud.raycaster.intersectObjects(targets)
   const intersect = intersects[0]
   if (intersect) return intersect.object.click(intersect)

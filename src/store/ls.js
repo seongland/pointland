@@ -11,7 +11,8 @@ const rounds = [
   { name: 'imms_20200910_000230' },
   { name: 'imms_20201026_145535' },
   { name: 'imms_20201026_153812' },
-  { name: 'imms_20201106_172834' }
+  { name: 'imms_20201106_172834' },
+  { name: 'imms_20201106_220611' }
 ]
 
 export const state = () => ({
