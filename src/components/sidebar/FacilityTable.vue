@@ -16,15 +16,13 @@
         <v-list-item>
           <v-select
             attach
-            clearable
             class="mt-5"
-            v-model="targetTask"
+            v-model="mode"
             solo
             dense
-            label="전체 작업"
-            :items="filters"
-            item-text="label"
-            item-value="task"
+            :items="$store.state.modes"
+            item-text="name"
+            item-value="data"
           />
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
@@ -123,7 +121,6 @@ export default {
     mini: false,
     showCloud: true,
     showMark: true,
-    mode: 'select',
     filters: [
       { label: '속성값 입력', task: { data: false, prop: 'proped' } },
       { label: '위치보정', task: { data: false, prop: 'located' } },
@@ -145,6 +142,14 @@ export default {
   computed: {
     items() {
       return this.$store.state.facilities.map((item, index) => ({ ...item, index: index + 1 }))
+    },
+    mode: {
+      get() {
+        return this.$store.state.mode
+      },
+      set(value) {
+        this.$store.commit('setState', { props: ['mode'], value })
+      }
     },
     targetTask: {
       get() {

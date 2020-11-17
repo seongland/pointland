@@ -12,6 +12,11 @@ export const state = () => ({
   submit: { show: false, ing: false, loading: false, target: undefined },
   edit: { show: false, ing: false, id: undefined, loading: false, target: undefined },
   del: { ing: false, id: undefined, loading: false },
+  modes: [
+    { name: '기본', data: 'select' },
+    { name: '그리기', data: 'draw' }
+  ],
+  mode: 'select',
   selected: [],
   history: []
 })

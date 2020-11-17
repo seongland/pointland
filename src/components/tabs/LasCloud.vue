@@ -132,12 +132,7 @@ export default {
   async fetch() {},
 
   mounted() {
-    this.$root.cloud = this.initCloud({
-      selectCallback: (xyz, point) => {
-        const targetLayer = this.$store.state.ls.targetLayer
-        if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
-      }
-    })
+    this.$root.cloud = this.initCloud(this.cloudOpt)
   },
   fetchOnServer: false
 }

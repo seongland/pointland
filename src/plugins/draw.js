@@ -16,7 +16,6 @@ import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
 const POINT_ID = 'Point'
-const ID_SEP = '_'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
@@ -146,7 +145,7 @@ export default ({ store: { commit, state } }) => {
             for (const index in props.xyzs) {
               const xyz = props.xyzs[index]
               xyzs.push(xyz)
-              let id = facility.id + ID_SEP + index
+              let id = facility.id + this.idSep + index
               ids.push(id)
             }
           } else if (geom.type === 'Polygon') {
@@ -155,7 +154,7 @@ export default ({ store: { commit, state } }) => {
               for (const index2 in polyline) {
                 const xyz = polyline[index2]
                 xyzs.push(xyz)
-                let id = facility.id + ID_SEP + index + ID_SEP + index2
+                let id = facility.id + this.idSep + index + this.idSep + index2
                 ids.push(id)
               }
             }
@@ -189,7 +188,7 @@ export default ({ store: { commit, state } }) => {
           } else if (facility.geometry.type === 'LineString') {
             for (const index in props.xyzs) {
               const xyz = props.xyzs[index]
-              let id = facility.id + ID_SEP + index
+              let id = facility.id + this.idSep + index
               xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'front', id, i })
               xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'back', id, i })
             }
@@ -198,7 +197,7 @@ export default ({ store: { commit, state } }) => {
               const polyline = props.xyzs[index]
               for (const index2 in polyline) {
                 const xyz = props.xyzs[index][index2]
-                let id = facility.id + ID_SEP + index + ID_SEP + index2
+                let id = facility.id + this.idSep + index + this.idSep + index2
                 xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'front', id, i })
                 xyzdis.push({ x: xyz[0], y: xyz[1], z: xyz[2], d: 'back', id, i })
               }

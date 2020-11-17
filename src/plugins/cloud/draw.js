@@ -85,6 +85,8 @@ function drawHover(cloud) {
   /*
    * <summary>index file from js</summary>
    */
+
+  cloud.raycaster.params.Points.threshold = 0.03
   const intersects = cloud.raycaster.intersectObjects(cloud.points)
   const hovered = intersects[0]
   const previous = cloud.currentHover
@@ -166,15 +168,29 @@ function changeColor(colors, index, color, attributes) {
   attributes.color.needsUpdate = true
 }
 
-function drawClick() {
+function click3D() {
   /*
    * <summary>index file from js</summary>
    */
   const cloud = ref.cloud
+  const targets = []
+  for (const layerOpt of cloud.opt.pointLayers)
+    if (layerOpt.callback.filter?.()) {
+      if (!ref[layerOpt.name].visible) continue
+      ref[layerOpt.name].click = layerOpt.callback.click
+      targets.push(ref[layerOpt.name])
+    }
+
+  cloud.raycaster.params.Points.threshold = 0.5
+  const intersects = cloud.raycaster.intersectObjects(targets)
+  const intersect = intersects[0]
+  if (intersect) return intersect.object.click(intersect)
+
   if (!cloud.currentHover) return
   cloud.currentSelected = cloud.currentHover
   const center = cloud.currentSelected.point
-  ref.cloud.selectCallback([center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]])
+  const xyz = [center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]]
+  ref.cloud.selectCallback(xyz)
 }
 
-export { drawLas, drawHover, drawClick }
+export { drawLas, drawHover, click3D }

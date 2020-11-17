@@ -34,7 +34,7 @@ async function mapClick(e) {
   for (const feature of features) tmpSrc.addFeature(feature)
 
   const closest = tmpSrc.getClosestFeatureToCoordinate(e.coordinate)
-  closest.callback.click(closest)
+  if (closest) closest.callback.click(closest)
 }
 
 function vectorCallback(e) {
@@ -43,6 +43,7 @@ function vectorCallback(e) {
   const tmpSrc = new Vector()
   for (const opt of vectorOpts) {
     const layer = ref[opt.name]
+    if (!layer.getVisible()) continue
     if (opt?.callback?.click) {
       const feature = layer
         .getSource()
@@ -67,7 +68,11 @@ async function geoserverCallback(e) {
   const features = []
   const opts = ref.map.opt.layers.geoserver
   for (const layerServer of opts)
-    if (layerServer.callback.click) features.push(...(await getNearFeatures(coor, size, layerServer)))
+    if (layerServer.callback.click) {
+      const layer = ref[layerServer.name]
+      if (!layer.getVisible()) continue
+      features.push(...(await getNearFeatures(coor, size, layerServer)))
+    }
   return features
 }
 
