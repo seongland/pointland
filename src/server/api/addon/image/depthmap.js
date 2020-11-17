@@ -117,16 +117,16 @@ function getBuffers(imageWidth, imageHeight, fd, dimension, position) {
   /*
    * @summary - depthmap image get offset
    */
-  const SINGLE_SIZE = 4
-  const buffers = []
-  const xyzGap = imageHeight * imageWidth * 4
-
-  for (const index in new Array(dimension).fill(0)) {
-    const buffer = Buffer.alloc(imageWidth * imageHeight * SINGLE_SIZE)
-    fs.readSync(fd, buffer, 0, imageWidth * imageHeight * SINGLE_SIZE, position + xyzGap * index)
-    buffers.push(buffer)
-  }
-  return buffers
+    const SINGLE_SIZE = 4
+    const buffers = []
+    const xyzGap = imageHeight * imageWidth * 4
+  
+    for (const index in new Array(dimension).fill(0)) {
+      const buffer = Buffer.alloc(imageWidth * imageHeight * SINGLE_SIZE)
+      fs.readSync(fd, buffer, 0, imageWidth * imageHeight * SINGLE_SIZE, position + xyzGap * index)
+      buffers.push(buffer)
+    }
+    return buffers
 }
 
 export async function xyzAtDepthmap(depthmapPath, x, y) {
