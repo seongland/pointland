@@ -8,7 +8,7 @@ export default app => {
 
   const roundProperties = {
     name: { type: String, required: true },
-    nas: { type: String, required: true },
+    nas: { type: { ip: String }, required: true },
     root: { type: String, required: true },
     snaps: { type: [snapSchema], required: true, default: [] }
   }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import columnSchema from './column/'
 
 export default new mongoose.Schema(
   {
