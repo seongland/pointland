@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import columnSchema from 'column/'
+import columnSchema from '../../../../area/innerSchema/snap/meta/node_modules/column/'
 
 export default new mongoose.Schema(
   {
