@@ -31,7 +31,8 @@ export const mutations = {
   login(state, { accessToken, user }) {
     state.user = user
     state.accessToken = accessToken
-    state.rounds = user.assigned.draw.rounds
+    state.rounds = []
+    if (user?.assigned?.draw?.rounds) state.rounds = user?.assigned?.draw?.rounds
   },
 
   setLayer(state, { index, object }) {
@@ -90,6 +91,7 @@ export const mutations = {
 
   setRounds(state, rounds) {
     const roundIndex = state.rounds.findIndex(element => element.name === state.currentRound?.name)
+    state.rounds = rounds
 
     let roundObj
     if (roundIndex >= 0) roundObj = rounds[roundIndex]
