@@ -43,17 +43,6 @@
             </template>
             <span>작업 목표를 설정하여 시설물을 필터링합니다</span>
           </v-tooltip>
-          <v-select
-            class="mt-5 ml-5"
-            attach
-            solo
-            dense
-            v-model="maxDistance"
-            label="전체"
-            item-text="label"
-            item-value="data"
-            :items="distances"
-          />
         </v-list-item>
 
         <v-divider></v-divider>
@@ -128,12 +117,7 @@ export default {
       { label: '속성값 입력', task: { data: false, prop: 'proped' } },
       { label: '위치보정', task: { data: false, prop: 'located' } },
       { label: '추가 데이터 필요', task: { data: true, prop: 'reported' } },
-      { label: '시설물 연결', task: { data: false, prop: 'related' } },
-    ],
-    distances: [
-      { label: '50m', data: 50 },
-      { label: '500m', data: 500 },
-      { label: '전체', data: 0 }
+      { label: '시설물 연결', task: { data: false, prop: 'related' } }
     ],
     headers: [
       { align: 'center', text: '참조', value: 'index' },
@@ -162,15 +146,6 @@ export default {
       },
       set(targetTask) {
         this.$store.commit('setState', { props: ['ls', 'targetTask'], value: targetTask })
-        this.drawnFacilities(this.$store.state.ls.currentMark)
-      }
-    },
-    maxDistance: {
-      get() {
-        return this.$store.state.distance.max
-      },
-      set(value) {
-        this.$store.commit('setState', { props: ['distance', 'max'], value })
         this.drawnFacilities(this.$store.state.ls.currentMark)
       }
     },

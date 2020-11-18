@@ -18,7 +18,6 @@ export const ref = {}
 function olInit(opt, geoserver, workspace, layers) {
   /**
    * @summary - Make OSM
-   * @todo - option conatin id and substitute default configs
    */
   const styles = makeStyle()
   const naver = makeNaverMap(opt)
