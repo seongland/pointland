@@ -8,7 +8,7 @@ export default ({ $axios }) => {
 
   Vue.mixin({
     data: () => ({
-      title: '3D MAPPING',
+      title: process.env.title,
       coor: 'Stryx',
       meta: { version: undefined },
       map: undefined,
@@ -90,6 +90,9 @@ export default ({ $axios }) => {
               }
             }
           ]
+        },
+        callback: {
+          moveend: null
         }
       },
       cloudOpt: {

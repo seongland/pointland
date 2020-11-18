@@ -6,38 +6,41 @@ import { xyto84 } from '../tool/coor'
 
 const GEO_JSON_TEMPLATE_4326 = {
   type: 'FeatureCollection',
-  crs: { type: 'name', properties: { name: 'epsg:4326' } }
+  crs: {
+    type: 'name',
+    properties: {
+      name: 'epsg:4326'
+    }
+  }
 }
 
 const GEO_JSON_TEMPLATE_32652 = {
   type: 'FeatureCollection',
-  crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:EPSG::32652' } }
+  crs: {
+    type: 'name',
+    properties: {
+      name: 'urn:ogc:def:crs:EPSG::32652'
+    }
+  }
 }
 
 export default app => {
-  const near = async (req, res) => {
-    const lng = req.params.lng
-    const lat = req.params.lat
-    const distance = Number(req.params.distance)
+  const geoWithin = async (req, res) => {
+    /*
+     * @summary - geowithin filter
+     */
+    const box = req.body.box
+    const layer = req.params.layer
     const facilityService = app.service('facility')
-
-    let query = {}
-    if (distance > 0)
-      query.$and = [
-        {
-          geometry: {
-            $near: {
-              $geometry: { type: 'Point', coordinates: [lng, lat] },
-              $maxDistance: distance
-            }
-          }
-        }
-      ]
+    let query = { $and: [{ geometry: { $geoWithin: { $box: box } } }, { 'properties.layer': { $eq: layer } }] }
     const facilities = await facilityService.Model.find(query)
     res.json(facilities)
   }
 
   const nearLayer = async (req, res) => {
+    /*
+     * @summary - near filter
+     */
     let query
     const lng = req.params.lng
     const lat = req.params.lat
@@ -48,14 +51,7 @@ export default app => {
     if (distance > 0)
       query = {
         $and: [
-          {
-            geometry: {
-              $near: {
-                $geometry: { type: 'Point', coordinates: [lng, lat] },
-                $maxDistance: distance
-              }
-            }
-          },
+          { geometry: { $near: { $geometry: { type: 'Point', coordinates: [lng, lat] }, $maxDistance: distance } } },
           { 'properties.layer': { $eq: layer } }
         ]
       }
@@ -65,12 +61,21 @@ export default app => {
   }
 
   const exporter = async (req, res) => {
+    /*
+     * @summary - facility exporter
+     */
     const layer = req.params.layer
     const crs = req.params.crs
     const facilityService = app.service('facility')
-    const facilities = await facilityService.Model.find({ 'properties.layer': layer })
+    const facilities = await facilityService.Model.find({
+      'properties.layer': layer
+    })
     let geoJson
-    if (crs === '4326') geoJson = { ...GEO_JSON_TEMPLATE_4326, features: facilities }
+    if (crs === '4326')
+      geoJson = {
+        ...GEO_JSON_TEMPLATE_4326,
+        features: facilities
+      }
     else if (crs === '32652') {
       const facilities32652 = facilities.map(f => {
         f.geometry.coordinates[0] = f.properties.x
@@ -81,12 +86,22 @@ export default app => {
         f.properties.z = undefined
         return f
       })
-      geoJson = { ...GEO_JSON_TEMPLATE_32652, features: facilities32652 }
-    } else geoJson = { ...GEO_JSON_TEMPLATE_4326, features: facilities }
+      geoJson = {
+        ...GEO_JSON_TEMPLATE_32652,
+        features: facilities32652
+      }
+    } else
+      geoJson = {
+        ...GEO_JSON_TEMPLATE_4326,
+        features: facilities
+      }
     res.json(geoJson)
   }
 
   const importer = async (req, res) => {
+    /*
+     * @summary - geojson facility importer
+     */
     const layer = req.params.layer
     const facilities = req.body.features
     const crs = req.params.crs
@@ -133,7 +148,6 @@ export default app => {
           }
         }
       }
-
       props.layer = layer
       promises.push(facilityService.Model.create(facility))
     }
@@ -142,8 +156,8 @@ export default app => {
 
   app.get('/facility/export/:layer', exporter)
   app.get('/facility/export/:layer/:crs', exporter)
-  app.get('/facility/near/:lng/:lat/:distance', near)
   app.get('/facility/near/:lng/:lat/:distance/:layer', nearLayer)
 
+  app.post('/facility/box/:layer', geoWithin)
   app.post('/facility/import/:layer/:crs', importer)
 }

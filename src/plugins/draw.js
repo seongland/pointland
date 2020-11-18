@@ -13,6 +13,7 @@ import { drawLas, drawXYZ, removePoint, drawLine, drawLoop } from './cloud/draw'
 import { resetPointLayer, removeLineLoops } from './cloud/event'
 import { drawNear, erase, updateImg } from './image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
+import { transform } from 'ol/proj'
 import jimp from 'jimp/browser/lib/jimp'
 
 const POINT_ID = 'Point'
@@ -105,15 +106,25 @@ export default ({ store: { commit, state } }) => {
         for (const index in xyzs) this.drawnXYZ(xyzs[index], ids[index])
       },
 
+      getExtentBox() {
+        const extent = mapRef.map.getView().calculateExtent()
+        const leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
+        const rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
+        return [leftBottom, rightTop]
+      },
+
       async drawnFacilities(currentMark, layer) {
         /*
          * @summary - Get & Draw drawn Facilities
          */
         let facilities
+        if (!imgRef.drawnLayer) return
         if (!layer) layer = state.ls.targetLayer?.object?.layer
+        const box = this.getExtentBox()
+
         if (layer) {
           commit('setLoading', true)
-          let url = `/api/facility/near/${currentMark.lon}/${currentMark.lat}/${state.distance.max}/${layer}`
+          let url = `/api/facility/box/${layer}`
 
           // reset
           await this.resetLayer('drawnLayer')
@@ -121,7 +132,7 @@ export default ({ store: { commit, state } }) => {
           removeLineLoops()
 
           // get Facilities
-          const res = await this.$axios.get(url)
+          const res = await this.$axios.post(url, { box })
           facilities = res.data
         } else facilities = []
 

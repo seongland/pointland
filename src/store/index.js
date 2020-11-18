@@ -6,7 +6,6 @@ export const state = () => ({
   allowedLayers: ['B1', 'C1'],
   facilities: [],
   loading: true,
-  distance: { max: 50 },
   visible: { transform: false },
   depth: { loading: false, on: true },
   submit: { show: false, ing: false, loading: false, target: undefined },

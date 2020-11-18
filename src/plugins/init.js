@@ -37,7 +37,7 @@ export default ({ $axios, store: { commit, state } }) => {
             }
             layerOpt.callback.filter = () => state.mode === 'select'
           }
-        option.selectCallback = (xyz, point) => {
+        option.selectCallback = xyz => {
           const targetLayer = this.$store.state.ls.targetLayer
           if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
         }
@@ -46,6 +46,10 @@ export default ({ $axios, store: { commit, state } }) => {
         const transform = cloud.transform
         transform.removeEventListener('dragging-changed', this.dragSelected)
         transform.addEventListener('dragging-changed', this.dragSelected)
+      },
+
+      mapMoveEnd() {
+        this.drawnFacilities(state.ls.currentMark)
       },
 
       async reloadUser() {
@@ -83,6 +87,8 @@ export default ({ $axios, store: { commit, state } }) => {
       olInit(opt, geoserver, workspace, layers) {
         // Set Map Callback
         this.$root.mapRef = mapRef
+
+        opt.callback.moveend = this.mapMoveEnd
         for (const config of this.mapOpt.layers.vector) {
           if (config.name === 'markLayer') config.callback.click = this.clickMark
           else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn

@@ -34,7 +34,7 @@ export default {
       serverError: 'Internal Server Error',
       otherError: 'An error occurred',
       title: undefined,
-      subTitle: 'MMS Tower'
+      subTitle: 'Drawing HD Map'
     }
   },
   head() {

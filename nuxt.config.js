@@ -9,6 +9,7 @@ dotenv.config()
 process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.dev = 1)
 process.env.version = package.version
 process.env.twr = process.env.TWR
+process.env.title =  "3D Mapping"
 
 module.exports = {
   // Root Directory
@@ -26,7 +27,8 @@ module.exports = {
   env: {
     dev: process.env.dev,
     version: process.env.version,
-    twr: process.env.twr
+    twr: process.env.twr,
+    title: process.env.title
   },
 
   // Middleware Apis
@@ -107,8 +109,7 @@ module.exports = {
 
   // Header
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: process.env.title,
     script: [
       {
         src: 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ajrugsv5ub'

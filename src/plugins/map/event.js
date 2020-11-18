@@ -16,12 +16,13 @@ function eventBind(map) {
    */
   map.naver.element = document.getElementById('naver')
   map.on('pointermove', () => changeMapLoc(map))
-  map.on('moveend', () => ({
-    loc: changeMapLoc(map),
-    zoom: ChangeMapRatio(map)
-  }))
+  map.on('moveend', () => {
+    changeMapLoc(map)
+    changeMapRatio(map)
+    map.opt.callback.moveend()
+  })
   map.on('click', mapClick)
-  return { loc: changeMapLoc(map), zoom: ChangeMapRatio(map) }
+  return { loc: changeMapLoc(map), zoom: changeMapRatio(map) }
 }
 
 async function mapClick(e) {
@@ -143,7 +144,7 @@ function setZoom(follow) {
   )
 }
 
-function ChangeMapRatio(map) {
+function changeMapRatio(map) {
   const zoom = Math.round(map.getView().getZoom())
   map.naver.setZoom(zoom)
   let olExtent = map.getView().calculateExtent()
