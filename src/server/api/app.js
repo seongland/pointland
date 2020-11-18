@@ -28,10 +28,10 @@ const app = express(feathers())
   .configure(facility)
   .use('/image', image)
   .use('/pointcloud', pointcloud)
-  .use('/meta', meta)
   .use(express.errorHandler({ logger }))
   .hooks(appHooks)
 
+meta(app)
 app.listen()
 process.on('unhandledRejection', (reason, p) => logger.error('Unhandled Rejection at: Promise ', p, reason))
 

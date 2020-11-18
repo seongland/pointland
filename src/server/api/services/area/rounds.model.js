@@ -7,9 +7,9 @@ export default app => {
   const mongooseClient = app.get('mongooseClient')
 
   const roundProperties = {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true, index: true },
     nas: { type: String, required: true },
-    root: { type: String, required: true },
+    root: { type: String, required: true, index: true },
     snaps: { type: [snapSchema], required: true, default: [] }
   }
   const roundSchema = defaultSchema(app).add(roundProperties)
