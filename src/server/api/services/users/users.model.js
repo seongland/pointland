@@ -1,10 +1,11 @@
-import defaultSchema from "../abstract/default/default.schema"
-import projectSchema from "./innerSchema/project"
-import orgSchema from "./innerSchema/org"
-const modelName = "users"
+import defaultSchema from '../abstract/default/default.schema'
+import projectSchema from './innerSchema/project'
+import orgSchema from './innerSchema/org'
+import roundSchema from './innerSchema/round'
+const modelName = 'users'
 
-export default (app) => {
-  const mongooseClient = app.get("mongooseClient")
+export default app => {
+  const mongooseClient = app.get('mongooseClient')
 
   const userProperties = {
     email: { type: String, unique: true, lowercase: true, required: true },
@@ -12,7 +13,11 @@ export default (app) => {
     profile_photo: { type: String },
     name: { type: String, required: true },
     projects: { type: [projectSchema], default: [] },
-    org: { type: orgSchema, required: true },
+    assigned: {
+      default: {},
+      type: { draw: { rounds: [roundSchema] } }
+    },
+    org: { type: orgSchema, required: true }
   }
   const userSchema = defaultSchema(app).add(userProperties)
   if (mongooseClient.modelNames().includes(modelName)) {

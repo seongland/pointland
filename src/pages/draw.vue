@@ -59,7 +59,7 @@ export default {
   fetchOnServer: false,
 
   async fetch() {
-    this.reloadUser()
+    await this.reloadUser()
     const rounds = []
     for (const round of this.$store.state.ls.rounds) {
       const res = await this.$axios.get(`/api/meta/${round.name}`)

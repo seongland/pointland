@@ -6,14 +6,6 @@ import { setDrawInteraction } from '~/plugins/map/draw'
 import { updateCtrl } from '~/plugins/cloud/init'
 
 const WAIT_RENDER = 500
-const rounds = [
-  { name: 'imms_20200909_231253' },
-  { name: 'imms_20200910_000230' },
-  { name: 'imms_20201026_145535' },
-  { name: 'imms_20201026_153812' },
-  { name: 'imms_20201106_172834' },
-  { name: 'imms_20201106_220611' }
-]
 
 export const state = () => ({
   /*
@@ -29,7 +21,7 @@ export const state = () => ({
   currentMark: null,
   targetLayer: { index: null, object: null },
   targetTask: null,
-  rounds
+  rounds: []
 })
 
 export const mutations = {
@@ -39,6 +31,7 @@ export const mutations = {
   login(state, { accessToken, user }) {
     state.user = user
     state.accessToken = accessToken
+    state.rounds = user.assigned.draw.rounds
   },
 
   setLayer(state, { index, object }) {
@@ -66,7 +59,7 @@ export const mutations = {
     state.prj = undefined
     state.prjId = undefined
     state.index = 1
-    state.rounds = rounds
+    state.rounds = []
     this.$router.push('/')
   },
 
@@ -97,7 +90,6 @@ export const mutations = {
 
   setRounds(state, rounds) {
     const roundIndex = state.rounds.findIndex(element => element.name === state.currentRound?.name)
-    state.rounds = rounds
 
     let roundObj
     if (roundIndex >= 0) roundObj = rounds[roundIndex]
