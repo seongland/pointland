@@ -103,7 +103,7 @@ export default ({ $axios }) => {
             size: 0.5,
             length: 10000,
             order: 1,
-            callback: { click: null, filter: null }
+            callback: { click: null }
           },
           { name: 'currentLayer', color: 0x1188ff, size: 1, length: 1, order: 2, callback: { click: null, filter: null } },
           {
@@ -112,7 +112,7 @@ export default ({ $axios }) => {
             size: 0.2,
             length: 5000,
             order: 3,
-            callback: { click: null, filter: null }
+            callback: { click: null }
           },
           { name: 'selectedLayer', color: 0xff8c00, size: 0.2, length: 1, order: 4, callback: { click: null, filter: null } }
         ]

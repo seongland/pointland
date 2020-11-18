@@ -241,7 +241,14 @@ export default ({ store: { commit, state } }) => {
         }
       },
 
-      async drawFromDepth(x, y, depthDir) {
+      async drawFromDepth(id) {
+        /*
+         * @summary - Callback From Image click
+         */
+        this.selectID(id)
+      },
+
+      async selectFromDepth(x, y, depthDir) {
         /*
          * @summary - Callback From Image click
          */

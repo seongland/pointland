@@ -14,16 +14,6 @@
     <div v-show="!mini ? !$store.state.loading : false">
       <v-list>
         <v-list-item>
-          <v-select
-            attach
-            class="mt-5"
-            v-model="mode"
-            solo
-            dense
-            :items="$store.state.modes"
-            item-text="name"
-            item-value="data"
-          />
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
               <v-select
@@ -131,14 +121,6 @@ export default {
   computed: {
     items() {
       return this.$store.state.facilities.map((item, index) => ({ ...item, index: index + 1 }))
-    },
-    mode: {
-      get() {
-        return this.$store.state.mode
-      },
-      set(value) {
-        this.$store.commit('setState', { props: ['mode'], value })
-      }
     },
     targetTask: {
       get() {
