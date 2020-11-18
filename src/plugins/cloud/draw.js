@@ -168,22 +168,22 @@ function changeColor(colors, index, color, attributes) {
   attributes.color.needsUpdate = true
 }
 
-function click3D() {
+function click3D(e) {
   /*
    * <summary>index file from js</summary>
    */
   const cloud = ref.cloud
   const targets = []
-  for (const layerOpt of cloud.opt.pointLayers)
-    if (layerOpt.callback.filter?.()) {
+  if (!e.ctrlKey)
+    for (const layerOpt of cloud.opt.pointLayers) {
       if (!ref[layerOpt.name].visible) continue
       ref[layerOpt.name].click = layerOpt.callback.click
       targets.push(ref[layerOpt.name])
     }
-
-  cloud.raycaster.params.Points.threshold = 1
+  cloud.raycaster.params.Points.threshold = 0.5
   const intersects = cloud.raycaster.intersectObjects(targets)
   const intersect = intersects[0]
+  if (process.env.dev) console.log(intersect)
   if (intersect) return intersect.object.click(intersect)
 
   if (!cloud.currentHover) return

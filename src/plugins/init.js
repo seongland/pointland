@@ -19,7 +19,6 @@ export default ({ $axios, store: { commit, state } }) => {
               let name = intersect.object.geometry.indexes[intersect.index].id
               for (const markObj of state.ls.currentSnap.marks) if (markObj.name === name) this.setMark(markObj)
             }
-            layerOpt.callback.filter = () => state.mode === 'select'
           } else if (layerOpt.name === 'drawnLayer') {
             // Facility 3D Click Callback
             layerOpt.callback.click = intersect => {
@@ -35,7 +34,6 @@ export default ({ $axios, store: { commit, state } }) => {
               console.log(id, index, index2)
               this.selectID(id, index, index2)
             }
-            layerOpt.callback.filter = () => state.mode === 'select'
           }
         option.selectCallback = xyz => {
           const targetLayer = this.$store.state.ls.targetLayer

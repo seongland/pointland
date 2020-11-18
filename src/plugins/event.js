@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
-import { imageClick } from './image/event'
+import { clickDepth } from './image/event'
 import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
@@ -165,8 +165,8 @@ export default ({ store: { commit, state, $router } }) => {
         this.waitAvail(this.checkMount, this.currentXYZ, [[markObj.x, markObj.y, markObj.alt]])
       },
 
-      async imageClick(event, depth) {
-        return imageClick(event, depth, this.drawFromDepth)
+      async clickDepth(event, depth) {
+        return clickDepth(event, depth, this.drawFromDepth, this.selectFromDepth)
       },
 
       keyUp(event) {

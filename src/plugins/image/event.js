@@ -1,5 +1,3 @@
-import { ref } from './init'
-
 const NEAR = 5
 
 function checkNear(image, x, y) {
@@ -19,7 +17,7 @@ function checkNear(image, x, y) {
   }
 }
 
-export async function imageClick(event, depth, drawCallback) {
+export async function clickDepth(event, depth, drawCallback) {
   const xRatio = event.offsetX / event.target.offsetWidth
   const yRatio = event.offsetY / event.target.offsetHeight
   const data = getImageData(event, depth)
