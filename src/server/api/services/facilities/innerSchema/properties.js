@@ -27,6 +27,7 @@ export default new mongoose.Schema(
 
     NodeID: { type: String },
     LinkID: { type: String },
+    LinkIDs: { type: [String] },
     L_LinkID: { type: String },
     R_LinkID: { type: String },
     FromNodeID: { type: String },
@@ -34,6 +35,7 @@ export default new mongoose.Schema(
     ITSLinkID: { type: String },
     L_LaneChan: { type: String },
     R_LaneChan: { type: String },
+    IntersectionControllerID: { type: String },
 
     Ref_Line: { type: Number },
 

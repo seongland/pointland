@@ -21,6 +21,8 @@ export const mutations = {
   },
   resetSelected(state) {
     state.selected = []
+    state.edit.ing = false
+    state.submit.ing = false
     if (cloudRef.cloud) cloudRef.cloud.transform.detach(cloudRef.selectedLayer)
   },
   setLoading(state, value) {

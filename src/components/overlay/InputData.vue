@@ -79,9 +79,28 @@
           <v-tooltip top v-else-if="object.method === 'relate'">
             <template v-slot:activator="{ on, attrs }">
               <v-row align="center" justify="space-around">
-                <v-btn outlined class="mx-3 mb-5" v-bind="attrs" v-on="on" @click="relateFacility(object.target)">
-                  {{ object.placeholder }}
+                <v-btn outlined class="mx-3 mb-5" v-bind="attrs" v-on="on" @click="relateFacility(name, object.target)">
+                  {{ facility.properties[name] ? facility.properties[name] : object.placeholder }}
                 </v-btn>
+              </v-row>
+            </template>
+            <span>{{ object.tooltip }}</span>
+          </v-tooltip>
+
+          <v-tooltip top v-else-if="object.method === 'multirelate'">
+            <template v-slot:activator="{ on, attrs }">
+              <v-row align="center" justify="space-around">
+                <v-select
+                  multiple
+                  outlined
+                  class="mx-3 mb-5"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="relateFacility(name, object.target)"
+                >
+                  {{ object.placeholder }}
+                </v-select>
+                {{ facility.properties[name] }}
               </v-row>
             </template>
             <span>{{ object.tooltip }}</span>

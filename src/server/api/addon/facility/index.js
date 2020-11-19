@@ -67,10 +67,10 @@ export default app => {
     res.json(facilities)
   }
 
-  app.get('/facility/export/:layer', exporter)
-  app.get('/facility/export/:layer/:crs', exporter)
+  app.get('/facility/export/:layer', exporter(app))
+  app.get('/facility/export/:layer/:crs', exporter(app))
   app.get('/facility/near/:lng/:lat/:distance/:layer', nearLayer)
 
   app.post('/facility/box/:layer', geoWithin)
-  app.post('/facility/import/:layer/:crs', importer)
+  app.post('/facility/import/:layer/:crs', importer(app))
 }
