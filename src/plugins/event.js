@@ -57,6 +57,13 @@ export default ({ store: { commit, state, $router } }) => {
           index = Number(idSet[1])
           index2 = Number(idSet[2])
         }
+        this.selectID(id, index, index2)
+      },
+
+      async selectID(id, index, index2) {
+        /*
+         * @summary - Select by Document ID
+         */
         if (state.submit.ing) {
           commit('setState', { props: ['submit', 'show'], value: true })
           commit('setState', { props: ['selected', 0, 'properties', state.submit.target], value: id })
@@ -67,13 +74,6 @@ export default ({ store: { commit, state, $router } }) => {
           commit('setState', { props: ['selected', 0, 'properties', state.edit.target], value: id })
           return this.drawnFacilities(state.ls.currentMark)
         }
-        this.selectID(id, index, index2)
-      },
-
-      async selectID(id, index, index2) {
-        /*
-         * @summary - Select by Document ID
-         */
         const config = this.getAuthConfig()
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
         const facility = res.data[0]
@@ -85,7 +85,6 @@ export default ({ store: { commit, state, $router } }) => {
          * @summary - Select by Facility Document
          */
         let xyz
-
         const geom = facility.geometry
         const props = facility.properties
 
@@ -184,7 +183,9 @@ export default ({ store: { commit, state, $router } }) => {
             }
             return
           case 'Escape':
-            this.resetSelected()
+            if (state.submit.ing && state.edit.ing) this.drawnFacilities()
+            else if (state.selected.length > 0) this.resetSelected()
+            else this.drawnFacilities()
             return
         }
       },
@@ -292,7 +293,7 @@ export default ({ store: { commit, state, $router } }) => {
                 commit('setState', { props: ['submit', 'ing'], value: true })
                 commit('setState', { props: ['submit', 'show'], value: true })
               }
-            }
+            } else this.drawnFacilities()
             return
         }
         if (process.env.dev) console.log(event)

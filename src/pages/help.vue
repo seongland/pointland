@@ -30,7 +30,14 @@
           <v-card-text><span style="font-weight: bold">2</span> - Image View로 이동한다</v-card-text>
           <v-card-text><span style="font-weight: bold">3</span> - Cloud View로 이동한다 </v-card-text>
 
-          <v-card-text><span style="font-weight: bold">Enter</span> - 도화 데이터를 제출한다</v-card-text>
+          <v-card-text
+            ><span style="font-weight: bold">Enter</span> - 도화 데이터를 제출한다 - 제출할 데이터가 없으면 시설물을
+            새로고침한다</v-card-text
+          >
+          <v-card-text
+            ><span style="font-weight: bold">Escape</span> - 선택해제 - 해제할 데이터가 없으가 시설물을
+            새로고침한다</v-card-text
+          >
           <v-card-text><span style="font-weight: bold">F</span> - 현재 선택한 포인트를 포커싱한다</v-card-text>
           <v-card-text><span style="font-weight: bold">&lt;</span> - 이전 마크로 이동한다 </v-card-text>
           <v-card-text><span style="font-weight: bold">&gt;</span> - 다음 마크로 이동한다 </v-card-text>

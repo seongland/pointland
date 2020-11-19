@@ -3,14 +3,31 @@
   "layers": [
     {
       "layer": "D1",
-      "type": "None",
+      "type": "Polygon",
       "description": "연결된신호등",
       "name": "SYNCEDTRAFFICLIGHT",
-      "attributes": {}
+      "attributes": {
+        "LinkIDs": {
+          "type": "Array",
+          "optional": false,
+          "placeholder": "참조 경로들",
+          "tooltip": "주행 시 해당 신호등을 참고해야하는 링크들의 ID",
+          "target": "A2",
+          "method": "multirelate"
+        },
+        "IntersectionControllerID": {
+          "type": "String",
+          "optional": false,
+          "placeholder": "교차로신호등통제기",
+          "tooltip": "신호등을 관리하는 가상의 위치의 신호등 제어기",
+          "target": "D2",
+          "method": "trlate"
+        }
+      }
     },
     {
       "layer": "D2",
-      "type": "None",
+      "type": "Polygon",
       "description": "교차로신호등통제기",
       "name": "INTERSECTIONCONTROLLER",
       "attributes": {}

@@ -19,6 +19,7 @@
       <v-list-item-group v-model="layerIndex" color="primary">
         <div v-for="classObj in classes" :key="classObj.class">
           <v-list-item
+            :disabled="disabled"
             link
             v-for="layerObj in classObj.layers"
             :key="layerObj.layer"
@@ -67,6 +68,12 @@ export default {
       set(values) {
         this.setLayer({ index: values })
       }
+    },
+    disabled() {
+      const state = this.$store.state
+      if (state.edit.ing || state.submit.ing) return true
+      else if (state.loading || state.depth.loading) return true
+      else false
     }
   }
 }

@@ -118,6 +118,7 @@ export default ({ store: { commit, state } }) => {
          * @summary - Get & Draw drawn Facilities
          */
         let facilities
+        if (!currentMark) currentMark = state.ls.currentMark
         if (!imgRef.drawnLayer) return
         if (!layer) layer = state.ls.targetLayer?.object?.layer
         const box = this.getExtentBox()
