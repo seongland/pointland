@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
-import { clickDepth } from './image/event'
+import { clickImage } from './image/event'
 import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
@@ -77,7 +77,7 @@ export default ({ store: { commit, state, $router } }) => {
         const config = this.getAuthConfig()
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
         const facility = res.data[0]
-        this.selectFacility(facility, index, index2)
+        if (facility) this.selectFacility(facility, index, index2)
       },
 
       async selectFacility(facility, index, index2) {
@@ -165,8 +165,8 @@ export default ({ store: { commit, state, $router } }) => {
         this.waitAvail(this.checkMount, this.currentXYZ, [[markObj.x, markObj.y, markObj.alt]])
       },
 
-      async clickDepth(event, depth) {
-        return clickDepth(event, depth, this.drawFromDepth, this.selectFromDepth)
+      async clickImage(event, depth) {
+        return clickImage(event, depth, this.drawFromDepth, this.selectFromDepth)
       },
 
       keyUp(event) {

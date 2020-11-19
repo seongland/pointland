@@ -1,6 +1,8 @@
+import { ref } from './init'
+
 const NEAR = 5
 
-function checkNear(image, x, y) {
+function getNearest(image, x, y) {
   const nearArray = new Array(NEAR).fill(0).map((_, i) => i + 1)
   for (const d of nearArray) {
     let square = new Array(2 * d + 1).fill(0).map((_, i) => i - d)
@@ -17,17 +19,41 @@ function checkNear(image, x, y) {
   }
 }
 
-export async function clickDepth(event, depth, drawCallback) {
+function checkNearest(direction, x, y) {
+  let min = Infinity
+  let target = undefined
+  for (const id in ref.ids) {
+    const existing = ref.ids[id]
+    if (existing.direction === direction) {
+      const dx = Math.abs(x - existing.x)
+      const dy = Math.abs(y - existing.y)
+      const d = Math.sqrt(Math.pow(dx, 2), Math.pow(dy, 2))
+      if (d < min) {
+        min = d
+        target = id
+      }
+    }
+  }
+  if (min < 5) return target
+}
+
+export async function clickImage(event, depth, drawCallback, selectCallback) {
+  const data = getImageData(event, depth)
+  const direction = data.direction
   const xRatio = event.offsetX / event.target.offsetWidth
   const yRatio = event.offsetY / event.target.offsetHeight
-  const data = getImageData(event, depth)
   const image = data.image
   if (!image) return
   let x = Math.round(image.bitmap.width * xRatio)
   let y = Math.round(image.bitmap.height * yRatio)
+
+  if (!event.ctrlKey) {
+    let facility = checkNearest(direction, x, y)
+    if (facility) return selectCallback(facility)
+  }
   const color = image.getPixelColor(x, y)
   if (color === 0) {
-    const point = checkNear(image, x, y)
+    const point = getNearest(image, x, y)
     if (!point) return
     x = point[0]
     y = point[1]
@@ -38,6 +64,11 @@ export async function clickDepth(event, depth, drawCallback) {
 function getImageData(event, depth) {
   const path = event.path
   for (const element of path)
-    if (element.id === 'front') return depth.front
-    else if (element.id === 'back') return depth.back
+    if (element.id === 'front') {
+      depth.front.direction = element.id
+      return depth.front
+    } else if (element.id === 'back') {
+      depth.back.direction = element.id
+      return depth.back
+    }
 }

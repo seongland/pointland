@@ -30,7 +30,7 @@
               id="front"
               v-show="show"
               :src="depth ? depth.front.uri : src.front.uri"
-              @click="clickDepth($event, depth)"
+              @click="clickImage($event, depth)"
             >
               <v-img id="frontLayer" :src="depth ? depth.front.layer.drawn.uri : src.front.uri">
                 <v-img :src="depth ? depth.front.layer.selected.uri : src.front.uri"
@@ -42,7 +42,7 @@
       <v-col cols="6" md="6" sm="6" class="py-0 px-0">
         <transition name="fade" appear>
           <v-img :src="src.back.uri" v-show="!loading">
-            <v-img id="back" v-show="show" :src="depth ? depth.back.uri : src.back.uri" @click="clickDepth($event, depth)">
+            <v-img id="back" v-show="show" :src="depth ? depth.back.uri : src.back.uri" @click="clickImage($event, depth)">
               <v-img id="backLayer" :src="depth ? depth.back.layer.drawn.uri : src.back.uri">
                 <v-img :src="depth ? depth.back.layer.selected.uri : src.back.uri" />
               </v-img>
