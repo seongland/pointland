@@ -27,7 +27,7 @@ function checkNearest(direction, x, y) {
     if (existing.direction === direction) {
       const dx = Math.abs(x - existing.x)
       const dy = Math.abs(y - existing.y)
-      const d = Math.sqrt(Math.pow(dx, 2), Math.pow(dy, 2))
+      const d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
       if (d < min) {
         min = d
         target = id

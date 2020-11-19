@@ -180,11 +180,15 @@ function click3D(e) {
       ref[layerOpt.name].click = layerOpt.callback.click
       targets.push(ref[layerOpt.name])
     }
-  cloud.raycaster.params.Points.threshold = 0.5
-  const intersects = cloud.raycaster.intersectObjects(targets)
+  cloud.raycaster.params.Points.threshold = 1
+  let intersects = cloud.raycaster.intersectObjects(targets)
+  intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
   const intersect = intersects[0]
-  if (process.env.dev) console.log(intersect)
-  if (intersect) return intersect.object.click(intersect)
+  if (intersect) {
+    if (process.env.dev) console.log(intersect)
+    intersect.index = intersect.index + intersect.object.geometry.drawRange.start
+    return intersect.object.click(intersect)
+  }
 
   if (!cloud.currentHover) return
   cloud.currentSelected = cloud.currentHover
