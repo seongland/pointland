@@ -241,14 +241,22 @@ export default ({ store: { commit, state } }) => {
         }
       },
 
-      async drawFromDepth(id) {
+      async selectFromDepth(vid) {
         /*
          * @summary - Callback From Image click
          */
-        this.selectID(id)
+        let id, index, index2
+        const idSet = vid.split(this.idSep)
+        id = vid
+        if (idSet.length > 1) {
+          id = idSet[0]
+          index = Number(idSet[1])
+          index2 = Number(idSet[2])
+        }
+        this.selectID(id, index, index2)
       },
 
-      async selectFromDepth(x, y, depthDir) {
+      async drawFromDepth(x, y, depthDir) {
         /*
          * @summary - Callback From Image click
          */
