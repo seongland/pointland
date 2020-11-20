@@ -13,16 +13,17 @@ export function drawNear(layer, { direction, x, y, color, id }, update) {
     [x + 1, y],
     [x - 1, y]
   ]
-  if (!ref.ids) ref.ids = {}
+  if (!ref.ids) ref.ids = new Map()
   ref.ids[id] = { direction, x, y }
   for (const coor of list) img.setPixelColor(color, ...coor)
   if (update) img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
 }
 
-export function updateImg(layer) {
+export async function updateImg(layer) {
   for (const direction of ['front', 'back']) {
     const img = layer[direction].image
-    img.getBase64Async('image/png').then(uri => (layer[direction].uri = uri))
+    const uri = await img.getBase64Async('image/png')
+    layer[direction].uri = uri
   }
 }
 

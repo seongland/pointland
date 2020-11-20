@@ -3,7 +3,7 @@ import { ref } from './init'
 
 export function resetPointLayer(layer) {
   const geometry = layer.geometry
-  geometry.ids = {}
+  geometry.ids = new Map()
   geometry.indexes = []
   geometry.drawRange.start = 0
   geometry.setDrawRange(0, 0)

@@ -2,7 +2,7 @@ import { transports, createLogger, format } from 'winston'
 import 'winston-daily-rotate-file'
 
 // Logger per User
-const userLoggerCache = {}
+const userLoggerCache = new Map()
 
 function getUserLogger(email) {
   if (userLoggerCache[email]) return userLoggerCache[email]

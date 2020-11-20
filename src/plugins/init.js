@@ -37,7 +37,7 @@ export default ({ $axios, store: { commit, state } }) => {
             }
           } else if (layerOpt.name === 'drawnLayer') {
             // Facility 3D Click Callback
-            layerOpt.callback.click = intersect => {
+            layerOpt.callback.click = async intersect => {
               let id, index, index2
               let vid = intersect.object.geometry.indexes[intersect.index].id
               const idSet = vid.split(this.idSep)
@@ -47,8 +47,9 @@ export default ({ $axios, store: { commit, state } }) => {
                 index = Number(idSet[1])
                 index2 = Number(idSet[2])
               }
-              console.log(id, index, index2)
-              this.selectID(id, index, index2)
+              commit('setLoading', true)
+              await this.selectID(id, index, index2)
+              commit('setLoading', false)
             }
           }
         option.selectCallback = xyz => {

@@ -117,20 +117,20 @@ export default ({ $axios, store: { commit, state } }) => {
         if (!layer) layer = state.ls.targetLayer?.object?.layer
         const box = this.getExtentBox()
 
-        // Get Facilities
+        // get Facilities
         if (layer) {
           commit('setLoading', true)
           let url = `/api/facility/box/${layer}`
-          // reset
-          await this.resetLayer('drawnLayer')
-          resetPointLayer(cloudRef.drawnLayer)
-          removeLineLoops()
-
-          // get Facilities
           const res = await $axios.post(url, { box })
           facilities = res.data
         } else facilities = []
 
+        // Reset
+        await this.resetLayer('drawnLayer')
+        resetPointLayer(cloudRef.drawnLayer)
+        removeLineLoops()
+
+        // Filter Facility
         const task = state.ls.targetTask
         let filteredFacilities = facilities
         if (task) filteredFacilities = filteredFacilities.filter(item => item.relations[task.prop] === task.data)
@@ -138,7 +138,7 @@ export default ({ $axios, store: { commit, state } }) => {
 
         // Draw to Image
         await this.drawToImage(filteredFacilities, currentMark, imgRef.drawnLayer)
-        updateImg(imgRef.drawnLayer, 'drawnLayer')
+        updateImg(imgRef.drawnLayer)
 
         // Draw to Map and Cloud
         this.drawGeojsons(filteredFacilities, 'drawnLayer')
@@ -223,7 +223,6 @@ export default ({ $axios, store: { commit, state } }) => {
         }
         const url = `/api/image/convert`
         const fbRes = await $axios.post(url, { data: { mark: currentMark, xyzdis } })
-
         // Draw to image
         for (const i in fbRes.data) {
           const result = fbRes.data[i]
@@ -254,8 +253,8 @@ export default ({ $axios, store: { commit, state } }) => {
         id = vid
         if (idSet.length > 1) {
           id = idSet[0]
-          index = Number(idSet[1])
-          index2 = Number(idSet[2])
+          index = idSet[1]
+          index2 = idSet[2]
         }
         this.selectID(id, index, index2)
       },
@@ -320,8 +319,26 @@ export default ({ $axios, store: { commit, state } }) => {
         /*
          * @summary - Reset Selected and Selected Layer
          */
+
+        commit('setLoading', true)
+        // map
         mapRef.selectedLayer.getSource().clear()
+        mapRef.relatedLayer.getSource().clear()
+
+        // cloud
         resetPointLayer(cloudRef.selectedLayer)
+        resetPointLayer(cloudRef.relatedLayer)
+        // for (const line of cloudRef.cloud.lines)
+        //   if (line.layer === 'relatedLayer') {
+        //     cloudRef.cloud.scene.remove(line)
+        //     cloudRef.cloud.lines.splice(cloudRef.cloud.lines, 1)
+        //   }
+        // for (const loop of cloudRef.cloud.loops)
+        //   if (loop.layer === 'relatedLayer') {
+        //     cloudRef.cloud.scene.remove(loop)
+        //     cloudRef.cloud.loops.splice(cloudRef.cloud.loops, 1)
+        //   }
+        //image
         const depth = imgRef.depth
         if (depth)
           for (const data of Object.values(depth)) {
@@ -331,6 +348,7 @@ export default ({ $axios, store: { commit, state } }) => {
           }
         commit('resetSelected')
         if (process.env.dev) console.log(`Reset Selected`, state.selected)
+        commit('setLoading', false)
       },
 
       async resetLayer(name) {

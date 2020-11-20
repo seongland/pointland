@@ -6,7 +6,7 @@ export function makePointLayer({ name, color, size, length, order }) {
    * @summary - Add Layer
    */
   const geometry = new THREE.BufferGeometry()
-  geometry.ids = {}
+  geometry.ids = new Map()
   geometry.indexes = []
   geometry.drawRange.start = 0
   geometry.drawRange.count = 0
