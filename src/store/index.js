@@ -60,12 +60,26 @@ export const mutations = {
       props.y = xyz[1]
       props.z = xyz[2]
       geom.coordinates = xyto84(xyz[0], xyz[1])
+      geom.coordinates[2] = xyz[2]
     } else if (geom.type === 'LineString') {
       props.xyzs[index] = xyz
-      geom.coordinates[index] = xyto84(xyz[0], xyz[1], xyz[2])
+      geom.coordinates[index] = xyto84(xyz[0], xyz[1])
+      geom.coordinates[index][index2][2] = xyz[2]
     } else if (geom.type === 'Polygon') {
+      if (props.xyzs[index].length - 1 === index2) {
+        props.xyzs[index][0] = xyz
+        geom.coordinates[index][0] = xyto84(xyz[0], xyz[1])
+        geom.coordinates[index][0][2] = xyz[2]
+      }
+      if (0 === index2) {
+        const final = props.xyzs[index].length - 1
+        props.xyzs[index][final] = xyz
+        geom.coordinates[index][final] = xyto84(xyz[0], xyz[1])
+        geom.coordinates[index][final][2] = xyz[2]
+      }
       props.xyzs[index][index2] = xyz
-      geom.coordinates[index][index2] = xyto84(xyz[0], xyz[1], xyz[2])
+      geom.coordinates[index][index2] = xyto84(xyz[0], xyz[1])
+      geom.coordinates[index][index2][2] = xyz[2]
     }
   }
 }
