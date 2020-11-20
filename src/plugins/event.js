@@ -53,8 +53,8 @@ export default ({ store: { commit, state, $router } }) => {
         id = vid
         if (idSet.length > 1) {
           id = idSet[0]
-          index = Number(idSet[1])
-          index2 = Number(idSet[2])
+          index = idSet[1]
+          index2 = idSet[2]
         }
         this.selectID(id, index, index2)
       },
@@ -80,6 +80,7 @@ export default ({ store: { commit, state, $router } }) => {
       },
 
       async getFacilityByID(id) {
+        for (const facility of state.facilities) if (id === facility.id) return facility
         const config = this.getAuthConfig()
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
         return res.data[0]
@@ -96,13 +97,14 @@ export default ({ store: { commit, state, $router } }) => {
         if (geom.type === 'Point') xyz = [props.x, props.y, props.z]
         else if (geom.type === 'LineString') {
           if (!index) index = 0
-          if (!facility.index) facility.index = index
+          else facility.index = index
           xyz = props.xyzs[index]
         } else if (geom.type === 'Polygon') {
           if (index === undefined) index = 0
-          if (facility.index === undefined) facility.index = index
+          else facility.index = index
+
           if (index2 === undefined) index2 = 0
-          if (facility.index2 === undefined) facility.index2 = index2
+          else facility.index2 = index2
           xyz = props.xyzs[index][index2]
         }
 

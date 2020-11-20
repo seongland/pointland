@@ -18,8 +18,6 @@ import jimp from 'jimp/browser/lib/jimp'
 
 const POINT_ID = 'Point'
 
-const base64Cache = new Map()
-
 export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
@@ -348,11 +346,6 @@ export default ({ $axios, store: { commit, state } }) => {
         const depth = imgRef.depth
         if (depth)
           for (const data of Object.values(depth)) {
-            if (base64Cache?.[data.width]?.[data.height]) {
-              data.layer.selected.uri = uri
-              continue
-            } else {
-            }
             data.layer.selected.image = new jimp(data.width, data.height)
             const uri = await data.layer.selected.image.getBase64Async('image/png')
             data.layer.selected.uri = uri
