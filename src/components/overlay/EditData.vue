@@ -51,6 +51,9 @@
 
           <v-tooltip top v-else-if="object.method === 'relate'">
             <template v-slot:activator="{ on, attrs }">
+              <v-card-text class="pb-0" style="color: #b0b0b0">
+                {{ name }}
+              </v-card-text>
               <v-row align="center" justify="space-around">
                 <v-btn outlined class="mx-3 mb-5" v-bind="attrs" v-on="on" @click="relateFacility(name, object.target)">
                   {{ facility.properties[name] ? facility.properties[name] : object.placeholder }}
@@ -63,29 +66,21 @@
           <v-tooltip top v-else-if="object.method === 'multirelate'">
             <template v-slot:activator="{ on, attrs }">
               <v-row align="center" justify="space-around">
-                <v-select
-                  multiple
+                <v-combobox
                   outlined
-                  class="mx-3 mb-5"
+                  v-model="facility.properties[name]"
+                  multiple
+                  :items="facility.properties[name]"
+                  class="mx-8 mb-0"
+                  :label="name"
                   v-bind="attrs"
+                  small-chips
+                  readonly
                   v-on="on"
-                  @click="relateFacility(name, object.target)"
+                  @click:append-outer="relateFacility(name, object.target)"
+                  append-outer-icon="$plus"
                 >
-                  {{ object.placeholder }}
-                </v-select>
-                {{ facility.properties[name] }}
-              </v-row>
-            </template>
-            <span>{{ object.tooltip }}</span>
-          </v-tooltip>
-
-          <v-tooltip top v-else-if="object.method === 'multirelate'">
-            <template v-slot:activator="{ on, attrs }">
-              <v-row align="center" justify="space-around">
-                <v-btn outlined class="mx-3 mb-5" v-bind="attrs" v-on="on" @click="relateFacility(name, object.target)">
-                  {{ object.placeholder }}
-                </v-btn>
-                {{ facility.properties[name] }}
+                </v-combobox>
               </v-row>
             </template>
             <span>{{ object.tooltip }}</span>
@@ -153,12 +148,6 @@
 </template>
 
 <script>
-import A from '~/assets/classes/morai/A'
-import B from '~/assets/classes/morai/B'
-import C from '~/assets/classes/morai/C'
-import D from '~/assets/classes/morai/D'
-
-const classes = [A, B, C, D]
 const DFT_USER = 'stryx@stryx.co.kr'
 
 export default {
@@ -179,7 +168,7 @@ export default {
       get() {
         if (!this.facility.id) return
         let types = []
-        for (const classObj of Object.values(classes))
+        for (const classObj of Object.values(this.groups))
           for (const layerObj of classObj.layers)
             if (this.facility.properties.layer === layerObj.layer) return layerObj.description
       },
@@ -188,7 +177,7 @@ export default {
     targetLayer: {
       get() {
         if (!this.facility.id) return { attributes: {} }
-        for (const classObj of Object.values(classes))
+        for (const classObj of Object.values(this.groups))
           for (const layerObj of classObj.layers)
             if (this.facility.properties.layer === layerObj.layer) {
               this.description = layerObj.description

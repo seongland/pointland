@@ -117,37 +117,54 @@ function drawHover(cloud) {
   changeColor(colors, index, HOVER_COLOR, attributes)
 }
 
-export function drawLoop(xyzs) {
+export function drawLoop(xyzs, layer) {
   /*
    * <summary>draw polygon</summary>
    */
   const cloud = ref.cloud
   for (const coordinates of xyzs) {
+    // Geometry
     const geometry = new THREE.BufferGeometry()
-    const material = new THREE.LineBasicMaterial({ color: 0xaa66ff, linewidth: ref.lineWidth })
     const positions = []
     for (const xyz of coordinates)
       positions.push(xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2])
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
     geometry.computeBoundingSphere()
+
+    // Material
+    let color
+    for (const layerOpt of cloud.opt.pointLayers) if (layerOpt.name === layer) color = layerOpt.line.color
+    const material = new THREE.LineBasicMaterial({ color, linewidth: ref.lineWidth })
+
+    // Insert
     const loop = new THREE.LineLoop(geometry, material)
+    loop.layer = layer
     cloud.scene.add(loop)
     cloud.loops.push(loop)
   }
 }
 
-export function drawLine(xyzs) {
+export function drawLine(xyzs, layer) {
   /*
    * <summary>draw LineString</summary>
    */
   const cloud = ref.cloud
+
+  // Geometry
   const geometry = new THREE.BufferGeometry()
-  const material = new THREE.LineBasicMaterial({ color: 0xaa66ff, linewidth: ref.lineWidth })
   const positions = []
   for (const xyz of xyzs) positions.push(xyz[0] - cloud.offset[0], xyz[1] - cloud.offset[1], xyz[2] - cloud.offset[2])
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
   geometry.computeBoundingSphere()
+
+  // Material
+  let color
+  for (const layerOpt of cloud.opt.pointLayers) if (layerOpt.name === layer) color = layerOpt.line.color
+  const material = new THREE.LineBasicMaterial({ color, linewidth: ref.lineWidth })
+
+  // Insert
   const line = new THREE.Line(geometry, material)
+  line.layer = layer
   cloud.scene.add(line)
   cloud.lines.push(line)
 }

@@ -17,7 +17,7 @@
 
     <v-list nav dense>
       <v-list-item-group v-model="layerIndex" color="primary">
-        <div v-for="classObj in classes" :key="classObj.class">
+        <div v-for="classObj in groups" :key="classObj.class">
           <v-list-item
             :disabled="disabled"
             link
@@ -50,16 +50,7 @@
 </template>
 
 <script>
-import A from '~/assets/classes/morai/A'
-import B from '~/assets/classes/morai/B'
-import C from '~/assets/classes/morai/C'
-import D from '~/assets/classes/morai/D'
-
-const classes = [A, B, C, D]
-
 export default {
-  data: () => ({ classes }),
-
   computed: {
     layerIndex: {
       get() {

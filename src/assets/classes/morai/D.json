@@ -3,7 +3,7 @@
   "layers": [
     {
       "layer": "D1",
-      "type": "Polygon",
+      "type": "Point",
       "description": "연결된신호등",
       "name": "SYNCEDTRAFFICLIGHT",
       "attributes": {
@@ -21,13 +21,13 @@
           "placeholder": "교차로신호등통제기",
           "tooltip": "신호등을 관리하는 가상의 위치의 신호등 제어기",
           "target": "D2",
-          "method": "trlate"
+          "method": "relate"
         }
       }
     },
     {
       "layer": "D2",
-      "type": "Polygon",
+      "type": "Point",
       "description": "교차로신호등통제기",
       "name": "INTERSECTIONCONTROLLER",
       "attributes": {}

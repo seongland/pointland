@@ -169,13 +169,6 @@
 </template>
 
 <script>
-import A from '~/assets/classes/morai/A'
-import B from '~/assets/classes/morai/B'
-import C from '~/assets/classes/morai/C'
-import D from '~/assets/classes/morai/D'
-
-const classes = [A, B, C, D]
-
 export default {
   data: () => ({ comment: undefined, description: undefined, targetLayer: { attributes: {} } }),
   props: {
@@ -189,7 +182,7 @@ export default {
     sameTypes() {
       const allowedLayers = this.$store.state.allowedLayers
       let types = []
-      for (const classObj of Object.values(classes))
+      for (const classObj of Object.values(this.groups))
         for (const layerObj of classObj.layers)
           if (this.type === layerObj.type && allowedLayers.includes(layerObj.layer)) types.push(layerObj)
       return types
@@ -230,7 +223,7 @@ export default {
     },
 
     updateTarget(layer) {
-      for (const classObj of Object.values(classes))
+      for (const classObj of Object.values(this.groups))
         for (const layerObj of classObj.layers)
           if (layer === layerObj.layer) {
             this.description = layerObj.description
