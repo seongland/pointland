@@ -56,10 +56,6 @@ function makeLineStyle({ color, width, fill }) {
   return style
 }
 
-function drawLine(feature) {
-  ref.drawMissionLayer.getSource().addFeature(feature)
-}
-
 function drawXY(layer, latlng, focus, id) {
   /**
    * @summary - When Click Map
@@ -133,7 +129,6 @@ function updateMarker(layer, lat, lng, id) {
 }
 
 function setDrawInteraction(layerObj) {
-  return
   if (ref.map.draw) ref.map.removeInteraction(ref.map.draw)
   const source = ref.drawLayer.getSource()
   const draw = new Draw({
@@ -144,14 +139,4 @@ function setDrawInteraction(layerObj) {
   ref.map.addInteraction(draw)
 }
 
-export {
-  makeLineStyle,
-  drawLine,
-  makeStyle,
-  drawXY,
-  drawXYs,
-  subtractVhcl,
-  setDrawInteraction,
-  makePointStyle,
-  removeFeature
-}
+export { makeLineStyle, makeStyle, drawXY, drawXYs, subtractVhcl, setDrawInteraction, makePointStyle, removeFeature }

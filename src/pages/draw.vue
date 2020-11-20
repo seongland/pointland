@@ -100,6 +100,7 @@ export default {
         return this.$store.state.edit.show
       },
       set(value) {
+        if (value === false) this.drawnFacilities()
         this.$store.commit('setState', { props: ['edit', 'show'], value })
         this.$store.commit('setState', { props: ['edit', 'ing'], value })
       }

@@ -8,6 +8,22 @@ export default ({ $axios, store: { commit, state } }) => {
     methods: {
       purgeCloud: () => purgeCloud(),
 
+      olInit(opt, geoserver, workspace, layers) {
+        // Set Map Callback
+        this.$root.mapRef = mapRef
+
+        opt.callback.moveend = this.mapMoveEnd
+        for (const config of this.mapOpt.layers.vector) {
+          if (config.name === 'markLayer') config.callback.click = this.clickMark
+          else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn
+        }
+        for (const config of this.mapOpt.layers.geoserver) {
+          if (config.name === 'processedLayer') config.callback.click = this.clickProcessed
+        }
+        this.$root.map = olInit(opt, geoserver, workspace, layers)
+        return this.$root.map
+      },
+
       initCloud(option) {
         this.$root.cloudRef = cloudRef
 
@@ -47,7 +63,8 @@ export default ({ $axios, store: { commit, state } }) => {
       },
 
       mapMoveEnd() {
-        this.drawnFacilities(state.ls.currentMark)
+        if (state.edit.ing || state.submit.ing) return
+        this.drawnFacilities()
       },
 
       async reloadUser() {
@@ -80,22 +97,6 @@ export default ({ $axios, store: { commit, state } }) => {
         for (const i in user.projects) projectPromises.push($axios.get(`/api/projects?id=${user.projects[i].id}`, config))
         const projectResponses = await Promise.all(projectPromises)
         user.projects = projectResponses.map(res => res.data[0])
-      },
-
-      olInit(opt, geoserver, workspace, layers) {
-        // Set Map Callback
-        this.$root.mapRef = mapRef
-
-        opt.callback.moveend = this.mapMoveEnd
-        for (const config of this.mapOpt.layers.vector) {
-          if (config.name === 'markLayer') config.callback.click = this.clickMark
-          else if (config.name === 'drawnLayer') config.callback.click = this.clickDrawn
-        }
-        for (const config of this.mapOpt.layers.geoserver) {
-          if (config.name === 'processedLayer') config.callback.click = this.clickProcessed
-        }
-        this.$root.map = olInit(opt, geoserver, workspace, layers)
-        return this.$root.map
       },
 
       initImg({ front, back }) {

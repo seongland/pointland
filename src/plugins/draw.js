@@ -18,7 +18,7 @@ import jimp from 'jimp/browser/lib/jimp'
 
 const POINT_ID = 'Point'
 
-export default ({ store: { commit, state } }) => {
+export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
       drawLas: (lasJson, name) => drawLas(lasJson, name),
@@ -89,21 +89,15 @@ export default ({ store: { commit, state } }) => {
         drawXYZ(cloudRef.currentLayer, xyz, true, 'current')
       },
 
-      drawnXYZ(xyz, id) {
-        /*
-         * @summary - Draw drawn Facility
-         */
+      drawXYZPoint(xyz, id, layer) {
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
-        drawXY(mapRef.drawnLayer, latlng, false, id)
-        drawXYZ(cloudRef.drawnLayer, xyz, false, id)
+        drawXY(mapRef[layer], latlng, false, id)
+        drawXYZ(cloudRef[layer], xyz, false, id)
       },
 
-      drawnXYZs(xyzs, ids) {
-        /*
-         * @summary - Draw drawn Facilities
-         */
-        for (const index in xyzs) this.drawnXYZ(xyzs[index], ids[index])
+      drawXYZPoints(xyzs, ids, layer) {
+        for (const index in xyzs) this.drawXYZPoint(xyzs[index], ids[index], layer)
       },
 
       getExtentBox() {
@@ -123,17 +117,17 @@ export default ({ store: { commit, state } }) => {
         if (!layer) layer = state.ls.targetLayer?.object?.layer
         const box = this.getExtentBox()
 
+        // Get Facilities
         if (layer) {
           commit('setLoading', true)
           let url = `/api/facility/box/${layer}`
-
           // reset
           await this.resetLayer('drawnLayer')
           resetPointLayer(cloudRef.drawnLayer)
           removeLineLoops()
 
           // get Facilities
-          const res = await this.$axios.post(url, { box })
+          const res = await $axios.post(url, { box })
           facilities = res.data
         } else facilities = []
 
@@ -144,22 +138,27 @@ export default ({ store: { commit, state } }) => {
 
         // Draw to Image
         await this.drawToImage(filteredFacilities, currentMark, imgRef.drawnLayer)
-        updateImg(imgRef.drawnLayer)
+        updateImg(imgRef.drawnLayer, 'drawnLayer')
 
         // Draw to Map and Cloud
+        this.drawGeojsons(filteredFacilities, 'drawnLayer')
+        commit('setLoading', false)
+      },
+
+      drawGeojsons(geojsons, layer) {
         const [xyzs, ids] = [[], []]
-        for (const facility of filteredFacilities) {
-          const props = facility.properties
-          const geom = facility.geometry
+        for (const geojson of geojsons) {
+          const props = geojson.properties
+          const geom = geojson.geometry
 
           if (geom.type === 'Point') {
             xyzs.push([props.x, props.y, props.z])
-            ids.push(facility.id)
+            ids.push(geojson.id)
           } else if (geom.type === 'LineString') {
             for (const index in props.xyzs) {
               const xyz = props.xyzs[index]
               xyzs.push(xyz)
-              let id = facility.id + this.idSep + index
+              let id = geojson.id + this.idSep + index
               ids.push(id)
             }
           } else if (geom.type === 'Polygon') {
@@ -168,22 +167,26 @@ export default ({ store: { commit, state } }) => {
               for (const index2 in polyline) {
                 const xyz = polyline[index2]
                 xyzs.push(xyz)
-                let id = facility.id + this.idSep + index + this.idSep + index2
+                let id = geojson.id + this.idSep + index + this.idSep + index2
                 ids.push(id)
               }
             }
           }
-          // Main Feature to Map
+          // Main Feature to Cloud, Map
           if (geom.type !== 'Point') {
             const projection = { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }
-            const feature = new GeoJSON(projection).readFeature(facility)
-            mapRef.drawnLayer.getSource().addFeature(feature)
-            if (geom.type === 'LineString') drawLine(props.xyzs)
-            else if (geom.type === 'Polygon') drawLoop(props.xyzs)
+            const feature = new GeoJSON(projection).readFeature(geojson)
+            mapRef[layer].getSource().addFeature(feature)
+            if (geom.type === 'LineString') drawLine(props.xyzs, layer)
+            else if (geom.type === 'Polygon') drawLoop(props.xyzs, layer)
           }
         }
-        this.drawnXYZs(xyzs, ids)
-        commit('setLoading', false)
+        this.drawXYZPoints(xyzs, ids, layer)
+      },
+
+      async drawRelated(id) {
+        const facility = await this.getFacilityByID(id)
+        if (facility) this.drawGeojsons([facility], 'relatedLayer')
       },
 
       async drawToImage(facilities, currentMark, layer) {
@@ -219,7 +222,7 @@ export default ({ store: { commit, state } }) => {
           }
         }
         const url = `/api/image/convert`
-        const fbRes = await this.$axios.post(url, { data: { mark: currentMark, xyzdis } })
+        const fbRes = await $axios.post(url, { data: { mark: currentMark, xyzdis } })
 
         // Draw to image
         for (const i in fbRes.data) {
@@ -281,7 +284,7 @@ export default ({ store: { commit, state } }) => {
           { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: POINT_ID },
           true
         )
-        const xyzRes = await this.$axios.post(`${depthDir.url}/${x}/${y}`)
+        const xyzRes = await $axios.post(`${depthDir.url}/${x}/${y}`)
         const xyz = xyzRes.data
         commit('select', {
           xyz,

@@ -4,7 +4,6 @@ import { ref as cloudRef } from './cloud/init'
 import { clickImage } from './image/event'
 import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
-import { xyto84 } from '~/server/api/addon/tool/coor'
 
 export default ({ store: { commit, state, $router } }) => {
   Vue.mixin({
@@ -64,20 +63,25 @@ export default ({ store: { commit, state, $router } }) => {
         /*
          * @summary - Select by Document ID
          */
-        if (state.submit.ing) {
-          commit('setState', { props: ['submit', 'show'], value: true })
-          commit('setState', { props: ['selected', 0, 'properties', state.submit.target], value: id })
-          return this.drawnFacilities(state.ls.currentMark)
+        // check ing
+        if (state.submit.ing) commit('setState', { props: ['submit', 'show'], value: true })
+        else if (state.edit.ing) commit('setState', { props: ['edit', 'show'], value: true })
+        if (state.edit.ing || state.submit.ing) {
+          const target = state.edit.ing ? state.edit.target : state.submit.target
+          const targetProp = state.selected[0].properties[target]
+          if (targetProp instanceof Array)
+            commit('setState', { props: ['selected', 0, 'properties', target, targetProp.length], value: id })
+          else commit('setState', { props: ['selected', 0, 'properties', target], value: id })
+          return this.drawnFacilities()
         }
-        if (state.edit.ing) {
-          commit('setState', { props: ['edit', 'show'], value: true })
-          commit('setState', { props: ['selected', 0, 'properties', state.edit.target], value: id })
-          return this.drawnFacilities(state.ls.currentMark)
-        }
+        const facility = await this.getFacilityByID(id)
+        if (facility) this.selectFacility(facility, index, index2)
+      },
+
+      async getFacilityByID(id) {
         const config = this.getAuthConfig()
         const res = await this.$axios.get(`/api/facility?id=${id}`, config)
-        const facility = res.data[0]
-        if (facility) this.selectFacility(facility, index, index2)
+        return res.data[0]
       },
 
       async selectFacility(facility, index, index2) {
@@ -97,6 +101,13 @@ export default ({ store: { commit, state, $router } }) => {
           if (!index2) index2 = 0
           if (!facility.index2) facility.index2 = index2
           xyz = props.xyzs[index][index2]
+        }
+
+        // Draw Related
+        for (const prop in props) {
+          const value = props[prop]
+          this.drawRelated(value)
+          if (value instanceof Array) for (const item of value) this.drawRelated(item)
         }
 
         await this.drawSelectedXYZ(xyz)
@@ -183,8 +194,9 @@ export default ({ store: { commit, state, $router } }) => {
             }
             return
           case 'Escape':
-            if (state.submit.ing && state.edit.ing) this.drawnFacilities()
-            else if (state.selected.length > 0) this.resetSelected()
+            if (state.submit.ing || state.edit.ing) this.drawnFacilities()
+
+            if (state.selected.length > 0) this.resetSelected()
             else this.drawnFacilities()
             return
         }

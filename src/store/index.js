@@ -3,7 +3,7 @@ import { ref as cloudRef } from '~/plugins/cloud/init'
 
 export const state = () => ({
   drawing: { index: undefined, type: undefined, types: [{ type: 'Point' }] },
-  allowedLayers: ['B1', 'C1'],
+  allowedLayers: ['B1', 'C1', 'D1', 'D2'],
   facilities: [],
   loading: true,
   visible: { transform: false },
@@ -89,7 +89,7 @@ export const actions = {
       commit('setState', { props: ['submit', 'ing'], value: false })
       commit('setState', { props: ['submit', 'show'], value: false })
       app.resetSelected()
-      app.drawnFacilities(state.ls.currentMark)
+      app.drawnFacilities()
     } else return
   },
 
@@ -114,7 +114,7 @@ export const actions = {
     commit('setState', { props: ['edit', 'show'], value: false })
     commit('setState', { props: ['edit', 'loading'], value: false })
     app.resetSelected()
-    app.drawnFacilities(state.ls.currentMark)
+    app.drawnFacilities()
     if (process.env.dev) console.log('Edited', res.data)
   }
 }

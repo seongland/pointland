@@ -2,7 +2,7 @@
  * @summary - Local Storage Module
  */
 
-import { setDrawInteraction } from '~/plugins/map/draw'
+// import { setDrawInteraction } from '~/plugins/map/draw'
 import { updateCtrl } from '~/plugins/cloud/init'
 
 const WAIT_RENDER = 500
@@ -45,7 +45,7 @@ export const mutations = {
     if (index !== undefined) state.targetLayer.index = index
     if (object !== undefined) {
       state.targetLayer.object = object
-      setDrawInteraction(object)
+      // setDrawInteraction(object)
       app.drawnFacilities(state.currentMark)
     }
     app.resetSelected()

@@ -19,7 +19,15 @@
         <!-- properties -->
         <v-card-title> Properties </v-card-title>
 
-        <v-card-text class="pt-0" v-if="facility.relations.located || facility.relations.proped|| facility.relations.related|| facility.relations.reported">
+        <v-card-text
+          class="pt-0"
+          v-if="
+            facility.relations.located ||
+              facility.relations.proped ||
+              facility.relations.related ||
+              facility.relations.reported
+          "
+        >
           <span v-if="facility.relations.located">위치 보정됨</span> -
           <span v-if="facility.relations.proped"> 속성값 입력됨</span> -
           <span v-if="facility.relations.related"> 시설물 연결됨</span> -
@@ -65,12 +73,6 @@
 </template>
 
 <script>
-import A from '~/assets/classes/morai/A'
-import B from '~/assets/classes/morai/B'
-import C from '~/assets/classes/morai/C'
-import D from '~/assets/classes/morai/D'
-
-const classes = [A, B, C, D]
 const DFT_USER = 'stryx@stryx.co.kr'
 
 export default {
@@ -84,7 +86,7 @@ export default {
         if (!this.facility.id) return
         const allowedLayers = this.$store.state.allowedLayers
         let types = []
-        for (const classObj of Object.values(classes))
+        for (const classObj of Object.values(this.groups))
           for (const layerObj of classObj.layers)
             if (this.facility.properties.layer === layerObj.layer && allowedLayers.includes(layerObj.layer))
               return layerObj.description
@@ -100,7 +102,7 @@ export default {
     targetLayer: {
       get() {
         if (!this.facility.id) return { attributes: {} }
-        for (const classObj of Object.values(classes))
+        for (const classObj of Object.values(this.groups))
           for (const layerObj of classObj.layers)
             if (this.facility.properties.layer === layerObj.layer) {
               this.description = layerObj.description
@@ -154,5 +156,4 @@ export default {
   }
 }
 </script>
-
 <style></style>

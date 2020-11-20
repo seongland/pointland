@@ -1,4 +1,10 @@
 import Vue from 'vue'
+import A from '~/assets/classes/morai/A'
+import B from '~/assets/classes/morai/B'
+import C from '~/assets/classes/morai/C'
+import D from '~/assets/classes/morai/D'
+
+const groups = [A, B, C, D]
 
 export default ({ $axios }) => {
   if (process.client) {
@@ -8,6 +14,7 @@ export default ({ $axios }) => {
 
   Vue.mixin({
     data: () => ({
+      groups,
       title: process.env.title,
       coor: 'Stryx',
       meta: { version: undefined },
@@ -61,8 +68,26 @@ export default ({ $axios }) => {
             },
             {
               callback: { click: null },
-              name: 'drawnLayer',
+              name: 'relatedLayer',
               zindex: 23,
+              style: {
+                point: {
+                  color: '#ff5757',
+                  radius: 2
+                },
+                line: {
+                  color: '#f07a7a',
+                  width: 1
+                },
+                polygon: {
+                  fill: '#f07a7a99'
+                }
+              }
+            },
+            {
+              callback: { click: null },
+              name: 'drawnLayer',
+              zindex: 24,
               style: {
                 point: {
                   color: '#9911ff',
@@ -107,14 +132,28 @@ export default ({ $axios }) => {
           },
           { name: 'currentLayer', color: 0x1188ff, size: 1, length: 1, order: 2, callback: { click: null, filter: null } },
           {
-            name: 'drawnLayer',
-            color: 0x9911ff,
+            name: 'relatedLayer',
+            color: 0xff5757,
+            line: {
+              color: 0xf07a7a
+            },
             size: 0.2,
             length: 5000,
             order: 3,
             callback: { click: null }
           },
-          { name: 'selectedLayer', color: 0xff8c00, size: 0.2, length: 1, order: 4, callback: { click: null, filter: null } }
+          {
+            name: 'drawnLayer',
+            color: 0x9911ff,
+            line: {
+              color: 0xaa66ff
+            },
+            size: 0.2,
+            length: 5000,
+            order: 4,
+            callback: { click: null }
+          },
+          { name: 'selectedLayer', color: 0xff8c00, size: 0.2, length: 1, order: 5, callback: { click: null, filter: null } }
         ]
       }
     })
