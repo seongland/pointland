@@ -67,12 +67,12 @@ export const mutations = {
       geom.coordinates[index][2] = xyz[2]
     } else if (geom.type === 'Polygon') {
       // For Loop Issue
-      if (props.xyzs[index].length - 1 === index2) {
+      if (props.xyzs[index].length - 1 === Number(index2)) {
         props.xyzs[index][0] = xyz
         geom.coordinates[index][0] = xyto84(xyz[0], xyz[1])
         geom.coordinates[index][0][2] = xyz[2]
       }
-      if (0 === index2) {
+      if (0 === Number(index2)) {
         const final = props.xyzs[index].length - 1
         props.xyzs[index][final] = xyz
         geom.coordinates[index][final] = xyto84(xyz[0], xyz[1])
