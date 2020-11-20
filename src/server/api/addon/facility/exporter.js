@@ -27,12 +27,17 @@ export const exporter = app => {
       }
     else if (crs === '32652') {
       const facilities32652 = facilities.map(f => {
-        f.geometry.coordinates[0] = f.properties.x
-        f.geometry.coordinates[1] = f.properties.y
-        f.geometry.coordinates[2] = f.properties.z
-        f.properties.x = undefined
-        f.properties.y = undefined
-        f.properties.z = undefined
+        if (f.geometry.type === 'Point') {
+          f.geometry.coordinates[0] = f.properties.x
+          f.geometry.coordinates[1] = f.properties.y
+          f.geometry.coordinates[2] = f.properties.z
+          f.properties.x = undefined
+          f.properties.y = undefined
+          f.properties.z = undefined
+        } else {
+          f.geometry.coordinates = f.properties.xyzs
+          f.properties.xyzs = undefined
+        }
         return f
       })
       geoJson = {
