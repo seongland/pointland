@@ -44,8 +44,8 @@ export default ({ $axios, store: { commit, state } }) => {
               id = vid
               if (idSet.length > 1) {
                 id = idSet[0]
-                index = Number(idSet[1])
-                index2 = Number(idSet[2])
+                index = idSet[1]
+                index2 = idSet[2]
               }
               commit('setLoading', true)
               await this.selectID(id, index, index2)
