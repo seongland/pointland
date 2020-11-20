@@ -6,12 +6,12 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { imagePath, depthmapPath } from './img'
 import { depthData2, xyzAtDepthmap2 } from './depthmap'
+import { Converter } from '../../../../../build/Debug/tool'
 import { camType } from './config'
 import fs from 'fs'
 
 dotenv.config()
 const router = express.Router()
-const { Converter } = require(process.cwd() + '/build/Debug/tool')
 
 // get
 router.get('/:round/:snap/:mark/:direction', image)
@@ -60,7 +60,7 @@ async function xyztoimg(req, res) {
   })
 }
 
-async function xyzstoimg(req, res) {
+function xyzstoimg(req, res) {
   let coor
   const markObj = req.body.data.mark
   const xyzdis = req.body.data.xyzdis
@@ -80,7 +80,7 @@ async function xyzstoimg(req, res) {
       direction: direction
     })
   }
-  return res.json(results)
+  res.json(results)
 }
 
 export default router

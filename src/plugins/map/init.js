@@ -13,7 +13,7 @@ import { makeStyle } from './draw'
 import { makeNaverMap, makeTileLayer, makeVectorLayer } from '~/plugins/map/layer'
 import { eventBind } from '~/plugins/map/event'
 
-export const ref = {}
+export const ref = new Map()
 
 function olInit(opt, geoserver, workspace, layers) {
   /**

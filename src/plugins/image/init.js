@@ -1,6 +1,6 @@
 import jimp from 'jimp/browser/lib/jimp'
 
-export const ref = {}
+export const ref = new Map()
 
 export function initImg({ front, back }) {
   jimp.read(Buffer.from(front.uri.split(',')[1], 'base64')).then(image => {
@@ -15,12 +15,14 @@ export function initImg({ front, back }) {
   ref.selectedLayer = {
     front: front.layer.selected,
     back: back.layer.selected,
-    color: 0xff8c00ff
+    color: 0xff8c00ff,
+    name: 'selectedLayer'
   }
   ref.drawnLayer = {
     front: front.layer.drawn,
     back: back.layer.drawn,
-    color: 0x9911ffff
+    color: 0x9911ffff,
+    name: 'drawnLayer'
   }
   ref.depth = { front, back }
 
@@ -30,6 +32,6 @@ export function initImg({ front, back }) {
   back.layer.drawn.image = new jimp(back.width, back.height)
   front.name = 'front'
   back.name = 'back'
-  if (!ref.ids) ref.ids = {}
+  if (!ref.ids) ref.ids = new Map()
   return { front, back }
 }

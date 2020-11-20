@@ -132,9 +132,13 @@ export function drawLoop(xyzs, layer) {
     geometry.computeBoundingSphere()
 
     // Material
-    let color
-    for (const layerOpt of cloud.opt.pointLayers) if (layerOpt.name === layer) color = layerOpt.line.color
-    const material = new THREE.LineBasicMaterial({ color, linewidth: ref.lineWidth })
+    let color, width
+    for (const layerOpt of cloud.opt.pointLayers)
+      if (layerOpt.name === layer) {
+        color = layerOpt.line.color
+        width = layerOpt.line.width
+      }
+    const material = new THREE.LineBasicMaterial({ color, linewidth: width })
 
     // Insert
     const loop = new THREE.LineLoop(geometry, material)
@@ -158,9 +162,13 @@ export function drawLine(xyzs, layer) {
   geometry.computeBoundingSphere()
 
   // Material
-  let color
-  for (const layerOpt of cloud.opt.pointLayers) if (layerOpt.name === layer) color = layerOpt.line.color
-  const material = new THREE.LineBasicMaterial({ color, linewidth: ref.lineWidth })
+  let color, width
+  for (const layerOpt of cloud.opt.pointLayers)
+    if (layerOpt.name === layer) {
+      color = layerOpt.line.color
+      width = layerOpt.line.width
+    }
+  const material = new THREE.LineBasicMaterial({ color, linewidth: width })
 
   // Insert
   const line = new THREE.Line(geometry, material)
@@ -202,7 +210,6 @@ function click3D(e) {
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
   const intersect = intersects[0]
   if (intersect) {
-    if (process.env.dev) console.log(intersect)
     intersect.index = intersect.index + intersect.object.geometry.drawRange.start
     return intersect.object.click(intersect)
   }

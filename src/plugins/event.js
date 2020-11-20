@@ -64,6 +64,7 @@ export default ({ store: { commit, state, $router } }) => {
          * @summary - Select by Document ID
          */
         // check ing
+        if (process.env.dev) console.log('Select', id, index, index2)
         if (state.submit.ing) commit('setState', { props: ['submit', 'show'], value: true })
         else if (state.edit.ing) commit('setState', { props: ['edit', 'show'], value: true })
         if (state.edit.ing || state.submit.ing) {
@@ -75,7 +76,7 @@ export default ({ store: { commit, state, $router } }) => {
           return this.drawnFacilities()
         }
         const facility = await this.getFacilityByID(id)
-        if (facility) this.selectFacility(facility, index, index2)
+        if (facility) await this.selectFacility(facility, index, index2)
       },
 
       async getFacilityByID(id) {
@@ -98,19 +99,20 @@ export default ({ store: { commit, state, $router } }) => {
           if (!facility.index) facility.index = index
           xyz = props.xyzs[index]
         } else if (geom.type === 'Polygon') {
-          if (!index) index = 0
-          if (!facility.index) facility.index = index
-          if (!index2) index2 = 0
-          if (!facility.index2) facility.index2 = index2
+          if (index === undefined) index = 0
+          if (facility.index === undefined) facility.index = index
+          if (index2 === undefined) index2 = 0
+          if (facility.index2 === undefined) facility.index2 = index2
           xyz = props.xyzs[index][index2]
         }
 
         // Draw Related
         for (const prop in props) {
           const value = props[prop]
-          this.drawRelated(value)
-          if (value instanceof Array) for (const item of value) this.drawRelated(item)
+          // this.drawRelated(value)
+          // if (value instanceof Array) for (const item of value) this.drawRelated(item)
         }
+        // this.drawRelated(facility.id)
 
         await this.drawSelectedXYZ(xyz)
         commit('selectFeature', facility)

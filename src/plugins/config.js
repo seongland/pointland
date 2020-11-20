@@ -68,26 +68,8 @@ export default ({ $axios }) => {
             },
             {
               callback: { click: null },
-              name: 'relatedLayer',
-              zindex: 23,
-              style: {
-                point: {
-                  color: '#ff5757',
-                  radius: 2
-                },
-                line: {
-                  color: '#f07a7a',
-                  width: 1
-                },
-                polygon: {
-                  fill: '#f07a7a99'
-                }
-              }
-            },
-            {
-              callback: { click: null },
               name: 'drawnLayer',
-              zindex: 24,
+              zindex: 23,
               style: {
                 point: {
                   color: '#9911ff',
@@ -99,6 +81,24 @@ export default ({ $axios }) => {
                 },
                 polygon: {
                   fill: '#aa66ff99'
+                }
+              }
+            },
+            {
+              callback: { click: null },
+              name: 'relatedLayer',
+              zindex: 24,
+              style: {
+                point: {
+                  color: '#ff5757',
+                  radius: 2
+                },
+                line: {
+                  color: '#f07a7a',
+                  width: 1
+                },
+                polygon: {
+                  fill: '#f07a7a99'
                 }
               }
             },
@@ -131,11 +131,13 @@ export default ({ $axios }) => {
             callback: { click: null }
           },
           { name: 'currentLayer', color: 0x1188ff, size: 1, length: 1, order: 2, callback: { click: null, filter: null } },
+
           {
-            name: 'relatedLayer',
-            color: 0xff5757,
+            name: 'drawnLayer',
+            color: 0x9911ff,
             line: {
-              color: 0xf07a7a
+              color: 0xaa66ff,
+              width: 0.01
             },
             size: 0.2,
             length: 5000,
@@ -143,10 +145,11 @@ export default ({ $axios }) => {
             callback: { click: null }
           },
           {
-            name: 'drawnLayer',
-            color: 0x9911ff,
+            name: 'relatedLayer',
+            color: 0xff5757,
             line: {
-              color: 0xaa66ff
+              color: 0xf07a7a,
+              width: 0.011
             },
             size: 0.2,
             length: 5000,
