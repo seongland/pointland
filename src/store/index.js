@@ -117,10 +117,11 @@ export const actions = {
     commit('setState', { props: ['del', 'loading'], value: false })
     app.resetSelected()
     app.removeVector('drawnLayer', id)
+    app.drawnFacilities()
     if (process.env.dev) console.log('Removed', res.data)
   },
 
-  async edit({ commit, state }, facility) {
+  async edit({ commit }, facility) {
     commit('setState', { value: true, props: ['edit', 'loading'] })
     const app = this.$router.app
     const config = app.getAuthConfig()
