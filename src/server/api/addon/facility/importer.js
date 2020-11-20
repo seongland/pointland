@@ -1,4 +1,5 @@
 import { xyto84 } from '../tool/coor'
+import { v4 as uuid } from 'uuid'
 
 export const importer = app => {
   return async (req, res) => {
@@ -16,6 +17,7 @@ export const importer = app => {
       const geom = facility.geometry
       props.layer = layer
       facility.id = props.id ? props.id : props.ID
+      if (!facility.id) facility.id = uuid()
       facility.relations = {}
 
       // geometry
