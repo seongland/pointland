@@ -98,6 +98,8 @@ export default ({ store: { commit, state, $router } }) => {
           if (!facility.index) facility.index = index
           xyz = props.xyzs[index]
         } else if (geom.type === 'Polygon') {
+          if (!index) index = 0
+          if (!facility.index) facility.index = index
           if (!index2) index2 = 0
           if (!facility.index2) facility.index2 = index2
           xyz = props.xyzs[index][index2]
