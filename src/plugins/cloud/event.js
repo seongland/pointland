@@ -13,10 +13,15 @@ export function resetPointLayer(layer) {
 
 export function removeLineLoops() {
   const cloud = ref.cloud
-  if (cloud.lines) for (const line of cloud.lines) cloud.scene.remove(line)
-  if (cloud.loops) for (const loop of cloud.loops) cloud.scene.remove(loop)
-  cloud.lines = []
-  cloud.loops = []
+  const trash = { lines: [], loops: [] }
+  for (const line of cloud.lines) if (line.layer !== 'relatedLayer') trash.lines.push(line)
+  for (const loop of cloud.loops) if (loop.layer !== 'relatedLayer') trash.loops.push(loop)
+  for (const shapeName of Object.keys(trash))
+    for (const shape of trash[shapeName]) {
+      cloud.scene.remove(shape)
+      const index = cloud[shapeName].indexOf(shape)
+      cloud[shapeName].splice(index, 1)
+    }
 }
 
 export function addLas(lasJson, cloud, vertices) {

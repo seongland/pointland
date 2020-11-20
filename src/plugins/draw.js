@@ -40,14 +40,15 @@ export default ({ $axios, store: { commit, state } }) => {
         /*
          * @summary - Draw Selected Facility
          */
+        const cloud = cloudRef.cloud
         const lnglat = xyto84(xyz[0], xyz[1])
         const latlng = lnglat.reverse()
         drawXY(mapRef.selectedLayer, latlng, false, id)
 
-        const transform = cloudRef.cloud.transform
-        transform.position.x = xyz[0] - cloudRef.cloud.offset[0]
-        transform.position.y = xyz[1] - cloudRef.cloud.offset[1]
-        transform.position.z = xyz[2] - cloudRef.cloud.offset[2]
+        const transform = cloud.transform
+        transform.position.x = xyz[0] - cloud.offset[0]
+        transform.position.y = xyz[1] - cloud.offset[1]
+        transform.position.z = xyz[2] - cloud.offset[2]
         const pos = transform.position
 
         const divider = Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)
@@ -328,16 +329,19 @@ export default ({ $axios, store: { commit, state } }) => {
         // cloud
         resetPointLayer(cloudRef.selectedLayer)
         resetPointLayer(cloudRef.relatedLayer)
-        // for (const line of cloudRef.cloud.lines)
-        //   if (line.layer === 'relatedLayer') {
-        //     cloudRef.cloud.scene.remove(line)
-        //     cloudRef.cloud.lines.splice(cloudRef.cloud.lines, 1)
-        //   }
-        // for (const loop of cloudRef.cloud.loops)
-        //   if (loop.layer === 'relatedLayer') {
-        //     cloudRef.cloud.scene.remove(loop)
-        //     cloudRef.cloud.loops.splice(cloudRef.cloud.loops, 1)
-        //   }
+
+        // Related
+        const cloud = cloudRef.cloud
+        const trash = { lines: [], loops: [] }
+        for (const line of cloud.lines) if (line.layer === 'relatedLayer') trash.lines.push(line)
+        for (const loop of cloud.loops) if (loop.layer === 'relatedLayer') trash.loops.push(loop)
+        for (const shapeName of Object.keys(trash))
+          for (const shape of trash[shapeName]) {
+            cloud.scene.remove(shape)
+            const index = cloud[shapeName].indexOf(shape)
+            cloud[shapeName].splice(index, 1)
+          }
+
         //image
         const depth = imgRef.depth
         if (depth)
@@ -371,12 +375,13 @@ export default ({ $axios, store: { commit, state } }) => {
         /*
          * @summary - Reset Snap for New Snap
          */
+        const cloud = cloudRef.cloud
         if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
         if (mapRef.markLayer) mapRef.drawnLayer.getSource().clear()
         if (cloudRef.markLayer) resetPointLayer(cloudRef.markLayer)
         if (cloudRef.markLayer) resetPointLayer(cloudRef.drawnLayer)
-        if (cloudRef.cloud.points) for (const pointLayer of cloudRef.cloud.points) cloudRef.cloud.scene.remove(pointLayer)
-        cloudRef.cloud.points = []
+        if (cloud.points) for (const pointLayer of cloud.points) cloud.scene.remove(pointLayer)
+        cloud.points = []
       }
     }
   })

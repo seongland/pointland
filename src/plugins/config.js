@@ -149,7 +149,7 @@ export default ({ $axios }) => {
             color: 0xff5757,
             line: {
               color: 0xf07a7a,
-              width: 0.011
+              width: 0.02
             },
             size: 0.2,
             length: 5000,
