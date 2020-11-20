@@ -64,7 +64,7 @@ export const mutations = {
     } else if (geom.type === 'LineString') {
       props.xyzs[index] = xyz
       geom.coordinates[index] = xyto84(xyz[0], xyz[1])
-      geom.coordinates[index][index2][2] = xyz[2]
+      geom.coordinates[index][2] = xyz[2]
     } else if (geom.type === 'Polygon') {
       // For Loop Issue
       if (props.xyzs[index].length - 1 === index2) {
