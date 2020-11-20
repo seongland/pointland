@@ -39,6 +39,7 @@ export const mutations = {
     const app = this.$router.app
     if (index === undefined && object === undefined) {
       state.targetLayer.index = undefined
+
       state.targetLayer.object = undefined
       app.drawnFacilities(state.currentMark)
     }

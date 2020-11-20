@@ -229,6 +229,13 @@ export default {
             this.description = layerObj.description
             this.targetLayer = layerObj
           }
+    },
+    async relateFacility(property, layer) {
+      const commit = await this.$store.commit
+      const state = await this.$store.state
+      commit('setState', { props: ['submit', 'show'], value: false })
+      commit('setState', { props: ['submit', 'target'], value: property })
+      this.drawnFacilities(state.ls.currentMark, layer)
     }
   }
 }

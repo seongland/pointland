@@ -111,8 +111,14 @@ export default ({ store: { commit, state, $router } }) => {
         // Draw Related
         for (const prop in props) {
           const value = props[prop]
-          // this.drawRelated(value)
-          // if (value instanceof Array) for (const item of value) this.drawRelated(item)
+          for (const group of this.groups)
+            for (const layerOpt of group.layers)
+              if (layerOpt.layer === props.layer && value) {
+                if (['relate', 'multirelate'].includes(layerOpt.attributes?.[prop]?.method)) {
+                  console.log(value)
+                  this.drawRelated(value)
+                }
+              }
         }
         this.drawRelated(facility.id)
 

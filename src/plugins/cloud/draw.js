@@ -215,7 +215,7 @@ function click3D(e) {
   const intersect = intersects[0]
   if (intersect) {
     intersect.index = intersect.index + intersect.object.geometry.drawRange.start
-    return intersect.object.click(intersect)
+    return intersect.object.click instanceof Function ? intersect.object.click(intersect) : null
   }
 
   if (!cloud.currentHover) return
