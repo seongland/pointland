@@ -42,6 +42,7 @@ export default {
   width: 100%;
   position: absolute !important;
   z-index: 1;
+  user-select: none;
 }
 #naver {
   z-index: 0;
