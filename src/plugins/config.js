@@ -109,7 +109,7 @@ export default ({ $axios }) => {
               zindex: 25,
               style: {
                 point: {
-                  color: '#FF8C00',
+                  color: '#990000',
                   radius: 2
                 }
               }
@@ -156,7 +156,7 @@ export default ({ $axios }) => {
             order: 4,
             callback: { click: null }
           },
-          { name: 'selectedLayer', color: 0xff8c00, size: 0.2, length: 1, order: 5, callback: { click: null, filter: null } }
+          { name: 'selectedLayer', color: 0x990000, size: 0.2, length: 1, order: 5, callback: { click: null, filter: null } }
         ]
       }
     })
