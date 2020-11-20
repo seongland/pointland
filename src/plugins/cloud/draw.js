@@ -60,7 +60,8 @@ export function removePoint(layer, id) {
   const positions = geometry.attributes.position.array
   const start = geometry.drawRange.start
 
-  const index = ids[id].index
+  const index = ids[id]?.index
+  if (!index) return
   const substitute = indexes[start].id
 
   // update geometry
