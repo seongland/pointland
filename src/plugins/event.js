@@ -225,6 +225,10 @@ export default ({ store: { commit, state, $router } }) => {
               if (!state.depth.loading) this.setMark(ls.currentSnap.marks[seqIndex + 1])
             return
 
+          case 't':
+            commit('setState', { props: ['visible', 'transform'], value: state.visible.transform })
+            return
+
           // change tabs
           case '1':
             return commit('ls/setIndex', Number(event.key) - 1)

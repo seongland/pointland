@@ -136,12 +136,10 @@ export default {
         return this.$store.state.visible.transform
       },
       set(value) {
-        console.log('asdasd')
         if (this.$store.state.selected.length > 0) {
           cloudRef.cloud.transform.visible = value
           cloudRef.cloud.transform.enabled = value
         }
-        console.log('asdasd')
         this.$store.commit('setState', { props: ['visible', 'transform'], value })
       }
     }
