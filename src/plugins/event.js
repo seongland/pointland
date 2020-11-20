@@ -226,7 +226,12 @@ export default ({ store: { commit, state, $router } }) => {
             return
 
           case 't':
-            commit('setState', { props: ['visible', 'transform'], value: state.visible.transform })
+          case 'T':
+            if (state.selected.length > 0) {
+              cloudRef.cloud.transform.visible = !state.visible.transform
+              cloudRef.cloud.transform.enabled = !state.visible.transform
+            }
+            commit('setState', { props: ['visible', 'transform'], value: !state.visible.transform })
             return
 
           // change tabs
