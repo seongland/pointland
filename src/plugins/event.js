@@ -112,7 +112,7 @@ export default ({ store: { commit, state, $router } }) => {
           // this.drawRelated(value)
           // if (value instanceof Array) for (const item of value) this.drawRelated(item)
         }
-        // this.drawRelated(facility.id)
+        this.drawRelated(facility.id)
 
         await this.drawSelectedXYZ(xyz)
         commit('selectFeature', facility)

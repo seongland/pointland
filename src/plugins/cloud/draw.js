@@ -132,16 +132,18 @@ export function drawLoop(xyzs, layer) {
     geometry.computeBoundingSphere()
 
     // Material
-    let color, width
+    let color, width, order
     for (const layerOpt of cloud.opt.pointLayers)
       if (layerOpt.name === layer) {
         color = layerOpt.line.color
         width = layerOpt.line.width
+        order = layerOpt.order
       }
     const material = new THREE.LineBasicMaterial({ color, linewidth: width })
 
     // Insert
     const loop = new THREE.LineLoop(geometry, material)
+    loop.renderOrder = order
     loop.layer = layer
     cloud.scene.add(loop)
     cloud.loops.push(loop)
@@ -162,16 +164,18 @@ export function drawLine(xyzs, layer) {
   geometry.computeBoundingSphere()
 
   // Material
-  let color, width
+  let color, width, order
   for (const layerOpt of cloud.opt.pointLayers)
     if (layerOpt.name === layer) {
       color = layerOpt.line.color
       width = layerOpt.line.width
+      order = layerOpt.order
     }
   const material = new THREE.LineBasicMaterial({ color, linewidth: width })
 
   // Insert
   const line = new THREE.Line(geometry, material)
+  line.renderOrder = order
   line.layer = layer
   cloud.scene.add(line)
   cloud.lines.push(line)
