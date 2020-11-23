@@ -13,7 +13,7 @@ import { v4 as uuid } from 'uuid'
 import consola from 'consola'
 
 const SVR_INTERVAL = 1000
-const CACHE_INTERVAL = 5000
+const CACHE_INTERVAL = 2000
 
 const localCache = new Map()
 
