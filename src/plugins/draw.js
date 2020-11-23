@@ -120,7 +120,6 @@ export default ({ $axios, store: { commit, state } }) => {
 
         // get Facilities
         if (layer) {
-          commit('setLoading', true)
           let url = `/api/facility/box/${layer}`
           const res = await $axios.post(url, { box })
           facilities = res.data
@@ -143,7 +142,6 @@ export default ({ $axios, store: { commit, state } }) => {
 
         // Draw to Map and Cloud
         this.drawGeojsons(filteredFacilities, 'drawnLayer')
-        commit('setLoading', false)
       },
 
       drawGeojsons(geojsons, layer) {
