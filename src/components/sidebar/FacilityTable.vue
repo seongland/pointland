@@ -11,7 +11,7 @@
     app
     color="grey darken-4"
   >
-    <div v-show="!mini ? !$store.state.loading : false">
+    <div v-show="!mini ? !$store.state.loading && !$store.state.depth.loading : false">
       <v-list>
         <v-list-item>
           <v-tooltip left>
