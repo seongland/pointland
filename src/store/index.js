@@ -19,15 +19,18 @@ export const mutations = {
   selectFeature(state, feature) {
     state.selected = [feature]
   },
+
   resetSelected(state) {
     state.selected = []
     state.edit.ing = false
     state.submit.ing = false
     if (cloudRef.cloud) cloudRef.cloud.transform.detach(cloudRef.selectedLayer)
   },
+
   setLoading(state, value) {
     state.loading = value
   },
+
   setDepthLoading: (state, value) => (state.depth.loading = value),
 
   setState(state, { props, value }) {
