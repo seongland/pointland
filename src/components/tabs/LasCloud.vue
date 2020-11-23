@@ -15,10 +15,8 @@ import consola from 'consola'
 const SVR_INTERVAL = 1000
 const CACHE_INTERVAL = 2000
 
-const localCache = new Map()
-
 export default {
-  data: () => ({ localCache, lasList: [], apiList: [], loading: false }),
+  data: () => ({ localCache: {}, lasList: [], apiList: [], loading: false }),
 
   computed: {
     currentMark() {
@@ -176,7 +174,7 @@ export default {
       let transaction = this.lasCaches.transaction(['LasJson'], 'readwrite')
       let objectStore = transaction.objectStore('LasJson')
       let request = objectStore.add({ name: area, data })
-      localCache[area] = { name: area, data }
+      this.setCache(area, { name: area, data })
     },
 
     getLasAPIRoot(areaName) {
@@ -186,8 +184,17 @@ export default {
       return `/api/pointcloud/${currentRound}/${currentSnap}/${areaName}`
     },
 
+    setCache(areaName, lasCache) {
+      const keys = Object.keys(this.localCache)
+      if (keys.length > 10) {
+        console.log('Remove Local Caches')
+        this.localCache = {}
+      }
+      this.localCache[areaName] = lasCache
+    },
+
     async getLasCache(area) {
-      if (localCache[area]) return localCache[area]
+      if (this.localCache[area]) return this.localCache[area]
       let transaction = this.lasCaches.transaction(['LasJson'], 'readonly')
       let objectStore = transaction.objectStore('LasJson')
       let index = objectStore.index('name')
@@ -196,7 +203,7 @@ export default {
         resolve =>
           (index.get(area).onsuccess = event => {
             resolve(event.target.result)
-            localCache[area] = event.target.result
+            this.setCache(area, event.target.result)
           })
       )
     }
