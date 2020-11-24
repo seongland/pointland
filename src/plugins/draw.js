@@ -350,7 +350,6 @@ export default ({ $axios, store: { commit, state } }) => {
             data.layer.selected.uri = uri
           }
         commit('resetSelected')
-        if (process.env.dev) consola.success(`Reset Selected`, state.selected)
         commit('setLoading', false)
       },
 
