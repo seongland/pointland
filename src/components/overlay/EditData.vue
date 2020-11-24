@@ -148,6 +148,8 @@
 </template>
 
 <script>
+import consola from 'consola'
+
 const DFT_USER = 'stryx@stryx.co.kr'
 
 export default {
@@ -228,7 +230,7 @@ export default {
       get(`/api/user?id=${facility.edited_by}`, config).then(res => (this.editedBy = res.data[0].email))
     else this.editedBy = DFT_USER
 
-    if (process.env.dev) console.log('Editing is', facility)
+    if (process.env.dev) consola.info('Editing is', facility)
   },
 
   methods: {

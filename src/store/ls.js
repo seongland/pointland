@@ -4,6 +4,7 @@
 
 // import { setDrawInteraction } from '~/plugins/map/draw'
 import { updateCtrl } from '~/plugins/cloud/init'
+import consola from 'consola'
 
 const WAIT_RENDER = 500
 
@@ -21,7 +22,8 @@ export const state = () => ({
   currentMark: null,
   targetLayer: { index: null, object: null },
   targetTask: null,
-  rounds: []
+  rounds: [],
+  cacheMap: {}
 })
 
 export const mutations = {
@@ -123,7 +125,7 @@ export const mutations = {
   setSnap(state, snapObj) {
     const previous = state.currentSnap
     const app = this.$router.app
-    if (process.env.dev) console.log('New Snap', snapObj)
+    if (process.env.dev) consola.info('New Snap', snapObj)
 
     let markIndex
     if (state.currentSnap?.marks && state.currentMark)
@@ -150,7 +152,7 @@ export const mutations = {
 
   setMark(state, markObj) {
     if (!markObj) return
-    if (process.env.dev) console.log('Mark', markObj)
+    if (process.env.dev) consola.info('Mark', markObj)
     state.currentMark = markObj
   }
 }

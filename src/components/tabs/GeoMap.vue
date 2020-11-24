@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import consola from 'consola'
+
 export default {
   computed: {
     projects() {
@@ -28,7 +30,7 @@ export default {
       // filter
       for (const prj of this.projects) if (prj.layers.tiff) project = prj
       if (!project) project = this.projects[0]
-      if (process.env.dev) console.log('Project is', project)
+      if (process.env.dev) consola.info('Project is', project)
       this.$root.map = this.olInit(this.mapOpt, project.geoserver, project.workspace, project.layers)
     }
   }

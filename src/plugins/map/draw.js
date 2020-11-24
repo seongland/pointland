@@ -83,7 +83,6 @@ function drawXYs(latlngArray, id) {
 
   const recordingSource = ref.recordingLayer.getSource()
   const recordingArray = recordingSource.getFeatures()
-  console.log(id, 'added', recordingArray.length)
 }
 
 function subtractVhcl(id) {
@@ -98,7 +97,6 @@ function subtractVhcl(id) {
   const recordingArray = recordingSource.getFeatures()
 
   for (const feature of recordingArray) {
-    console.log(feature.get('vhcl') === id, feature.get('vhcl'))
     if (feature.get('vhcl') === id) recordingSource.removeFeature(feature)
   }
 }

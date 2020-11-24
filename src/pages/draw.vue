@@ -36,9 +36,6 @@
 
     <!-- loading -->
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
-    <!-- <v-overlay :value="$store.state.depth.loading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay> -->
   </div>
 </template>
 
@@ -52,6 +49,7 @@ import DelData from '~/components/overlay/DelData'
 import FacilityTable from '~/components/sidebar/FacilityTable'
 import LayerList from '~/components/sidebar/LayerList'
 import TabHeader from '~/components/header/TabHeader'
+import consola from 'consola'
 
 export default {
   middleware: 'authentication',
@@ -66,7 +64,7 @@ export default {
       const roundObj = res.data
       rounds.push(roundObj)
     }
-    if (process.env.dev) console.log('Rounds', rounds)
+    if (process.env.dev) consola.info('Rounds', rounds)
     this.setRounds(rounds)
   },
 

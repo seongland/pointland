@@ -4,6 +4,7 @@ import { ref as cloudRef } from './cloud/init'
 import { clickImage } from './image/event'
 import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
+import consola from 'consola'
 
 export default ({ store: { commit, state, $router } }) => {
   Vue.mixin({
@@ -38,7 +39,7 @@ export default ({ store: { commit, state, $router } }) => {
         const roundName = feature.get('round')
         const snapName = feature.get('snap')
         const markName = feature.get('name')
-        if (process.env.dev) console.log(roundName, snapName, markName)
+        if (process.env.dev) consola.info('Click', roundName, snapName, markName)
         for (const roundObj of state.ls.rounds)
           if (roundObj.name === roundName) this.setRound({ ...roundObj, snap: snapName, mark: markName })
       },
@@ -64,7 +65,7 @@ export default ({ store: { commit, state, $router } }) => {
          * @summary - Select by Document ID
          */
         // check ing
-        if (process.env.dev) console.log('Select', id, index, index2)
+        if (process.env.dev) consola.info('Select', id, index, index2)
         if (state.submit.ing) commit('setState', { props: ['submit', 'show'], value: true })
         else if (state.edit.ing) commit('setState', { props: ['edit', 'show'], value: true })
         if (state.edit.ing || state.submit.ing) {
@@ -114,10 +115,7 @@ export default ({ store: { commit, state, $router } }) => {
           for (const group of this.groups)
             for (const layerOpt of group.layers)
               if (layerOpt.layer === props.layer && value) {
-                if (['relate', 'multirelate'].includes(layerOpt.attributes?.[prop]?.method)) {
-                  console.log(value)
-                  this.drawRelated(value)
-                }
+                if (['relate', 'multirelate'].includes(layerOpt.attributes?.[prop]?.method)) this.drawRelated(value)
               }
         }
         this.drawRelated(facility.id)
@@ -329,7 +327,7 @@ export default ({ store: { commit, state, $router } }) => {
             } else this.drawnFacilities()
             return
         }
-        if (process.env.dev) console.log(event)
+        if (process.env.dev) consola.info('Pressed', event.key)
       }
     }
   })

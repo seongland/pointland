@@ -6,6 +6,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { getTable } from './tool/table'
 import { PythonShell } from 'python-shell'
+import consola from 'consola'
 
 const DIV_FACTOR = 100
 
@@ -39,7 +40,7 @@ export default app => {
       markPromise = getTable(roundName, snapName, snapObj.image.meta)
       areaPromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
     } catch (e) {
-      console.log(e)
+      consola.error(e)
       return res.json(false)
     }
     const [marks, areas] = await Promise.all([markPromise, areaPromise])
@@ -59,7 +60,7 @@ export default app => {
       markPromise = getTable(roundName, snapName, snapObj.image.meta)
       areaPromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
     } catch (e) {
-      console.log(e)
+      consola.error(e)
       return res.json(false)
     }
     const [marks, areas] = await Promise.all([markPromise, areaPromise])
@@ -75,10 +76,10 @@ export default app => {
     const length = marks.length
     const divCount = Math.ceil(length / DIV_FACTOR)
     const tempArray = new Array(divCount).fill(0)
-    console.log(`Group Total: ${tempArray.length}`)
+    consola.info(`Group Total: ${tempArray.length}`)
     for (const count in tempArray) {
       const tempData = marks.slice(count * DIV_FACTOR, (Number(count) + 1) * DIV_FACTOR)
-      console.log(`Group ${count} add started with count ${tempData.length}`)
+      consola.info(`Group ${count} add started with count ${tempData.length}`)
       pythonOptions.args = [
         JSON.stringify(tempData),
         JSON.stringify(snapName),
@@ -86,8 +87,8 @@ export default app => {
         JSON.stringify('kaist')
       ]
       PythonShell.run('src/python/markstodb.py', pythonOptions, (err, result) => {
-        if (err) console.log(`Upload err in ${count} is `, err)
-        else console.log(`Complete ${count} with No Error!`)
+        if (err) consola.error(`Upload err in ${count} is `, err)
+        else consola.success(`Complete ${count} with No Error!`)
       })
     }
   }

@@ -1,4 +1,5 @@
 import Service from '../abstract/default/default.class'
+import consola from 'consola'
 
 export default class Users extends Service {
   async create(body, meta) {
@@ -8,15 +9,13 @@ export default class Users extends Service {
      */
     const app = this.app
     const newbie = await super.create(body, meta)
-    console.log(newbie)
+    consola.success('Newbie', newbie)
 
     // patch
     const user = { id: newbie.id, role: 'user' }
-    let project
     for (const prj of newbie.projects)
-      project = await app.service('project').Model.updateOne({ id: prj.id }, { $push: { users: user } })
-    const organization = await app.service('org').Model.updateOne({ id: newbie.org.id }, { $push: { users: user } })
-    console.log(project, organization)
+      await app.service('project').Model.updateOne({ id: prj.id }, { $push: { users: user } })
+    await app.service('org').Model.updateOne({ id: newbie.org.id }, { $push: { users: user } })
     return newbie
   }
 }

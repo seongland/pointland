@@ -15,6 +15,7 @@ import { drawNear, erase, updateImg } from './image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { transform } from 'ol/proj'
 import jimp from 'jimp/browser/lib/jimp'
+import consola from 'consola'
 
 const POINT_ID = 'Point'
 
@@ -349,7 +350,7 @@ export default ({ $axios, store: { commit, state } }) => {
             data.layer.selected.uri = uri
           }
         commit('resetSelected')
-        if (process.env.dev) console.log(`Reset Selected`, state.selected)
+        if (process.env.dev) consola.success(`Reset Selected`, state.selected)
         commit('setLoading', false)
       },
 
@@ -366,7 +367,7 @@ export default ({ $axios, store: { commit, state } }) => {
             const uri = await imgLayer[direction].image.getBase64Async('image/png')
             imgLayer[direction].uri = uri
           }
-        if (process.env.dev) console.log(`Reset ${name}`)
+        if (process.env.dev) consola.success(`Reset ${name}`)
       },
 
       async resetSnap() {

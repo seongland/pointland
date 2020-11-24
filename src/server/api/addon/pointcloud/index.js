@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import { PythonShell } from 'python-shell'
 import { existsSync, createReadStream } from 'fs'
 import { lasPath, cachePath } from './pcd'
+import consola from 'consola'
 
 dotenv.config()
 const router = express.Router()
@@ -36,7 +37,7 @@ function pointcloud(req, res) {
   console.time(`gzip ${req.params.area}`)
   PythonShell.run('src/python/lastogzip.py', pythonOptions, (err, result) => {
     console.timeEnd(`gzip ${req.params.area}`)
-    if (err) console.log({ err, result })
+    if (err) consola.error({ err, result })
     if (!err) return
   })
 }
