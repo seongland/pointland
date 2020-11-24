@@ -86,10 +86,12 @@ export default ({ $axios, store: { commit, state } }) => {
         setTimeout(() => window.dispatchEvent(new Event('resize')))
 
         // Keyboard
-        window.removeEventListener('keypress', this.keyEvent)
-        window.addEventListener('keypress', this.keyEvent)
+        window.removeEventListener('keydown', this.keyEvent)
+        window.addEventListener('keydown', this.keyEvent)
         window.removeEventListener('keyup', this.keyUp)
         window.addEventListener('keyup', this.keyUp)
+
+        document.addEventListener('contextmenu', event => event.preventDefault())
       },
 
       async loadProjects(user, accessToken) {
