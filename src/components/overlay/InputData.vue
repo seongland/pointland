@@ -13,26 +13,6 @@
         <!-- Properties -->
         <v-card-title v-text="`Properties`" />
 
-        <!-- Layer -->
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-select
-              class="mx-2"
-              label="Layer"
-              solo
-              return-object
-              dense
-              v-bind="attrs"
-              v-on="on"
-              v-model="targetLayer"
-              :items="sameTypes"
-              item-text="description"
-              item-value="description"
-            />
-          </template>
-          <span>시설물의 종류를 변경합니다</span>
-        </v-tooltip>
-
         <!-- Properties -->
         <div v-for="[name, object] in Object.entries(targetLayer.attributes)" :key="name">
           <v-tooltip top v-if="object.method === 'select'">
@@ -178,14 +158,6 @@ export default {
   computed: {
     relations() {
       return this.$store.state.selected[0].relations
-    },
-    sameTypes() {
-      const allowedLayers = this.$store.state.allowedLayers
-      let types = []
-      for (const classObj of Object.values(this.groups))
-        for (const layerObj of classObj.layers)
-          if (this.type === layerObj.type && allowedLayers.includes(layerObj.layer)) types.push(layerObj)
-      return types
     },
     ls() {
       return this.$store.state.ls

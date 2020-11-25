@@ -27,7 +27,7 @@ export default new mongoose.Schema(
 
     NodeID: { type: String },
     LinkID: { type: String },
-    LinkIDs: { type: [String] },
+    LinkIDs: { type: [String], default: undefined },
     L_LinkID: { type: String },
     R_LinkID: { type: String },
     FromNodeID: { type: String },

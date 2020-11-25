@@ -183,6 +183,7 @@ export default {
           for (const layerObj of classObj.layers)
             if (this.facility.properties.layer === layerObj.layer) {
               this.description = layerObj.description
+              consola.info('targetLayer', layerObj)
               return layerObj
             }
       },
