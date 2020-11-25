@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { PythonShell } from 'python-shell'
-import { existsSync, createReadStream } from 'fs'
+import { existsSync, createReadStream, promises as fs, unlinkSync, rmdirSync } from 'fs'
 import { lasPath, cachePath } from './pcd'
 import consola from 'consola'
 
@@ -19,6 +19,8 @@ const las = (req, res) => res.sendFile(lasPath(req))
 router.get('/:round/:snap/:area', pointcloud)
 router.get('/:round/:snap/:area/:prop', lasCache)
 router.get('/file/:round/:snap/:area', las)
+
+router.delete('/:round/:snap/:area', delSvrCache)
 
 function pointcloud(req, res) {
   const path = lasPath(req)
@@ -42,10 +44,23 @@ function pointcloud(req, res) {
   })
 }
 
+async function delSvrCache(req, res) {
+  const cache = cachePath(req)
+  const files = await fs.readdir(cache)
+  for (const file of files) {
+    const path = `${cache}/${file}`
+    unlinkSync(path)
+  }
+  const result = rmdirSync(cache, { recursive: true })
+  consola.info('delete', cache, result)
+  res.json(result)
+}
+
 function lasCache(req, res) {
   const prop = req.params.prop
-  res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const cache = cachePath(req)
+  if (!existsSync(`${cache}/${prop}.gz`)) return res.json(false)
+  res.writeHead(200, { 'Content-Encoding': 'gzip' })
   const gz = createReadStream(`${cache}/${prop}.gz`)
   gz.pipe(res)
 }

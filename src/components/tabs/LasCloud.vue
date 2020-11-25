@@ -135,7 +135,7 @@ export default {
 
       // Get Server Las Json
       let lasJson
-      if (check.data.cached) lasJson = await this.serverCached(root)
+      if (check.data.cached) lasJson = await this.serverCached(root, areaName)
       else lasJson = check.data
 
       // After job
@@ -144,7 +144,7 @@ export default {
       this.drawLasCloud(lasJson, areaName)
     },
 
-    async serverCached(root) {
+    async serverCached(root, area) {
       // Make Cancel token
       const commit = this.$store.commit
       const dataList = ['x', 'y', 'z', 'c', 'i']
@@ -154,7 +154,13 @@ export default {
       this.apiList.push(srcs)
       const [x, y, z, c, i] = await Promise.all(promises)
       const lasJson = { x: x.data, y: y.data, z: z.data, center: c.data, intensity: i.data }
-      return lasJson
+      const complete = this.checkLasJson(lasJson, area)
+      if (complete) return lasJson
+      else {
+        consola.info('Recache Server', area)
+        await this.$axios.delete(`${root}`)
+        return await this.serverCached(root, area)
+      }
     },
 
     addAPI(target, promises, srcs, root) {
@@ -232,7 +238,7 @@ export default {
     checkLasJson(lasJson, area, id) {
       for (const key in lasJson)
         if (!(lasJson[key] instanceof Array)) {
-          this.removeCache(area, id)
+          if (id) this.removeCache(area, id)
           consola.error('Bad LasJson', area, lasJson)
           return false
         }

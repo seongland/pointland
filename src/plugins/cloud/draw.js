@@ -214,10 +214,11 @@ function click3D(e) {
   cloud.raycaster.params.Points.threshold = 1
   let intersects = cloud.raycaster.intersectObjects(targets)
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
-  const intersect = intersects[0]
-  consola.info('Cicked', intersect)
+  let intersect = intersects[0]
   if (intersect) {
-    intersect.index = intersect.index + intersect.object.geometry.drawRange.start
+    intersect = tuneIntersect(intersect)
+    if (!intersect.index) return
+    consola.info('Cicked', intersect)
     return intersect.object.click instanceof Function ? intersect.object.click(intersect) : null
   }
 
@@ -226,6 +227,36 @@ function click3D(e) {
   const center = cloud.currentSelected.point
   const xyz = [center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]]
   ref.cloud.selectCallback(xyz)
+}
+
+function tuneIntersect(intersect) {
+  const geometry = intersect.object.geometry
+  const inputIndex = intersect.index
+  const addedIndex = inputIndex + geometry.drawRange.start
+  const index = checkIntersectIndex(intersect, [inputIndex, addedIndex])
+  intersect.index = index
+  return intersect
+}
+
+function checkIntersectIndex(intersect, indexs) {
+  const geometry = intersect.object.geometry
+  const positions = geometry.attributes.position.array
+  const target = intersect.point
+  let index
+  for (const i of indexs)
+    if (geometry.indexes[i]) {
+      let id = geometry.indexes[i].id
+      if (geometry.ids[id].index === i) {
+        const mhtD =
+          (Math.abs(target.x - positions[3 * i]) +
+            Math.abs(target.y - positions[3 * i + 1]) +
+            Math.abs(target.z - positions[3 * i + 2])) /
+          3
+        if (mhtD < intersect.distanceToRay) index = i
+      }
+    }
+  if (!index) consola.error(intersect)
+  return index
 }
 
 export { drawLas, drawHover, click3D }
