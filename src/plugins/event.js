@@ -1,10 +1,10 @@
 import Vue from 'vue'
+import consola from 'consola'
 import { ref as mapRef } from '~/plugins/map/init'
 import { ref as cloudRef } from './cloud/init'
 import { clickImage } from './image/event'
 import { setFocus } from './map/event'
 import { setFocusXYZ } from './cloud/event'
-import consola from 'consola'
 
 export default ({ store: { commit, state, $router } }) => {
   Vue.mixin({
@@ -115,7 +115,9 @@ export default ({ store: { commit, state, $router } }) => {
           for (const group of this.groups)
             for (const layerOpt of group.layers)
               if (layerOpt.layer === props.layer && value) {
-                if (['relate', 'multirelate'].includes(layerOpt.attributes?.[prop]?.method)) this.drawRelated(value)
+                const method = layerOpt.attributes?.[prop]?.method
+                if (method === 'relate') this.drawRelated(value)
+                else if (method === 'multirelate') value.map(id => this.drawRelated(id))
               }
         }
         this.drawRelated(facility.id)
@@ -216,7 +218,7 @@ export default ({ store: { commit, state, $router } }) => {
         /*
          * @summary - Normal Key Callback
          */
-        // Filter evetnt
+        // Filter event
         if ($router.currentRoute.name !== 'draw') return
         if (event.ctrlKey && 'ffhh123,.mMsSaA'.indexOf(event.key) !== -1) event.preventDefault()
         if (event.ctrlKey && event.code == 84) event.preventDefault()
@@ -275,7 +277,7 @@ export default ({ store: { commit, state, $router } }) => {
               const target = state.selected[state.selected.length - 1]
               const props = target.properties
 
-              if (event.shiftKey) {
+              if (!event.shiftKey) {
                 if (index === 2) {
                   if (!cloudRef.cloud.offset) return
                   const controls = cloudRef.cloud.controls

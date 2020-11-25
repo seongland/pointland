@@ -814,7 +814,214 @@
       "type": "LineString",
       "description": "차선",
       "name": "SURFACELineStringMARK",
-      "attributes": {}
+      "attributes": {
+        "Type": {
+          "type": "String",
+          "optional": true,
+          "placeholder": "선표시 유형",
+          "tooltip": "선표시 유형을 선택합니다",
+          "method": "select",
+          "candidates": [
+            {
+              "data": "111",
+              "description": "황색-단선-실선",
+              "tooltip": "실선으로 되어 있는 황색 단선"
+            },
+            {
+              "data": "112",
+              "description": " 황색-단선-점선",
+              "tooltip": "점선으로 되어 있는 황색 단선"
+            },
+            {
+              "data": "113",
+              "description": "황색-단선-좌점혼선"
+            },
+            {
+              "data": "114",
+              "description": " 황색-단선-우점혼선"
+            },
+            {
+              "data": "121",
+              "description": "황색-겹선-실선",
+              "tooltip": "실선으로 되어 있는 황색 겹선"
+            },
+            {
+              "data": "122",
+              "description": " 황색-겹선-점선",
+              "tooltip": "점선으로 되어 있는 황색 겹선"
+            },
+            {
+              "data": "123",
+              "description": "황색-겹선-좌점혼선",
+              "tooltip": "좌측은 점선이고 우측은 실선인 황색 겹선"
+            },
+            {
+              "data": "124",
+              "description": "황색-겹선-우점혼선",
+              "tooltip": "좌측은 실선이고 우측은 점선인 황색 겹선"
+            },
+            {
+              "data": "211",
+              "description": "백색-단선-실선",
+              "tooltip": "실선으로 되어 있는 백색 단선"
+            },
+            {
+              "data": "212",
+              "description": "백색-단선-점선",
+              "tooltip": "점선으로 되어 있는 백색 단선"
+            },
+            {
+              "data": "213",
+              "description": "백색-단선-좌점혼선"
+            },
+            {
+              "data": "214",
+              "description": "백색-단선-우점혼선"
+            },
+            {
+              "data": "221",
+              "description": "백색-겹선-실선",
+              "tooltip": "실선으로 되어 있는 백색 겹선"
+            },
+            {
+              "data": "222",
+              "description": "백색-겹선-점선",
+              "tooltip": "점선으로 되어 있는 백색 겹선"
+            },
+            {
+              "data": "223",
+              "description": "백색-겹선-좌점혼선",
+              "tooltip": "좌측은 점선이고 우측은 실선인 백색 겹선"
+            },
+            {
+              "data": "224",
+              "description": "백색-겹선-우점혼선",
+              "tooltip": "좌측은 실선이고 우측은 점선인 백색 겹선"
+            },
+            {
+              "data": "311",
+              "description": "청색-단선-실선",
+              "tooltip": "실선으로 되어 있는 청색 단선"
+            },
+            {
+              "data": "312",
+              "description": "청색-단선-점선",
+              "tooltip": "점선으로 되어 있는 청색 단선"
+            },
+            {
+              "data": "313",
+              "description": "청색-단선-좌점혼선"
+            },
+            {
+              "data": "314",
+              "description": " 청색-단선-우점혼선"
+            },
+            {
+              "data": "321",
+              "description": "청색-겹선-실선",
+              "tooltip": "실선으로 되어 있는 청색 겹선"
+            },
+            {
+              "data": "322",
+              "description": "청색-겹선-점선",
+              "tooltip": "점선으로 되어 있는 청색 겹선"
+            },
+            {
+              "data": "323",
+              "description": "청색-겹선-좌점혼선",
+              "tooltip": "좌측은 점선이고 우측은 실선인 청색 겹선"
+            },
+            {
+              "data": "324",
+              "description": "청색-겹선-우점혼선",
+              "tooltip": "좌측은 실선이고 우측은 점선인 청색 겹선"
+            },
+            {
+              "data": "999",
+              "description": "기타",
+              "tooltip": "기타 선(청실선+백실선 포함)"
+            }
+          ]
+        },
+        "Kind": {
+          "type": "String",
+          "optional": true,
+          "placeholder": "선규제 유형",
+          "tooltip": "선규제 유형을 선택합니다",
+          "method": "select",
+          "candidates": [
+            {
+              "data": "501",
+              "description": "중앙선",
+              "tooltip": "중앙선이란 차마의 통행 방향을 명확하게 구분하기 위해서 도로에 황색 실선이나 황색 점선등의 안전표지로 표시하는 선 또는 중앙분리대나 울타리등을 설치한 시설물"
+            },
+            {
+              "data": "5011",
+              "description": "가변차선"
+            },
+            {
+              "data": "502",
+              "description": "유턴구역선"
+            },
+            {
+              "data": "503",
+              "description": "차선"
+            },
+            {
+              "data": "504",
+              "description": "버스전용차선"
+            },
+            {
+              "data": "505",
+              "description": "길가장자리구역선"
+            },
+            {
+              "data": "506",
+              "description": "진로변경제한선"
+            },
+            {
+              "data": "515",
+              "description": "주정차금지선"
+            },
+            {
+              "data": "525",
+              "description": "유도선"
+            },
+            {
+              "data": "530",
+              "description": "정지선"
+            },
+            {
+              "data": "531",
+              "description": "안전지대"
+            },
+            {
+              "data": "535",
+              "description": "자전거도로"
+            },
+            {
+              "data": "599",
+              "description": "기타선"
+            }
+          ]
+        },
+        "R_LinkID": {
+          "type": "String",
+          "optional": false,
+          "placeholder": "우측 링크 ID",
+          "tooltip": "주행차로 우측에 존재하는 A2_LINK의 ID를 입력",
+          "target": "A2",
+          "method": "relate"
+        },
+        "L_LinkID": {
+          "type": "String",
+          "optional": false,
+          "placeholder": "좌측 링크 ID",
+          "tooltip": "주행차로 좌측에 존재하는 A2_LINK의 ID를 입력",
+          "target": "A2",
+          "method": "relate"
+        }
+      }
     },
     {
       "layer": "B3",

@@ -5,6 +5,7 @@
 import * as THREE from 'three'
 import { ref } from './init'
 import { firstLas, addLas, addPoints } from './event'
+import consola from 'consola'
 
 const HOVER_COLOR = [0.8, 1, 1]
 
@@ -214,6 +215,7 @@ function click3D(e) {
   let intersects = cloud.raycaster.intersectObjects(targets)
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
   const intersect = intersects[0]
+  consola.info('Cicked', intersect)
   if (intersect) {
     intersect.index = intersect.index + intersect.object.geometry.drawRange.start
     return intersect.object.click instanceof Function ? intersect.object.click(intersect) : null
