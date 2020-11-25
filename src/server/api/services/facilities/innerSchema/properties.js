@@ -10,6 +10,7 @@ export default new mongoose.Schema(
 
     // Morai
     Type: { type: String },
+    Kind: { type: String },
     SubType: { type: mongoose.Mixed },
     NodeType: { type: String },
     LinkType: { type: String },
