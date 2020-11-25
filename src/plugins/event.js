@@ -136,6 +136,11 @@ export default ({ store: { commit, state, $router } }) => {
           const props = state.selected[0].properties
           const geom = state.selected[0].geometry
 
+          if (event.target.ctrlKey && geom.type !== 'Point') {
+            commit('translate', moved)
+            return this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2)
+          }
+
           if (geom.type === 'Point') position = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
           else if (geom.type === 'LineString') {
             const xyz = props.xyzs[state.selected[0].index]
