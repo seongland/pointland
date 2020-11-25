@@ -86,6 +86,33 @@ export const mutations = {
       geom.coordinates[index][index2] = xyto84(xyz[0], xyz[1])
       geom.coordinates[index][index2][2] = xyz[2]
     }
+  },
+
+  translate(state, offset) {
+    const geom = state.selected[0].geometry
+    const props = state.selected[0].properties
+
+    if (geom.type === 'LineString')
+      for (const i in props.xyzs) {
+        const xyz = props.xyzs[i]
+        xyz[0] = xyz[0] + offset.x
+        xyz[1] = xyz[1] + offset.y
+        xyz[2] = xyz[2] + offset.z
+        geom.coordinates[i] = xyto84(xyz[0], xyz[1])
+        geom.coordinates[i][2] = xyz[2]
+      }
+    else if (geom.type === 'Polygon')
+      for (const j in props.xyzs) {
+        const xyzs = props.xyzs[j]
+        for (const i in xyzs) {
+          const xyz = xyzs[i]
+          xyz[0] = xyz[0] + offset.x
+          xyz[1] = xyz[1] + offset.y
+          xyz[2] = xyz[2] + offset.z
+          geom.coordinates[j][i] = xyto84(xyz[0], xyz[1])
+          geom.coordinates[j][i][2] = xyz[2]
+        }
+      }
   }
 }
 
