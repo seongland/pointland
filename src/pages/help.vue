@@ -53,7 +53,7 @@
           <v-card-text><kbd style="background: #129">곤색</kbd> - 참조 시설물</v-card-text>
 
           <v-card-subtitle>마크</v-card-subtitle>
-          <v-card-text><kbd style="background: #18f">파란색</kbd> - 현재 위치</v-card-text>
+          <v-card-text><kbd style="background: #18f">파란색</kbd> - 현재 마크</v-card-text>
           <v-card-text><kbd style="background: #22dd88">초록색</kbd> - 현재 스냅 마크들</v-card-text>
           <v-card-text><kbd style="background: #cc0">노란색</kbd> - 이동 가능 마크들</v-card-text>
           <v-card-text><kbd style="background: #e19">분홍색</kbd> - 총 마크들</v-card-text>
