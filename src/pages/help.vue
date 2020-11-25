@@ -7,44 +7,95 @@
             <v-toolbar-title style="font-weight: bold">시설물 도화 사용법</v-toolbar-title>
           </v-toolbar>
 
-          <v-card-title style="font-weight: bold">단축키</v-card-title>
-          <v-divider />
+          <!-- 단축키 -->
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-card-title style="font-weight: bold">단축키</v-card-title>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-divider />
+                <v-card-subtitle>전역 단축키</v-card-subtitle>
+                <v-card-text>
+                  <kbd>Enter</kbd> - 도화 데이터를 제출한다 - 제출할 데이터가 없으면 시설물을 새로고침한다
+                </v-card-text>
+                <v-card-text><kbd>Escape</kbd> - 선택해제 - 해제할 데이터가 없으가 시설물을 새로고침한다</v-card-text>
+                <v-card-text><kbd>Delete</kbd> - 맵에서 선택한 시설물을 삭제한다</v-card-text>
 
-          <v-card-subtitle>전역 단축키</v-card-subtitle>
-          <v-card-text>
-            <kbd>Enter</kbd> - 도화 데이터를 제출한다 - 제출할 데이터가 없으면 시설물을 새로고침한다
-          </v-card-text>
-          <v-card-text><kbd>Escape</kbd> - 선택해제 - 해제할 데이터가 없으가 시설물을 새로고침한다</v-card-text>
-          <v-card-text><kbd>Delete</kbd> - 맵에서 선택한 시설물을 삭제한다</v-card-text>
+                <v-card-subtitle>Cloud 단축키</v-card-subtitle>
+                <v-card-text><kbd>ctrl + f</kbd> - 현재 선택한 포인트를 포커싱한다</v-card-text>
+                <v-card-text><kbd>ctrl + shift + f</kbd> - 현재 마우스 포인트를 포커싱한다</v-card-text>
 
-          <v-card-subtitle>Cloud 단축키</v-card-subtitle>
-          <v-card-text><kbd>ctrl + f</kbd> - 현재 선택한 포인트를 포커싱한다</v-card-text>
-          <v-card-text><kbd>ctrl + shift + f</kbd> - 현재 마우스 포인트를 포커싱한다</v-card-text>
+                <v-card-subtitle>이동 단축키 </v-card-subtitle>
+                <v-card-text><kbd>Space</kbd> - 현재 마크를 포커싱한다 </v-card-text>
+                <v-card-text><kbd>ctrl + &lt;</kbd> - 이전 마크로 이동한다 </v-card-text>
+                <v-card-text><kbd>ctrl + &gt;</kbd> - 다음 마크로 이동한다 </v-card-text>
 
-          <v-card-subtitle>이동 단축키 </v-card-subtitle>
-          <v-card-text><kbd>Space</kbd> - 현재 마크를 포커싱한다 </v-card-text>
-          <v-card-text><kbd>ctrl + &lt;</kbd> - 이전 마크로 이동한다 </v-card-text>
-          <v-card-text><kbd>ctrl + &gt;</kbd> - 다음 마크로 이동한다 </v-card-text>
+                <v-card-subtitle>UI 단축키 </v-card-subtitle>
+                <v-card-text><kbd>ctrl + m</kbd> - 지도 뷰를 토글한다</v-card-text>
+                <v-card-text><kbd>ctrl + 1</kbd> - Map View로 이동한다</v-card-text>
+                <v-card-text><kbd>ctrl + 2</kbd> - Image View로 이동한다</v-card-text>
+                <v-card-text><kbd>ctrl + 3</kbd> - Cloud View로 이동한다 </v-card-text>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
 
-          <v-card-subtitle>UI 단축키 </v-card-subtitle>
-          <v-card-text><kbd>ctrl + m</kbd> - 지도 뷰를 토글한다</v-card-text>
-          <v-card-text><kbd>ctrl + 1</kbd> - Map View로 이동한다</v-card-text>
-          <v-card-text><kbd>ctrl + 2</kbd> - Image View로 이동한다</v-card-text>
-          <v-card-text><kbd>ctrl + 3</kbd> - Cloud View로 이동한다 </v-card-text>
+          <!-- 작업 툴 구조 -->
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-card-title style="font-weight: bold">작업 툴 구조</v-card-title>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-divider />
+                <v-card-subtitle>메인 뷰</v-card-subtitle>
+                <v-card-text><kbd>지도</kbd> - 탑뷰를 볼 수 있다</v-card-text>
+                <v-card-text><kbd>영상이미지</kbd> - 해당 위치에서 카메라 촬영 이미지</v-card-text>
+                <v-card-text><kbd>클라우드</kbd> - 3D View</v-card-text>
 
-          <v-card-title style="font-weight: bold">작업 툴 구조</v-card-title>
-          <v-divider />
-          <v-card-subtitle>메인 뷰</v-card-subtitle>
-          <v-card-text><kbd>지도</kbd> - 탑뷰를 볼 수 있다</v-card-text>
-          <v-card-text><kbd>영상이미지</kbd> - 해당 위치에서 카메라 촬영 이미지</v-card-text>
-          <v-card-text><kbd>클라우드</kbd> - 3D View</v-card-text>
+                <v-card-subtitle>서브 뷰</v-card-subtitle>
+                <v-card-text><kbd>상단 바</kbd> - 작업할 대상을 정한다</v-card-text>
+                <v-card-text><kbd>도구</kbd> - 좌측에 있으며 어떤 시설물을 도화할 지 정한다</v-card-text>
+                <v-card-text><kbd>컨트롤 바</kbd> - 우측에 있으며 도화할 대상을 선택하거나 필터링한다</v-card-text>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
 
-          <v-card-subtitle>서브 뷰</v-card-subtitle>
-          <v-card-text><kbd>상단 바</kbd> - 작업할 대상을 정한다</v-card-text>
-          <v-card-text><kbd>도구</kbd> - 좌측에 있으며 어떤 시설물을 도화할 지 정한다</v-card-text>
-          <v-card-text><kbd>컨트롤 바</kbd> - 우측에 있으며 도화할 대상을 선택하거나 필터링한다</v-card-text>
+          <!-- 도화 방법 -->
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-card-title style="font-weight: bold">도화 방법</v-card-title>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-divider />
 
+                <v-card-subtitle>시설물 추가</v-card-subtitle>
+                <v-card-text><kbd>지원 레이어</kbd> - B1, C1, D1, D2</v-card-text>
+                <v-card-text><kbd>지도</kbd> - 현재 미지원</v-card-text>
+                <v-card-text><kbd>영상이미지</kbd> - 뎁스가 있는 부분 클릭</v-card-text>
+                <v-card-text><kbd>클라우드</kbd> - 클라우드가 있는 부분 더블클릭</v-card-text>
+
+                <v-card-subtitle>시설물 선택</v-card-subtitle>
+                <v-card-text><kbd>지도</kbd> - 시설물 포인트 클릭</v-card-text>
+                <v-card-text><kbd>영상이미지</kbd> - 시설물 포인트 근처 클릭</v-card-text>
+                <v-card-text><kbd>클라우드</kbd> - 시설물 포인트 근처 더블클릭</v-card-text>
+
+                <v-card-subtitle>시설물 수정</v-card-subtitle>
+                <v-card-text><kbd>시설물 연결 완료</kbd> - 다른 시설물과 연결하는 속성을 모두 완료하면 체크</v-card-text>
+                <v-card-text><kbd>속성값 입력 완료</kbd> - 연결을 제외한 속성값 입력이 완료되면 체크</v-card-text>
+                <v-card-text><kbd>위치보정 완료</kbd> - 위치보정 완료 후 체크</v-card-text>
+                <v-card-text><kbd>추가 데이터 필요</kbd> - 값을 입력할 수 없어 추가데이터가 필요할때 코멘트를 남기고 체크</v-card-text>
+
+                <v-card-subtitle>위치 이동</v-card-subtitle>
+                <v-card-text><kbd>지도</kbd> - 이동할 마크를 클릭</v-card-text>
+                <v-card-text><kbd>영상이미지</kbd> - 현재 미지원</v-card-text>
+                <v-card-text><kbd>클라우드</kbd> - 이동할 마크를 더블클릭</v-card-text>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+
+          <!-- 작업 레이어 -->
+            <v-expansion-panel>
+              <v-expansion-panel-header>
           <v-card-title style="font-weight: bold">작업 레이어</v-card-title>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
           <v-divider />
           <v-card-subtitle>시설물</v-card-subtitle>
           <v-card-text><kbd style="background: #990000">붉은색</kbd> - 선택한 포인트</v-card-text>
@@ -57,13 +108,28 @@
           <v-card-text><kbd style="background: #22dd88">초록색</kbd> - 현재 스냅 마크들</v-card-text>
           <v-card-text><kbd style="background: #cc0">노란색</kbd> - 이동 가능 마크들</v-card-text>
           <v-card-text><kbd style="background: #e19">분홍색</kbd> - 총 마크들</v-card-text>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
 
-          <v-card-title style="font-weight: bold">주의사항</v-card-title>
+          <!-- 오류 대처 -->
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-card-title style="font-weight: bold">오류 대처</v-card-title></v-expansion-panel-header>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
           <v-divider />
           <v-card-text><kbd>오류 발생</kbd> - 캡쳐 후 새로고침하고 Telegram 에 업로드</v-card-text>
-          <v-card-text><kbd>포인트 선택</kbd> - 이미지에서는 클릭, Cloud에서는 더블클릭으로 포인트를 선택</v-card-text>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
 
+            <!-- 참고자료 -->
+            <v-expansion-panel>
+              <v-expansion-panel-header>
           <v-card-title style="font-weight: bold">참고자료</v-card-title>
+          </v-expansion-panel-header>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+
           <v-divider />
           <v-card-text><kbd>일람표</kbd></v-card-text>
           <v-img src="/example/total.jpg" />
@@ -73,6 +139,10 @@
           <v-img src="/example/B1_SAFETYSIGN_3.png" />
           <v-card-text><kbd>C1</kbd> - 표지판</v-card-text>
           <v-img src="/example/C1_TRAFFICLIGHT_1.png" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+
 
           <v-card-actions>
             <v-spacer></v-spacer>
