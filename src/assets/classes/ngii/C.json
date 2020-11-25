@@ -100,7 +100,57 @@
       "layer": "C3",
       "type": "LineString",
       "description": "차량방호안전시설",
-      "name": "VEHICLEPROTECTIONSAFETY"
+      "name": "VEHICLEPROTECTIONSAFETY",
+      "attributes": {
+        "Type": {
+          "type": "String",
+          "method": "select",
+          "placeholder": "시설유형",
+          "optional": false,
+          "candidates": [
+            {
+              "data": "2",
+              "description": "가드레일",
+              "tooltip": "규제선(시설) 가드레일 유형"
+            },
+            {
+              "data": "3",
+              "description": "콘크리트방호벽",
+              "tooltip": "규제선(시설) 콘크리트방호벽 유형"
+            },
+            {
+              "data": "4",
+              "description": "콘크리트연석",
+              "tooltip": "규제선(시설) 콘크리트연석 유형"
+            },
+            {
+              "data": "5",
+              "description": "무단횡단방지시설",
+              "tooltip": "규제선(시설) 무단횡단방지시설 유형"
+            },
+            {
+              "data": "6",
+              "description": "중앙분리대개구부",
+              "tooltip": "규제선(시설) 중앙분리대개구부 유형"
+            },
+            {
+              "data": "7",
+              "description": "임시구조물",
+              "tooltip": "규제선(시설) 임시구조물 유형"
+            },
+            {
+              "data": "8",
+              "description": "벽",
+              "tooltip": "규제선(시설) 벽 유형"
+            },
+            {
+              "data": "99",
+              "description": "기타",
+              "tooltip": "기타 위에서 정의되지 않은 차량방호 안전시설"
+            }
+          ]
+        }
+      }
     },
     {
       "layer": "C4",

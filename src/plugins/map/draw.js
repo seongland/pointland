@@ -17,7 +17,7 @@ function makeStyle() {
    * @summary - Make Diverse Style
    * @function
    */
-  let styles = new Map()
+  let styles = {}
   styles.prop = { fRed: new Fill({ color: RED }), fBlue: new Fill({ color: BLUE }) }
   let cricleDft = { radius: DFT_RADIUS }
   let ciRedI = new Circle({ ...cricleDft, fill: styles.prop.fRed })

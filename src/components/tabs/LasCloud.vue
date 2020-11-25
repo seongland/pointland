@@ -89,7 +89,7 @@ export default {
 
         // Load Local Cache Las
         let lasCache = await this.getLasCache(areaName)
-        if (lasCache) this.loadLas(areaName, true, lasCache)
+        if (lasCache) this.loadLas(areaName, true, lasCache, markObj.round, markObj.snap)
         // Load Server
         else {
           const changed = await this.termLoadLas(markObj, areaName, true, undefined)
@@ -104,7 +104,7 @@ export default {
       const round = markObj.round
       const snap = markObj.snap
       const mark = markObj.name
-      this.loadLas(areaName, draw, lasCache)
+      this.loadLas(areaName, draw, lasCache, markObj.round, markObj.snap)
       await new Promise(resolve => setTimeout(() => resolve(), SVR_INTERVAL))
       return this.currentChanged(round, snap, mark)
     },
@@ -113,24 +113,24 @@ export default {
       consola.info('Caching', areaName)
       const round = snapObj.round
       const snap = snapObj.name
-      await this.loadLas(areaName)
+      await this.loadLas(areaName, false, false, snapObj.round, snapObj.name)
       await new Promise(resolve => setTimeout(() => resolve(), CACHE_INTERVAL))
       return this.currentChanged(round, snap)
     },
 
-    async loadLas(areaName, draw, lasCache) {
+    async loadLas(areaName, draw, lasCache, round, snap) {
       const commit = this.$store.commit
       const fileExt = areaName.split('.').pop()
       if (fileExt !== 'las') return
 
       // If Cached
       if (lasCache) {
-        consola.info('Use Cache', areaName)
+        consola.info('Use Cache', areaName, lasCache)
         return draw ? this.drawLasCloud(lasCache.data, areaName) : null
       }
 
       // Check Server Cache
-      const root = this.getLasAPIRoot(areaName)
+      const root = this.getLasAPIRoot(areaName, round, snap)
       const check = await this.$axios(`${root}`)
 
       // Get Server Las Json
@@ -191,11 +191,8 @@ export default {
       consola.info('Cached', area)
     },
 
-    getLasAPIRoot(areaName) {
-      const ls = this.$store.state.ls
-      const currentRound = ls.currentRound.name
-      const currentSnap = ls.currentSnap.name
-      return `/api/pointcloud/${currentRound}/${currentSnap}/${areaName}`
+    getLasAPIRoot(areaName, round, snap) {
+      return `/api/pointcloud/${round}/${snap}/${areaName}`
     },
 
     async getLasCache(area) {
@@ -236,7 +233,7 @@ export default {
       for (const key in lasJson)
         if (!(lasJson[key] instanceof Array)) {
           this.removeCache(area, id)
-          consola.error('Bad LasJson', area)
+          consola.error('Bad LasJson', area, lasJson)
           return false
         }
       return true

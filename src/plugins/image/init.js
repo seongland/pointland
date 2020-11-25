@@ -1,6 +1,6 @@
 import jimp from 'jimp/browser/lib/jimp'
 
-export const ref = new Map()
+export const ref = {}
 
 export function initImg({ front, back }) {
   jimp.read(Buffer.from(front.uri.split(',')[1], 'base64')).then(image => {
@@ -32,6 +32,6 @@ export function initImg({ front, back }) {
   back.layer.drawn.image = new jimp(back.width, back.height)
   front.name = 'front'
   back.name = 'back'
-  if (!ref.ids) ref.ids = new Map()
+  if (!ref.ids) ref.ids = {}
   return { front, back }
 }
