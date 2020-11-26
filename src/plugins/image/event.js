@@ -48,8 +48,8 @@ export async function clickImage(event, depth, drawCallback, selectCallback) {
   let y = Math.round(image.bitmap.height * yRatio)
 
   if (!event.ctrlKey) {
-    let facility = checkNearest(direction, x, y)
-    if (facility) return selectCallback(facility)
+    let vid = checkNearest(direction, x, y)
+    if (vid) return selectCallback(event, vid)
   }
   const color = image.getPixelColor(x, y)
   if (color === 0) {
@@ -58,7 +58,7 @@ export async function clickImage(event, depth, drawCallback, selectCallback) {
     x = point[0]
     y = point[1]
   }
-  drawCallback(x, y, data)
+  drawCallback(event, x, y, data)
 }
 
 function getImageData(event, depth) {

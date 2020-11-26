@@ -22,7 +22,7 @@ export default ({ store: { commit, state, $router } }) => {
         flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
       },
 
-      clickMark(feature) {
+      clickMark(event, feature) {
         /*
          * @summary - Map Click Mark Callback
          */
@@ -32,7 +32,7 @@ export default ({ store: { commit, state, $router } }) => {
         }
       },
 
-      clickProcessed(feature) {
+      clickProcessed(event, feature) {
         /*
          * @summary - Map Click Processed geoserver mark
          */
@@ -44,7 +44,7 @@ export default ({ store: { commit, state, $router } }) => {
           if (roundObj.name === roundName) this.setRound({ ...roundObj, snap: snapName, mark: markName })
       },
 
-      async clickDrawn(feature) {
+      async clickDrawn(event, feature) {
         /*
          * @summary - Map Click Drawn Callback
          */
@@ -136,7 +136,7 @@ export default ({ store: { commit, state, $router } }) => {
           const props = state.selected[0].properties
           const geom = state.selected[0].geometry
 
-          if (event.target.ctrlKey && geom.type !== 'Point') {
+          if (window.ctrlKey && geom.type !== 'Point') {
             commit('translate', moved)
             return this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2)
           }
@@ -224,11 +224,12 @@ export default ({ store: { commit, state, $router } }) => {
          * @summary - Normal Key Callback
          */
         // Filter event
+        window.ctrlKey = event.ctrlKey
+        window.shiftKey = event.shiftKey
         if ($router.currentRoute.name !== 'draw') return
         if (event.ctrlKey && 'fF123,.mMsSaA'.indexOf(event.key) !== -1) event.preventDefault()
         if (event.ctrlKey && event.code == 84) event.preventDefault()
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
-        if (cloudRef?.cloud?.transform) cloudRef.cloud.transform.ctrlKey = event.ctrlKey
 
         let seqIndex
         const ls = this.$store.state.ls

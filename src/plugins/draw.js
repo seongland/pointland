@@ -244,7 +244,7 @@ export default ({ $axios, store: { commit, state } }) => {
         }
       },
 
-      async selectFromDepth(vid) {
+      async selectFromDepth(event, vid) {
         /*
          * @summary - Callback From Image click
          */
@@ -259,7 +259,7 @@ export default ({ $axios, store: { commit, state } }) => {
         this.selectID(id, index, index2)
       },
 
-      async drawFromDepth(x, y, depthDir) {
+      async drawFromDepth(event, x, y, depthDir) {
         /*
          * @summary - Callback From Image click
          */
