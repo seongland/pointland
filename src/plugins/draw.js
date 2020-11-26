@@ -256,7 +256,7 @@ export default ({ $axios, store: { commit, state } }) => {
           index = idSet[1]
           index2 = idSet[2]
         }
-        this.selectID(id, index, index2)
+        this.selectID(id, index, index2, event)
       },
 
       async drawFromDepth(event, x, y, depthDir) {
@@ -266,12 +266,12 @@ export default ({ $axios, store: { commit, state } }) => {
         const targetLayer = this.$store.state.ls.targetLayer
         commit('setLoading', true)
         console.time('xy')
-        if (targetLayer.object) if (targetLayer.object.type === 'Point') await this.drawSelectedXY(depthDir, x, y)
+        if (targetLayer.object) if (targetLayer.object.type === 'Point') await this.drawSelectedXY(depthDir, x, y, event)
         commit('setLoading', false)
         console.timeEnd('xy')
       },
 
-      async drawSelectedXY(depthDir, x, y) {
+      async drawSelectedXY(depthDir, x, y, event) {
         /*
          * @summary - Callback From Depth Select
          */
@@ -301,7 +301,7 @@ export default ({ $axios, store: { commit, state } }) => {
         this.selectXYZ(xyz, POINT_ID)
       },
 
-      async drawSelectedXYZ(xyz) {
+      async drawSelectedXYZ(xyz, event) {
         /*
          * @summary - Callback From Clodu
          */

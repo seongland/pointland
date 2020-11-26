@@ -154,7 +154,7 @@ export default {
   },
   methods: {
     clickRow(facility) {
-      this.selectFacility(facility)
+      this.selectFacility(facility, {ctrlKey: window.ctrlKey, shiftKey: window.shiftKey})
     },
 
     toggleCloud(value) {

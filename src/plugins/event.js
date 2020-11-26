@@ -22,7 +22,7 @@ export default ({ store: { commit, state, $router } }) => {
         flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
       },
 
-      clickMark(event, feature) {
+      clickMark(_, feature) {
         /*
          * @summary - Map Click Mark Callback
          */
@@ -32,7 +32,7 @@ export default ({ store: { commit, state, $router } }) => {
         }
       },
 
-      clickProcessed(event, feature) {
+      clickProcessed(_, feature) {
         /*
          * @summary - Map Click Processed geoserver mark
          */
@@ -57,10 +57,10 @@ export default ({ store: { commit, state, $router } }) => {
           index = idSet[1]
           index2 = idSet[2]
         }
-        this.selectID(id, index, index2)
+        this.selectID(id, index, index2, event)
       },
 
-      async selectID(id, index, index2) {
+      async selectID(id, index, index2, event) {
         /*
          * @summary - Select by Document ID
          */
@@ -77,7 +77,7 @@ export default ({ store: { commit, state, $router } }) => {
           return this.drawnFacilities()
         }
         const facility = await this.getFacilityByID(id)
-        if (facility) await this.selectFacility(facility, index, index2)
+        if (facility) await this.selectFacility(facility, index, index2, event)
       },
 
       async getFacilityByID(id) {
@@ -87,7 +87,7 @@ export default ({ store: { commit, state, $router } }) => {
         return res.data[0]
       },
 
-      async selectFacility(facility, index, index2) {
+      async selectFacility(facility, index, index2, event) {
         /*
          * @summary - Select by Facility Document
          */
@@ -122,13 +122,17 @@ export default ({ store: { commit, state, $router } }) => {
         }
         this.drawRelated(facility.id)
 
-        await this.drawSelectedXYZ(xyz)
+        await this.drawSelectedXYZ(xyz, event)
         commit('selectFeature', facility)
       },
 
-      dragSelected(event) {
+      dragSelected(dragEvent) {
+        const mouseEvent = {
+          ctrlKey: window.ctrlKey,
+          shiftKey: window.shiftKey
+        }
         const controls = cloudRef.cloud.controls
-        controls.enabled = !event.value
+        controls.enabled = !dragEvent.value
         if (controls.enabled) {
           let position
           const transform = cloudRef.cloud.transform
@@ -138,7 +142,7 @@ export default ({ store: { commit, state, $router } }) => {
 
           if (window.ctrlKey && geom.type !== 'Point') {
             commit('translate', moved)
-            return this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2)
+            return this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2, mouseEvent)
           }
 
           if (geom.type === 'Point') position = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
@@ -151,7 +155,7 @@ export default ({ store: { commit, state, $router } }) => {
           }
 
           commit('updateGeom', position)
-          this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2)
+          this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2, mouseEvent)
         }
       },
 
