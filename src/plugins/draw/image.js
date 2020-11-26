@@ -96,7 +96,7 @@ export default ({ $axios, store: { commit, state } }) => {
             const direction = depthDir.name
             const imgOpt = [{ round, snap, name, direction }]
             commit('select', { xyz, type: 'Point', images: imgOpt })
-            this.selectXYZ(xyz, POINT_ID)
+            this.drawPointToCloud(xyz, POINT_ID)
           }
         commit('setLoading', false)
         console.timeEnd('xy')

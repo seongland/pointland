@@ -60,9 +60,11 @@ export default ({ $axios, store: { commit, state } }) => {
               commit('setLoading', false)
             }
           }
-        option.selectCallback = (event, xyz) => {
+        option.selectCallback = async (event, xyz) => {
+          // new facility
           const targetLayer = this.$store.state.ls.targetLayer
           commit('select', { xyz, type: 'Point' })
+          await this.resetSelected()
           if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawPointXYZ(xyz, event)
         }
 

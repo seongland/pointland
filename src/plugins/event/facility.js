@@ -90,8 +90,9 @@ export default ({ store: { commit, state } }) => {
         this.drawRelated(facility.id)
 
         // Draw and Save to store
-        await this.drawPointXYZ(xyz, event)
+        await this.resetSelected()
         commit('selectFeature', facility)
+        await this.drawPointXYZ(xyz, event)
       },
 
       dragSelected(dragEvent) {

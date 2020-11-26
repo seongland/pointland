@@ -32,7 +32,7 @@ function initCloud(cloudOpt) {
     cloud.mouse = new THREE.Vector2()
     cloud.raycaster = new THREE.Raycaster()
     ref.cloud = cloud
-    ref.cloud.selectCallback = cloudOpt.selectCallback
+    ref.cloud.makeCallback = cloudOpt.makeCallback
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
     cloud.el.addEventListener('dblclick', click3D, false)
