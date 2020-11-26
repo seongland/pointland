@@ -7,6 +7,14 @@ export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
       purgeCloud: () => purgeCloud(),
+      checkMount: () => mapRef.map !== undefined && cloudRef.cloud.offset !== undefined,
+      getAuthConfig: () => ({ headers: { Authorization: state.ls.accessToken } }),
+      async waitAvail(flag, callback, args) {
+        /*
+         * @summary - Wait for mount template function
+         */
+        flag() ? callback(...args) : setTimeout(() => this.waitAvail(flag, callback, args), 1000)
+      },
 
       olInit(opt, geoserver, workspace, layers) {
         // Set Map Callback
@@ -54,7 +62,7 @@ export default ({ $axios, store: { commit, state } }) => {
           }
         option.selectCallback = (event, xyz) => {
           const targetLayer = this.$store.state.ls.targetLayer
-          if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz, event)
+          if (targetLayer.object) if (targetLayer.object.type === 'Point') this.newFacilityByXYZ(xyz, event)
         }
 
         const cloud = initCloud(option)

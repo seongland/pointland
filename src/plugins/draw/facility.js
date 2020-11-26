@@ -8,12 +8,11 @@ import { ref as imgRef } from '~/plugins/image/init'
 import { ref as cloudRef } from './cloud/init'
 
 import { GeoJSON } from 'ol/format'
-import { drawXY, removeFeature } from './map/draw'
-import { drawLas, drawXYZ, removePoint, drawLine, drawLoop } from './cloud/draw'
+import { drawXY, removeFeature } from './lib/map/draw'
+import { drawXYZ, removePoint, drawLine, drawLoop } from './cloud/draw'
 import { resetPointLayer, removeLineLoops } from './cloud/event'
 import { drawNear, erase, updateImg } from './image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
-import { transform } from 'ol/proj'
 import jimp from 'jimp/browser/lib/jimp'
 import consola from 'consola'
 
@@ -22,8 +21,6 @@ const POINT_ID = 'Point'
 export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
-      drawLas: (lasJson, name) => drawLas(lasJson, name),
-
       removeVector(layerName, id) {
         /*
          * @summary - Rmove One Vector from All layer by id
@@ -68,45 +65,6 @@ export default ({ $axios, store: { commit, state } }) => {
         object.updateMatrix()
 
         drawXYZ(cloudRef.selectedLayer, xyz, false, id)
-      },
-
-      markXYZ(xyz, id) {
-        /*
-         * @summary - Draw Mark
-         */
-        const lnglat = xyto84(xyz[0], xyz[1])
-        const latlng = lnglat.reverse()
-        drawXY(mapRef.markLayer, latlng, false, id)
-        drawXYZ(cloudRef.markLayer, xyz, false, id)
-      },
-
-      currentXYZ(xyz) {
-        /*
-         * @summary - Draw Current Mark
-         */
-        resetPointLayer(cloudRef.currentLayer)
-        const lnglat = xyto84(xyz[0], xyz[1])
-        const latlng = lnglat.reverse()
-        drawXY(mapRef.currentLayer, latlng, true, 'current')
-        drawXYZ(cloudRef.currentLayer, xyz, true, 'current')
-      },
-
-      drawXYZPoint(xyz, id, layer) {
-        const lnglat = xyto84(xyz[0], xyz[1])
-        const latlng = lnglat.reverse()
-        drawXY(mapRef[layer], latlng, false, id)
-        drawXYZ(cloudRef[layer], xyz, false, id)
-      },
-
-      drawXYZPoints(xyzs, ids, layer) {
-        for (const index in xyzs) this.drawXYZPoint(xyzs[index], ids[index], layer)
-      },
-
-      getExtentBox() {
-        const extent = mapRef.map.getView().calculateExtent()
-        const leftBottom = transform(extent.slice(0, 2), 'EPSG:3857', 'EPSG:4326')
-        const rightTop = transform(extent.slice(2, 4), 'EPSG:3857', 'EPSG:4326')
-        return [leftBottom, rightTop]
       },
 
       async drawnFacilities(currentMark, layer) {
@@ -266,12 +224,12 @@ export default ({ $axios, store: { commit, state } }) => {
         const targetLayer = this.$store.state.ls.targetLayer
         commit('setLoading', true)
         console.time('xy')
-        if (targetLayer.object) if (targetLayer.object.type === 'Point') await this.drawSelectedXY(depthDir, x, y, event)
+        if (targetLayer.object) if (targetLayer.object.type === 'Point') await this.newFacilityByXY(depthDir, x, y, event)
         commit('setLoading', false)
         console.timeEnd('xy')
       },
 
-      async drawSelectedXY(depthDir, x, y, event) {
+      async newFacilityByXY(depthDir, x, y, event) {
         /*
          * @summary - Callback From Depth Select
          */
@@ -285,23 +243,16 @@ export default ({ $axios, store: { commit, state } }) => {
         )
         const xyzRes = await $axios.post(`${depthDir.url}/${x}/${y}`)
         const xyz = xyzRes.data
-        commit('select', {
-          xyz,
-          type: 'Point',
-          images: [
-            {
-              round: ls.currentRound.name,
-              snap: ls.currentSnap.name,
-              name: ls.currentMark.name,
-              direction: depthDir.name,
-              coordinates: [x, y]
-            }
-          ]
-        })
+        const round = ls.currentRound.name
+        const snap = ls.currentSnap.name
+        const direction = depthDir.name
+        const coordinates = coordinates
+        const imgOpt = [{ round, snap, name, direction, coordinates }]
+        commit('select', { xyz, type: 'Point', images: imgOpt })
         this.selectXYZ(xyz, POINT_ID)
       },
 
-      async drawSelectedXYZ(xyz, event) {
+      async newFacilityByXYZ(xyz, event) {
         /*
          * @summary - Callback From Clodu
          */
@@ -367,19 +318,6 @@ export default ({ $axios, store: { commit, state } }) => {
             imgLayer[direction].uri = uri
           }
         if (process.env.dev) consola.success(`Reset ${name}`)
-      },
-
-      async resetSnap() {
-        /*
-         * @summary - Reset Snap for New Snap
-         */
-        const cloud = cloudRef.cloud
-        if (mapRef.markLayer) mapRef.markLayer.getSource().clear()
-        if (mapRef.markLayer) mapRef.drawnLayer.getSource().clear()
-        if (cloudRef.markLayer) resetPointLayer(cloudRef.markLayer)
-        if (cloudRef.markLayer) resetPointLayer(cloudRef.drawnLayer)
-        if (cloud.points) for (const pointLayer of cloud.points) cloud.scene.remove(pointLayer)
-        cloud.points = []
       }
     }
   })
