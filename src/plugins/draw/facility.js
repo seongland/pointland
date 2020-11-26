@@ -3,15 +3,15 @@
  */
 
 import Vue from 'vue'
-import { ref as mapRef } from '~/plugins/map/init'
-import { ref as imgRef } from '~/plugins/image/init'
-import { ref as cloudRef } from './cloud/init'
+import { ref as mapRef } from '~/modules/map/init'
+import { ref as imgRef } from '~/modules/image/init'
+import { ref as cloudRef } from '~/modules/cloud/init'
 
 import { GeoJSON } from 'ol/format'
-import { drawXY, removeFeature } from './lib/map/draw'
-import { drawXYZ, removePoint, drawLine, drawLoop } from './cloud/draw'
-import { resetPointLayer, removeLineLoops } from './cloud/event'
-import { drawNear, erase, updateImg } from './image/draw'
+import { drawXY, removeFeature } from '~/modules/map/draw'
+import { drawXYZ, removePoint, drawLine, drawLoop } from '~/modules/cloud/draw'
+import { resetPointLayer, removeLineLoops } from '~/modules/cloud/event'
+import { drawNear, erase, updateImg } from '~/modules/image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 import consola from 'consola'

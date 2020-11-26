@@ -9,7 +9,7 @@ dotenv.config()
 process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.dev = 1)
 process.env.version = package.version
 process.env.twr = process.env.TWR
-process.env.title =  "3D Mapping"
+process.env.title = '3D Mapping'
 
 module.exports = {
   // Root Directory
@@ -42,19 +42,31 @@ module.exports = {
   // Plugins to load before mounting the App
   plugins: [
     {
-      src: '~/plugins/init',
+      src: '~/plugins/draw/base',
       ssr: false
     },
     {
-      src: '~/plugins/config',
+      src: '~/plugins/draw/facility',
       ssr: false
     },
     {
-      src: '~/plugins/event',
+      src: '~/plugins/event/base',
       ssr: false
     },
     {
-      src: '~/plugins/draw',
+      src: '~/plugins/event/facility',
+      ssr: false
+    },
+    {
+      src: '~/plugins/event/key',
+      ssr: false
+    },
+    {
+      src: '~/plugins/tool/config',
+      ssr: false
+    },
+    {
+      src: '~/plugins/tool/init',
       ssr: false
     }
   ],

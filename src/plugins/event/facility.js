@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import { ref as cloudRef } from './cloud/init'
-import { clickImage } from './image/event'
+import { ref as cloudRef } from '~/modules/cloud/init'
+import { clickImage } from '~/modules/image/event'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({

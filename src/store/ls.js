@@ -2,8 +2,8 @@
  * @summary - Local Storage Module
  */
 
-// import { setDrawInteraction } from '~/plugins/map/draw'
-import { updateCtrl } from '~/plugins/cloud/init'
+// import { setDrawInteraction } from '~/modules/map/draw'
+import { updateCtrl } from '~/modules/cloud/init'
 import consola from 'consola'
 
 const WAIT_RENDER = 500

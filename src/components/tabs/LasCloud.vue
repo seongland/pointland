@@ -8,7 +8,7 @@
 
 <script>
 import { xyto84 } from '~/server/api/addon/tool/coor'
-import { ref } from '~/plugins/cloud/init'
+import { ref } from '~/modules/cloud/init'
 import { v4 as uuid } from 'uuid'
 import consola from 'consola'
 

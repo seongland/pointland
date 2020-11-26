@@ -3,13 +3,13 @@
  */
 
 import Vue from 'vue'
-import { ref as mapRef } from '~/plugins/map/init'
-import { ref as imgRef } from '~/plugins/image/init'
-import { ref as cloudRef } from './cloud/init'
+import { ref as mapRef } from '~/modules/map/init'
+import { ref as imgRef } from '~/modules/image/init'
+import { ref as cloudRef } from '~/modules/cloud/init'
 
-import { drawXY } from '../module/map/draw'
-import { drawLas, drawXYZ } from './cloud/draw'
-import { resetPointLayer } from './cloud/event'
+import { drawXY } from '../../modules/map/draw'
+import { drawLas, drawXYZ } from '~/modules/cloud/draw'
+import { resetPointLayer } from '~/modules/cloud/event'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import { transform } from 'ol/proj'
 import jimp from 'jimp/browser/lib/jimp'

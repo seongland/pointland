@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import consola from 'consola'
-import { ref as cloudRef } from './cloud/init'
-import { setFocus } from './map/event'
+import { ref as cloudRef } from '~/modules/cloud/init'
+import { setFocus } from '~/modules/map/event'
 
 export default ({ store: { commit, state, $router } }) => {
   Vue.mixin({
