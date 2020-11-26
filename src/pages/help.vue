@@ -48,7 +48,7 @@
                 <v-divider />
                 <v-card-subtitle>메인 뷰</v-card-subtitle>
                 <v-card-text><kbd>지도</kbd> - 탑뷰를 볼 수 있다</v-card-text>
-                <v-card-text><kbd>영상이미지</kbd> - 해당 위치에서 카메라 촬영 이미지</v-card-text>
+                <v-card-text><kbd>영상이미지</kbd> - 해당 마크에서 촬영한 이미지</v-card-text>
                 <v-card-text><kbd>클라우드</kbd> - 3D View</v-card-text>
 
                 <v-card-subtitle>서브 뷰</v-card-subtitle>
@@ -73,17 +73,19 @@
                 <v-card-text><kbd>클라우드</kbd> - 클라우드가 있는 부분 더블클릭</v-card-text>
 
                 <v-card-subtitle>시설물 선택</v-card-subtitle>
+                <v-card-text><kbd>지원 레이어</kbd> - 모든 레이어</v-card-text>
                 <v-card-text><kbd>지도</kbd> - 시설물 포인트 클릭</v-card-text>
                 <v-card-text><kbd>영상이미지</kbd> - 시설물 포인트 근처 클릭</v-card-text>
                 <v-card-text><kbd>클라우드</kbd> - 시설물 포인트 근처 더블클릭</v-card-text>
 
                 <v-card-subtitle>시설물 수정</v-card-subtitle>
+                <v-card-text><kbd>지원 레이어</kbd> - 모든 레이어</v-card-text>
                 <v-card-text><kbd>시설물 연결 완료</kbd> - 다른 시설물과 연결하는 속성을 모두 완료하면 체크</v-card-text>
                 <v-card-text><kbd>속성값 입력 완료</kbd> - 연결을 제외한 속성값 입력이 완료되면 체크</v-card-text>
                 <v-card-text><kbd>위치보정 완료</kbd> - 위치보정 완료 후 체크</v-card-text>
                 <v-card-text><kbd>추가 데이터 필요</kbd> - 값을 입력할 수 없어 추가데이터가 필요할때 코멘트를 남기고 체크</v-card-text>
 
-                <v-card-subtitle>위치 이동</v-card-subtitle>
+                <v-card-subtitle>마크 이동</v-card-subtitle>
                 <v-card-text><kbd>지도</kbd> - 이동할 마크를 클릭</v-card-text>
                 <v-card-text><kbd>영상이미지</kbd> - 현재 미지원</v-card-text>
                 <v-card-text><kbd>클라우드</kbd> - 이동할 마크를 더블클릭</v-card-text>
