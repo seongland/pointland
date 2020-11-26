@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import { olInit, ref as mapRef } from '~/plugins/map/init'
-import { initCloud, purgeCloud, ref as cloudRef } from './cloud/init'
-import { initImg, ref as imgRef } from './image/init'
+import { olInit, ref as mapRef } from '~/modules/map/init'
+import { initCloud, purgeCloud, ref as cloudRef } from '~/modules/cloud/init'
+import { initImg, ref as imgRef } from '~/modules/image/init'
 
 export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({

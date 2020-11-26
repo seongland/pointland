@@ -1,5 +1,5 @@
 import { xyto84 } from '~/server/api/addon/tool/coor'
-import { ref as cloudRef } from '~/plugins/cloud/init'
+import { ref as cloudRef } from '~/modules/cloud/init'
 import consola from 'consola'
 
 export const state = () => ({

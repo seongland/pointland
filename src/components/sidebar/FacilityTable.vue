@@ -91,9 +91,9 @@
 </template>
 
 <script>
-import { ref as mapRef } from '~/plugins/map/init'
-import { ref as imgRef } from '~/plugins/image/init'
-import { ref as cloudRef } from '~/plugins/cloud/init'
+import { ref as mapRef } from '~/modules/map/init'
+import { ref as imgRef } from '~/modules/image/init'
+import { ref as cloudRef } from '~/modules/cloud/init'
 
 export default {
   data: () => ({
@@ -154,7 +154,7 @@ export default {
   },
   methods: {
     clickRow(facility) {
-      this.selectFacility(facility, {ctrlKey: window.ctrlKey, shiftKey: window.shiftKey})
+      this.selectFacility(facility, { ctrlKey: window.ctrlKey, shiftKey: window.shiftKey })
     },
 
     toggleCloud(value) {

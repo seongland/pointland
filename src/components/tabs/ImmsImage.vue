@@ -57,10 +57,10 @@
 </template>
 
 <script>
-import { resetPointLayer } from '~/plugins/cloud/event'
-import { ref as cloudRef } from '~/plugins/cloud/init'
-import { ref as imgRef } from '~/plugins/image/init'
-import { updateImg } from '~/plugins/image/draw'
+import { resetPointLayer } from '~/modules/cloud/event'
+import { ref as cloudRef } from '~/modules/cloud/init'
+import { ref as imgRef } from '~/modules/image/init'
+import { updateImg } from '~/modules/image/draw'
 
 export default {
   data: () => ({

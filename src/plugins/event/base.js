@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import consola from 'consola'
-import { clickImage } from './image/event'
-import { setFocusXYZ } from './cloud/event'
+import { clickImage } from '~/modules/image/event'
+import { setFocusXYZ } from '~/modules/cloud/event'
 
 export default ({ store: { commit, state, $router } }) => {
   Vue.mixin({
