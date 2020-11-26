@@ -33,7 +33,7 @@ export default ({ $axios, store: { commit, state } }) => {
         erase(imgLayer, id)
       },
 
-      selectXYZ(xyz, id) {
+      drawPointToCloud(xyz, id) {
         /*
          * @summary - Cloud Draw Selected Facility
          */
@@ -166,11 +166,9 @@ export default ({ $axios, store: { commit, state } }) => {
         /*
          * @summary - Callback From Clodu
          */
-        await this.resetSelected()
-        this.selectXYZ(xyz, POINT_ID)
+        this.drawPointToCloud(xyz, POINT_ID)
         await this.drawToImage(state.selected, state.ls.currentMark, imgRef.selectedLayer)
         updateImg(imgRef.selectedLayer)
-        console.log(imgRef.selectedLayer)
       },
 
       async resetSelected() {
