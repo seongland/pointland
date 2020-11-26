@@ -225,7 +225,7 @@ export default ({ store: { commit, state, $router } }) => {
          */
         // Filter event
         if ($router.currentRoute.name !== 'draw') return
-        if (event.ctrlKey && 'ff123,.mMsSaA'.indexOf(event.key) !== -1) event.preventDefault()
+        if (event.ctrlKey && 'fF123,.mMsSaA'.indexOf(event.key) !== -1) event.preventDefault()
         if (event.ctrlKey && event.code == 84) event.preventDefault()
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
         if (cloudRef?.cloud?.transform) cloudRef.cloud.transform.ctrlKey = event.ctrlKey
