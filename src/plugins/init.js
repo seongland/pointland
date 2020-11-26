@@ -52,7 +52,7 @@ export default ({ $axios, store: { commit, state } }) => {
               commit('setLoading', false)
             }
           }
-        option.selectCallback = xyz => {
+        option.selectCallback = (event, xyz) => {
           const targetLayer = this.$store.state.ls.targetLayer
           if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
         }
@@ -61,7 +61,7 @@ export default ({ $axios, store: { commit, state } }) => {
         const transform = cloud.transform
         transform.removeEventListener('dragging-changed', this.dragSelected)
         transform.addEventListener('dragging-changed', this.dragSelected)
-        window.addEventListener('keyup', event => (transform.ctrlKey = event.ctrlKey))
+        window.addEventListener('keyup', event => [(window.ctrlKey = event.ctrlKey), (window.shiftKey = event.shiftKey)])
       },
 
       mapMoveEnd() {

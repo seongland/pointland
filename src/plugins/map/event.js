@@ -35,7 +35,7 @@ async function mapClick(e) {
   for (const feature of features) tmpSrc.addFeature(feature)
 
   const closest = tmpSrc.getClosestFeatureToCoordinate(e.coordinate)
-  if (closest) closest.callback.click(closest)
+  if (closest) closest.callback.click(e, closest)
 }
 
 function vectorCallback(e) {

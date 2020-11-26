@@ -226,7 +226,7 @@ function click3D(e) {
   cloud.currentSelected = cloud.currentHover
   const center = cloud.currentSelected.point
   const xyz = [center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]]
-  ref.cloud.selectCallback(xyz)
+  ref.cloud.selectCallback(e, xyz)
 }
 
 function tuneIntersect(intersect) {
