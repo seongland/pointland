@@ -12,74 +12,37 @@ process.env.twr = process.env.TWR
 process.env.title = '3D Mapping'
 
 module.exports = {
-  // Root Directory
   srcDir: 'src/',
-
-  // Meta
   ssr: false,
-  // Vue Config
-  vue: {
-    config: {
-      productionTip: false,
-      devtools: true
-    }
-  },
+  vue: { config: { productionTip: false, devtools: true } },
   env: {
     dev: process.env.dev,
     version: process.env.version,
     twr: process.env.twr,
     title: process.env.title
   },
-
-  // Middleware Apis
-  serverMiddleware: {
-    '/api': '~/server/api/app'
-  },
+  serverMiddleware: { '/api': '~/server/api/app' },
 
   // Loading Bar
   loading: { color: '#424242' },
 
   // Plugins to load before mounting the App
   plugins: [
-    {
-      src: '~/plugins/draw/base',
-      ssr: false
-    },
-    {
-      src: '~/plugins/draw/facility',
-      ssr: false
-    },
-    {
-      src: '~/plugins/event/base',
-      ssr: false
-    },
-    {
-      src: '~/plugins/event/facility',
-      ssr: false
-    },
-    {
-      src: '~/plugins/event/key',
-      ssr: false
-    },
-    {
-      src: '~/plugins/tool/config',
-      ssr: false
-    },
-    {
-      src: '~/plugins/tool/init',
-      ssr: false
-    }
+    { src: '~/plugins/draw/base', ssr: false },
+    { src: '~/plugins/draw/facility', ssr: false },
+    { src: '~/plugins/draw/image', ssr: false },
+    { src: '~/plugins/event/base', ssr: false },
+    { src: '~/plugins/event/facility', ssr: false },
+    { src: '~/plugins/event/key', ssr: false },
+    { src: '~/plugins/tool/config', ssr: false },
+    { src: '~/plugins/tool/init', ssr: false }
   ],
-  // Nuxt dev-modules
-
   modules: ['@nuxtjs/axios', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }]],
   buildModules: ['@nuxtjs/vuetify'],
 
   // Vuetify
   vuetify: {
-    defaultAssets: {
-      icons: 'fa'
-    },
+    defaultAssets: { icons: 'fa' },
     theme: {
       dark: true,
       themes: {
@@ -95,23 +58,7 @@ module.exports = {
       }
     }
   },
-  // server: {
-  //   https: {
-  //     key: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.key')),
-  //     cert: fs.readFileSync(path.resolve(__dirname, 'src/assets/ssl', 'server.crt'))
-  //   }
-  // },
-  io: {
-    server: {
-      ioSvc: 'src/server/io'
-    },
-    sockets: [
-      {
-        name: 'ping',
-        url: '/'
-      }
-    ]
-  },
+
   // WebPack Build configuration
   build: {
     maxChunkSize: 300000,
@@ -122,11 +69,7 @@ module.exports = {
   // Header
   head: {
     title: process.env.title,
-    script: [
-      {
-        src: 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ajrugsv5ub'
-      }
-    ],
+    script: [{ src: 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ajrugsv5ub' }],
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
