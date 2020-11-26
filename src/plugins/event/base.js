@@ -3,7 +3,12 @@ import consola from 'consola'
 import { clickImage } from '~/modules/image/event'
 import { setFocusXYZ } from '~/modules/cloud/event'
 
-export default ({ store: { commit, state, $router } }) => {
+import { ref as cloudRef } from '~/modules/cloud/init'
+import { ref as mapRef } from '~/modules/map/init'
+
+import { resetPointLayer } from '~/modules/cloud/event'
+
+export default ({ store: { commit, state } }) => {
   Vue.mixin({
     methods: {
       setRound: round => commit('ls/setRound', round),

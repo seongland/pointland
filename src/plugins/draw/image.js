@@ -3,18 +3,7 @@
  */
 
 import Vue from 'vue'
-import { ref as mapRef } from '~/modules/map/init'
-import { ref as imgRef } from '~/modules/image/init'
-import { ref as cloudRef } from '~/modules/cloud/init'
-
-import { GeoJSON } from 'ol/format'
-import { drawXY, removeFeature } from '~/modules/map/draw'
-import { drawXYZ, removePoint, drawLine, drawLoop } from '~/modules/cloud/draw'
-import { resetPointLayer, removeLineLoops } from '~/modules/cloud/event'
-import { drawNear, erase, updateImg } from '~/modules/image/draw'
-import { xyto84 } from '~/server/api/addon/tool/coor'
-import jimp from 'jimp/browser/lib/jimp'
-import consola from 'consola'
+import { drawNear } from '~/modules/image/draw'
 
 const POINT_ID = 'Point'
 
@@ -95,10 +84,20 @@ export default ({ $axios, store: { commit, state } }) => {
         /*
          * @summary - Callback From Image click
          */
-        const targetLayer = this.$store.state.ls.targetLayer
+        const targetLayer = state.ls.targetLayer
+        const ls = state.ls
         commit('setLoading', true)
         console.time('xy')
-        if (targetLayer.object) if (targetLayer.object.type === 'Point') await this.newFacilityByXY(depthDir, x, y, event)
+        if (targetLayer.object)
+          if (targetLayer.object.type === 'Point') {
+            const xyz = await this.drawPointXY(depthDir, x, y, event)
+            const round = ls.currentRound.name
+            const snap = ls.currentSnap.name
+            const direction = depthDir.name
+            const imgOpt = [{ round, snap, name, direction }]
+            commit('select', { xyz, type: 'Point', images: imgOpt })
+            this.selectXYZ(xyz, POINT_ID)
+          }
         commit('setLoading', false)
         console.timeEnd('xy')
       }

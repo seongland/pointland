@@ -28,9 +28,9 @@
               facility.relations.reported
           "
         >
-          <span v-if="facility.relations.located">위치 보정됨</span> -
-          <span v-if="facility.relations.proped"> 속성값 입력됨</span> -
-          <span v-if="facility.relations.related"> 시설물 연결됨</span> -
+          <span v-if="facility.relations.located">위치 보정됨 </span>
+          <span v-if="facility.relations.proped"> 속성값 입력됨 </span>
+          <span v-if="facility.relations.related"> 시설물 연결됨 </span>
           <span v-if="facility.relations.reported"> 추가 데이터 요청됨</span>
         </v-card-text>
 

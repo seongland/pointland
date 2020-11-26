@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ref as cloudRef } from '~/modules/cloud/init'
-import { clickImage } from '~/modules/image/event'
+import consola from 'consola'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
@@ -41,6 +41,7 @@ export default ({ store: { commit, state } }) => {
         }
 
         // Link to selct facility Event
+        consola.info('ID', id, index ? index : '', index2 ? index2 : '')
         const facility = await this.getFacilityByID(id)
         if (facility) await this.selectFacility(facility, index, index2, event)
       },
@@ -60,6 +61,7 @@ export default ({ store: { commit, state } }) => {
         const geom = facility.geometry
         const props = facility.properties
 
+        // Get Target point index
         if (geom.type === 'Point') xyz = [props.x, props.y, props.z]
         else if (geom.type === 'LineString') {
           if (!index) index = 0
@@ -87,7 +89,8 @@ export default ({ store: { commit, state } }) => {
         }
         this.drawRelated(facility.id)
 
-        await this.newFacilityByXYZ(xyz, event)
+        // Draw and Save to store
+        await this.drawPointXYZ(xyz, event)
         commit('selectFeature', facility)
       },
 
@@ -125,11 +128,7 @@ export default ({ store: { commit, state } }) => {
       },
 
       layerSelected: () => state.ls.targetLayer.object,
-      layerUnSelected: () => !state.ls.targetLayer.object,
-
-      async clickImage(event, depth) {
-        return clickImage(event, depth, this.drawFromDepth, this.selectFromDepth)
-      }
+      layerUnSelected: () => !state.ls.targetLayer.object
     }
   })
 }
