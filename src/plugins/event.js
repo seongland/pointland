@@ -278,13 +278,11 @@ export default ({ store: { commit, state, $router } }) => {
 
             // Focus Selected - Cloud Only
             case 'f':
-            case 'F':
-              if (state.selected.length === 0) return
-              const target = state.selected[state.selected.length - 1]
-              const props = target.properties
-
-              if (!event.shiftKey) {
+              if (!event.shiftKey)
                 if (index === 2) {
+                  if (state.selected.length === 0) return
+                  const target = state.selected[state.selected.length - 1]
+                  const props = target.properties
                   if (!cloudRef.cloud.offset) return
                   const controls = cloudRef.cloud.controls
                   const offset = cloudRef.cloud.offset
@@ -298,17 +296,16 @@ export default ({ store: { commit, state, $router } }) => {
                     controls.target.set(xyz[0] - offset[0], xyz[1] - offset[1], xyz[2] - offset[2])
                   }
                 }
-              }
-              // hover
-              else {
-                if (!cloudRef.cloud.currentHover) return
-                const hovered = cloudRef.cloud.currentHover.point
-                if (index === 2) {
-                  if (!cloudRef.cloud.offset) return
-                  const controls = cloudRef.cloud.controls
-                  controls.target.set(hovered.x, hovered.y, hovered.z)
+                // hover
+                else {
+                  if (!cloudRef.cloud.currentHover) return
+                  const hovered = cloudRef.cloud.currentHover.point
+                  if (index === 2) {
+                    if (!cloudRef.cloud.offset) return
+                    const controls = cloudRef.cloud.controls
+                    controls.target.set(hovered.x, hovered.y, hovered.z)
+                  }
                 }
-              }
               return
           }
         else
