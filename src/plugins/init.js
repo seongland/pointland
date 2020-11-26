@@ -62,7 +62,6 @@ export default ({ $axios, store: { commit, state } }) => {
         transform.removeEventListener('dragging-changed', this.dragSelected)
         transform.addEventListener('dragging-changed', this.dragSelected)
         window.addEventListener('keyup', event => (transform.ctrlKey = event.ctrlKey))
-        window.addEventListener('keydown', event => (transform.ctrlKey = event.ctrlKey))
       },
 
       mapMoveEnd() {
