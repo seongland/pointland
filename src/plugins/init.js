@@ -31,13 +31,13 @@ export default ({ $axios, store: { commit, state } }) => {
         for (const layerOpt of option.pointLayers)
           if (layerOpt.name === 'markLayer') {
             // Mark 3D Click Callback
-            layerOpt.callback.click = intersect => {
+            layerOpt.callback.click = (_, intersect) => {
               let name = intersect.object.geometry.indexes[intersect.index].id
               for (const markObj of state.ls.currentSnap.marks) if (markObj.name === name) this.setMark(markObj)
             }
           } else if (layerOpt.name === 'drawnLayer') {
             // Facility 3D Click Callback
-            layerOpt.callback.click = async intersect => {
+            layerOpt.callback.click = async (event, intersect) => {
               let id, index, index2
               let vid = intersect.object.geometry.indexes[intersect.index].id
               const idSet = vid.split(this.idSep)
@@ -48,13 +48,13 @@ export default ({ $axios, store: { commit, state } }) => {
                 index2 = idSet[2]
               }
               commit('setLoading', true)
-              await this.selectID(id, index, index2)
+              await this.selectID(id, index, index2, event)
               commit('setLoading', false)
             }
           }
         option.selectCallback = (event, xyz) => {
           const targetLayer = this.$store.state.ls.targetLayer
-          if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz)
+          if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawSelectedXYZ(xyz, event)
         }
 
         const cloud = initCloud(option)

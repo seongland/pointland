@@ -219,7 +219,7 @@ function click3D(e) {
     intersect = tuneIntersect(intersect)
     if (!intersect.index) return
     consola.info('Cicked', intersect)
-    return intersect.object.click instanceof Function ? intersect.object.click(intersect) : null
+    return intersect.object.click instanceof Function ? intersect.object.click(e, intersect) : null
   }
 
   if (!cloud.currentHover) return
