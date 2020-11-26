@@ -228,6 +228,7 @@ export default ({ store: { commit, state, $router } }) => {
         if (event.ctrlKey && 'ff123,.mMsSaA'.indexOf(event.key) !== -1) event.preventDefault()
         if (event.ctrlKey && event.code == 84) event.preventDefault()
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
+        if (cloudRef?.cloud?.transform) cloudRef.cloud.transform.ctrlKey = event.ctrlKey
 
         let seqIndex
         const ls = this.$store.state.ls
