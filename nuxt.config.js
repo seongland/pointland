@@ -28,14 +28,14 @@ module.exports = {
 
   // Plugins to load before mounting the App
   plugins: [
+    { src: '~/plugins/init/', ssr: false },
+    { src: '~/plugins/init/config', ssr: false },
     { src: '~/plugins/draw/base', ssr: false },
     { src: '~/plugins/draw/facility', ssr: false },
     { src: '~/plugins/draw/image', ssr: false },
     { src: '~/plugins/event/base', ssr: false },
     { src: '~/plugins/event/facility', ssr: false },
-    { src: '~/plugins/event/key', ssr: false },
-    { src: '~/plugins/tool/config', ssr: false },
-    { src: '~/plugins/tool/init', ssr: false }
+    { src: '~/plugins/event/key', ssr: false }
   ],
   modules: ['@nuxtjs/axios', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }]],
   buildModules: ['@nuxtjs/vuetify'],

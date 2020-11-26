@@ -35,7 +35,7 @@ export default ({ $axios, store: { commit, state } }) => {
 
       selectXYZ(xyz, id) {
         /*
-         * @summary - Draw Selected Facility
+         * @summary - Cloud Draw Selected Facility
          */
         const cloud = cloudRef.cloud
         const lnglat = xyto84(xyz[0], xyz[1])
@@ -146,11 +146,10 @@ export default ({ $axios, store: { commit, state } }) => {
         if (facility) this.drawGeojsons([facility], 'relatedLayer')
       },
 
-      async newFacilityByXY(depthDir, x, y, event) {
+      async drawPointXY(depthDir, x, y, event) {
         /*
          * @summary - Callback From Depth Select
          */
-        const ls = this.$store.state.ls
         await this.resetSelected()
         depthDir.layer.selected.image = new jimp(depthDir.width, depthDir.height)
         drawNear(
@@ -160,27 +159,18 @@ export default ({ $axios, store: { commit, state } }) => {
         )
         const xyzRes = await $axios.post(`${depthDir.url}/${x}/${y}`)
         const xyz = xyzRes.data
-        const round = ls.currentRound.name
-        const snap = ls.currentSnap.name
-        const direction = depthDir.name
-        const coordinates = coordinates
-        const imgOpt = [{ round, snap, name, direction, coordinates }]
-        commit('select', { xyz, type: 'Point', images: imgOpt })
-        this.selectXYZ(xyz, POINT_ID)
+        return xyz
       },
 
-      async newFacilityByXYZ(xyz, event) {
+      async drawPointXYZ(xyz, event) {
         /*
          * @summary - Callback From Clodu
          */
         await this.resetSelected()
-        commit('select', {
-          xyz,
-          type: 'Point'
-        })
         this.selectXYZ(xyz, POINT_ID)
         await this.drawToImage(state.selected, state.ls.currentMark, imgRef.selectedLayer)
         updateImg(imgRef.selectedLayer)
+        console.log(imgRef.selectedLayer)
       },
 
       async resetSelected() {
