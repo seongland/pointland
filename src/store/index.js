@@ -53,38 +53,48 @@ export const mutations = {
     state.selected = [feature]
   },
 
-  updateGeom(state, xyz) {
+  translateIndex(state, { offset, index, index2 }) {
     const geom = state.selected[0].geometry
     const props = state.selected[0].properties
-    const index = state.selected[0].index
-    const index2 = state.selected[0].index2
 
     if (geom.type === 'Point') {
-      props.x = xyz[0]
-      props.y = xyz[1]
-      props.z = xyz[2]
+      props.x = props.x + offset.x
+      props.y = props.y + offset.y
+      props.z = props.z + offset.z
       geom.coordinates = xyto84(xyz[0], xyz[1])
       geom.coordinates[2] = xyz[2]
-    } else if (geom.type === 'LineString') {
-      props.xyzs[index] = xyz
+    }
+    if (geom.type === 'LineString') {
+      const xyz = props.xyzs[index]
+      xyz[0] = xyz[0] + offset.x
+      xyz[1] = xyz[1] + offset.y
+      xyz[2] = xyz[2] + offset.z
       geom.coordinates[index] = xyto84(xyz[0], xyz[1])
       geom.coordinates[index][2] = xyz[2]
     } else if (geom.type === 'Polygon') {
+      const xyzs = props.xyzs[index]
+      const xyz = xyzs[index2]
+
+      xyz[0] = xyz[0] + offset.x
+      xyz[1] = xyz[1] + offset.y
+      xyz[2] = xyz[2] + offset.z
+
+      const lnglat = xyto84(xyz[0], xyz[1])
+      geom.coordinates[index][index2] = lnglat
+      geom.coordinates[index][index2][2] = xyz[2]
+
       // For Loop Issue
       if (props.xyzs[index].length - 1 === Number(index2)) {
         props.xyzs[index][0] = xyz
-        geom.coordinates[index][0] = xyto84(xyz[0], xyz[1])
+        geom.coordinates[index][0] = lnglat
         geom.coordinates[index][0][2] = xyz[2]
       }
       if (0 === Number(index2)) {
         const final = props.xyzs[index].length - 1
         props.xyzs[index][final] = xyz
-        geom.coordinates[index][final] = xyto84(xyz[0], xyz[1])
+        geom.coordinates[index][final] = lnglat
         geom.coordinates[index][final][2] = xyz[2]
       }
-      props.xyzs[index][index2] = xyz
-      geom.coordinates[index][index2] = xyto84(xyz[0], xyz[1])
-      geom.coordinates[index][index2][2] = xyz[2]
     }
   },
 
