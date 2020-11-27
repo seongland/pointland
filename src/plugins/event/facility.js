@@ -20,6 +20,8 @@ export default ({ store: { commit, state } }) => {
           index = idSet[1]
           index2 = idSet[2]
         }
+        event.ctrlKey = window.ctrlKey
+        event.shiftKey = window.shiftKey
         this.selectID(id, index, index2, event)
       },
 
@@ -61,18 +63,35 @@ export default ({ store: { commit, state } }) => {
 
         // Debugging
         if (process.env.target === 'facility') {
-          consola.info('ID', facility.id, index ? index : '', index2 ? index2 : '')
+          consola.info('ID', facility.id)
+          consola.info('Indexes', facility.indexes)
           consola.info('selected : ', selected)
           consola.info('Facility : ', facility)
           consola.info('Event : ', event)
-          consola.info('XYZ : ', xyz)
         }
 
-        // Draw and Save to store
-        this.drawRelated(facility)
-        if ((!event.ctrlKey && !event.shiftKey) || !selected) await this.resetSelected()
+        // Data Control
+        await this.resetSelected()
         commit('selectFeature', facility)
-        await this.drawPointXYZ(xyz, facility.id, event)
+
+        // Draw Selected
+        this.drawRelated(facility)
+        const geom = facility.geometry
+        if (geom.type === 'Point') await this.drawPointXYZ(xyz, facility.id, event)
+        else if (geom.type === 'LineString')
+          for (const i of facility.indexes) {
+            const xyz = facility.properties.xyzs[i]
+            const vid = facility.id + this.idSep + i
+            if (process.env.target === 'facility') consola.info('Draw Select', xyz, vid)
+            this.drawPointXYZ(xyz, vid, event)
+          }
+        else if (geom.type === 'Polygon')
+          for (const vidSet of facility.indexes) {
+            const xyz = facility.properties.xyzs[vidSet[0]][vidSet[1]]
+            const vid = facility.id + this.idSep + vidSet[0] + this.idSep + vidSet[1]
+            if (process.env.target === 'facility') consola.info('Draw Select', xyz, vid)
+            this.drawPointXYZ(xyz, vid, event)
+          }
       },
 
       setIndexGetXYZ(facility, index, index2, event, selected) {
@@ -84,29 +103,41 @@ export default ({ store: { commit, state } }) => {
         if (geom.type === 'Point') return [props.x, props.y, props.z]
         else if (geom.type === 'LineString') {
           if (!index) index = 0
-          else facility.index = index
+          else facility.index = Number(index)
           if (!facility.indexes) facility.indexes = [facility.index]
+          if (!event.ctrlKey && !event.shiftKey) facility.indexes = [facility.index]
           else if (selected)
-            if (event.ctrlKey) facility.indexes.push(facility.index, facility.index2)
+            if (event.ctrlKey) facility.indexes.push(facility.index)
             else if (event.shiftKey) {
               const firstI = facility.indexes[0]
-              const shiftList = new Array(Math.abs(firstI - index)).fill().map((_, i) => i + Math.min(firstI, index) + 1)
-              for (const i of shiftList) facility.indexes.push(i)
+              const shiftList = new Array(Math.abs(firstI - index)).fill(0)
+              facility.indexes = [facility.indexes[0]]
+              for (const i in shiftList) {
+                const factor = Number(i) + 1
+                const sIndex = firstI < index ? firstI + factor : firstI - factor
+                facility.indexes.push(sIndex)
+              }
             }
           return props.xyzs[index]
         } else if (geom.type === 'Polygon') {
           if (index === undefined) index = 0
-          else facility.index = index
+          else facility.index = Number(index)
           if (index2 === undefined) index2 = 0
           else facility.index2 = index2
-
           if (!facility.indexes) facility.indexes = [[facility.index, facility.index2]]
+          if (!event.ctrlKey && !event.shiftKey) facility.indexes = [[facility.index, facility.index2]]
           else if (selected)
             if (event.ctrlKey) facility.indexes.push([facility.index, facility.index2])
             else if (event.shiftKey) {
               const firstI2 = facility.indexes[index][1]
-              const shiftList = new Array(Math.abs(firstI2 - index2)).fill().map((_, i) => i + Math.min(firstI2, index2) + 1)
-              for (const i2 of shiftList) facility.indexes.push([index, i2])
+              const shiftList = new Array(Math.abs(firstI2 - index2)).fill(0)
+              facility.indexes = [facility.indexes[0]]
+              for (const i in shiftList) {
+                const factor = Number(i) + 1
+                const sIndex = firstI < index ? firstI + factor : firstI - factor
+                const idSet = [Number(index), sIndex]
+                facility.indexes.push(idSet)
+              }
             }
           return props.xyzs[index][index2]
         }
@@ -120,10 +151,8 @@ export default ({ store: { commit, state } }) => {
         const controls = cloudRef.cloud.controls
         controls.enabled = !dragEvent.value
         if (controls.enabled) {
-          let position
           const transform = cloudRef.cloud.transform
           const moved = transform.object.position
-          const props = state.selected[0].properties
           const geom = state.selected[0].geometry
 
           // Drag Event Per type
@@ -132,15 +161,13 @@ export default ({ store: { commit, state } }) => {
             commit('translate', moved)
             return this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2, mouseEvent)
           }
-          if (geom.type === 'Point') position = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
-          else if (geom.type === 'LineString') {
-            const xyz = props.xyzs[state.selected[0].index]
-            position = [xyz[0] + moved.x, xyz[1] + moved.y, xyz[2] + moved.z]
-          } else if (geom.type === 'Polygon') {
-            const xyz = props.xyzs[state.selected[0].index][state.selected[0].index2]
-            position = [xyz[0] + moved.x, xyz[1] + moved.y, xyz[2] + moved.z]
-          }
-          commit('updateGeom', position)
+          if (geom.type === 'Point') commit('translateIndex', { offset: moved })
+          else if (geom.type === 'LineString')
+            for (const sIndex of state.selected[0].indexes) commit('translateIndex', { offset: moved, index: sIndex })
+          else if (geom.type === 'Polygon')
+            for (const idSet of state.selected[0].indexes)
+              ommit('translateIndex', { offset: moved, index: idSet[0], index2: idSet[1] })
+
           this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2, mouseEvent)
         }
       },

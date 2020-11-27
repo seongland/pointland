@@ -140,7 +140,7 @@ export default ({ $axios }) => {
               width: 0.01
             },
             size: 0.2,
-            length: 5000,
+            length: 10000,
             order: 3,
             callback: { click: null }
           },
@@ -152,11 +152,18 @@ export default ({ $axios }) => {
               width: 0.02
             },
             size: 0.2,
-            length: 5000,
+            length: 10000,
             order: 4,
             callback: { click: null }
           },
-          { name: 'selectedLayer', color: 0x990000, size: 0.3, length: 1, order: 5, callback: { click: null, filter: null } }
+          {
+            name: 'selectedLayer',
+            color: 0x990000,
+            size: 0.3,
+            length: 10000,
+            order: 5,
+            callback: { click: null, filter: null }
+          }
         ]
       }
     })
