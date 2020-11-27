@@ -127,7 +127,6 @@ export default ({ $axios, store: { commit, state } }) => {
                 const xyz = polyline[index2]
                 xyzs.push(xyz)
                 let vid = geojson.id + this.idSep + index + this.idSep + index2
-                console.log(vid)
                 ids.push(vid)
               }
             }
