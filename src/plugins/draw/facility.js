@@ -141,7 +141,22 @@ export default ({ $axios, store: { commit, state } }) => {
         this.drawXYZPoints(xyzs, ids, layer)
       },
 
-      async drawRelated(id) {
+      async drawRelated(facility) {
+        const props = facility.props
+        for (const prop in props) {
+          const value = props[prop]
+          for (const group of this.groups)
+            for (const layerOpt of group.layers)
+              if (layerOpt.layer === props.layer && value) {
+                const method = layerOpt.attributes?.[prop]?.method
+                if (method === 'relate') this.drawRelatedID(value)
+                else if (method === 'multirelate') value.map(id => this.drawRelatedID(id))
+              }
+        }
+        this.drawRelatedID(facility.id)
+      },
+
+      async drawRelatedID(id) {
         const facility = await this.getFacilityByID(id)
         if (facility) this.drawGeojsons([facility], 'relatedLayer')
       },

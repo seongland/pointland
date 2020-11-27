@@ -66,6 +66,11 @@
       "addon/",
       "./*"
     ],
+    "ignore": [
+      "build/*",
+      "log/*",
+      "cache/*"
+    ],
     "events": {
       "restart": "yarn build"
     },
