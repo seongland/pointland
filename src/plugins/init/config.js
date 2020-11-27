@@ -110,7 +110,7 @@ export default ({ $axios }) => {
               style: {
                 point: {
                   color: '#990000',
-                  radius: 2
+                  radius: 3
                 }
               }
             }
@@ -156,7 +156,7 @@ export default ({ $axios }) => {
             order: 4,
             callback: { click: null }
           },
-          { name: 'selectedLayer', color: 0x990000, size: 0.2, length: 1, order: 5, callback: { click: null, filter: null } }
+          { name: 'selectedLayer', color: 0x990000, size: 0.3, length: 1, order: 5, callback: { click: null, filter: null } }
         ]
       }
     })

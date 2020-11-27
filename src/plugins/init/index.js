@@ -3,6 +3,8 @@ import { olInit, ref as mapRef } from '~/modules/map/init'
 import { initCloud, purgeCloud, ref as cloudRef } from '~/modules/cloud/init'
 import { initImg, ref as imgRef } from '~/modules/image/init'
 
+const POINT_ID = 'Point'
+
 export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
@@ -64,8 +66,12 @@ export default ({ $axios, store: { commit, state } }) => {
           // new facility
           const targetLayer = this.$store.state.ls.targetLayer
           commit('select', { xyz, type: 'Point' })
-          await this.resetSelected()
-          if (targetLayer.object) if (targetLayer.object.type === 'Point') this.drawPointXYZ(xyz, event)
+          if (targetLayer.object) {
+            if (targetLayer.object.type === 'Point') {
+              await this.resetSelected()
+              this.drawPointXYZ(xyz, POINT_ID, event)
+            }
+          }
         }
 
         const cloud = initCloud(option)

@@ -56,69 +56,67 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Select by Facility Document
          */
-        // Get Target point index
-        let exist = this.getExist(facility)
-        let xyz = this.setIndexGetXYZ(facility, index, index2, event, exist)
+        let selected = this.getSelected(facility)
+        let xyz = this.setIndexGetXYZ(facility, index, index2, event, selected)
+
+        // Debugging
+        if (process.env.target === 'facility') {
+          consola.info('ID', facility.id, index ? index : '', index2 ? index2 : '')
+          consola.info('selected : ', selected)
+          consola.info('Facility : ', facility)
+          consola.info('Event : ', event)
+          consola.info('XYZ : ', xyz)
+        }
 
         // Draw and Save to store
-        if (process.env.target === 'facility')
-          consola.info('ID', facility.id, index ? index : '', index2 ? index2 : '', facility, 'exist : ', exist)
         this.drawRelated(facility)
-        if ((!event.ctrlKey && !event.shiftKey) || exist) await this.resetSelected()
+        if ((!event.ctrlKey && !event.shiftKey) || !selected) await this.resetSelected()
         commit('selectFeature', facility)
-        await this.drawPointXYZ(xyz, event)
+        await this.drawPointXYZ(xyz, facility.id, event)
       },
 
-      setIndexGetXYZ(facility, index, index2, event, exist) {
+      setIndexGetXYZ(facility, index, index2, event, selected) {
+        /*
+         * @summary - Set Facility index per depth & return that index's XYZ
+         */
         const geom = facility.geometry
         const props = facility.properties
-        let xyz
-        if (geom.type === 'Point') xyz = [props.x, props.y, props.z]
+        if (geom.type === 'Point') return [props.x, props.y, props.z]
         else if (geom.type === 'LineString') {
-          // linestring current index
           if (!index) index = 0
           else facility.index = index
-
-          // linestring indexes
           if (!facility.indexes) facility.indexes = [facility.index]
-          else if (exist)
+          else if (selected)
             if (event.ctrlKey) facility.indexes.push(facility.index, facility.index2)
             else if (event.shiftKey) {
               const firstI = facility.indexes[0]
               const shiftList = new Array(Math.abs(firstI - index)).fill().map((_, i) => i + Math.min(firstI, index) + 1)
               for (const i of shiftList) facility.indexes.push(i)
             }
-          xyz = props.xyzs[index]
+          return props.xyzs[index]
         } else if (geom.type === 'Polygon') {
-          // polygon current index
           if (index === undefined) index = 0
           else facility.index = index
           if (index2 === undefined) index2 = 0
           else facility.index2 = index2
 
-          // Polygon indexes
           if (!facility.indexes) facility.indexes = [[facility.index, facility.index2]]
-          else if (exist)
+          else if (selected)
             if (event.ctrlKey) facility.indexes.push([facility.index, facility.index2])
             else if (event.shiftKey) {
               const firstI2 = facility.indexes[index][1]
               const shiftList = new Array(Math.abs(firstI2 - index2)).fill().map((_, i) => i + Math.min(firstI2, index2) + 1)
               for (const i2 of shiftList) facility.indexes.push([index, i2])
             }
-          xyz = props.xyzs[index][index2]
+          return props.xyzs[index][index2]
         }
-        return xyz
       },
 
-      getExist(facility) {
+      getSelected(facility) {
         return facility.id === state.selected?.[0]?.id
       },
 
       dragSelected(dragEvent) {
-        const mouseEvent = {
-          ctrlKey: window.ctrlKey,
-          shiftKey: window.shiftKey
-        }
         const controls = cloudRef.cloud.controls
         controls.enabled = !dragEvent.value
         if (controls.enabled) {
@@ -128,11 +126,12 @@ export default ({ store: { commit, state } }) => {
           const props = state.selected[0].properties
           const geom = state.selected[0].geometry
 
+          // Drag Event Per type
+          const mouseEvent = { ctrlKey: window.ctrlKey, shiftKey: window.shiftKey }
           if (window.ctrlKey && geom.type !== 'Point') {
             commit('translate', moved)
             return this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2, mouseEvent)
           }
-
           if (geom.type === 'Point') position = [props.x + moved.x, props.y + moved.y, props.z + moved.z]
           else if (geom.type === 'LineString') {
             const xyz = props.xyzs[state.selected[0].index]
@@ -141,7 +140,6 @@ export default ({ store: { commit, state } }) => {
             const xyz = props.xyzs[state.selected[0].index][state.selected[0].index2]
             position = [xyz[0] + moved.x, xyz[1] + moved.y, xyz[2] + moved.z]
           }
-
           commit('updateGeom', position)
           this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2, mouseEvent)
         }

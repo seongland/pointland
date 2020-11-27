@@ -151,7 +151,7 @@ export default ({ store: { commit, state, $router } }) => {
               } else this.drawnFacilities()
               return
           }
-        if (process.env.dev) consola.info('Pressed', event.key)
+        if (process.env.target === 'key') consola.info('Pressed', event.key)
       }
     }
   })
