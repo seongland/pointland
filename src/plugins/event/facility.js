@@ -123,7 +123,7 @@ export default ({ store: { commit, state } }) => {
           if (index === undefined) index = 0
           else facility.index = Number(index)
           if (index2 === undefined) index2 = 0
-          else facility.index2 = index2
+          else facility.index2 = Number(index2)
           if (!facility.indexes) facility.indexes = [[facility.index, facility.index2]]
           if (!event.ctrlKey && !event.shiftKey) facility.indexes = [[facility.index, facility.index2]]
           else if (selected)
@@ -134,7 +134,7 @@ export default ({ store: { commit, state } }) => {
               facility.indexes = [facility.indexes[0]]
               for (const i in shiftList) {
                 const factor = Number(i) + 1
-                const sIndex = firstI < index ? firstI + factor : firstI - factor
+                const sIndex = firstI2 < index2 ? firstI2 + factor : firstI2 - factor
                 const idSet = [Number(index), sIndex]
                 facility.indexes.push(idSet)
               }
@@ -166,7 +166,7 @@ export default ({ store: { commit, state } }) => {
             for (const sIndex of state.selected[0].indexes) commit('translateIndex', { offset: moved, index: sIndex })
           else if (geom.type === 'Polygon')
             for (const idSet of state.selected[0].indexes)
-              ommit('translateIndex', { offset: moved, index: idSet[0], index2: idSet[1] })
+              commit('translateIndex', { offset: moved, index: idSet[0], index2: idSet[1] })
 
           this.selectFacility(state.selected[0], state.selected[0].index, state.selected[0].index2, mouseEvent)
         }
