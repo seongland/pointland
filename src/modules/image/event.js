@@ -47,10 +47,13 @@ export async function clickImage(event, depth, drawCallback, selectCallback) {
   let x = Math.round(image.bitmap.width * xRatio)
   let y = Math.round(image.bitmap.height * yRatio)
 
-  if (!event.ctrlKey) {
+  // Check Near Existed
+  if (!(event.ctrlKey && event.shiftKey)) {
     let vid = checkNearest(direction, x, y)
     if (vid) return selectCallback(event, vid)
   }
+
+  // Not Existed
   const color = image.getPixelColor(x, y)
   if (color === 0) {
     const point = getNearest(image, x, y)

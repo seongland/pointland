@@ -38,10 +38,6 @@ export default ({ $axios, store: { commit, state } }) => {
          * @summary - Cloud Draw Selected Facility
          */
         const cloud = cloudRef.cloud
-        const lnglat = xyto84(xyz[0], xyz[1])
-        const latlng = lnglat.reverse()
-        drawXY(mapRef.selectedLayer, latlng, false, id)
-
         const transform = cloud.transform
         transform.position.x = xyz[0] - cloud.offset[0]
         transform.position.y = xyz[1] - cloud.offset[1]
@@ -51,8 +47,8 @@ export default ({ $axios, store: { commit, state } }) => {
         const divider = Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)
         let factor = 3 / divider
         if (factor > 0.2) factor = 0.2
-        transform.setSize(factor)
 
+        transform.setSize(factor)
         transform.attach(cloudRef.selectedLayer)
         transform.visible = state.visible.transform
         transform.enabled = state.visible.transform
@@ -64,6 +60,12 @@ export default ({ $axios, store: { commit, state } }) => {
         object.updateMatrix()
 
         drawXYZ(cloudRef.selectedLayer, xyz, false, id)
+      },
+
+      drawPointToMap(xyz, id) {
+        const lnglat = xyto84(xyz[0], xyz[1])
+        const latlng = lnglat.reverse()
+        drawXY(mapRef.selectedLayer, latlng, false, id)
       },
 
       async drawnFacilities(currentMark, layer) {
@@ -94,15 +96,15 @@ export default ({ $axios, store: { commit, state } }) => {
         if (task) filteredFacilities = filteredFacilities.filter(item => item.relations[task.prop] === task.data)
         commit('setState', { props: ['facilities'], value: filteredFacilities })
 
-        // Draw to Image
+        // Draw
         await this.drawToImage(filteredFacilities, currentMark, imgRef.drawnLayer)
-        updateImg(imgRef.drawnLayer)
-
-        // Draw to Map and Cloud
-        this.drawGeojsons(filteredFacilities, 'drawnLayer')
+        this.geojsonToMapCloud(filteredFacilities, 'drawnLayer')
       },
 
-      drawGeojsons(geojsons, layer) {
+      geojsonToMapCloud(geojsons, layer) {
+        /*
+         * @summary - geojsonToMapCloud Map and Cloud
+         */
         const [xyzs, ids] = [[], []]
         for (const geojson of geojsons) {
           const props = geojson.properties
@@ -158,7 +160,7 @@ export default ({ $axios, store: { commit, state } }) => {
 
       async drawRelatedID(id) {
         const facility = await this.getFacilityByID(id)
-        if (facility) this.drawGeojsons([facility], 'relatedLayer')
+        if (facility) this.geojsonToMapCloud([facility], 'relatedLayer')
       },
 
       async drawPointXY(depthDir, x, y, event) {
@@ -177,13 +179,13 @@ export default ({ $axios, store: { commit, state } }) => {
         return xyz
       },
 
-      async drawPointXYZ(xyz, event) {
+      async drawPointXYZ(xyz, id, event) {
         /*
          * @summary - Callback From Clodu
          */
-        this.drawPointToCloud(xyz, POINT_ID)
+        this.drawPointToMap(xyz, id ? id : POINT_ID)
+        this.drawPointToCloud(xyz, id ? id : POINT_ID)
         await this.drawToImage(state.selected, state.ls.currentMark, imgRef.selectedLayer)
-        updateImg(imgRef.selectedLayer)
       },
 
       async resetSelected() {
@@ -212,7 +214,7 @@ export default ({ $axios, store: { commit, state } }) => {
             cloud[shapeName].splice(index, 1)
           }
 
-        //image
+        // image
         const depth = imgRef.depth
         if (depth)
           for (const data of Object.values(depth)) {

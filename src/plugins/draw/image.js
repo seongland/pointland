@@ -3,7 +3,7 @@
  */
 
 import Vue from 'vue'
-import { drawNear } from '~/modules/image/draw'
+import { drawNear, updateImg } from '~/modules/image/draw'
 
 const POINT_ID = 'Point'
 
@@ -44,6 +44,7 @@ export default ({ $axios, store: { commit, state } }) => {
         }
         const url = `/api/image/convert`
         const fbRes = await $axios.post(url, { data: { mark: currentMark, xyzdis } })
+
         // Draw to image
         for (const i in fbRes.data) {
           const result = fbRes.data[i]
@@ -63,6 +64,7 @@ export default ({ $axios, store: { commit, state } }) => {
             facilities[index].relations.visible = true
           } else if (!facilities[index].relations.visible) facilities[index].relations.visible = false
         }
+        updateImg(layer)
       },
 
       async selectFromDepth(event, vid) {
@@ -87,7 +89,7 @@ export default ({ $axios, store: { commit, state } }) => {
         const targetLayer = state.ls.targetLayer
         const ls = state.ls
         commit('setLoading', true)
-        console.time('xy')
+        if (process.env.target === 'image') console.time('xy')
         if (targetLayer.object)
           if (targetLayer.object.type === 'Point') {
             const xyz = await this.drawPointXY(depthDir, x, y, event)
@@ -95,11 +97,13 @@ export default ({ $axios, store: { commit, state } }) => {
             const snap = ls.currentSnap.name
             const direction = depthDir.name
             const imgOpt = [{ round, snap, name, direction }]
+
             commit('select', { xyz, type: 'Point', images: imgOpt })
+            this.drawPointToMap(xyz, POINT_ID)
             this.drawPointToCloud(xyz, POINT_ID)
           }
         commit('setLoading', false)
-        console.timeEnd('xy')
+        if (process.env.target === 'image') console.timeEnd('xy')
       }
     }
   })

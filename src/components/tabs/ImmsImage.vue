@@ -135,7 +135,6 @@ export default {
       promises.push(this.drawToImage(state.selected, currentMark, imgRef.selectedLayer))
       await Promise.all(promises)
 
-      updateImg(imgRef.selectedLayer)
       this.$store.commit('setDepthLoading', false)
       this.setDepthOpacity(this.depth.opacity)
     }

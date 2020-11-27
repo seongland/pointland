@@ -201,16 +201,20 @@ function changeColor(colors, index, color, attributes) {
 
 function click3D(e) {
   /*
-   * <summary>index file from js</summary>
+   * @summary - double click cloud callback
    */
   const cloud = ref.cloud
   const targets = []
-  if (!e.ctrlKey)
+
+  // Always Make New
+  if (!(e.ctrlKey && e.shiftKey))
     for (const layerOpt of cloud.opt.pointLayers) {
       if (!ref[layerOpt.name].visible) continue
       ref[layerOpt.name].click = layerOpt.callback.click
       targets.push(ref[layerOpt.name])
     }
+
+  // Select Near
   cloud.raycaster.params.Points.threshold = 1
   let intersects = cloud.raycaster.intersectObjects(targets)
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
@@ -218,10 +222,11 @@ function click3D(e) {
   if (intersect) {
     intersect = tuneIntersect(intersect)
     if (!intersect.index) return
-    consola.info('Cicked', intersect)
+    if (process.env.target === 'cloud') consola.info('3D Point', intersect)
     return intersect.object.click instanceof Function ? intersect.object.click(e, intersect) : null
   }
 
+  // Make New
   if (!cloud.currentHover) return
   cloud.currentSelected = cloud.currentHover
   const center = cloud.currentSelected.point
