@@ -1,15 +1,13 @@
 const colors = require('vuetify/es5/util/colors').default
 const package = require('./package.json')
 const dotenv = require('dotenv')
-// const fs = require('fs')
-// const path = require('path')
 
 dotenv.config()
-
 process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.dev = 1)
 process.env.version = package.version
 process.env.twr = process.env.TWR
 process.env.title = '3D Mapping'
+if (process.env.dev) process.env.target = 'facility'
 
 module.exports = {
   srcDir: 'src/',
@@ -19,7 +17,8 @@ module.exports = {
     dev: process.env.dev,
     version: process.env.version,
     twr: process.env.twr,
-    title: process.env.title
+    title: process.env.title,
+    target: process.env.target
   },
   serverMiddleware: { '/api': '~/server/api/app' },
 

@@ -41,7 +41,6 @@ export default ({ store: { commit, state } }) => {
         }
 
         // Link to selct facility Event
-        consola.info('ID', id, index ? index : '', index2 ? index2 : '')
         const facility = await this.getFacilityByID(id)
         if (facility) await this.selectFacility(facility, index, index2, event)
       },
@@ -57,42 +56,62 @@ export default ({ store: { commit, state } }) => {
         /*
          * @summary - Select by Facility Document
          */
-        let xyz
-        const geom = facility.geometry
-        const props = facility.properties
-
         // Get Target point index
-        if (geom.type === 'Point') xyz = [props.x, props.y, props.z]
-        else if (geom.type === 'LineString') {
-          if (!index) index = 0
-          else facility.index = index
-          xyz = props.xyzs[index]
-        } else if (geom.type === 'Polygon') {
-          if (index === undefined) index = 0
-          else facility.index = index
-
-          if (index2 === undefined) index2 = 0
-          else facility.index2 = index2
-          xyz = props.xyzs[index][index2]
-        }
-
-        // Draw Related
-        for (const prop in props) {
-          const value = props[prop]
-          for (const group of this.groups)
-            for (const layerOpt of group.layers)
-              if (layerOpt.layer === props.layer && value) {
-                const method = layerOpt.attributes?.[prop]?.method
-                if (method === 'relate') this.drawRelated(value)
-                else if (method === 'multirelate') value.map(id => this.drawRelated(id))
-              }
-        }
-        this.drawRelated(facility.id)
+        let exist = this.getExist(facility)
+        let xyz = this.setIndexGetXYZ(facility, index, index2, event, exist)
 
         // Draw and Save to store
-        await this.resetSelected()
+        if (process.env.target === 'facility')
+          consola.info('ID', facility.id, index ? index : '', index2 ? index2 : '', facility, 'exist : ', exist)
+        this.drawRelated(facility)
+        if ((!event.ctrlKey && !event.shiftKey) || exist) await this.resetSelected()
         commit('selectFeature', facility)
         await this.drawPointXYZ(xyz, event)
+      },
+
+      setIndexGetXYZ(facility, index, index2, event, exist) {
+        const geom = facility.geometry
+        const props = facility.properties
+        let xyz
+        if (geom.type === 'Point') xyz = [props.x, props.y, props.z]
+        else if (geom.type === 'LineString') {
+          // linestring current index
+          if (!index) index = 0
+          else facility.index = index
+
+          // linestring indexes
+          if (!facility.indexes) facility.indexes = [facility.index]
+          else if (exist)
+            if (event.ctrlKey) facility.indexes.push(facility.index, facility.index2)
+            else if (event.shiftKey) {
+              const firstI = facility.indexes[0]
+              const shiftList = new Array(Math.abs(firstI - index)).fill().map((_, i) => i + Math.min(firstI, index) + 1)
+              for (const i of shiftList) facility.indexes.push(i)
+            }
+          xyz = props.xyzs[index]
+        } else if (geom.type === 'Polygon') {
+          // polygon current index
+          if (index === undefined) index = 0
+          else facility.index = index
+          if (index2 === undefined) index2 = 0
+          else facility.index2 = index2
+
+          // Polygon indexes
+          if (!facility.indexes) facility.indexes = [[facility.index, facility.index2]]
+          else if (exist)
+            if (event.ctrlKey) facility.indexes.push([facility.index, facility.index2])
+            else if (event.shiftKey) {
+              const firstI2 = facility.indexes[index][1]
+              const shiftList = new Array(Math.abs(firstI2 - index2)).fill().map((_, i) => i + Math.min(firstI2, index2) + 1)
+              for (const i2 of shiftList) facility.indexes.push([index, i2])
+            }
+          xyz = props.xyzs[index][index2]
+        }
+        return xyz
+      },
+
+      getExist(facility) {
+        return facility.id === state.selected?.[0]?.id
       },
 
       dragSelected(dragEvent) {

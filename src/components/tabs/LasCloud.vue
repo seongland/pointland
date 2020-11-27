@@ -54,14 +54,17 @@ export default {
         const areaName = areaObj.name
         let cached = this.checkCached(areaName)
         if (cached) continue
-        consola.info('Checking', areaName)
+        if (process.env.target === 'cloud') consola.info('Checking', areaName)
         let lasCache = await this.getLasCache(areaName)
         if (!lasCache) {
           const changed = await this.termCacheLas(snapObj, areaName)
-          if (changed === true) return consola.success('Snap Changed')
+          if (changed === true) {
+            if (process.env.target === 'cloud') consola.success('Snap Changed')
+            return
+          }
         }
       }
-      consola.success(`${snapObj.name} all cached in local`)
+      if (process.env.target === 'cloud') consola.success(`${snapObj.name} all cached in local`)
     }
   },
 
@@ -93,7 +96,10 @@ export default {
         // Load Server
         else {
           const changed = await this.termLoadLas(markObj, areaName, true, undefined)
-          if (changed === true) return consola.success('Mark Changed')
+          if (changed === true) {
+            if (process.env.target === 'cloud') consola.success('Mark Changed')
+            return
+          }
         }
         loadCount++
       }
@@ -110,7 +116,7 @@ export default {
     },
 
     async termCacheLas(snapObj, areaName) {
-      consola.info('Caching', areaName)
+      if (process.env.target === 'cloud') consola.info('Caching', areaName)
       const round = snapObj.round
       const snap = snapObj.name
       await this.loadLas(areaName, false, false, snapObj.round, snapObj.name)
@@ -125,7 +131,7 @@ export default {
 
       // If Cached
       if (lasCache) {
-        consola.info('Use Cache', areaName, lasCache)
+        if (process.env.target === 'cloud') consola.info('Use Cache', areaName, lasCache)
         return draw ? this.drawLasCloud(lasCache.data, areaName) : null
       }
 
@@ -157,7 +163,7 @@ export default {
       const complete = this.checkLasJson(lasJson, area)
       if (complete) return lasJson
       else {
-        consola.info('Recache Server', area)
+        if (process.env.target === 'cloud') consola.info('Recache Server', area)
         await this.$axios.delete(`${root}`)
         return await this.serverCached(root, area)
       }
@@ -176,7 +182,7 @@ export default {
         this.drawLas(lasJson, areaName)
         commit('setLoading', false)
         this.lasList.push(areaName)
-        consola.success('Drawed', areaName)
+        if (process.env.target === 'cloud') consola.success('Drawed', areaName)
       })
     },
 
@@ -194,7 +200,7 @@ export default {
       let objectStore = transaction.objectStore('LasJson')
       let request = objectStore.add({ name: area, data })
       commit('setState', { props: ['ls', 'cacheMap', area], value: true })
-      consola.info('Cached', area)
+      if (process.env.target === 'cloud') consola.info('Cached', area)
     },
 
     getLasAPIRoot(areaName, round, snap) {
@@ -206,12 +212,12 @@ export default {
       let transaction = this.lasCaches.transaction(['LasJson'], 'readonly')
       let objectStore = transaction.objectStore('LasJson')
       let index = objectStore.index('name')
-      console.time(`get ${area}`)
+      if (process.env.target === 'cloud') console.time(`get ${area}`)
 
       return await new Promise(
         resolve =>
           (index.get(area).onsuccess = event => {
-            console.timeEnd(`get ${area}`)
+            if (process.env.target === 'cloud') console.timeEnd(`get ${area}`)
             let result = event.target.result
             if (result) {
               const complete = this.checkLasJson(result.data, area, result.id)
