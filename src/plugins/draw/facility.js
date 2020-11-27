@@ -11,7 +11,7 @@ import { GeoJSON } from 'ol/format'
 import { drawXY, removeFeature } from '~/modules/map/draw'
 import { drawXYZ, removePoint, drawLine, drawLoop } from '~/modules/cloud/draw'
 import { resetPointLayer, removeLineLoops } from '~/modules/cloud/event'
-import { drawNear, erase, updateImg } from '~/modules/image/draw'
+import { drawNear, erase } from '~/modules/image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
 
@@ -113,24 +113,25 @@ export default ({ $axios, store: { commit, state } }) => {
           if (geom.type === 'Point') {
             xyzs.push([props.x, props.y, props.z])
             ids.push(geojson.id)
-          } else if (geom.type === 'LineString') {
+          } else if (geom.type === 'LineString')
             for (const index in props.xyzs) {
               const xyz = props.xyzs[index]
               xyzs.push(xyz)
-              let id = geojson.id + this.idSep + index
-              ids.push(id)
+              let vid = geojson.id + this.idSep + index
+              ids.push(vid)
             }
-          } else if (geom.type === 'Polygon') {
+          else if (geom.type === 'Polygon')
             for (const index in props.xyzs) {
               const polyline = props.xyzs[index]
               for (const index2 in polyline) {
                 const xyz = polyline[index2]
                 xyzs.push(xyz)
-                let id = geojson.id + this.idSep + index + this.idSep + index2
-                ids.push(id)
+                let vid = geojson.id + this.idSep + index + this.idSep + index2
+                console.log(vid)
+                ids.push(vid)
               }
             }
-          }
+
           // Main Feature to Cloud, Map
           if (geom.type !== 'Point') {
             const projection = { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }
@@ -169,14 +170,10 @@ export default ({ $axios, store: { commit, state } }) => {
          */
         await this.resetSelected()
         depthDir.layer.selected.image = new jimp(depthDir.width, depthDir.height)
-        drawNear(
-          imgRef.selectedLayer,
-          { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: POINT_ID },
-          true
-        )
+        const imgOpt = { x, y, color: imgRef.selectedLayer.color, direction: depthDir.name, id: POINT_ID }
+        drawNear(imgRef.selectedLayer, imgOpt, true)
         const xyzRes = await $axios.post(`${depthDir.url}/${x}/${y}`)
-        const xyz = xyzRes.data
-        return xyz
+        return xyzRes.data
       },
 
       async drawPointXYZ(xyz, id, event) {
