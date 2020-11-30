@@ -10,7 +10,7 @@ const POINT_ID = 'Point'
 export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
-      async drawToImage(facilities, currentMark, layer) {
+      async drawToImage(facilities, currentMark, layer, update) {
         /*
          * @summary - Draw facilities to image
          */
@@ -64,7 +64,7 @@ export default ({ $axios, store: { commit, state } }) => {
             facilities[index].relations.visible = true
           } else if (!facilities[index].relations.visible) facilities[index].relations.visible = false
         }
-        updateImg(layer)
+        if (update) updateImg(layer)
       },
 
       async selectFromDepth(event, vid) {

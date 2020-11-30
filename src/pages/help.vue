@@ -25,6 +25,9 @@
                 <v-card-subtitle>Cloud 단축키</v-card-subtitle>
                 <v-card-text><kbd>ctrl + f</kbd> - 현재 선택한 포인트를 포커싱한다</v-card-text>
                 <v-card-text><kbd>ctrl + shift + f</kbd> - 현재 마우스 포인트를 포커싱한다</v-card-text>
+                
+                <v-card-subtitle>Map 단축키</v-card-subtitle>
+                <v-card-text><kbd>shift + drag</kbd> - 드래그된 부분을 줌한다</v-card-text>
 
                 <v-card-subtitle>이동 단축키 </v-card-subtitle>
                 <v-card-text><kbd>Space</kbd> - 현재 마크를 포커싱한다 </v-card-text>

@@ -106,7 +106,7 @@ export default ({ $axios, store: { commit, state } }) => {
         commit('setState', { props: ['facilities'], value: filteredFacilities })
 
         // Draw
-        await this.drawToImage(filteredFacilities, currentMark, imgRef.drawnLayer)
+        await this.drawToImage(filteredFacilities, currentMark, imgRef.drawnLayer, true)
         this.geojsonToMapCloud(filteredFacilities, 'drawnLayer')
       },
 
@@ -184,13 +184,13 @@ export default ({ $axios, store: { commit, state } }) => {
         return xyzRes.data
       },
 
-      async drawPointXYZ(xyz, id, event) {
+      async drawPointXYZ(xyz, id, event, update) {
         /*
          * @summary - Callback From Clodu
          */
         this.drawPointToMap(xyz, id ? id : POINT_ID)
         this.drawPointToCloud(xyz, id ? id : POINT_ID)
-        await this.drawToImage(state.selected, state.ls.currentMark, imgRef.selectedLayer)
+        await this.drawToImage(state.selected, state.ls.currentMark, imgRef.selectedLayer, update)
       },
 
       async resetSelected() {

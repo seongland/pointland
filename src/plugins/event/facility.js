@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { ref as cloudRef } from '~/modules/cloud/init'
 import consola from 'consola'
+import { updateImg } from '~/modules/image/draw'
+import { ref as imgRef } from '~/modules/image/init'
 
 export default ({ store: { commit, state } }) => {
   Vue.mixin({
@@ -77,21 +79,28 @@ export default ({ store: { commit, state } }) => {
         // Draw Selected
         this.drawRelated(facility)
         const geom = facility.geometry
-        if (geom.type === 'Point') await this.drawPointXYZ(xyz, facility.id, event)
-        else if (geom.type === 'LineString')
+        if (geom.type === 'Point') await this.drawPointXYZ(xyz, facility.id, event, true)
+        else if (geom.type === 'LineString') {
+          const promises = []
           for (const i of facility.indexes) {
             const xyz = facility.properties.xyzs[i]
             const vid = facility.id + this.idSep + i
             if (process.env.target === 'facility') consola.info('Draw Select', xyz, vid)
-            this.drawPointXYZ(xyz, vid, event)
+            promises.push(this.drawPointXYZ(xyz, vid, event, false))
           }
-        else if (geom.type === 'Polygon')
+          await Promise.all(promises)
+          updateImg(imgRef.selectedLayer)
+        } else if (geom.type === 'Polygon') {
+          const promises = []
           for (const vidSet of facility.indexes) {
             const xyz = facility.properties.xyzs[vidSet[0]][vidSet[1]]
             const vid = facility.id + this.idSep + vidSet[0] + this.idSep + vidSet[1]
             if (process.env.target === 'facility') consola.info('Draw Select', xyz, vid)
-            this.drawPointXYZ(xyz, vid, event)
+            promises.push(this.drawPointXYZ(xyz, vid, event, false))
           }
+          await Promise.all(promises)
+          updateImg(imgRef.selectedLayer)
+        }
       },
 
       setIndexGetXYZ(facility, index, index2, event, selected) {
