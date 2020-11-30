@@ -6,6 +6,9 @@
       "type": "Point",
       "description": "주행경로노드",
       "name": "NODE",
+      "ref": {
+        "layer": "A2"
+      },
       "attributes": {
         "NodeType": {
           "type": "String",
@@ -69,6 +72,9 @@
       "description": "주행경로링크",
       "type": "LineString",
       "name": "LINK",
+      "ref": {
+        "layer": "A1"
+      },
       "attributes": {}
     },
     {

@@ -11,11 +11,11 @@ export function resetPointLayer(layer) {
   geometry.computeBoundingSphere()
 }
 
-export function removeLineLoops() {
+export function removeLineLoops(layer) {
   const cloud = ref.cloud
   const trash = { lines: [], loops: [] }
-  for (const line of cloud.lines) if (line.layer !== 'relatedLayer') trash.lines.push(line)
-  for (const loop of cloud.loops) if (loop.layer !== 'relatedLayer') trash.loops.push(loop)
+  for (const line of cloud.lines) if (line.layer === layer) trash.lines.push(line)
+  for (const loop of cloud.loops) if (loop.layer === layer) trash.loops.push(loop)
   for (const shapeName of Object.keys(trash))
     for (const shape of trash[shapeName]) {
       cloud.scene.remove(shape)

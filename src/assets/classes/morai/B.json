@@ -5,6 +5,9 @@
       "layer": "B1",
       "type": "Point",
       "description": "표지판",
+      "ref": {
+        "layer": "A2"
+      },
       "name": "SAFETYSIGN",
       "attributes": {
         "Type": {
@@ -813,6 +816,9 @@
       "layer": "B2",
       "type": "LineString",
       "description": "차선",
+      "ref": {
+        "layer": "A2"
+      },
       "name": "SURFACELineStringMARK",
       "attributes": {
         "Type": {
