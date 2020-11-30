@@ -65,13 +65,12 @@ export default ({ $axios, store: { commit, state } }) => {
         option.makeCallback = async (event, xyz) => {
           // new facility
           const targetLayer = this.$store.state.ls.targetLayer
-          commit('select', { xyz, type: 'Point' })
-          if (targetLayer.object) {
+          if (targetLayer.object)
             if (targetLayer.object.type === 'Point') {
               await this.resetSelected()
+              commit('select', { xyz, type: 'Point' })
               this.drawPointXYZ(xyz, POINT_ID, event, true)
             }
-          }
         }
 
         const cloud = initCloud(option)
