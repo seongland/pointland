@@ -24,6 +24,7 @@ export default new mongoose.Schema(
     MaxSpeed: { type: String },
     StopLine: { type: String },
     RelatedSig: { type: String },
+    PedstrianS: { type: String },
     Orientation: { type: String },
 
     NodeID: { type: String },
@@ -33,6 +34,7 @@ export default new mongoose.Schema(
     R_LinkID: { type: String },
     FromNodeID: { type: String },
     ToNodeID: { type: String },
+    ITSNodeID: { type: String },
     ITSLinkID: { type: String },
     L_LaneChan: { type: String },
     R_LaneChan: { type: String },
