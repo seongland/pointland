@@ -132,7 +132,7 @@ export default {
       // Draw
       const promises = []
       promises.push(this.drawnFacilities(currentMark))
-      promises.push(this.drawToImage(state.selected, currentMark, imgRef.selectedLayer))
+      promises.push(this.drawToImage(state.selected, currentMark, imgRef.selectedLayer, true))
       await Promise.all(promises)
 
       this.$store.commit('setDepthLoading', false)

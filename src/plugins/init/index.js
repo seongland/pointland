@@ -69,7 +69,7 @@ export default ({ $axios, store: { commit, state } }) => {
           if (targetLayer.object) {
             if (targetLayer.object.type === 'Point') {
               await this.resetSelected()
-              this.drawPointXYZ(xyz, POINT_ID, event)
+              this.drawPointXYZ(xyz, POINT_ID, event, true)
             }
           }
         }
