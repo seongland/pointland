@@ -68,8 +68,26 @@ export default ({ $axios }) => {
             },
             {
               callback: { click: null },
-              name: 'drawnLayer',
+              name: 'refLayer',
               zindex: 23,
+              style: {
+                point: {
+                  color: '#118080',
+                  radius: 2
+                },
+                line: {
+                  color: '#229090',
+                  width: 1
+                },
+                polygon: {
+                  fill: '#22909099'
+                }
+              }
+            },
+            {
+              callback: { click: null },
+              name: 'drawnLayer',
+              zindex: 24,
               style: {
                 point: {
                   color: '#9911ff',
@@ -87,7 +105,7 @@ export default ({ $axios }) => {
             {
               callback: { click: null },
               name: 'relatedLayer',
-              zindex: 24,
+              zindex: 25,
               style: {
                 point: {
                   color: '#ff5757',
@@ -102,11 +120,11 @@ export default ({ $axios }) => {
                 }
               }
             },
-            { callback: { click: null }, name: 'drawLayer', zindex: 24 },
+            { callback: { click: null }, name: 'drawLayer', zindex: 26 },
             {
               callback: { click: null },
               name: 'selectedLayer',
-              zindex: 25,
+              zindex: 27,
               style: {
                 point: {
                   color: '#990000',
@@ -133,6 +151,18 @@ export default ({ $axios }) => {
           { name: 'currentLayer', color: 0x1188ff, size: 1, length: 1, order: 2, callback: { click: null, filter: null } },
 
           {
+            name: 'refLayer',
+            color: 0x118080,
+            line: {
+              color: 0x229090,
+              width: 0.01
+            },
+            size: 0.2,
+            length: 10000,
+            order: 3,
+            callback: { click: null }
+          },
+          {
             name: 'drawnLayer',
             color: 0x9911ff,
             line: {
@@ -141,7 +171,7 @@ export default ({ $axios }) => {
             },
             size: 0.2,
             length: 10000,
-            order: 3,
+            order: 4,
             callback: { click: null }
           },
           {
@@ -153,7 +183,7 @@ export default ({ $axios }) => {
             },
             size: 0.2,
             length: 10000,
-            order: 4,
+            order: 5,
             callback: { click: null }
           },
           {
@@ -161,7 +191,7 @@ export default ({ $axios }) => {
             color: 0x990000,
             size: 0.3,
             length: 10000,
-            order: 5,
+            order: 6,
             callback: { click: null, filter: null }
           }
         ]

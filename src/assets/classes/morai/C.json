@@ -5,6 +5,9 @@
       "layer": "C1",
       "type": "Point",
       "description": "신호등",
+      "ref": {
+        "layer": "D1"
+      },
       "name": "TRAFFICLIGHT",
       "attributes": {
         "Type": {
@@ -164,6 +167,9 @@
     {
       "layer": "C3",
       "type": "LineString",
+      "ref": {
+        "layer": "D3"
+      },
       "description": "차량방호안전시설",
       "name": "VEHICLEPROTECTIONSAFETY",
       "attributes": {

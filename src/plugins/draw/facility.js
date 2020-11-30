@@ -14,10 +14,11 @@ import { resetPointLayer, removeLineLoops } from '~/modules/cloud/event'
 import { drawNear, erase } from '~/modules/image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
+import consola from 'consola'
 
 const POINT_ID = 'Point'
 
-const ref = {}
+const ref = { api: {} }
 
 export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
@@ -70,33 +71,44 @@ export default ({ $axios, store: { commit, state } }) => {
         drawXY(mapRef.selectedLayer, latlng, false, id)
       },
 
-      async drawnFacilities(currentMark, layer) {
+      async drawnFacilities(currentMark, target, viewLayer, image) {
         /*
          * @summary - Get & Draw drawn Facilities
          */
-        if (ref.getFacility) {
-          ref.getFacility.cancel()
-          ref.getFacility = null
-        }
 
         let facilities
         if (!currentMark) currentMark = state.ls.currentMark
-        if (!imgRef.drawnLayer) return
-        if (!layer) layer = state.ls.targetLayer?.object?.layer
+        if (!viewLayer) viewLayer = 'drawnLayer'
+        if (image !== false && !imgRef[viewLayer]) return
+        if (!target) target = state.ls.targetLayer?.object?.layer
         const box = this.getExtentBox()
 
+        // Cancel Previous
+        if (ref.api[viewLayer]) {
+          ref.api[viewLayer].cancel()
+          ref.api[viewLayer] = null
+        }
+
         // get Facilities
-        if (layer) {
+        if (target) {
           const src = this.$axios.CancelToken.source()
-          let url = `/api/facility/box/${layer}`
-          ref.getFacility = src
+          let url = `/api/facility/box/${target}`
+          ref.api[viewLayer] = src
           const res = await $axios.post(url, { box }, { cancelToken: src.token })
           facilities = res.data
+
+          // draw Reference Layer
+          if (viewLayer === 'drawnLayer') {
+            console.log(state.ls.targetLayer.object)
+            const refLayer = state.ls.targetLayer.object?.ref?.layer
+            if (refLayer) this.drawnFacilities(currentMark, refLayer, 'refLayer', false)
+          }
         } else facilities = []
+        if (process.env.target === 'facility') consola.info(`Draw ${target} ${viewLayer}`, facilities)
 
         // Reset
-        await this.resetLayer('drawnLayer')
-        removeLineLoops()
+        await this.resetLayer(viewLayer)
+        removeLineLoops(viewLayer)
 
         // Filter Facility
         const task = state.ls.targetTask
@@ -105,8 +117,8 @@ export default ({ $axios, store: { commit, state } }) => {
         commit('setState', { props: ['facilities'], value: filteredFacilities })
 
         // Draw
-        await this.drawToImage(filteredFacilities, currentMark, imgRef.drawnLayer, true)
-        this.geojsonToMapCloud(filteredFacilities, 'drawnLayer')
+        if (image !== false) await this.drawToImage(filteredFacilities, currentMark, imgRef[viewLayer], true)
+        this.geojsonToMapCloud(filteredFacilities, viewLayer)
       },
 
       geojsonToMapCloud(geojsons, layer) {

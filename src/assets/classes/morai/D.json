@@ -6,6 +6,9 @@
       "type": "Point",
       "description": "연결된신호등",
       "name": "SYNCEDTRAFFICLIGHT",
+      "ref": {
+        "layer": "C1"
+      },
       "attributes": {
         "LinkIDs": {
           "type": "Array",
@@ -27,6 +30,9 @@
     },
     {
       "layer": "D2",
+      "ref": {
+        "layer": "D1"
+      },
       "type": "Point",
       "description": "교차로신호등통제기",
       "name": "INTERSECTIONCONTROLLER",
@@ -36,6 +42,9 @@
       "layer": "D3",
       "type": "Polygon",
       "description": "보도",
+      "ref": {
+        "layer": "C3"
+      },
       "name": "SIDEWALK",
       "attributes": {}
     }
