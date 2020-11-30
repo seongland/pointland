@@ -99,7 +99,6 @@ export default ({ $axios, store: { commit, state } }) => {
 
           // draw Reference Layer
           if (viewLayer === 'drawnLayer') {
-            console.log(state.ls.targetLayer.object)
             const refLayer = state.ls.targetLayer.object?.ref?.layer
             if (refLayer) this.drawnFacilities(currentMark, refLayer, 'refLayer', false)
           }
@@ -114,7 +113,7 @@ export default ({ $axios, store: { commit, state } }) => {
         const task = state.ls.targetTask
         let filteredFacilities = facilities
         if (task) filteredFacilities = filteredFacilities.filter(item => item.relations[task.prop] === task.data)
-        commit('setState', { props: ['facilities'], value: filteredFacilities })
+        if (viewLayer === 'drawnLayer') commit('setState', { props: ['facilities'], value: filteredFacilities })
 
         // Draw
         if (image !== false) await this.drawToImage(filteredFacilities, currentMark, imgRef[viewLayer], true)
