@@ -96,7 +96,6 @@ export default ({ $axios, store: { commit, state } }) => {
 
         // Reset
         await this.resetLayer('drawnLayer')
-        resetPointLayer(cloudRef.drawnLayer)
         removeLineLoops()
 
         // Filter Facility
@@ -153,17 +152,18 @@ export default ({ $axios, store: { commit, state } }) => {
       },
 
       async drawRelated(facility) {
-        const props = facility.props
-        for (const prop in props) {
-          const value = props[prop]
-          for (const group of this.groups)
-            for (const layerOpt of group.layers)
-              if (layerOpt.layer === props.layer && value) {
-                const method = layerOpt.attributes?.[prop]?.method
-                if (method === 'relate') this.drawRelatedID(value)
-                else if (method === 'multirelate') value.map(id => this.drawRelatedID(id))
-              }
-        }
+        const props = facility.properties
+        for (const group of this.groups)
+          for (const layerOpt of group.layers)
+            if (layerOpt.layer === props.layer) {
+              for (const attribute in layerOpt.attributes)
+                if (props[attribute]) {
+                  const method = layerOpt.attributes?.[attribute]?.method
+                  const value = props[attribute]
+                  if (method === 'relate') this.drawRelatedID(value)
+                  else if (method === 'multirelate') value.map(id => this.drawRelatedID(id))
+                }
+            }
         this.drawRelatedID(facility.id)
       },
 
