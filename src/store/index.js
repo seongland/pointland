@@ -61,8 +61,8 @@ export const mutations = {
       props.x = props.x + offset.x
       props.y = props.y + offset.y
       props.z = props.z + offset.z
-      geom.coordinates = xyto84(xyz[0], xyz[1])
-      geom.coordinates[2] = xyz[2]
+      geom.coordinates = xyto84(props.x, props.y)
+      geom.coordinates[2] = props.z
     }
     if (geom.type === 'LineString') {
       const xyz = props.xyzs[index]

@@ -1025,7 +1025,7 @@
     },
     {
       "layer": "B3",
-      "type": "Polygon",
+      "type": "Point",
       "description": "노면표시",
       "name": "SURFACEMARK",
       "attributes": {}

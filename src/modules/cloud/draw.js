@@ -260,7 +260,7 @@ function checkIntersectIndex(intersect, indexs) {
         if (mhtD < intersect.distanceToRay) index = i
       }
     }
-  if (!index) consola.error(intersect)
+  if (!index) consola.error(intersect, indexs)
   return index
 }
 

@@ -70,17 +70,21 @@
           <v-tooltip top v-else-if="object.method === 'multirelate'">
             <template v-slot:activator="{ on, attrs }">
               <v-row align="center" justify="space-around">
-                <v-select
-                  multiple
+                <v-combobox
                   outlined
-                  class="mx-3 mb-5"
+                  v-model="facility.properties[name]"
+                  multiple
+                  :items="facility.properties[name]"
+                  class="mx-8 mb-0"
+                  :label="name"
                   v-bind="attrs"
+                  small-chips
+                  readonly
                   v-on="on"
-                  @click="relateFacility(name, object.target)"
+                  @click:append-outer="relateFacility(name, object.target)"
+                  append-outer-icon="$plus"
                 >
-                  {{ object.placeholder }}
-                </v-select>
-                {{ facility.properties[name] }}
+                </v-combobox>
               </v-row>
             </template>
             <span>{{ object.tooltip }}</span>
