@@ -17,6 +17,8 @@ import jimp from 'jimp/browser/lib/jimp'
 
 const POINT_ID = 'Point'
 
+const ref = {}
+
 export default ({ $axios, store: { commit, state } }) => {
   Vue.mixin({
     methods: {
@@ -72,6 +74,11 @@ export default ({ $axios, store: { commit, state } }) => {
         /*
          * @summary - Get & Draw drawn Facilities
          */
+        if (ref.getFacility) {
+          ref.getFacility.cancel()
+          ref.getFacility = null
+        }
+
         let facilities
         if (!currentMark) currentMark = state.ls.currentMark
         if (!imgRef.drawnLayer) return
@@ -80,8 +87,10 @@ export default ({ $axios, store: { commit, state } }) => {
 
         // get Facilities
         if (layer) {
+          const src = this.$axios.CancelToken.source()
           let url = `/api/facility/box/${layer}`
-          const res = await $axios.post(url, { box })
+          ref.getFacility = src
+          const res = await $axios.post(url, { box }, { cancelToken: src.token })
           facilities = res.data
         } else facilities = []
 
