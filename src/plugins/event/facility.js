@@ -66,7 +66,7 @@ export default ({ store: { commit, state } }) => {
         // Debugging
         if (process.env.target === 'facility') {
           consola.info('ID', facility.id)
-          consola.info('Indexes', facility.indexes)
+          consola.info('Indexes', facility.indexes, index, index2)
           consola.info('selected : ', selected)
           consola.info('Facility : ', facility)
           consola.info('Event : ', event)
