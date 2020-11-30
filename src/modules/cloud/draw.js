@@ -221,7 +221,7 @@ function click3D(e) {
   let intersect = intersects[0]
   if (intersect) {
     intersect = tuneIntersect(intersect)
-    if (!intersect.index) return
+    if (intersect.index === undefined) return
     if (process.env.target === 'cloud') consola.info('3D Point', intersect)
     return intersect.object.click instanceof Function ? intersect.object.click(e, intersect) : null
   }
@@ -260,7 +260,7 @@ function checkIntersectIndex(intersect, indexs) {
         if (mhtD < intersect.distanceToRay) index = i
       }
     }
-  if (!index) consola.error(intersect, indexs)
+  if (index === undefined) consola.error(intersect, indexs)
   return index
 }
 

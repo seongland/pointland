@@ -19,7 +19,7 @@
           "type": "String",
           "optional": false,
           "placeholder": "교차로신호등통제기",
-          "tooltip": "신호등을 관리하는 가상의 위치의 신호등 제어기",
+          "tooltip": "교차로 전체의 신호등을 관리하는 가상의 위치의 신호등 제어기",
           "target": "D2",
           "method": "relate"
         }

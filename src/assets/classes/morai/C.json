@@ -150,6 +150,14 @@
               "description": "종형 신호등"
             }
           ]
+        },
+        "SyncedTrafficLightID": {
+          "type": "String",
+          "optional": false,
+          "placeholder": "동기신호등통제기",
+          "tooltip": "동기화된 신호등을 관리하는 가상의 위치의 신호등 제어기",
+          "target": "D1",
+          "method": "relate"
         }
       }
     },
