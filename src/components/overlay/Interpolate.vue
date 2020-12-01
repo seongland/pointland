@@ -5,29 +5,49 @@
         <v-card-actions>
           <v-card-title> Interpolate </v-card-title>
           <v-spacer />
-          <v-switch label="Reset Interval" v-model="interval" dense class="mx-3"></v-switch>
+          <v-switch label="Reset Interval" v-model="reset" dense class="mx-3"></v-switch>
         </v-card-actions>
         <v-divider />
 
-        <!-- Count -->
-        <v-tooltip top v-if="interval">
+        <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-card-text>
               <v-select
-                class="pt-0 mt-9"
+                class="pt-8 mt-0"
+                label="Method"
+                outlined
+                v-on="on"
+                v-model="method"
+                item-text="placeholder"
+                item-value="name"
+                :items="methods"
+                placeholder="보간 방법"
+              />
+            </v-card-text>
+          </template>
+          <span>보간 방법을 선택합니다</span>
+        </v-tooltip>
+
+        <!-- Count -->
+        <v-tooltip top v-if="reset">
+          <template v-slot:activator="{ on, attrs }">
+            <v-card-text>
+              <v-select
+                class="pt-0 mt-0"
                 label="Interval"
                 outlined
                 v-on="on"
                 rows="2"
                 v-model="count"
                 :items="insert"
-                placeholder="추가정보"
+                placeholder="사이 점의 개수"
               />
             </v-card-text>
           </template>
-          <span>예외사항이나 추가적인 정보를 상세히 기입합니다</span>
+          <span>사이에 올 점의 개수를 선택합니다</span>
         </v-tooltip>
 
+        <v-divider />
         <v-card-actions>
           <v-checkbox label="Z - Only" dense class="mx-3" v-model="zonly"></v-checkbox>
           <v-spacer />
@@ -39,15 +59,60 @@
 </template>
 
 <script>
+import consola from 'consola'
+import { xyto84 } from '~/server/api/addon/tool/coor'
+
 export default {
-  data: () => ({ count: undefined, insert: new Array(10).fill().map((_, i) => i), interval: false, zonly: true }),
+  data: () => ({
+    count: undefined,
+    insert: new Array(10).fill().map((_, i) => i),
+    reset: false,
+    zonly: true,
+    methods: [{ placeholder: '선형보간', name: 'linear' }],
+    method: 'linear'
+  }),
   props: {},
   computed: {},
   watch: {},
   mounted() {},
   methods: {
     apply() {
-      console.log(this.count, this.interval, this.zonly)
+      const state = this.$store.state
+      const facility = state.selected[0]
+
+      if (this.method === 'linear')
+        if (this.reset) {
+        } else {
+          const props = facility.properties
+          const xyzs = props.xyzs
+          const geom = facility.geometry
+          const indexes = facility.indexes
+          const coordinates = geom.coordinates
+          if (geom.type === 'LineString') {
+            const se = [indexes[0], indexes[indexes.length - 1]]
+            const start = Math.min(...se)
+            const end = Math.max(...se)
+            const count = end - start - 1
+            if (count < 1) return
+            const idxs = new Array(count).fill().map(i => i + start + 1)
+            if (process.env.target === 'facility') consola.info('Interpolating', idxs)
+            if (this.zonly)
+              for (const idx of idxs) {
+                const ratio = idx - start / end - start
+                const z = xyzs[start][2] + (xyzs[end][2] - xyzs[start][2]) * ratio
+                xyzs[idx][2] = z
+              }
+            else
+              for (const idx of idxs) {
+                const ratio = idx - start / end - start
+                const xyz = new Array(3).fill()
+                xyz.map(i => xyzs[start][i] + (xyzs[end][i] - xyzs[start][i]) * ratio)
+                xyzs[idx] = xyz
+              }
+          } else if (geom.type === 'Polygon') {
+          }
+        }
+      console.log(facility)
     }
   }
 }

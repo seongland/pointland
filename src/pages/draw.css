@@ -10,6 +10,7 @@
   width: 50px !important;
 }
 
+
 .wrapper {
   height: 100%;
   display: flex;
@@ -38,6 +39,6 @@
   box-shadow: 20px 20px 60px #000, -20px -20px 60px #0007 !important;
 }
 
-.small-map.left{
+.small-map.left {
   right: 510px !important;
 }

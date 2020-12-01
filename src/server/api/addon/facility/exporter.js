@@ -34,9 +34,11 @@ export const exporter = app => {
           f.properties.x = undefined
           f.properties.y = undefined
           f.properties.z = undefined
+          if (!f.geometry.coordinates[2]) return res.json({ error: 'No Z', facility: f })
         } else {
           f.geometry.coordinates = f.properties.xyzs
           f.properties.xyzs = undefined
+          for (const coor of f.geometry.coordinates) if (!coor[2]) return res.json({ error: 'No Z', facility: f })
         }
         return f
       })
