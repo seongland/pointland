@@ -126,7 +126,7 @@ const makeVectorLayer = ({ style, zindex, name }) => {
       const geometry = feature.getGeometry()
       if (geometry instanceof Point) {
         if (zoom >= 20) return bigPointStyle
-        else if (zoom >= 15) return midPointStyle
+        else if (zoom >= 16) return midPointStyle
         else return smallPointStyle
       } else return multiStyle
     }
