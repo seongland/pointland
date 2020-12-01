@@ -209,6 +209,7 @@ function click3D(e) {
   // Always Make New
   if (!(e.ctrlKey && e.shiftKey))
     for (const layerOpt of cloud.opt.pointLayers) {
+      if (!(layerOpt.callback.click instanceof Function)) continue
       if (!ref[layerOpt.name].visible) continue
       ref[layerOpt.name].click = layerOpt.callback.click
       targets.push(ref[layerOpt.name])
@@ -219,11 +220,12 @@ function click3D(e) {
   let intersects = cloud.raycaster.intersectObjects(targets)
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
   let intersect = intersects[0]
+  console.log(intersect)
   if (intersect) {
     intersect = tuneIntersect(intersect)
-    if (intersect.index === undefined) return
     if (process.env.target === 'cloud') consola.info('3D Point', intersect)
-    return intersect.object.click instanceof Function ? intersect.object.click(e, intersect) : null
+    if (intersect.index === undefined) return
+    return intersect.object.click(e, intersect)
   }
 
   // Make New
@@ -236,32 +238,24 @@ function click3D(e) {
 
 function tuneIntersect(intersect) {
   const geometry = intersect.object.geometry
-  const inputIndex = intersect.index
-  const addedIndex = inputIndex + geometry.drawRange.start
-  const index = checkIntersectIndex(intersect, [inputIndex, addedIndex])
+  const index = checkIntersectIndex(intersect, geometry.indexes)
   intersect.index = index
   return intersect
 }
 
-function checkIntersectIndex(intersect, indexs) {
+function checkIntersectIndex(intersect, indexes) {
   const geometry = intersect.object.geometry
   const positions = geometry.attributes.position.array
   const target = intersect.point
-  let index
-  for (const i of indexs)
-    if (geometry.indexes[i]) {
-      let id = geometry.indexes[i].id
-      if (geometry.ids[id].index === i) {
-        const mhtD =
-          (Math.abs(target.x - positions[3 * i]) +
-            Math.abs(target.y - positions[3 * i + 1]) +
-            Math.abs(target.z - positions[3 * i + 2])) /
-          3
-        if (mhtD < intersect.distanceToRay) index = i
-      }
+  for (const i in indexes)
+    if (indexes[i]) {
+      const mhtD =
+        (Math.abs(target.x - positions[3 * i]) +
+          Math.abs(target.y - positions[3 * i + 1]) +
+          Math.abs(target.z - positions[3 * i + 2])) /
+        3
+      if (mhtD < intersect.distanceToRay) return Number(i)
     }
-  if (index === undefined) consola.error(intersect, indexs)
-  return index
 }
 
 export { drawLas, drawHover, click3D }
