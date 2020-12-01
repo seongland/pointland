@@ -21,7 +21,6 @@ export default ({ store: { commit, state, $router } }) => {
             }
             return
           case 'Escape':
-            if (state.submit.ing || state.edit.ing) this.drawnFacilities()
             if (state.selected.length > 0) this.resetSelected()
             else this.drawnFacilities()
             return
@@ -67,9 +66,8 @@ export default ({ store: { commit, state, $router } }) => {
 
             case 'i':
             case 'I':
-              if (state.selected.length > 0) {
-                commit('setState', { props: ['interpolating'], value: true })
-              }
+              if (state.selected.length === 1)
+                if (state.selected[0].indexes.length > 1) commit('setState', { props: ['interpolating'], value: true })
               return
 
             // change tabs
