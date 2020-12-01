@@ -27,12 +27,9 @@
         :type="targetLayer.object ? targetLayer.object.type : ''"
       />
     </v-dialog>
-    <v-dialog v-if="deleting" v-model="deleting">
-      <del-data :id="$store.state.del.id" />
-    </v-dialog>
-    <v-dialog v-if="editing" v-model="showEdit">
-      <edit-data :id="$store.state.edit.id" />
-    </v-dialog>
+    <v-dialog v-if="deleting" v-model="deleting"> <del-data :id="$store.state.del.id" /> </v-dialog>
+    <v-dialog v-if="editing" v-model="showEdit"> <edit-data :id="$store.state.edit.id" /> </v-dialog>
+    <v-dialog v-if="interpolating" v-model="interpolating"> <interpolate /> </v-dialog>
 
     <!-- loading -->
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
@@ -43,9 +40,12 @@
 import GeoMap from '~/components/tabs/GeoMap'
 import LasCloud from '~/components/tabs/LasCloud'
 import ImmsImage from '~/components/tabs/ImmsImage'
+
+import Interpolate from '~/components/overlay/Interpolate'
 import InputData from '~/components/overlay/InputData'
 import EditData from '~/components/overlay/EditData'
 import DelData from '~/components/overlay/DelData'
+
 import FacilityTable from '~/components/sidebar/FacilityTable'
 import LayerList from '~/components/sidebar/LayerList'
 import TabHeader from '~/components/header/TabHeader'
@@ -64,7 +64,7 @@ export default {
       const roundObj = res.data
       rounds.push(roundObj)
     }
-    if (process.env.dev) consola.info('Rounds', rounds)
+    if (process.env.target === 'move') consola.info('Rounds', rounds)
     this.setRounds(rounds)
   },
 
@@ -101,6 +101,14 @@ export default {
         if (value === false) this.drawnFacilities()
         this.$store.commit('setState', { props: ['edit', 'show'], value })
         this.$store.commit('setState', { props: ['edit', 'ing'], value })
+      }
+    },
+    interpolating: {
+      get() {
+        return this.$store.state.interpolating
+      },
+      set(value) {
+        this.$store.commit('setState', { props: ['interpolating'], value })
       }
     },
     editing() {

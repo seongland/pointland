@@ -182,7 +182,7 @@ export default {
         this.drawLas(lasJson, areaName)
         commit('setLoading', false)
         this.lasList.push(areaName)
-        if (process.env.target === 'cloud') consola.success('Drawed', areaName)
+        if (process.env.target === 'draw') consola.success('Drawed', areaName)
       })
     },
 
@@ -259,7 +259,7 @@ export default {
     dbconnect.onsuccess = ev => {
       this.lasCaches = ev.target.result
       const transaction = this.lasCaches.transaction('LasJson', 'readwrite')
-      transaction.onerror = ev => console.error(ev.target.error.message)
+      transaction.onerror = ev => consola.error(ev.target.error.message)
     }
     dbconnect.onupgradeneeded = ev => {
       this.lasCaches = ev.target.result

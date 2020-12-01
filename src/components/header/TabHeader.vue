@@ -61,7 +61,7 @@ export default {
         return this.$store.state.ls.currentRound
       },
       set(values) {
-        if (process.env.dev) consola.info('Set Round', values)
+        if (process.env.target === 'move') consola.info('Set Round', values)
         this.setRound(values)
       }
     },
@@ -70,7 +70,7 @@ export default {
         return this.$store.state.ls.currentSnap
       },
       set(values) {
-        if (process.env.dev) consola.info('Set Snap', values)
+        if (process.env.target === 'move') consola.info('Set Snap', values)
         this.setSnap(values)
       }
     },
@@ -79,7 +79,7 @@ export default {
         return this.$store.state.ls.currentMark
       },
       set(values) {
-        if (process.env.dev) consola.info('Set Mark', values)
+        if (process.env.target === 'move') consola.info('Set Mark', values)
         this.setMark(values)
       }
     }

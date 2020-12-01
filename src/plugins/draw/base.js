@@ -72,7 +72,7 @@ export default ({}) => {
             const uri = await imgLayer[direction].image.getBase64Async('image/png')
             imgLayer[direction].uri = uri
           }
-        if (process.env.dev) consola.success(`Reset ${name}`)
+        if (process.env.target === 'draw') consola.success(`Reset ${name}`)
       }
     }
   })

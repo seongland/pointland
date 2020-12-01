@@ -183,7 +183,6 @@ export default {
           for (const layerObj of classObj.layers)
             if (this.facility.properties.layer === layerObj.layer) {
               this.description = layerObj.description
-              consola.info('targetLayer', layerObj)
               return layerObj
             }
       },
@@ -231,7 +230,7 @@ export default {
       get(`/api/user?id=${facility.edited_by}`, config).then(res => (this.editedBy = res.data[0].email))
     else this.editedBy = DFT_USER
 
-    if (process.env.dev) consola.info('Editing is', facility)
+    if (process.env.target === 'facility') consola.info('Editing is', facility)
   },
 
   methods: {

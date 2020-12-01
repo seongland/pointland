@@ -41,7 +41,6 @@ export const mutations = {
     const app = this.$router.app
     if (index === undefined && object === undefined) {
       state.targetLayer.index = undefined
-
       state.targetLayer.object = undefined
       app.drawnFacilities(state.currentMark)
     }
@@ -125,7 +124,7 @@ export const mutations = {
   setSnap(state, snapObj) {
     const previous = state.currentSnap
     const app = this.$router.app
-    if (process.env.dev) consola.info('New Snap', snapObj)
+    if (process.env.target === 'move') consola.info('New Snap', snapObj)
 
     let markIndex
     if (state.currentSnap?.marks && state.currentMark)
@@ -152,7 +151,7 @@ export const mutations = {
 
   setMark(state, markObj) {
     if (!markObj) return
-    if (process.env.dev) consola.info('Mark', markObj)
+    if (process.env.target === 'move') consola.info('Mark', markObj)
     state.currentMark = markObj
   }
 }

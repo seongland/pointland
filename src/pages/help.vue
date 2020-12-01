@@ -106,7 +106,7 @@
           <v-card-text><kbd style="background: #990000">붉은색</kbd> - 선택한 포인트</v-card-text>
           <v-card-text><kbd style="background: #f07a7a">주황색</kbd> - 현재 선택 및 연관 시설물</v-card-text>
           <v-card-text><kbd style="background: #9911ff">보라색</kbd> - 현재 보이는 시설물들</v-card-text>
-          <v-card-text><kbd style="background: #129">곤색</kbd> - 참조 시설물</v-card-text>
+          <v-card-text><kbd style="background: #118080">초록색</kbd> - 참고 시설물</v-card-text>
 
           <v-card-subtitle>마크</v-card-subtitle>
           <v-card-text><kbd style="background: #18f">파란색</kbd> - 현재 마크</v-card-text>

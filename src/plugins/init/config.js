@@ -90,15 +90,15 @@ export default ({ $axios }) => {
               zindex: 24,
               style: {
                 point: {
-                  color: '#9911ff',
+                  color: '#9003fc',
                   radius: 2
                 },
                 line: {
-                  color: '#aa66ff',
+                  color: '#a013ff',
                   width: 1
                 },
                 polygon: {
-                  fill: '#aa66ff99'
+                  fill: '#a013ff99'
                 }
               }
             },
@@ -164,12 +164,12 @@ export default ({ $axios }) => {
           },
           {
             name: 'drawnLayer',
-            color: 0x9911ff,
+            color: 0x9003fc,
             line: {
-              color: 0xaa66ff,
-              width: 0.01
+              color: 0xa013ff,
+              width: 0.02
             },
-            size: 0.2,
+            size: 0.25,
             length: 10000,
             order: 4,
             callback: { click: null }

@@ -37,7 +37,6 @@ export default ({ store: { commit, state, $router } }) => {
         window.shiftKey = event.shiftKey
         if ($router.currentRoute.name !== 'draw') return
         if (event.ctrlKey && 'fF123,.mMsSaAiI'.indexOf(event.key) !== -1) event.preventDefault()
-        if (event.ctrlKey && event.code == 84) event.preventDefault()
         if (state.submit.show || state.edit.show || state.del.ing || state.loading) return
 
         let seqIndex
@@ -64,6 +63,13 @@ export default ({ store: { commit, state, $router } }) => {
                 cloudRef.cloud.transform.enabled = !state.visible.transform
               }
               commit('setState', { props: ['visible', 'transform'], value: !state.visible.transform })
+              return
+
+            case 'i':
+            case 'I':
+              if (state.selected.length > 0) {
+                commit('setState', { props: ['interpolating'], value: true })
+              }
               return
 
             // change tabs

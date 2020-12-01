@@ -85,7 +85,7 @@ export default ({ store: { commit, state } }) => {
           for (const i of facility.indexes) {
             const xyz = facility.properties.xyzs[i]
             const vid = facility.id + this.idSep + i
-            if (process.env.target === 'facility') consola.info('Draw Select', xyz, vid)
+            if (process.env.target === 'draw') consola.info('Draw Select', xyz, vid)
             promises.push(this.drawPointXYZ(xyz, vid, event, false))
           }
           await Promise.all(promises)
@@ -95,7 +95,7 @@ export default ({ store: { commit, state } }) => {
           for (const vidSet of facility.indexes) {
             const xyz = facility.properties.xyzs[vidSet[0]][vidSet[1]]
             const vid = facility.id + this.idSep + vidSet[0] + this.idSep + vidSet[1]
-            if (process.env.target === 'facility') consola.info('Draw Select', xyz, vid)
+            if (process.env.target === 'draw') consola.info('Draw Select', xyz, vid)
             promises.push(this.drawPointXYZ(xyz, vid, event, false))
           }
           await Promise.all(promises)
