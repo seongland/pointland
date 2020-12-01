@@ -17,7 +17,7 @@
                 <v-divider />
                 <v-card-subtitle>전역 단축키</v-card-subtitle>
                 <v-card-text>
-                  <kbd>Enter</kbd> - 도화 데이터를 제출한다 - 제출할 데이터가 없으면 시설물을 새로고침한다
+                  <kbd>Enter</kbd> - 도화 데이터를 제출한다
                 </v-card-text>
                 <v-card-text><kbd>Escape</kbd> - 선택해제 - 해제할 데이터가 없으가 시설물을 새로고침한다</v-card-text>
                 <v-card-text><kbd>Delete</kbd> - 맵에서 선택한 시설물을 삭제한다</v-card-text>

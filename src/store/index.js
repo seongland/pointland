@@ -13,7 +13,8 @@ export const state = () => ({
   edit: { show: false, ing: false, id: undefined, loading: false, target: undefined },
   del: { ing: false, id: undefined, loading: false },
   selected: [],
-  history: []
+  history: [],
+  interpolating: false
 })
 
 export const mutations = {
