@@ -31,7 +31,7 @@ export default ({ store: { commit, state } }) => {
         const roundName = feature.get('round')
         const snapName = feature.get('snap')
         const markName = feature.get('name')
-        if (process.env.dev) consola.info('Click', roundName, snapName, markName)
+        if (process.env.target === 'move') consola.info('Click', roundName, snapName, markName)
         for (const roundObj of state.ls.rounds)
           if (roundObj.name === roundName) this.setRound({ ...roundObj, snap: snapName, mark: markName })
       },

@@ -95,6 +95,7 @@ export default ({ $axios, store: { commit, state } }) => {
           let url = `/api/facility/box/${target}`
           ref.api[viewLayer] = src
           const res = await $axios.post(url, { box }, { cancelToken: src.token })
+          ref.api[viewLayer] = null
           facilities = res.data
 
           // draw Reference Layer
@@ -103,11 +104,14 @@ export default ({ $axios, store: { commit, state } }) => {
             if (refLayer) this.drawnFacilities(currentMark, refLayer, 'refLayer', false)
           }
         } else facilities = []
-        if (process.env.target === 'facility') consola.info(`Draw ${target} ${viewLayer}`, facilities)
 
         // Reset
         await this.resetLayer(viewLayer)
         removeLineLoops(viewLayer)
+        if (!state.ls.targetLayer.object?.ref?.layer) {
+          await this.resetLayer('refLayer')
+          removeLineLoops('refLayer')
+        }
 
         // Filter Facility
         const task = state.ls.targetTask

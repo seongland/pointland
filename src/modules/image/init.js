@@ -21,7 +21,7 @@ export function initImg({ front, back }) {
   ref.drawnLayer = {
     front: front.layer.drawn,
     back: back.layer.drawn,
-    color: 0x9911ffff,
+    color: 0x9003fcff,
     name: 'drawnLayer'
   }
   ref.depth = { front, back }

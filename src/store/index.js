@@ -137,7 +137,7 @@ export const actions = {
       if (args) for (const key of Object.keys(args)) feature.properties[key] = args[key]
     }
 
-    if (process.env.dev) consola.success('Result Feature', feature)
+    if (process.env.target === 'facility') consola.success('Result Feature', feature)
     const config = app.getAuthConfig()
     const res = await this.$axios.post('/api/facility', feature, config)
     commit('setState', { props: ['submit', 'loading'], value: false })
@@ -159,7 +159,7 @@ export const actions = {
     app.resetSelected()
     app.removeVector('drawnLayer', id)
     app.drawnFacilities()
-    if (process.env.dev) consola.success('Removed', res.data)
+    if (process.env.target === 'facility') consola.success('Removed', res.data)
   },
 
   async edit({ commit }, facility) {
@@ -172,6 +172,6 @@ export const actions = {
     commit('setState', { props: ['edit', 'loading'], value: false })
     app.resetSelected()
     app.drawnFacilities()
-    if (process.env.dev) consola.success('Edited', res.data)
+    if (process.env.target === 'facility') consola.success('Edited', res.data)
   }
 }

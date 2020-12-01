@@ -18,7 +18,7 @@ export async function tablePath(round, snap, meta) {
 export async function getTable(round, snap, meta) {
   let records
   const path = await tablePath(round, snap, meta)
-  if (process.env.dev) consola.info('Path : ', path)
+  if (process.env.target === 'move') consola.info('Path : ', path)
   if (meta.ext === 'dbf') records = await getDbfRecords(path)
   else if (meta.ext === 'csv') records = await getCsvRecords(path)
 
