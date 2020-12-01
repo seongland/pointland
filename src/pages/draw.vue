@@ -53,7 +53,18 @@ import consola from 'consola'
 
 export default {
   middleware: 'authentication',
-  components: { TabHeader, GeoMap, LasCloud, ImmsImage, InputData, EditData, DelData, FacilityTable, LayerList },
+  components: {
+    Interpolate,
+    TabHeader,
+    GeoMap,
+    LasCloud,
+    ImmsImage,
+    InputData,
+    EditData,
+    DelData,
+    FacilityTable,
+    LayerList
+  },
   fetchOnServer: false,
 
   async fetch() {

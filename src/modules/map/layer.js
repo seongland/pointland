@@ -93,13 +93,23 @@ const makeVectorLayer = ({ style, zindex, name }) => {
   /**
    * @summary - Make Vector Layer Tempalte
    */
-  let pointStyle, multiStyle
+  let bigPointStyle, midPointStyle, smallPointStyle, multiStyle
   if (style) {
-    if (style.point)
-      pointStyle = makePointStyle({
+    if (style.point) {
+      bigPointStyle = makePointStyle({
         color: style.point.color,
         radius: style.point.radius
       })
+      midPointStyle = makePointStyle({
+        color: style.point.color,
+        radius: (style.point.radius / 3) * 2
+      })
+      smallPointStyle = makePointStyle({
+        color: style.point.color,
+        radius: style.point.radius / 3
+      })
+    }
+
     if (style.line)
       multiStyle = makeLineStyle({
         color: style.line.color,
@@ -112,9 +122,13 @@ const makeVectorLayer = ({ style, zindex, name }) => {
   const vectorLayer = new VectorLayer({
     source: vectorSrc,
     style: feature => {
+      const zoom = ref.map.getView().getZoom()
       const geometry = feature.getGeometry()
-      if (geometry instanceof Point) return pointStyle
-      else return multiStyle
+      if (geometry instanceof Point) {
+        if (zoom >= 20) return bigPointStyle
+        else if (zoom >= 15) return midPointStyle
+        else return smallPointStyle
+      } else return multiStyle
     }
   })
   if (zindex) vectorLayer.setZIndex(zindex)

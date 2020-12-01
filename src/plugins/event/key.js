@@ -154,7 +154,7 @@ export default ({ store: { commit, state, $router } }) => {
                   commit('setState', { props: ['submit', 'ing'], value: true })
                   commit('setState', { props: ['submit', 'show'], value: true })
                 }
-              } else this.drawnFacilities()
+              }
               return
           }
         if (process.env.target === 'key') consola.info('Pressed', event.key)

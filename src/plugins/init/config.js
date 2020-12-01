@@ -91,7 +91,7 @@ export default ({ $axios }) => {
               style: {
                 point: {
                   color: '#9003fc',
-                  radius: 2
+                  radius: 3
                 },
                 line: {
                   color: '#a013ff',
@@ -157,7 +157,7 @@ export default ({ $axios }) => {
               color: 0x229090,
               width: 0.01
             },
-            size: 0.2,
+            size: 0.15,
             length: 10000,
             order: 3,
             callback: { click: null }
@@ -169,7 +169,7 @@ export default ({ $axios }) => {
               color: 0xa013ff,
               width: 0.02
             },
-            size: 0.25,
+            size: 0.3,
             length: 10000,
             order: 4,
             callback: { click: null }
@@ -189,7 +189,7 @@ export default ({ $axios }) => {
           {
             name: 'selectedLayer',
             color: 0x990000,
-            size: 0.3,
+            size: 0.4,
             length: 10000,
             order: 6,
             callback: { click: null, filter: null }
