@@ -49,7 +49,7 @@
 
         <v-divider />
         <v-card-actions>
-          <v-checkbox label="Z - Only" dense class="mx-3" v-model="zonly"></v-checkbox>
+          <v-checkbox v-if="!reset" label="Z - Only" dense class="mx-3" v-model="zonly"></v-checkbox>
           <v-spacer />
           <v-btn class="mr-3" @click="apply">Apply</v-btn>
         </v-card-actions>
