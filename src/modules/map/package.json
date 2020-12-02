@@ -1,0 +1,10 @@
+{
+  "name": "geosvr-ol-map",
+  "description": "Vector, Geoserver Template Openlayers Wrapper Module",
+  "author": "seonglae",
+  "private": true,
+  "dependencies": {
+    "consola": "^2.15.0",
+    "ol": "^6.2.1"
+  }
+}
