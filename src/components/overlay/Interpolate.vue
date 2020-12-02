@@ -64,7 +64,7 @@ import { xyto84 } from '~/server/api/addon/tool/coor'
 
 export default {
   data: () => ({
-    count: undefined,
+    count: 1,
     insert: new Array(10).fill().map((_, i) => i),
     reset: false,
     zonly: true,
@@ -181,8 +181,95 @@ export default {
       this.selectFacility(facility, index, index2, { shiftKey: true })
     },
 
-    resetLine() {},
-    resetPolygon() {}
+    async resetLine() {
+      // Default Variables
+      const state = this.$store.state
+      const facility = state.selected[0]
+      const props = facility.properties
+      const xyzs = props.xyzs
+      const geom = facility.geometry
+      const indexes = facility.indexes
+      const coors = geom.coordinates
+
+      // Type Variable
+      const se = [indexes[0], indexes[indexes.length - 1]]
+      const start = Math.min(...se)
+      const end = Math.max(...se)
+
+      const count = this.count
+      const idxs = new Array(count).fill().map((_, i) => i + start + 1)
+      if (process.env.target === 'facility') consola.info('Interpolating', idxs, start, end)
+
+      // make array
+      let insertXYZs = []
+      let insertCoors = []
+      for (const idx of idxs) {
+        const ratio = (idx - start) / (count + 1)
+        let xyz = new Array(3).fill()
+        xyz = xyz.map((_, i) => xyzs[start][i] + (xyzs[end][i] - xyzs[start][i]) * ratio)
+        insertXYZs.push(xyz)
+        let coor = xyto84(xyz[0], xyz[1])
+        coor[2] = xyz[2]
+        insertCoors.push(coor)
+      }
+
+      // insert
+      xyzs.splice(start + 1, end - start - 1)
+      xyzs.splice(start + 1, 0, ...insertXYZs)
+      coors.splice(start + 1, end - start - 1)
+      coors.splice(start + 1, 0, ...insertCoors)
+
+      await this.selectFacility(facility, start, 0, { shiftKey: true })
+      this.selectFacility(facility, start + count + 1, 0, { shiftKey: true })
+    },
+
+    async resetPolygon() {
+      // Default Variables
+      const state = this.$store.state
+      const facility = state.selected[0]
+      const props = facility.properties
+      const xyzs = props.xyzs
+      const geom = facility.geometry
+      const indexes = facility.indexes
+      const coors = geom.coordinates
+
+      // Type Variable
+      const index = facility.index
+      const se = [indexes[0][1], indexes[indexes.length - 1][1]]
+      const start = Math.min(...se)
+      const end = Math.max(...se)
+
+      // For reselect shift
+      let index2
+      if (start === facility.index2) index2 = start
+      else if (end === facility.index2) index2 = end
+
+      const count = this.count
+      const idxs = new Array(count).fill().map((_, i) => i + start + 1)
+      if (process.env.target === 'facility') consola.info('Interpolating', idxs, start, end)
+
+      // make array
+      let insertXYZs = []
+      let insertCoors = []
+      for (const idx of idxs) {
+        const ratio = (idx - start) / (count + 1)
+        let xyz = new Array(3).fill()
+        xyz = xyz.map((_, i) => xyzs[index][start][i] + (xyzs[index][end][i] - xyzs[index][start][i]) * ratio)
+        insertXYZs.push(xyz)
+        let coor = xyto84(xyz[0], xyz[1])
+        coor[2] = xyz[2]
+        insertCoors.push(coor)
+      }
+
+      // insert
+      xyzs[index].splice(start + 1, end - start - 1)
+      xyzs[index].splice(start + 1, 0, ...insertXYZs)
+      coors[index].splice(start + 1, end - start - 1)
+      coors[index].splice(start + 1, 0, ...insertCoors)
+
+      await this.selectFacility(facility, index, start, { shiftKey: true })
+      this.selectFacility(facility, index, start + count + 1, { shiftKey: true })
+    }
   }
 }
 </script>
