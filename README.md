@@ -36,6 +36,15 @@ pip install psycopg2-binary
 sudo mount -t cifs "\\\\10.1.0.108\\mms_test2\\mms_test2" /mnt/10.2.0.108/mms_test2 -o user='stryx',pass='emfRoskfk!23',vers=2.0
 ```
 
+## Dependancy
+- pull
+- push
+```bash
+git subtree pull --prefix src/modules/map easy-ol master
+git subtree push --prefix src/modules/cloud easy-three-js master
+```
+
+
 ## Windows
 ```cmd
 mklink /d "c:\mnt\10.2.0.108\mms_test2" "\\10.1.0.112\mms_test2"
