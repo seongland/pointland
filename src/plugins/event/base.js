@@ -60,7 +60,7 @@ export default ({ store: { commit, state } }) => {
         const config = this.getAuthConfig()
         config.data = { snap: snapObj }
         const snapRes = await this.$axios.post(apiUrl, config)
-        snapObj.areas = snapRes.data.areas
+        snapObj.zones = snapRes.data.zones
         snapObj.marks = snapRes.data.marks
         const previous = state.ls.currentSnap
 

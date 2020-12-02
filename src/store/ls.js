@@ -143,7 +143,7 @@ export const mutations = {
     else if (!markObj) markObj = snapObj.marks[0]
 
     if (previous && !(snapObj.name === previous.name && previous.round === snapObj.round)) {
-      previous.areas = undefined
+      previous.zones = undefined
       previous.marks = undefined
     }
     app.setMark(markObj)

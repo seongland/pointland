@@ -35,17 +35,17 @@ export default app => {
     const snapName = req.params.snap
     const snapObj = req.body.data.snap
 
-    let markPromise, areaPromise
+    let markPromise, zonePromise
     try {
       markPromise = getTable(roundName, snapName, snapObj.image.meta)
-      areaPromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
+      zonePromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
     } catch (e) {
       consola.error(e)
       return res.json(false)
     }
-    const [marks, areas] = await Promise.all([markPromise, areaPromise])
+    const [marks, zones] = await Promise.all([markPromise, zonePromise])
     snapObj.marks = marks
-    snapObj.areas = areas
+    snapObj.zones = zones
 
     res.json(snapObj)
   }
@@ -55,17 +55,17 @@ export default app => {
     const snapName = req.params.snap
     const snapObj = req.body.data.snap
 
-    let markPromise, areaPromise
+    let markPromise, zonePromise
     try {
       markPromise = getTable(roundName, snapName, snapObj.image.meta)
-      areaPromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
+      zonePromise = getTable(roundName, snapName, snapObj.pointcloud.meta)
     } catch (e) {
       consola.error(e)
       return res.json(false)
     }
-    const [marks, areas] = await Promise.all([markPromise, areaPromise])
+    const [marks, zones] = await Promise.all([markPromise, zonePromise])
     snapObj.marks = marks
-    snapObj.areas = areas
+    snapObj.zones = zones
 
     uploadMarks(marks, snapName, roundName)
 
