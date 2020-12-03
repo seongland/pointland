@@ -1,6 +1,6 @@
-import createModel from './rounds.model'
-import Rounds from './rounds.class'
-import hooks from './rounds.hooks'
+import createModel from './zones.model'
+import Rounds from './zones.class'
+import hooks from './zones.hooks'
 
 export default app => {
   const options = {
