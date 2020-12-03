@@ -7,7 +7,7 @@ import cors from 'cors'
 
 import authentication from './feathers/authentication'
 import appHooks from './feathers/app.hooks'
-import services from './services'
+import services from './feathers/services'
 import meta from './addon/meta'
 import image from './addon/image/'
 import pointcloud from './addon/pointcloud/'

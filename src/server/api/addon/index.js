@@ -1,5 +1,5 @@
 import consola from 'consola'
-import logger, { getUserLogger } from '../logger'
+import logger, { getUserLogger } from '../inout/logger'
 
 function mixinErrHandler(err, req, res) {
   err.url = req.url
