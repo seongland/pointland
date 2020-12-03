@@ -1,5 +1,5 @@
 {
-  "name": "geosvr-ol-map",
+  "name": "easy-ol",
   "description": "Vector, Geoserver Template Openlayers Wrapper Module",
   "author": "seonglae",
   "private": true,
