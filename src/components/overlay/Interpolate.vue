@@ -80,83 +80,109 @@ export default {
       const state = this.$store.state
       const commit = this.$store.commit
       const facility = state.selected[0]
+      const geom = facility.geometry
 
       if (this.method === 'linear')
         if (this.reset) {
+          if (geom.type === 'LineString') this.resetLine()
+          else if (geom.type === 'Polygon') this.resetPolygon()
         } else {
-          const props = facility.properties
-          const xyzs = props.xyzs
-          const geom = facility.geometry
-          const indexes = facility.indexes
-          const coors = geom.coordinates
-          if (geom.type === 'LineString') {
-            let index
-            const se = [indexes[0], indexes[indexes.length - 1]]
-            const start = Math.min(...se)
-            const end = Math.max(...se)
-
-            // For reselect shift
-            if (start === facility.index) index = end
-            else if (end === facility.index) index = start
-
-            const count = end - start - 1
-            if (count < 1) return
-            const idxs = new Array(count).fill().map((_, i) => i + start + 1)
-            if (process.env.target === 'facility') consola.info('Interpolating', idxs, start, end)
-            if (this.zonly)
-              for (const idx of idxs) {
-                const ratio = (idx - start) / (end - start)
-                const z = xyzs[start][2] + (xyzs[end][2] - xyzs[start][2]) * ratio
-                xyzs[idx][2] = z
-                coors[idx][2] = z
-              }
-            else
-              for (const idx of idxs) {
-                const ratio = (idx - start) / (end - start)
-                let xyz = new Array(3).fill()
-                xyz = xyz.map((_, i) => xyzs[start][i] + (xyzs[end][i] - xyzs[start][i]) * ratio)
-                xyzs[idx] = xyz
-                coors[idx] = xyto84(xyz[0], xyz[1])
-                coors[idx][2] = xyz[2]
-              }
-            this.selectFacility(facility, facility.index, index, { shiftKey: true })
-          } else if (geom.type === 'Polygon') {
-            let index2
-            const index = facility.index
-            const se = [indexes[0][1], indexes[indexes.length - 1][1]]
-            const start = Math.min(...se)
-            const end = Math.max(...se)
-
-            // For reselect shift
-            if (start === facility.index2) index2 = end
-            else if (end === facility.index2) index2 = start
-
-            const count = end - start - 1
-            if (count < 1) return
-            const idxs = new Array(count).fill().map((_, i) => i + start + 1)
-            if (process.env.target === 'facility') consola.info('Interpolating', idxs, start, end)
-
-            if (this.zonly)
-              for (const idx of idxs) {
-                const ratio = (idx - start) / (end - start)
-                const z = xyzs[start][2] + (xyzs[end][2] - xyzs[start][2]) * ratio
-                xyzs[idx][2] = z
-                coors[idx][2] = z
-              }
-            else
-              for (const idx of idxs) {
-                const ratio = (idx - start) / (end - start)
-                let xyz = new Array(3).fill()
-                xyz = xyz.map((_, i) => xyzs[start][i] + (xyzs[end][i] - xyzs[start][i]) * ratio)
-                xyzs[idx] = xyz
-                coors[idx] = xyto84(xyz[0], xyz[1])
-                coors[idx][2] = xyz[2]
-              }
-            this.selectFacility(facility, facility.index, index2, { shiftKey: true })
-          }
+          if (geom.type === 'LineString') this.interpolateLine()
+          else if (geom.type === 'Polygon') this.interpolatePolygon()
         }
       commit('setState', { props: ['interpolating'], value: false })
-    }
+    },
+
+    interpolateLine() {
+      // Default Variables
+      const state = this.$store.state
+      const facility = state.selected[0]
+      const props = facility.properties
+      const xyzs = props.xyzs
+      const geom = facility.geometry
+      const indexes = facility.indexes
+      const coors = geom.coordinates
+
+      // Type Variable
+      const se = [indexes[0], indexes[indexes.length - 1]]
+      const start = Math.min(...se)
+      const end = Math.max(...se)
+
+      // For reselect shift
+      let index
+      if (start === facility.index) index = end
+      else if (end === facility.index) index = start
+
+      const count = end - start - 1
+      if (count < 1) return
+      const idxs = new Array(count).fill().map((_, i) => i + start + 1)
+      if (process.env.target === 'facility') consola.info('Interpolating', idxs, start, end)
+      if (this.zonly)
+        for (const idx of idxs) {
+          const ratio = (idx - start) / (end - start)
+          const z = xyzs[start][2] + (xyzs[end][2] - xyzs[start][2]) * ratio
+          xyzs[idx][2] = z
+          coors[idx][2] = z
+        }
+      else
+        for (const idx of idxs) {
+          const ratio = (idx - start) / (end - start)
+          let xyz = new Array(3).fill()
+          xyz = xyz.map((_, i) => xyzs[start][i] + (xyzs[end][i] - xyzs[start][i]) * ratio)
+          xyzs[idx] = xyz
+          coors[idx] = xyto84(xyz[0], xyz[1])
+          coors[idx][2] = xyz[2]
+        }
+      this.selectFacility(facility, facility.index, index, { shiftKey: true })
+    },
+
+    interpolatePolygon() {
+      // Default Variables
+      const state = this.$store.state
+      const facility = state.selected[0]
+      const props = facility.properties
+      const xyzs = props.xyzs
+      const geom = facility.geometry
+      const indexes = facility.indexes
+      const coors = geom.coordinates
+
+      // Type Variable
+      const index = facility.index
+      const se = [indexes[0][1], indexes[indexes.length - 1][1]]
+      const start = Math.min(...se)
+      const end = Math.max(...se)
+
+      // For reselect shift
+      let index2
+      if (start === facility.index2) index2 = start
+      else if (end === facility.index2) index2 = end
+
+      const count = end - start - 1
+      if (count < 1) return
+      const idxs = new Array(count).fill().map((_, i) => i + start + 1)
+      if (process.env.target === 'facility') consola.info('Interpolating', idxs, start, end)
+
+      if (this.zonly)
+        for (const idx of idxs) {
+          const ratio = (idx - start) / (end - start)
+          const z = xyzs[index][start][2] + (xyzs[index][end][2] - xyzs[index][start][2]) * ratio
+          xyzs[index][idx][2] = z
+          coors[index][idx][2] = z
+        }
+      else
+        for (const idx of idxs) {
+          const ratio = (idx - start) / (end - start)
+          let xyz = new Array(3).fill()
+          xyz = xyz.map((_, i) => xyzs[index][start][i] + (xyzs[index][end][i] - xyzs[index][start][i]) * ratio)
+          xyzs[index][idx] = xyz
+          coors[index][idx] = xyto84(xyz[0], xyz[1])
+          coors[index][idx][2] = xyz[2]
+        }
+      this.selectFacility(facility, index, index2, { shiftKey: true })
+    },
+
+    resetLine() {},
+    resetPolygon() {}
   }
 }
 </script>
