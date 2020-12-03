@@ -123,7 +123,7 @@
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-card-text>
-              <v-textarea
+              <v-textzone
                 class="pt-0 mt-0"
                 label="Comment"
                 v-bind="attrs"

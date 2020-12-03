@@ -18,7 +18,7 @@ const image = {
       y: { name: 'y_utm', num: true },
       roll: { name: 'roll', num: true },
       pitch: { name: 'pitch', num: true },
-      mainArea: { name: 'file_las_close', num: false },
+      mainZone: { name: 'file_las_close', num: false },
       lasList: { name: 'file_las_se', num: false }
     },
     prefix: {

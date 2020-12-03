@@ -17,7 +17,7 @@ export default new mongoose.Schema(
         y: columnSchema,
         roll: columnSchema,
         pitch: columnSchema,
-        mainArea: columnSchema,
+        mainZone: columnSchema,
         lasList: columnSchema
       },
       required: true

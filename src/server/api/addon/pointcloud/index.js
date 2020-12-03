@@ -16,11 +16,11 @@ const pythonOptions = {
 
 const las = (req, res) => res.sendFile(lasPath(req))
 
-router.get('/:round/:snap/:area', pointcloud)
-router.get('/:round/:snap/:area/:prop', lasCache)
-router.get('/file/:round/:snap/:area', las)
+router.get('/:round/:snap/:zone', pointcloud)
+router.get('/:round/:snap/:zone/:prop', lasCache)
+router.get('/file/:round/:snap/:zone', las)
 
-router.delete('/:round/:snap/:area', delSvrCache)
+router.delete('/:round/:snap/:zone', delSvrCache)
 
 function pointcloud(req, res) {
   const path = lasPath(req)
@@ -29,16 +29,16 @@ function pointcloud(req, res) {
 
   pythonOptions.args = [JSON.stringify(path), JSON.stringify(cache)]
 
-  console.time(`json ${req.params.area}`)
+  console.time(`json ${req.params.zone}`)
   PythonShell.run('src/python/lastojson.py', pythonOptions, (err, result) => {
-    console.timeEnd(`json ${req.params.area}`)
+    console.timeEnd(`json ${req.params.zone}`)
     if (!err) res.json(JSON.parse(result[0]))
     if (err) res.json({ err, result })
   })
 
-  console.time(`gzip ${req.params.area}`)
+  console.time(`gzip ${req.params.zone}`)
   PythonShell.run('src/python/lastogzip.py', pythonOptions, (err, result) => {
-    console.timeEnd(`gzip ${req.params.area}`)
+    console.timeEnd(`gzip ${req.params.zone}`)
     if (err) consola.error({ err, result })
     if (!err) return
   })
