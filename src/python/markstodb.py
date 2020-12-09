@@ -60,7 +60,7 @@ def xy_upload(xy_df, schema):
   dtype["pitch"] = Float
   dtype["heading"] = Float
   dtype["lasList"] = String
-  dtype["mainArea"] = String
+  dtype["mainZone"] = String
   dtype["seq"] = Integer
   dtype["name"] = String
   dtype["snap"] = String

@@ -1,11 +1,11 @@
-import { hooks as authenticationHooks } from "@feathersjs/authentication"
-import { feathersLogger } from ".."
+import { hooks as authenticationHooks } from '@feathersjs/authentication'
+import { feathersLogger } from '../../../inout/logger'
 
 const authenticate = authenticationHooks.authenticate
 
 export default {
   before: {
-    all: [authenticate("jwt"), feathersLogger],
+    all: [authenticate('jwt'), feathersLogger],
     find: [],
     get: [],
     create: [],
