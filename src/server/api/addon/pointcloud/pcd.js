@@ -1,11 +1,12 @@
 import { mkdir } from 'fs'
-import { getRootByRound } from '../tool/round'
+import { getRoundWithRoot } from '../tool/round'
 
-export function lasPath(req) {
+export async function lasPath(req) {
   const round = req.params.round
   const snap = req.params.snap
   const zone = req.params.zone
-  const root = getRootByRound(round)
+  const roundObj = await getRoundWithRoot(round)
+  const root = roundObj.root
   return `${root}/${snap}/pointcloud/${zone}`
 }
 

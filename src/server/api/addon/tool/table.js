@@ -1,11 +1,12 @@
 import fs from 'fs'
 import { DBFFile } from 'dbffile'
-import { getRootByRound } from './round'
+import { getRoundWithRoot } from './round'
 import csv from 'neat-csv'
 import consola from 'consola'
 
 export async function tablePath(round, snap, meta) {
-  const root = getRootByRound(round)
+  const roundObj = await getRoundWithRoot(round)
+  const root = roundObj.root
   const ext = meta.ext
   const folderPath = `${root}/${snap}/${meta.folder}`
   const filePaths = await fs.promises.readdir(folderPath)

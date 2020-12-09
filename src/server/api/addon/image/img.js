@@ -2,9 +2,9 @@
  * <summary>img file functions</summary>
  */
 
-import { getRootByRound } from '../tool/round'
+import { getRoundWithRoot } from '../tool/round'
 
-export function imagePath(req) {
+export async function imagePath(req) {
   /*
    * <summary>index file from js</summary>
    */
@@ -13,7 +13,8 @@ export function imagePath(req) {
   const mark = req.params.mark
   const direction = req.params.direction
 
-  const root = getRootByRound(round)
+  const roundObj = await getRoundWithRoot(round)
+  const root = roundObj.root
   const ext = 'jpg'
   let dir
   if (direction === 'front') dir = '00'
@@ -21,7 +22,7 @@ export function imagePath(req) {
   return `${root}/${snap}/images_enhance/${dir}_${mark}.${ext}`
 }
 
-export function depthmapPath(req) {
+export async function depthmapPath(req) {
   /*
    * <summary>index file from js</summary>
    */
@@ -31,7 +32,8 @@ export function depthmapPath(req) {
   const mark = req.params.mark
   const direction = req.params.direction
 
-  const root = getRootByRound(round)
+  const roundObj = await getRoundWithRoot(round)
+  const root = roundObj.root
   const ext = 'bin'
   let dir
   if (direction === 'front') dir = '00'
