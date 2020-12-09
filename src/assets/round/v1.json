@@ -1,0 +1,112 @@
+{
+  "name": "imms_20201106_220611",
+  "nas": {
+    "ip": "10.2.0.108"
+  },
+  "root": "mms_test2/2020_imms/00_proj_hdmap/HDMAP_201110_Morai_Sejong/02_output/imms_20201106_220611",
+  "snaps": [
+    {
+      "name": "snap1",
+      "folder": "snap1",
+      "image": {
+        "formats": [
+          {
+            "type": "img",
+            "folder": "images",
+            "ext": "jpg"
+          },
+          {
+            "type": "depthmap",
+            "folder": "images_depthmap",
+            "ext": "bin",
+            "version": "2"
+          }
+        ],
+        "meta": {
+          "folder": "auxiliary",
+          "ext": "csv",
+          "filter": "lasList",
+          "column": {
+            "name": {
+              "name": "id_point",
+              "num": false
+            },
+            "seq": {
+              "name": "sequence",
+              "num": true
+            },
+            "lat": {
+              "name": "Latitude",
+              "num": true
+            },
+            "lon": {
+              "name": "Longitude",
+              "num": true
+            },
+            "alt": {
+              "name": "altitude",
+              "num": true
+            },
+            "heading": {
+              "name": "heading",
+              "num": true
+            },
+            "x": {
+              "name": "x_utm",
+              "num": true
+            },
+            "y": {
+              "name": "y_utm",
+              "num": true
+            },
+            "roll": {
+              "name": "roll",
+              "num": true
+            },
+            "pitch": {
+              "name": "pitch",
+              "num": true
+            },
+            "mainArea": {
+              "name": "file_las_close",
+              "num": false
+            },
+            "lasList": {
+              "name": "file_las_se",
+              "num": false
+            }
+          },
+          "prefix": {
+            "front": "00",
+            "back": "01"
+          },
+          "sep": "_"
+        }
+      },
+      "pointcloud": {
+        "formats": [
+          {
+            "type": "pcd",
+            "folder": "pointcloud",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "depthmap",
+            "folder": "images_depthmap_point",
+            "ext": "bin"
+          }
+        ],
+        "meta": {
+          "folder": "pointcloud_shp",
+          "ext": "dbf",
+          "column": {
+            "name": {
+              "name": "file_las"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
