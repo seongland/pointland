@@ -37,7 +37,11 @@ export default {
       const commit = this.$store.commit
       if (!markObj?.lasList) return
       const lasList = markObj.lasList.split(':')
-      const mainIndex = lasList.indexOf(markObj.mainArea)
+      let mainIndex
+
+      // For Area Legacy
+      if (markObj.mainZone) mainIndex = lasList.indexOf(markObj.mainZone)
+      if (markObj.mainArea) mainIndex = lasList.indexOf(markObj.mainArea)
       let loadList = [mainIndex, mainIndex - 1, mainIndex + 1, mainIndex + 2, mainIndex - 2]
 
       // Make remove List
@@ -50,14 +54,14 @@ export default {
     },
 
     async currentSnap(snapObj) {
-      for (const areaObj of snapObj.areas) {
-        const areaName = areaObj.name
-        let cached = this.checkCached(areaName)
+      for (const zoneObj of snapObj.zones) {
+        const zoneName = zoneObj.name
+        let cached = this.checkCached(zoneName)
         if (cached) continue
-        if (process.env.target === 'cloud') consola.info('Checking', areaName)
-        let lasCache = await this.getLasCache(areaName)
+        if (process.env.target === 'cloud') consola.info('Checking', zoneName)
+        let lasCache = await this.getLasCache(zoneName)
         if (!lasCache) {
-          const changed = await this.termCacheLas(snapObj, areaName)
+          const changed = await this.termCacheLas(snapObj, zoneName)
           if (changed === true) {
             if (process.env.target === 'cloud') consola.success('Snap Changed')
             return
@@ -87,15 +91,15 @@ export default {
       for (const index of loadList) {
         // Filter
         if (!lasList[index]) continue
-        const areaName = lasList[index]
-        if (this.lasList.includes(areaName)) continue
+        const zoneName = lasList[index]
+        if (this.lasList.includes(zoneName)) continue
 
         // Load Local Cache Las
-        let lasCache = await this.getLasCache(areaName)
-        if (lasCache) this.loadLas(areaName, true, lasCache, markObj.round, markObj.snap)
+        let lasCache = await this.getLasCache(zoneName)
+        if (lasCache) this.loadLas(zoneName, true, lasCache, markObj.round, markObj.snap)
         // Load Server
         else {
-          const changed = await this.termLoadLas(markObj, areaName, true, undefined)
+          const changed = await this.termLoadLas(markObj, zoneName, true, undefined)
           if (changed === true) {
             if (process.env.target === 'cloud') consola.success('Mark Changed')
             return
@@ -106,51 +110,51 @@ export default {
       if (loadCount === 0) commit('setLoading', false)
     },
 
-    async termLoadLas(markObj, areaName, draw, lasCache) {
+    async termLoadLas(markObj, zoneName, draw, lasCache) {
       const round = markObj.round
       const snap = markObj.snap
       const mark = markObj.name
-      this.loadLas(areaName, draw, lasCache, markObj.round, markObj.snap)
+      this.loadLas(zoneName, draw, lasCache, markObj.round, markObj.snap)
       await new Promise(resolve => setTimeout(() => resolve(), SVR_INTERVAL))
       return this.currentChanged(round, snap, mark)
     },
 
-    async termCacheLas(snapObj, areaName) {
-      if (process.env.target === 'cloud') consola.info('Caching', areaName)
+    async termCacheLas(snapObj, zoneName) {
+      if (process.env.target === 'cloud') consola.info('Caching', zoneName)
       const round = snapObj.round
       const snap = snapObj.name
-      await this.loadLas(areaName, false, false, snapObj.round, snapObj.name)
+      await this.loadLas(zoneName, false, false, snapObj.round, snapObj.name)
       await new Promise(resolve => setTimeout(() => resolve(), CACHE_INTERVAL))
       return this.currentChanged(round, snap)
     },
 
-    async loadLas(areaName, draw, lasCache, round, snap) {
+    async loadLas(zoneName, draw, lasCache, round, snap) {
       const commit = this.$store.commit
-      const fileExt = areaName.split('.').pop()
+      const fileExt = zoneName.split('.').pop()
       if (fileExt !== 'las') return
 
       // If Cached
       if (lasCache) {
-        if (process.env.target === 'cloud') consola.info('Use Cache', areaName, lasCache)
-        return draw ? this.drawLasCloud(lasCache.data, areaName) : null
+        if (process.env.target === 'cloud') consola.info('Use Cache', zoneName, lasCache)
+        return draw ? this.drawLasCloud(lasCache.data, zoneName) : null
       }
 
       // Check Server Cache
-      const root = this.getLasAPIRoot(areaName, round, snap)
+      const root = this.getLasAPIRoot(zoneName, round, snap)
       const check = await this.$axios(`${root}`)
 
       // Get Server Las Json
       let lasJson
-      if (check.data.cached) lasJson = await this.serverCached(root, areaName)
+      if (check.data.cached) lasJson = await this.serverCached(root, zoneName)
       else lasJson = check.data
 
       // After job
-      this.setLasCache(areaName, lasJson)
+      this.setLasCache(zoneName, lasJson)
       if (!draw) return commit('setLoading', false)
-      this.drawLasCloud(lasJson, areaName)
+      this.drawLasCloud(lasJson, zoneName)
     },
 
-    async serverCached(root, area) {
+    async serverCached(root, zone) {
       // Make Cancel token
       const commit = this.$store.commit
       const dataList = ['x', 'y', 'z', 'c', 'i']
@@ -160,12 +164,12 @@ export default {
       this.apiList.push(srcs)
       const [x, y, z, c, i] = await Promise.all(promises)
       const lasJson = { x: x.data, y: y.data, z: z.data, center: c.data, intensity: i.data }
-      const complete = this.checkLasJson(lasJson, area)
+      const complete = this.checkLasJson(lasJson, zone)
       if (complete) return lasJson
       else {
-        if (process.env.target === 'cloud') consola.info('Recache Server', area)
+        if (process.env.target === 'cloud') consola.info('Recache Server', zone)
         await this.$axios.delete(`${root}`)
-        return await this.serverCached(root, area)
+        return await this.serverCached(root, zone)
       }
     },
 
@@ -175,14 +179,14 @@ export default {
       srcs.push(src)
     },
 
-    drawLasCloud(lasJson, areaName) {
+    drawLasCloud(lasJson, zoneName) {
       const commit = this.$store.commit
       commit('setLoading', true)
       setTimeout(() => {
-        this.drawLas(lasJson, areaName)
+        this.drawLas(lasJson, zoneName)
         commit('setLoading', false)
-        this.lasList.push(areaName)
-        if (process.env.target === 'draw') consola.success('Drawed', areaName)
+        this.lasList.push(zoneName)
+        if (process.env.target === 'draw') consola.success('Drawed', zoneName)
       })
     },
 
@@ -194,58 +198,58 @@ export default {
       return false
     },
 
-    setLasCache(area, data) {
+    setLasCache(zone, data) {
       const commit = this.$store.commit
       let transaction = this.lasCaches.transaction(['LasJson'], 'readwrite')
       let objectStore = transaction.objectStore('LasJson')
-      let request = objectStore.add({ name: area, data })
-      commit('setState', { props: ['ls', 'cacheMap', area], value: true })
-      if (process.env.target === 'cloud') consola.info('Cached', area)
+      let request = objectStore.add({ name: zone, data })
+      commit('setState', { props: ['ls', 'cacheMap', zone], value: true })
+      if (process.env.target === 'cloud') consola.info('Cached', zone)
     },
 
-    getLasAPIRoot(areaName, round, snap) {
-      return `/api/pointcloud/${round}/${snap}/${areaName}`
+    getLasAPIRoot(zoneName, round, snap) {
+      return `/api/pointcloud/${round}/${snap}/${zoneName}`
     },
 
-    async getLasCache(area) {
+    async getLasCache(zone) {
       const commit = this.$store.commit
       let transaction = this.lasCaches.transaction(['LasJson'], 'readonly')
       let objectStore = transaction.objectStore('LasJson')
       let index = objectStore.index('name')
-      if (process.env.target === 'cloud') console.time(`get ${area}`)
+      if (process.env.target === 'cloud') console.time(`get ${zone}`)
 
       return await new Promise(
         resolve =>
-          (index.get(area).onsuccess = event => {
-            if (process.env.target === 'cloud') console.timeEnd(`get ${area}`)
+          (index.get(zone).onsuccess = event => {
+            if (process.env.target === 'cloud') console.timeEnd(`get ${zone}`)
             let result = event.target.result
             if (result) {
-              const complete = this.checkLasJson(result.data, area, result.id)
+              const complete = this.checkLasJson(result.data, zone, result.id)
               if (!complete) result = false
             }
-            if (result) commit('setState', { props: ['ls', 'cacheMap', area], value: true })
+            if (result) commit('setState', { props: ['ls', 'cacheMap', zone], value: true })
             resolve(result)
           })
       )
     },
 
-    removeCache(area, id) {
+    removeCache(zone, id) {
       const commit = this.$store.commit
-      commit('setState', { props: ['ls', 'cacheMap', area], value: false })
+      commit('setState', { props: ['ls', 'cacheMap', zone], value: false })
       let transaction = this.lasCaches.transaction(['LasJson'], 'readwrite')
       let objectStore = transaction.objectStore('LasJson')
       objectStore.delete(id)
     },
 
-    checkCached(area) {
-      return this.$store.state.ls.cacheMap[area]
+    checkCached(zone) {
+      return this.$store.state.ls.cacheMap[zone]
     },
 
-    checkLasJson(lasJson, area, id) {
+    checkLasJson(lasJson, zone, id) {
       for (const key in lasJson)
         if (!(lasJson[key] instanceof Array)) {
-          if (id) this.removeCache(area, id)
-          consola.error('Bad LasJson', area, lasJson)
+          if (id) this.removeCache(zone, id)
+          consola.error('Bad LasJson', zone, lasJson)
           return false
         }
       return true

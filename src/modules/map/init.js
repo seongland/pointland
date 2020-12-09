@@ -10,8 +10,8 @@ import { defaults as controls } from 'ol/control'
 import { fromLonLat } from 'ol/proj'
 import { defaults, DragPan, MouseWheelZoom, PinchZoom } from 'ol/interaction'
 import { makeStyle } from './draw'
-import { makeNaverMap, makeTileLayer, makeVectorLayer } from '~/modules/map/layer'
-import { eventBind } from '~/modules/map/event'
+import { makeNaverMap, makeTileLayer, makeVectorLayer } from './layer'
+import { eventBind } from './event'
 
 export const ref = {}
 
