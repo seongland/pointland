@@ -136,7 +136,7 @@ export default {
         return this.$store.state.visible.transform
       },
       set(value) {
-        if (this.$store.state.selected.length > 0) {
+        if (this.$store.state.selected?.length > 0) {
           cloudRef.cloud.transform.visible = value
           cloudRef.cloud.transform.enabled = value
         }
