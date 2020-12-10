@@ -220,7 +220,6 @@ function click3D(e) {
   let intersects = cloud.raycaster.intersectObjects(targets)
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
   let intersect = intersects[0]
-  console.log(intersect)
   if (intersect) {
     intersect = tuneIntersect(intersect)
     if (process.env.target === 'cloud') consola.info('3D Point', intersect)
