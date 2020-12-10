@@ -21,7 +21,7 @@ export default ({ store: { commit, state, $router } }) => {
             }
             return
           case 'Escape':
-            if (state.selected.length > 0) this.resetSelected()
+            if (state.selected?.length > 0) this.resetSelected()
             else this.drawnFacilities()
             return
         }
@@ -57,7 +57,7 @@ export default ({ store: { commit, state, $router } }) => {
 
             case 'a':
             case 'A':
-              if (state.selected.length > 0) {
+              if (state.selected?.length > 0) {
                 cloudRef.cloud.transform.visible = !state.visible.transform
                 cloudRef.cloud.transform.enabled = !state.visible.transform
               }
@@ -66,7 +66,7 @@ export default ({ store: { commit, state, $router } }) => {
 
             case 'i':
             case 'I':
-              if (state.selected.length === 1)
+              if (state.selected?.length === 1)
                 if (state.selected[0].indexes.length > 1) commit('setState', { props: ['interpolating'], value: true })
               return
 
@@ -92,10 +92,11 @@ export default ({ store: { commit, state, $router } }) => {
 
             // Focus Selected - Cloud Only
             case 'f':
+            case 'F':
               if (!event.shiftKey)
                 if (index === 2) {
-                  if (state.selected.length === 0) return
-                  const target = state.selected[state.selected.length - 1]
+                  if (state.selected?.length === 0) return
+                  const target = state.selected[state.selected?.length - 1]
                   const props = target.properties
                   if (!cloudRef.cloud.offset) return
                   const controls = cloudRef.cloud.controls
@@ -140,7 +141,7 @@ export default ({ store: { commit, state, $router } }) => {
 
             // Submit
             case 'Enter':
-              if (state.selected.length > 0) {
+              if (state.selected?.length > 0) {
                 if (state.selected[0].id) {
                   const selected = state.selected
                   commit('setState', { props: ['edit', 'id'], value: selected[0].id })
