@@ -47,7 +47,7 @@ export default app => {
     snapObj.marks = marks
     snapObj.zones = zones
 
-    uploadMarks(marks, snapName, roundName)
+    // uploadMarks(marks, snapName, roundName)
 
     res.json(snapObj)
   }
