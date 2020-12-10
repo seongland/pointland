@@ -1,5 +1,5 @@
 import { mkdir } from 'fs'
-import { getRoundWithRoot } from '../tool/round'
+import { getRoundWithRoot, getSnapFromRound, getFormatFromSnap } from '../tool/round'
 
 export async function lasPath(req) {
   const round = req.params.round
@@ -7,7 +7,11 @@ export async function lasPath(req) {
   const zone = req.params.zone
   const roundObj = await getRoundWithRoot(round)
   const root = roundObj.root
-  return `${root}/${snap}/pointcloud/${zone}`
+
+  const snapObj = getSnapFromRound(roundObj, snap)
+  const pcdFormat = getFormatFromSnap(snapObj, 'pcd')
+
+  return `${root}/${snap}/${pcdFormat.folder}/${zone}`
 }
 
 export function lasToJson(lasPath, version) {

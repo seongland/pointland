@@ -23,7 +23,9 @@ export default new mongoose.Schema(
       required: true
     },
     filter: { type: String, required: true },
-    directions: { type: [{ prefix: String, name: String }], default: [], required: true }
+    prefix: { type: Object },
+    direction: { type: Object },
+    indexing: { type: String }
   },
   { _id: false }
 )

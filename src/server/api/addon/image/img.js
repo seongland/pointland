@@ -2,7 +2,8 @@
  * <summary>img file functions</summary>
  */
 
-import { getRoundWithRoot } from '../tool/round'
+import { getRoundWithRoot, getSnapFromRound, getFormatFromSnap } from '../tool/round'
+import consola from 'consola'
 
 export async function imagePath(req) {
   /*
@@ -33,22 +34,24 @@ async function getImgPathByType(round, snap, mark, direction, type) {
   const roundObj = await getRoundWithRoot(round)
   const root = roundObj.root
 
-  let snapObj
-  for (const tmpSnap of roundObj.snaps)
-    if (tmpSnap.name === snap) {
-      snapObj = tmpSnap
-      break
-    }
+  const snapObj = getSnapFromRound(roundObj, snap)
   const imgMeta = snapObj.image.meta
 
-  let imgFormat
-  for (const tmpFormat of snapObj.image.formats)
-    if (tmpFormat.type === type) {
-      imgFormat = tmpFormat
-      break
-    }
-
+  const imgFormat = getFormatFromSnap(snapObj, type)
   const ext = imgFormat.ext
   let prefix = imgMeta.prefix[direction]
-  return `${root}/${snap}/${imgFormat.folder}/${prefix}${imgMeta.sep}${mark}.${ext}`
+  let index = imgMeta.direction ? imgMeta.direction[direction] : prefix
+
+  const snapPath = `${root}/${snap}`
+  const parent = snapObj.image.parent ? `${snapObj.image.parent}[${index}]/` : ''
+  const formatPath = `${snapPath}/${parent}${imgFormat.folder}`
+
+  let fileName
+  if (imgMeta.indexing === 'bracket') fileName = `${prefix}${imgMeta.sep}[${mark}].${ext}`
+  else fileName = `${prefix}${imgMeta.sep}${mark}.${ext}`
+
+  const filePath = `${formatPath}/${fileName}`
+
+  if (process.env.target === 'move') consola.info(filePath)
+  return filePath
 }
