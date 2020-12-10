@@ -13,13 +13,7 @@ export async function imagePath(req) {
   const mark = req.params.mark
   const direction = req.params.direction
 
-  const roundObj = await getRoundWithRoot(round)
-  const root = roundObj.root
-  const ext = 'jpg'
-  let dir
-  if (direction === 'front') dir = '00'
-  if (direction === 'back') dir = '01'
-  return `${root}/${snap}/images_enhance/${dir}_${mark}.${ext}`
+  return await getImgPathByType(round, snap, mark, direction, 'img')
 }
 
 export async function depthmapPath(req) {
@@ -32,11 +26,29 @@ export async function depthmapPath(req) {
   const mark = req.params.mark
   const direction = req.params.direction
 
+  return await getImgPathByType(round, snap, mark, direction, 'depthmap')
+}
+
+async function getImgPathByType(round, snap, mark, direction, type) {
   const roundObj = await getRoundWithRoot(round)
   const root = roundObj.root
-  const ext = 'bin'
-  let dir
-  if (direction === 'front') dir = '00'
-  if (direction === 'back') dir = '01'
-  return `${root}/${snap}/images_depthmap2/${dir}_${mark}.${ext}`
+
+  let snapObj
+  for (const tmpSnap of roundObj.snaps)
+    if (tmpSnap.name === snap) {
+      snapObj = tmpSnap
+      break
+    }
+  const imgMeta = snapObj.image.meta
+
+  let imgFormat
+  for (const tmpFormat of snapObj.image.formats)
+    if (tmpFormat.type === type) {
+      imgFormat = tmpFormat
+      break
+    }
+
+  const ext = imgFormat.ext
+  let prefix = imgMeta.prefix[direction]
+  return `${root}/${snap}/${imgFormat.folder}/${prefix}${imgMeta.sep}${mark}.${ext}`
 }

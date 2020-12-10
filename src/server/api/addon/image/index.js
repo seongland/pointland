@@ -21,14 +21,14 @@ router.post('/convert/:direction/:x/:y/:z', xyztoimg)
 router.post('/depth/:round/:snap/:mark/:direction', depthmap)
 router.post('/depth/:round/:snap/:mark/:direction/:x/:y', imgtoxyz)
 
-function image(req, res) {
-  const path = imagePath(req)
+async function image(req, res) {
+  const path = await imagePath(req)
   if (fs.existsSync(path)) return res.sendFile(path)
   else res.json('')
 }
 
 async function depthmap(req, res) {
-  const path = depthmapPath(req)
+  const path = await depthmapPath(req)
   if (!fs.existsSync(path)) return res.json('')
   const markObj = req.body.data.mark
   const depth = await depthData2(path, markObj)
@@ -37,7 +37,7 @@ async function depthmap(req, res) {
 
 async function imgtoxyz(req, res) {
   const [x, y] = [Number(req.params.x), Number(req.params.y)]
-  const path = depthmapPath(req)
+  const path = await depthmapPath(req)
   const xyz = await xyzAtDepthmap2(path, x, y)
   res.json([xyz.x, xyz.y, xyz.z])
 }

@@ -7,8 +7,8 @@
   "snaps": [
     {
       "name": "snap[01]",
-      "folder": "snap[01]",
       "image": {
+        "prefix": "camera",
         "formats": [
           {
             "type": "img",
@@ -16,15 +16,19 @@
             "ext": "jpg"
           },
           {
+            "type": "imge",
+            "folder": "images_enhance",
+            "ext": "jpg"
+          },
+          {
             "type": "depthmap",
             "folder": "images_depthmap",
-            "ext": "bin",
-            "version": "2"
+            "ext": "bin"
           }
         ],
         "meta": {
-          "folder": "auxiliary",
-          "ext": "csv",
+          "folder": "camera_trajectory[00]",
+          "ext": "dbf",
           "filter": "lasList",
           "column": {
             "name": {
@@ -87,18 +91,24 @@
         "formats": [
           {
             "type": "pcd",
-            "folder": "pointcloud",
+            "folder": "pointcloud[00]",
             "ext": "las",
             "version": "1.2"
           },
           {
-            "type": "depthmap",
-            "folder": "images_depthmap_point",
-            "ext": "bin"
+            "type": "pcdg",
+            "folder": "pointcloud_ground[00]",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "geotiff",
+            "folder": "pointcloud_geotiff[00]",
+            "ext": "tif"
           }
         ],
         "meta": {
-          "folder": "pointcloud_shp",
+          "folder": "pointcloud_trajectory[00]",
           "ext": "dbf",
           "column": {
             "name": {

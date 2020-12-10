@@ -16,6 +16,8 @@ import facility from './addon/facility/'
 import mongoose from './inout/mongoose'
 import logger from './inout/logger'
 
+export const ref = {}
+
 const app = express(feathers())
   .use(express.json({ limit: '100mb' }))
   .configure(express.rest())
@@ -31,6 +33,7 @@ const app = express(feathers())
   .use(express.errorHandler({ logger }))
   .hooks(appHooks)
 
+ref.app = app
 meta(app)
 app.listen()
 process.on('unhandledRejection', (reason, p) => logger.error('Unhandled Rejection at: Promise ', p, reason))
