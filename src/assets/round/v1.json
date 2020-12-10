@@ -1,9 +1,9 @@
 {
-  "name": "imms_20201106_220611",
+  "name": "imms_20200910_000230",
   "nas": {
     "ip": "10.2.0.108"
   },
-  "root": "mms_test2/2020_imms/00_proj_hdmap/HDMAP_201110_Morai_Sejong/02_output/imms_20201106_220611",
+  "root": "mms_test2/2020_imms/00_proj_hdmap/01_cto_output/Daejeon_KAIST/imms_20200910_000230",
   "snaps": [
     {
       "name": "snap1",
@@ -16,8 +16,13 @@
             "ext": "jpg"
           },
           {
+            "type": "imge",
+            "folder": "images_enhance",
+            "ext": "jpg"
+          },
+          {
             "type": "depthmap",
-            "folder": "images_depthmap",
+            "folder": "images_depthmap2",
             "ext": "bin",
             "version": "2"
           }
@@ -90,11 +95,6 @@
             "folder": "pointcloud",
             "ext": "las",
             "version": "1.2"
-          },
-          {
-            "type": "depthmap",
-            "folder": "images_depthmap_point",
-            "ext": "bin"
           }
         ],
         "meta": {

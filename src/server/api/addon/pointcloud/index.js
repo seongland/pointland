@@ -14,7 +14,7 @@ const pythonOptions = {
   scriptPath: `${process.cwd()}`
 }
 
-const las = (req, res) => res.sendFile(lasPath(req))
+const las = async (req, res) => res.sendFile(await lasPath(req))
 
 router.get('/:round/:snap/:zone', pointcloud)
 router.get('/:round/:snap/:zone/:prop', lasCache)
@@ -22,8 +22,8 @@ router.get('/file/:round/:snap/:zone', las)
 
 router.delete('/:round/:snap/:zone', delSvrCache)
 
-function pointcloud(req, res) {
-  const path = lasPath(req)
+async function pointcloud(req, res) {
+  const path = await lasPath(req)
   const cache = cachePath(req)
   if (existsSync(`${cache}/x.gz`)) return res.json({ cached: true })
 
