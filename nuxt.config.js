@@ -7,7 +7,9 @@ process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.de
 process.env.version = package.version
 process.env.twr = process.env.TWR
 process.env.title = '3D Mapping'
-if (process.env.dev) process.env.target = 'cloud'
+
+// ['cloud', 'image', 'move', 'facility']
+if (process.env.dev) process.env.target = 'move'
 
 module.exports = {
   srcDir: 'src/',

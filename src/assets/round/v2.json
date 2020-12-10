@@ -1,14 +1,14 @@
 {
-  "name": "round[20201014211712_argosi_000]",
+  "name": "round[20201015121112_argosi_000]",
   "nas": {
     "ip": "10.2.0.108"
   },
-  "root": "mms_test2/2020_imms/00_proj_hdmap/HDMAP_201205_DGIST/02_output/round[20201014211712_argosi_000]",
+  "root": "mms_test2/2020_imms/00_proj_hdmap/HDMAP_201205_DGIST/02_output/round[20201015121112_argosi_000]",
   "snaps": [
     {
-      "name": "snap[01]",
+      "name": "snap[02]",
       "image": {
-        "prefix": "camera",
+        "parent": "camera",
         "formats": [
           {
             "type": "img",
@@ -27,8 +27,8 @@
           }
         ],
         "meta": {
-          "folder": "camera_trajectory[00]",
-          "ext": "dbf",
+          "folder": "camera[00]/images_depthmap_point",
+          "ext": "csv",
           "filter": "lasList",
           "column": {
             "name": {
@@ -81,10 +81,15 @@
             }
           },
           "prefix": {
+            "front": "im",
+            "back": "im"
+          },
+          "direction": {
             "front": "00",
             "back": "01"
           },
-          "sep": "_"
+          "indexing": "bracket",
+          "sep": ""
         }
       },
       "pointcloud": {

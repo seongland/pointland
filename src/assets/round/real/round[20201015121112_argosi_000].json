@@ -1,0 +1,363 @@
+{
+  "name": "round[20201015121112_argosi_000]",
+  "nas": {
+    "ip": "10.2.0.108"
+  },
+  "root": "mms_test2/2020_imms/00_proj_hdmap/HDMAP_201205_DGIST/02_output/round[20201015121112_argosi_000]",
+  "snaps": [
+    {
+      "name": "snap[02]",
+      "image": {
+        "parent": "camera",
+        "formats": [
+          {
+            "type": "img",
+            "folder": "images",
+            "ext": "jpg"
+          },
+          {
+            "type": "imge",
+            "folder": "images_enhance",
+            "ext": "jpg"
+          },
+          {
+            "type": "depthmap",
+            "folder": "images_depthmap",
+            "ext": "bin"
+          }
+        ],
+        "meta": {
+          "folder": "camera[00]/images_depthmap_point",
+          "ext": "csv",
+          "filter": "lasList",
+          "column": {
+            "name": {
+              "name": "id_point",
+              "num": false
+            },
+            "seq": {
+              "name": "sequence",
+              "num": true
+            },
+            "lat": {
+              "name": "Latitude",
+              "num": true
+            },
+            "lon": {
+              "name": "Longitude",
+              "num": true
+            },
+            "alt": {
+              "name": "altitude",
+              "num": true
+            },
+            "heading": {
+              "name": "heading",
+              "num": true
+            },
+            "x": {
+              "name": "x_utm",
+              "num": true
+            },
+            "y": {
+              "name": "y_utm",
+              "num": true
+            },
+            "roll": {
+              "name": "roll",
+              "num": true
+            },
+            "pitch": {
+              "name": "pitch",
+              "num": true
+            },
+            "mainArea": {
+              "name": "file_las_close",
+              "num": false
+            },
+            "lasList": {
+              "name": "file_las_se",
+              "num": false
+            }
+          },
+          "prefix": {
+            "front": "im",
+            "back": "im"
+          },
+          "direction": {
+            "front": "00",
+            "back": "01"
+          },
+          "indexing": "bracket",
+          "sep": ""
+        }
+      },
+      "pointcloud": {
+        "formats": [
+          {
+            "type": "pcd",
+            "folder": "pointcloud[00]",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "pcdg",
+            "folder": "pointcloud_ground[00]",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "geotiff",
+            "folder": "pointcloud_geotiff[00]",
+            "ext": "tif"
+          }
+        ],
+        "meta": {
+          "folder": "pointcloud_trajectory[00]",
+          "ext": "dbf",
+          "column": {
+            "name": {
+              "name": "file_las"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "snap[04]",
+      "image": {
+        "parent": "camera",
+        "formats": [
+          {
+            "type": "img",
+            "folder": "images",
+            "ext": "jpg"
+          },
+          {
+            "type": "imge",
+            "folder": "images_enhance",
+            "ext": "jpg"
+          },
+          {
+            "type": "depthmap",
+            "folder": "images_depthmap",
+            "ext": "bin"
+          }
+        ],
+        "meta": {
+          "folder": "camera[00]/images_depthmap_point",
+          "ext": "csv",
+          "filter": "lasList",
+          "column": {
+            "name": {
+              "name": "id_point",
+              "num": false
+            },
+            "seq": {
+              "name": "sequence",
+              "num": true
+            },
+            "lat": {
+              "name": "Latitude",
+              "num": true
+            },
+            "lon": {
+              "name": "Longitude",
+              "num": true
+            },
+            "alt": {
+              "name": "altitude",
+              "num": true
+            },
+            "heading": {
+              "name": "heading",
+              "num": true
+            },
+            "x": {
+              "name": "x_utm",
+              "num": true
+            },
+            "y": {
+              "name": "y_utm",
+              "num": true
+            },
+            "roll": {
+              "name": "roll",
+              "num": true
+            },
+            "pitch": {
+              "name": "pitch",
+              "num": true
+            },
+            "mainArea": {
+              "name": "file_las_close",
+              "num": false
+            },
+            "lasList": {
+              "name": "file_las_se",
+              "num": false
+            }
+          },
+          "prefix": {
+            "front": "im",
+            "back": "im"
+          },
+          "direction": {
+            "front": "00",
+            "back": "01"
+          },
+          "indexing": "bracket",
+          "sep": ""
+        }
+      },
+      "pointcloud": {
+        "formats": [
+          {
+            "type": "pcd",
+            "folder": "pointcloud[00]",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "pcdg",
+            "folder": "pointcloud_ground[00]",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "geotiff",
+            "folder": "pointcloud_geotiff[00]",
+            "ext": "tif"
+          }
+        ],
+        "meta": {
+          "folder": "pointcloud_trajectory[00]",
+          "ext": "dbf",
+          "column": {
+            "name": {
+              "name": "file_las"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "snap[07]",
+      "image": {
+        "parent": "camera",
+        "formats": [
+          {
+            "type": "img",
+            "folder": "images",
+            "ext": "jpg"
+          },
+          {
+            "type": "imge",
+            "folder": "images_enhance",
+            "ext": "jpg"
+          },
+          {
+            "type": "depthmap",
+            "folder": "images_depthmap",
+            "ext": "bin"
+          }
+        ],
+        "meta": {
+          "folder": "camera[00]/images_depthmap_point",
+          "ext": "csv",
+          "filter": "lasList",
+          "column": {
+            "name": {
+              "name": "id_point",
+              "num": false
+            },
+            "seq": {
+              "name": "sequence",
+              "num": true
+            },
+            "lat": {
+              "name": "Latitude",
+              "num": true
+            },
+            "lon": {
+              "name": "Longitude",
+              "num": true
+            },
+            "alt": {
+              "name": "altitude",
+              "num": true
+            },
+            "heading": {
+              "name": "heading",
+              "num": true
+            },
+            "x": {
+              "name": "x_utm",
+              "num": true
+            },
+            "y": {
+              "name": "y_utm",
+              "num": true
+            },
+            "roll": {
+              "name": "roll",
+              "num": true
+            },
+            "pitch": {
+              "name": "pitch",
+              "num": true
+            },
+            "mainArea": {
+              "name": "file_las_close",
+              "num": false
+            },
+            "lasList": {
+              "name": "file_las_se",
+              "num": false
+            }
+          },
+          "prefix": {
+            "front": "im",
+            "back": "im"
+          },
+          "direction": {
+            "front": "00",
+            "back": "01"
+          },
+          "indexing": "bracket",
+          "sep": ""
+        }
+      },
+      "pointcloud": {
+        "formats": [
+          {
+            "type": "pcd",
+            "folder": "pointcloud[00]",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "pcdg",
+            "folder": "pointcloud_ground[00]",
+            "ext": "las",
+            "version": "1.2"
+          },
+          {
+            "type": "geotiff",
+            "folder": "pointcloud_geotiff[00]",
+            "ext": "tif"
+          }
+        ],
+        "meta": {
+          "folder": "pointcloud_trajectory[00]",
+          "ext": "dbf",
+          "column": {
+            "name": {
+              "name": "file_las"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

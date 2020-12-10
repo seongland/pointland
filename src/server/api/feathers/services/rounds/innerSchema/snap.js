@@ -6,9 +6,8 @@ import formatSchema from './snap/format'
 export default new mongoose.Schema(
   {
     name: { type: String, required: true },
-    folder: { type: String, required: true },
-    image: { type: { formats: [formatSchema], meta: imgSchema }, required: true },
-    pointcloud: { type: { formats: [formatSchema], meta: pcdSchema }, required: true }
+    image: { type: { formats: [formatSchema], meta: imgSchema, parent: String }, required: true },
+    pointcloud: { type: { formats: [formatSchema], meta: pcdSchema, parent: String }, required: true }
   },
   { _id: false }
 )
