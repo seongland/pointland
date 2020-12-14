@@ -7,7 +7,7 @@ export default app => {
   const mongooseClient = app.get('mongooseClient')
 
   const roundProperties = {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     nas: { type: { ip: String }, required: true },
     root: { type: String, required: true },
     snaps: { type: [snapSchema], required: true, default: [] }
