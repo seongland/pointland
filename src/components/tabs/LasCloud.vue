@@ -29,46 +29,8 @@ export default {
 
   watch: {
     async currentMark(markObj) {
-      // Cancel before
-      for (const api of this.apiList) for (const src of api) src.cancel()
-      this.apiList = []
-
-      // Make Load list
       const commit = this.$store.commit
-      if (!markObj?.lasList) return
-      const lasList = markObj.lasList.split(':')
-      let mainIndex
-
-      // For Area Legacy
-      if (markObj.mainZone) mainIndex = lasList.indexOf(markObj.mainZone)
-      if (markObj.mainArea) mainIndex = lasList.indexOf(markObj.mainArea)
-      let loadList = [mainIndex, mainIndex - 1, mainIndex + 1, mainIndex + 2, mainIndex - 2]
-
-      // Make remove List
-      const removeList = []
-      for (const las of this.lasList) if (!lasList.includes(las)) removeList.push(las)
-
-      // Update Las
-      this.removeLases(removeList)
-      this.loadLases(markObj, loadList, lasList)
-    },
-
-    async currentSnap(snapObj) {
-      for (const zoneObj of snapObj.zones) {
-        const zoneName = zoneObj.name
-        let cached = this.checkCached(zoneName)
-        if (cached) continue
-        if (process.env.target === 'cloud') consola.info('Checking', zoneName)
-        let lasCache = await this.getLasCache(zoneName)
-        if (!lasCache) {
-          const changed = await this.termCacheLas(snapObj, zoneName)
-          if (changed === true) {
-            if (process.env.target === 'cloud') consola.success('Snap Changed')
-            return
-          }
-        }
-      }
-      if (process.env.target === 'cloud') consola.success(`${snapObj.name} all cached in local`)
+      commit('setLoading', false)
     }
   },
 

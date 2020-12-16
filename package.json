@@ -22,6 +22,7 @@
     "@feathersjs/express": "^4.5.8",
     "@feathersjs/feathers": "^4.5.8",
     "@nuxtjs/axios": "^5.11.0",
+    "@pnext/three-loader": "^0.2.2",
     "compression": "^1.7.4",
     "consola": "^2.15.0",
     "cors": "^2.8.5",

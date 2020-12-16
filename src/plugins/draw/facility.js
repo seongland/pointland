@@ -14,7 +14,6 @@ import { resetPointLayer, removeLineLoops } from '~/modules/cloud/event'
 import { drawNear, erase } from '~/modules/image/draw'
 import { xyto84 } from '~/server/api/addon/tool/coor'
 import jimp from 'jimp/browser/lib/jimp'
-import consola from 'consola'
 
 const POINT_ID = 'Point'
 
