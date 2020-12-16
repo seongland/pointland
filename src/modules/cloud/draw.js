@@ -87,10 +87,21 @@ function drawHover(cloud) {
   /*
    * <summary>index file from js</summary>
    */
-
+  if (cloud.pointclouds.length < 1) return
   cloud.raycaster.params.Points.threshold = 0.03
-  const intersects = cloud.raycaster.intersectObjects(cloud.points)
+
+  const children = []
+  const getChildren = object => {
+    for (const child of object.children) {
+      children.push(...object.children)
+      getChildren(child)
+    }
+  }
+  getChildren(cloud.pointclouds[0])
+
+  const intersects = cloud.raycaster.intersectObjects(children)
   const hovered = intersects[0]
+  console.log(hovered)
   const previous = cloud.currentHover
 
   // If null
@@ -187,6 +198,7 @@ function changeColor(colors, index, color, attributes) {
   /*
    * <summary>index file from js</summary>
    */
+  // return
   if (color instanceof Array) {
     colors[3 * index] = color[0]
     colors[3 * index + 1] = color[1]
@@ -228,6 +240,19 @@ function click3D(e) {
   }
 
   // Make New
+  if (cloud.pointclouds.length < 1) return
+  cloud.raycaster.params.Points.threshold = 0.03
+
+  const children = []
+  const getChildren = object => {
+    for (const child of object.children) {
+      children.push(...object.children)
+      getChildren(child)
+    }
+  }
+  for (const pointcloud of cloud.pointclouds) getChildren(pointcloud)
+  cloud.currentHover = cloud.raycaster.intersectObjects(children)[0]
+
   if (!cloud.currentHover) return
   cloud.currentSelected = cloud.currentHover
   const center = cloud.currentSelected.point

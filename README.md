@@ -39,6 +39,12 @@ pip install psycopg2-binary
 sudo mount -t cifs "\\\\10.1.0.108\\mms_test2\\mms_test2" /mnt/10.2.0.108/mms_test2 -o user='stryx',pass='emfRoskfk!23',vers=2.0
 ```
 
+## Convert
+
+```
+ ./PotreeConverter.exe /mnt/10.2.0.108/mms_test2/2020_imms/00_proj_hdmap/HDMAP_201205_DGIST/02_output/round\[20201014211712_argosi_000\]/snap\[02\]/pointcloud\[00\]/*.las -o ./total
+```
+
 ## Dependancy
 
 - pull
@@ -55,8 +61,8 @@ git subtree push --prefix src/modules/cloud easy-three-js master
 
 ```bash
 mongodump --uri='mongodb+srv://stryx:emfRoskfk!23@mms-twr.hcspv.gcp.mongodb.net/tower'
-mv dump/tower dump/test
 mongorestore --uri='mongodb+srv://stryx:emfRoskfk!23@mms-twr.hcspv.gcp.mongodb.net/test'
+rm -rf dump
 ```
 
 ## Windows
