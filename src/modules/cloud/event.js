@@ -24,25 +24,6 @@ export function removeLineLoops(layer) {
     }
 }
 
-export function addLas(lasJson, cloud, vertices) {
-  /*
-   * <summary>index file from js</summary>
-   */
-  const offset = [
-    cloud.offset[0] - lasJson.center[0],
-    cloud.offset[1] - lasJson.center[1],
-    cloud.offset[2] - lasJson.center[2]
-  ]
-  for (const i in lasJson.x) vertices.push(lasJson.x[i] - offset[0], lasJson.y[i] - offset[1], lasJson.z[i] - offset[2])
-}
-
-export function setFocusXYZ(xyz) {
-  const offset = ref.cloud.offset
-  const xyzInCloud = [xyz[0] - offset[0], xyz[1] - offset[1], xyz[2] - offset[2]]
-  ref.cloud.controls.target.set(...xyzInCloud)
-  ref.cloud.camera.position.set(xyzInCloud[0], xyzInCloud[1], xyzInCloud[2] + 50)
-}
-
 export function addPoints(lasJson, colors, vertices, cloud, name) {
   /*
    * <summary>index file from js</summary>
@@ -66,12 +47,4 @@ export function addPoints(lasJson, colors, vertices, cloud, name) {
   if (cloud.points) cloud.points.push(points)
   points.name = name
   return points
-}
-
-export function firstLas(cloud, lasJson, vertices) {
-  /*
-   * <summary>index file from js</summary>
-   */
-  cloud.offset = lasJson.center
-  for (const i in lasJson.x) vertices.push(lasJson.x[i], lasJson.y[i], lasJson.z[i])
 }

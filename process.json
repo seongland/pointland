@@ -1,14 +1,14 @@
 {
   "apps": [
     {
-      "name": "3d-mapping",
+      "name": "seongland-nuxt",
       "script": "./node_modules/nuxt/bin/nuxt.js",
       "merge_logs": true,
       "log_date_format": "YYYY-MM-DD HH:mm",
       "max_memory_restart": "4000M",
       "env": {
         "HOST": "0.0.0.0",
-        "PORT": 80,
+        "PORT": 8080,
         "NODE_ENV": "production"
       }
     }

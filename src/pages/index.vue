@@ -1,89 +1,26 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4">
-        <v-card class="elevation-24">
-          <v-toolbar dark flat>
-            <v-toolbar-title>Stryx Account</v-toolbar-title>
-          </v-toolbar>
-          <v-toolbar height="dense" dark flat color="red" v-if="error">
-            <v-toolbar-title>Login Fail</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-form>
-              <v-text-field
-                autofocus
-                label="Email"
-                v-model="email"
-                name="email"
-                prepend-icon="fas fa-user-circle"
-                type="text"
-                @keydown.enter="onSubmit(email, password)"
-              />
-              <v-text-field
-                label="Password"
-                v-model="password"
-                name="password"
-                prepend-icon="fas fa-lock"
-                type="password"
-                @keydown.enter="onSubmit(email, password)"
-              />
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn @click="signup()">
-              SIGNUP
-            </v-btn>
-            <v-btn @click="onSubmit(email, password)">
-              Login
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="wrapper">
+    <las-cloud class="wrapper" />
+    <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
+  </div>
 </template>
 
 <script>
-const STRATEGY = 'local'
-const CTT_JSON = {
-  headers: {
-    'Content-Type': 'application/json'
-  }
-}
+import LasCloud from '~/components/LasCloud'
+import consola from 'consola'
 
 export default {
-  middleware: 'authentication',
-  layout: 'before',
-  data() {
-    return {
-      email: undefined,
-      password: undefined,
-      error: undefined
-    }
+  components: {
+    LasCloud
   },
-  methods: {
-    async onSubmit(email, password) {
-      const data = await this.login(email, password)
-      if (!data) return
+  fetchOnServer: false,
 
-      await this.loadProjects(data.user, data.accessToken)
-      this.$store.commit('ls/login', data)
-      this.$router.push(`/draw`)
-    },
+  async fetch() {},
 
-    async login(email, password) {
-      const loginData = JSON.stringify({ strategy: STRATEGY, email, password })
-      const res = await this.$axios.post('/api/authentication', loginData, CTT_JSON).catch(() => {
-        this.error = true
-      })
-      return res?.data
-    },
+  async mounted() {},
 
-    signup() {
-      this.$router.push(`/signup`)
-    }
-  }
+  computed: {}
 }
 </script>
+
+<style src="./index.css"></style>
