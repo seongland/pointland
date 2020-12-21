@@ -1,0 +1,10 @@
+{
+  "name": "easy-three-js",
+  "description": "Point Cloud by Three js Module",
+  "author": "seonglae",
+  "private": true,
+  "dependencies": {
+    "consola": "^2.15.0",
+    "three": "^0.118.3"
+  }
+}
