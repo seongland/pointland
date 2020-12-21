@@ -30,35 +30,13 @@ module.exports = {
   // Plugins to load before mounting the App
   plugins: [
     { src: '~/plugins/init/', ssr: false },
-    { src: '~/plugins/init/config', ssr: false },
-    { src: '~/plugins/draw/base', ssr: false },
-    { src: '~/plugins/draw/facility', ssr: false },
-    { src: '~/plugins/draw/image', ssr: false },
-    { src: '~/plugins/event/base', ssr: false },
-    { src: '~/plugins/event/facility', ssr: false },
-    { src: '~/plugins/event/key', ssr: false }
+    { src: '~/plugins/init/config', ssr: false }
   ],
   modules: ['@nuxtjs/axios', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }]],
   buildModules: ['@nuxtjs/vuetify'],
 
   // Vuetify
-  vuetify: {
-    defaultAssets: { icons: 'fa' },
-    theme: {
-      dark: true,
-      themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
-  },
+  vuetify: { defaultAssets: { icons: 'fa' }, theme: { dark: true } },
 
   // WebPack Build configuration
   build: {
@@ -70,7 +48,6 @@ module.exports = {
   // Header
   head: {
     title: process.env.title,
-    script: [{ src: 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ajrugsv5ub' }],
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

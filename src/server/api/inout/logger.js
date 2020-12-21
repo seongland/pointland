@@ -85,5 +85,7 @@ export function feathersErrorHandler(context) {
   if (process.env.NODE_ENV !== 'production') consola.error(context.error)
 }
 
+process.on('unhandledRejection', (reason, p) => logger.error('Unhandled Rejection at: Promise ', p, reason))
+
 export { getUserLogger }
 export default logger

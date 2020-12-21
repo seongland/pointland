@@ -21,14 +21,6 @@
               />
               <v-text-field label="Password" v-model="password" name="password" prepend-icon="fas fa-lock" type="password" />
               <v-text-field label="Name" v-model="name" name="name" prepend-icon="fas fa-signature" type="name" />
-              <v-text-field
-                label="Description"
-                v-model="description"
-                name="description"
-                prepend-icon="fas fa-book"
-                type="description"
-                @keydown.enter="onSubmit(email, password, name, description)"
-              />
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -44,8 +36,6 @@
 </template>
 
 <script>
-const PROJECT = { id: '849661cb-65cf-46ff-8345-6afdf162d090' }
-const ORGANIZATION = { id: '21faef0d-5af5-485d-9c3f-f76462fdb1fd' }
 const CTT_JSON = {
   headers: {
     'Content-Type': 'application/json'
@@ -59,17 +49,16 @@ export default {
     email: undefined,
     password: undefined,
     name: undefined,
-    description: undefined,
     error: undefined
   }),
   methods: {
     async onSubmit(email, password, name, description) {
-      const signUpData = JSON.stringify({ email, password, description, name, projects: [PROJECT], org: ORGANIZATION })
+      const signUpData = JSON.stringify({ email, password, description, name })
       const res = await this.$axios.post('/api/user', signUpData, CTT_JSON).catch(() => {
         this.error = true
       })
       if (!res) return
-      this.$router.push(`/`)
+      this.$router.push(`/login`)
     }
   }
 }

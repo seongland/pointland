@@ -4,24 +4,9 @@
 
 import * as THREE from 'three'
 import { ref } from './init'
-import { firstLas, addLas, addPoints } from './event'
 import consola from 'consola'
 
 const HOVER_COLOR = [0.8, 1, 1]
-
-function drawLas(lasJson, name) {
-  /*
-   * <summary>index file from js</summary>
-   */
-  const cloud = ref.cloud
-  const [vertices, colors] = [[], []]
-  ref.loading = true
-
-  if (!cloud.offset) firstLas(cloud, lasJson, vertices)
-  else addLas(lasJson, cloud, vertices)
-  addPoints(lasJson, colors, vertices, cloud, name)
-  ref.loading = false
-}
 
 export function drawXYZ(layer, xyz, focus, id) {
   /*
@@ -81,53 +66,6 @@ export function removePoint(layer, id) {
   indexes[start] = undefined
 
   geometry.drawRange.start = start + 1
-}
-
-function drawHover(cloud) {
-  /*
-   * <summary>index file from js</summary>
-   */
-  if (cloud.pointclouds.length < 1) return
-  cloud.raycaster.params.Points.threshold = 0.03
-
-  const children = []
-  const getChildren = object => {
-    for (const child of object.children) {
-      children.push(...object.children)
-      getChildren(child)
-    }
-  }
-  getChildren(cloud.pointclouds[0])
-
-  const intersects = cloud.raycaster.intersectObjects(children)
-  const hovered = intersects[0]
-  console.log(hovered)
-  const previous = cloud.currentHover
-
-  // If null
-  if (!hovered && previous) {
-    changeColor(previous.colors, previous.index, previous.intensity, previous.attributes)
-    cloud.currentHover = undefined
-  }
-  if (!hovered) return
-
-  // restore previous
-  const attributes = hovered.object.geometry.attributes
-  const colors = attributes.color.array
-  const index = hovered.index
-  hovered.attributes = attributes
-  hovered.colors = colors
-  if (previous)
-    if (previous.index === index) return
-    else changeColor(previous.colors, previous.index, previous.intensity, previous.attributes)
-
-  // save current
-  const intensity = colors[3 * index]
-  hovered.intensity = intensity
-  cloud.currentHover = hovered
-
-  // change color
-  changeColor(colors, index, HOVER_COLOR, attributes)
 }
 
 export function drawLoop(xyzs, layer) {
@@ -194,23 +132,6 @@ export function drawLine(xyzs, layer) {
   cloud.lines.push(line)
 }
 
-function changeColor(colors, index, color, attributes) {
-  /*
-   * <summary>index file from js</summary>
-   */
-  // return
-  if (color instanceof Array) {
-    colors[3 * index] = color[0]
-    colors[3 * index + 1] = color[1]
-    colors[3 * index + 2] = color[2]
-  } else {
-    colors[3 * index] = color
-    colors[3 * index + 1] = color
-    colors[3 * index + 2] = color
-  }
-  attributes.color.needsUpdate = true
-}
-
 function click3D(e) {
   /*
    * @summary - double click cloud callback
@@ -256,7 +177,7 @@ function click3D(e) {
   if (!cloud.currentHover) return
   cloud.currentSelected = cloud.currentHover
   const center = cloud.currentSelected.point
-  const xyz = [center.x + cloud.offset[0], center.y + cloud.offset[1], center.z + cloud.offset[2]]
+  const xyz = [center.x, center.y, center.z]
   ref.cloud.makeCallback(e, xyz)
 }
 
@@ -282,4 +203,4 @@ function checkIntersectIndex(intersect, indexes) {
     }
 }
 
-export { drawLas, drawHover, click3D }
+export { click3D }

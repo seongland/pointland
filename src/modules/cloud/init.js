@@ -5,9 +5,10 @@
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
-import { drawHover, click3D } from './draw'
+import { click3D } from './draw'
 import { makePointLayer } from './layer'
 import { Potree } from '@pnext/three-loader'
+import consola from 'consola'
 
 export const ref = { cloud: null, cloudSize: 0.05, pointSize: 1, lineWidth: 0.01 }
 
@@ -36,24 +37,32 @@ function initCloud(cloudOpt) {
     // potree
     cloud.potree = new Potree()
     cloud.pointclouds = []
-    cloud.potree.pointBudget = 2_000_000_000
+    cloud.potree.pointBudget = 1_000_000_000
     cloud.potree
-      .loadPointCloud('cloud.json', url => `/potree/dgist/${url}`)
+      .loadPointCloud('cloud.json', url => `/potree/${url}`)
       .then(pco => {
         cloud.offset = [pco.position.x, pco.position.y, pco.position.z]
         pco.translateX(-pco.position.x)
         pco.translateY(-pco.position.y)
         pco.translateZ(-pco.position.z)
-        console.log(pco)
         cloud.pointclouds.push(pco)
         cloud.scene.add(pco)
-        pco.material.pointColorType = 4
+        if (process.env.dev) consola.info(pco)
         pco.material.intensityRange = [0, 255]
-        pco.material.size = 0.5
+        pco.material.size = 1
+
+        cloud.camera.position.set(100, 50, 60)
+        cloud.controls.target.set(80, 80, 40)
       })
 
     ref.cloud = cloud
     ref.cloud.makeCallback = cloudOpt.makeCallback
+    if (!cloudOpt.makeCallback)
+      ref.cloud.makeCallback = (e, xyz) => {
+        if (process.env.dev) consola.info(xyz)
+        cloud.controls.target.set(...xyz)
+      }
+
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
     cloud.el.addEventListener('dblclick', click3D, false)
