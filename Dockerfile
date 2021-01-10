@@ -6,10 +6,7 @@ COPY package.json ./
 COPY nuxt.config.js ./
 COPY src ./src/
 COPY yarn.lock ./
-COPY .env ./
 
-RUN yarn
-
-EXPOSE 8080
+RUN yarn --only=production
 
 CMD [ "yarn", "start" ]

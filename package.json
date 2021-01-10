@@ -1,12 +1,12 @@
 {
   "name": "pointland",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Geology Panorama Street View Map",
   "author": "seonglae",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
-    "start": "cross-env NODE_ENV=production nodemon",
+    "start": "cross-env NODE_ENV=production nuxt",
     "production": "pm2 delete 3d-mapping & pm2 start process.json",
     "restart": "pm2 restart 3d-mapping",
     "stop": "pm2 delete 3d-mapping",
