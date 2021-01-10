@@ -24,8 +24,13 @@ git subtree push --prefix src/modules/cloud easy-three-js master
 # Docker Build
 
 ```bash
+# github
 docker build -t ghcr.io/seongland/pointland:{{VERSION}} .
 docker push ghcr.io/seongland/pointland:{{VERSION}}
+
+# gcp
+docker build -t asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}} .
+docker push asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}}
 ```
 
 # Run
