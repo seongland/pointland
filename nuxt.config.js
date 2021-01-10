@@ -22,6 +22,10 @@ module.exports = {
     title: process.env.title,
     target: process.env.target
   },
+  server: {
+    port: process.env.PORT || 8080,
+    host: '0.0.0.0'
+  },
   serverMiddleware: { '/api': '~/server/api/app' },
 
   // Loading Bar

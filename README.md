@@ -31,6 +31,9 @@ docker push ghcr.io/seongland/pointland:{{VERSION}}
 # gcp
 docker build -t asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}} .
 docker push asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}}
+
+# gcloud
+gcloud builds submit --tag asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}}
 ```
 
 # Run
