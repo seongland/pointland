@@ -3,13 +3,13 @@ FROM node:14
 WORKDIR /usr/src/app
 
 COPY package.json ./
+COPY nuxt.config.js ./
 COPY src ./src/
 COPY yarn.lock ./
+COPY .env ./
 
 RUN yarn
-RUN yarn global install pm2
-RUN yarn start
 
 EXPOSE 8080
 
-CMD [ "yarn", "production" ]
+CMD [ "yarn", "start" ]
