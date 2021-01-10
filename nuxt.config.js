@@ -1,4 +1,3 @@
-const colors = require('vuetify/es5/util/colors').default
 const package = require('./package.json')
 const dotenv = require('dotenv')
 
