@@ -2,10 +2,8 @@ FROM node:14
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
-COPY nuxt.config.js ./
-COPY src ./src/
-COPY yarn.lock ./
+RUN git clone git@github.com:seongland/pointland.git .
+RUN git lfs pull
 
 RUN yarn --only=production
 
