@@ -5,7 +5,7 @@ dotenv.config()
 process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.dev = 1)
 process.env.version = package.version
 process.env.twr = process.env.TWR
-process.env.title = '3D Mapping'
+process.env.title = 'Pointland'
 
 // ['cloud', 'image', 'move', 'facility']
 if (process.env.dev) process.env.target = 'move'
