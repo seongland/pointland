@@ -1,6 +1,13 @@
 # Service
 - https://point.seongland.com
-- cloudflare dns, gcp cloud run, docker, nuxt, feathers, express, mongodb
+
+## service setup
+- cloudflare dns
+- gcp cloud run
+- docker, nuxt
+- feathers
+- express
+- mongodb
 
 
 # Build Setup
