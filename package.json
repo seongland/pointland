@@ -7,9 +7,10 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
     "start": "cross-env NODE_ENV=production nuxt",
-    "production": "pm2 delete 3d-mapping & pm2 start process.json",
-    "restart": "pm2 restart 3d-mapping",
-    "stop": "pm2 delete 3d-mapping",
+    "production": "pm2 delete pointland & pm2 start process.json",
+    "restart": "pm2 restart pointland",
+    "stop": "pm2 delete pointland",
+    "build": "cross-env NODE_ENV=production nuxt build",
     "format": "prettier --write \"**/*.{js,jsx,json,md,vue}\"  --ignore-path .gitignore"
   },
   "dependencies": {
