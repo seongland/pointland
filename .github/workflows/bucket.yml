@@ -45,4 +45,4 @@ jobs:
           service_account_key: ${{ secrets.GKE_KEY }}
 
       - name: get-key
-        run: gsutil rsync -R public gs://point.seongland.com
+        run: gsutil rsync -R dist gs://point.seongland.com
