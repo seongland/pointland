@@ -42,13 +42,13 @@ jobs:
           restore-keys: gs://potree-architecture/potree
 
       - name: Get potree files
-        run: gsutil -m cp -r gs://point.seongland.com/potree/ src/static/potree
+        run: gsutil -m cp -r gs://potree-architecture/potree src/static/potree
 
       - name: Run build task
         run: yarn build
 
       - name: Depoly to Bucket
-        run: gsutil rsync -R dist gs://point.seongland.com
+        run: gsutil -m cp -r dist gs://point.seongland.com
 
       - uses: actions/upload-artifact@v1
         with:
