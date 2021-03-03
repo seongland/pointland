@@ -28,9 +28,6 @@ jobs:
       - name: Install npm dependencies
         run: yarn
 
-      - name: Run build task
-        run: yarn build
-
       - uses: actions/upload-artifact@v1
         with:
           name: make artifact
@@ -42,5 +39,11 @@ jobs:
           service_account_email: ${{ secrets.GKE_EMAIL }}
           service_account_key: ${{ secrets.GKE_KEY }}
 
-      - name: get-key
+      - name: Get potree files
+        run: gsutil rsync -R src/static/potree gs://potree-architecture/potree
+
+      - name: Run build task
+        run: yarn build
+
+      - name: Depoly to Bucket
         run: gsutil rsync -R dist gs://point.seongland.com
