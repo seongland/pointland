@@ -49,7 +49,9 @@ function initCloud(cloudOpt) {
         cloud.scene.add(pco)
         if (process.env.dev) consola.info(pco)
         pco.material.intensityRange = [0, 255]
+        pco.material.maxSize = 40
         pco.material.size = 1
+        pco.material.shape = 1
 
         cloud.camera.position.set(100, 50, 60)
         cloud.controls.target.set(80, 80, 40)
