@@ -1,7 +1,7 @@
 {
   "name": "pointland",
   "version": "1.0.8",
-  "description": "Geology Panorama Street View Map",
+  "description": "Web Metaverse with Point Cloud",
   "author": "seonglae",
   "private": true,
   "scripts": {
