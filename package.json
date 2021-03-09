@@ -34,7 +34,7 @@
     "nuxt-vuex-localstorage": "^1.2.6",
     "ol": "^6.2.1",
     "proj4": "^2.6.2",
-    "three": "^0.118.3",
+    "three": "^0.125.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
