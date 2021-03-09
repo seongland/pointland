@@ -185,14 +185,15 @@ function animate() {
   return id
 }
 
-function onWindowResize() {
+export function onWindowResize() {
   /**
    * @summary - Animate function for Point Cloud
    */
-  const el = ref.cloud.el
-  ref.cloud.camera.aspect = el.offsetWidth / el.offsetHeight
+  const width = ref.cloud.el.offsetWidth
+  const height = ref.cloud.el.children[0].offsetHeight ? ref.cloud.el.children[0].offsetHeight : ref.cloud.el.offsetHeight
+  ref.cloud.camera.aspect = width / height
+  ref.cloud.renderer.setSize(width, height)
   ref.cloud.camera.updateProjectionMatrix()
-  ref.cloud.renderer.setSize(el.offsetWidth, el.offsetHeight)
 }
 
 function onDocumentMouseMove(event) {
