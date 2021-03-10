@@ -12,7 +12,7 @@ if (process.env.dev) process.env.target = 'move'
 
 module.exports = {
   srcDir: 'src/',
-  ssr: true,
+  ssr: false,
   vue: { config: { productionTip: false, devtools: true } },
   env: {
     dev: process.env.dev,
