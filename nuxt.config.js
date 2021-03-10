@@ -12,7 +12,7 @@ if (process.env.dev) process.env.target = 'move'
 
 module.exports = {
   srcDir: 'src/',
-  ssr: true,
+  ssr: false,
   vue: { config: { productionTip: false, devtools: true } },
   env: {
     dev: process.env.dev,
@@ -59,7 +59,6 @@ module.exports = {
         name: 'description',
         content: process.env.npm_package_description || ''
       },
-      { hid: 'og:image', property: 'og:image', content: '/sky.jpg' },
       {
         hid: 'og:image',
         name: 'og:image',
