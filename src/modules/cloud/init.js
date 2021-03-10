@@ -26,6 +26,7 @@ function initCloud(cloudOpt) {
     cloud.camera = makeCamera(cloud.el)
     cloud.scene = makeScene(cloud.camera)
     cloud.renderer = makeRenderer(cloud.el)
+    // makeBackground(cloud.scene, cloud.renderer)
     cloud.el.appendChild(cloud.renderer.domElement)
     cloud.el.cloud = cloud
     cloud.controls = makeControls(cloud.camera, cloud.renderer)
@@ -75,6 +76,19 @@ function initCloud(cloudOpt) {
     cloud.id = animate()
     return cloud
   } else throw new Error('No Window or No #cloud')
+}
+
+function makeBackground(scene, renderer) {
+  const loader = new THREE.TextureLoader()
+  const texture = loader.load(
+    '/sky.jpg',
+    () => {
+      const rt = new THREE.WebGLCubeRenderTarget(texture.image.height)
+      rt.fromEquirectangularTexture(renderer, texture)
+      rt.rotation.x = Math.PI / 2
+      scene.background = rt
+    })
+
 }
 
 function purgeCloud(cloud) {
@@ -171,14 +185,15 @@ function animate() {
   return id
 }
 
-function onWindowResize() {
+export function onWindowResize() {
   /**
    * @summary - Animate function for Point Cloud
    */
-  const el = ref.cloud.el
-  ref.cloud.camera.aspect = el.offsetWidth / el.offsetHeight
+  const width = ref.cloud.el.offsetWidth
+  const height = ref.cloud.el.children[0].offsetHeight ? ref.cloud.el.children[0].offsetHeight : ref.cloud.el.offsetHeight
+  ref.cloud.camera.aspect = width / height
+  ref.cloud.renderer.setSize(width, height)
   ref.cloud.camera.updateProjectionMatrix()
-  ref.cloud.renderer.setSize(el.offsetWidth, el.offsetHeight)
 }
 
 function onDocumentMouseMove(event) {
