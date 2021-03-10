@@ -7,7 +7,6 @@
 
 <script>
 import LasCloud from '~/components/LasCloud'
-import consola from 'consola'
 
 export default {
   components: {
