@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { ref } from '~/modules/cloud/init'
 import consola from 'consola'
 
 export default {
