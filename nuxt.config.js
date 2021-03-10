@@ -12,7 +12,7 @@ if (process.env.dev) process.env.target = 'move'
 
 module.exports = {
   srcDir: 'src/',
-  ssr: false,
+  ssr: true,
   vue: { config: { productionTip: false, devtools: true } },
   env: {
     dev: process.env.dev,
@@ -45,7 +45,7 @@ module.exports = {
   build: {
     maxChunkSize: 300000,
     transpile: ['three'],
-    extend() {}
+    extend() { }
   },
 
   // Header
@@ -58,6 +58,12 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
+      },
+      { hid: 'og:image', property: 'og:image', content: '/sky.jpg' },
+      {
+        hid: 'og:image',
+        name: 'og:image',
+        content: `https://point.seongland.com/pointland.png`
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]

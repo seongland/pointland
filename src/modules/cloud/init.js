@@ -26,7 +26,7 @@ function initCloud(cloudOpt) {
     cloud.camera = makeCamera(cloud.el)
     cloud.scene = makeScene(cloud.camera)
     cloud.renderer = makeRenderer(cloud.el)
-    makeBackground(cloud.scene, cloud.renderer)
+    // makeBackground(cloud.scene, cloud.renderer)
     cloud.el.appendChild(cloud.renderer.domElement)
     cloud.el.cloud = cloud
     cloud.controls = makeControls(cloud.camera, cloud.renderer)
