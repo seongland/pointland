@@ -59,7 +59,6 @@ module.exports = {
         name: 'description',
         content: process.env.npm_package_description || ''
       },
-      { hid: 'og:image', property: 'og:image', content: '/sky.jpg' },
       {
         hid: 'og:image',
         name: 'og:image',
