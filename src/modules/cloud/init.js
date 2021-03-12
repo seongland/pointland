@@ -8,6 +8,7 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 import { click3D } from './draw'
 import { makePointLayer } from './layer'
 import { Potree } from '@pnext/three-loader'
+import TWEEN from '@tweenjs/tween.js'
 import consola from 'consola'
 
 export const ref = { cloud: null, cloudSize: 0.05, pointSize: 1, lineWidth: 0.01 }
@@ -26,7 +27,6 @@ function initCloud(cloudOpt) {
     cloud.camera = makeCamera(cloud.el)
     cloud.scene = makeScene(cloud.camera)
     cloud.renderer = makeRenderer(cloud.el)
-    // makeBackground(cloud.scene, cloud.renderer)
     cloud.el.appendChild(cloud.renderer.domElement)
     cloud.el.cloud = cloud
     cloud.controls = makeControls(cloud.camera, cloud.renderer)
@@ -34,6 +34,7 @@ function initCloud(cloudOpt) {
     cloud.axis = true
     cloud.mouse = new THREE.Vector2()
     cloud.raycaster = new THREE.Raycaster()
+    cloud.skybox = loadSkybox(cloud, '/skybox')
 
     // potree
     cloud.potree = new Potree()
@@ -53,9 +54,17 @@ function initCloud(cloudOpt) {
         pco.material.maxSize = 40
         pco.material.size = 1
         pco.material.shape = 1
+        console.log(cloud.camera.position)
+        console.log(cloud.controls.target)
 
-        cloud.camera.position.set(100, 50, 60)
-        cloud.controls.target.set(80, 80, 40)
+        // new TWEEN.Tween(cloud.camera.position)
+        //   .easing(TWEEN.Easing.Quintic.InOut)
+        //   .to(cloud.camera.position.clone().set(64, 86, 40), 1000)
+        //   .start()
+        // new TWEEN.Tween(cloud.controls.target)
+        //   .easing(TWEEN.Easing.Quintic.InOut)
+        //   .to(cloud.controls.target.clone().set(80, 80, 40), 1000)
+        //   .start()
       })
 
     ref.cloud = cloud
@@ -63,7 +72,18 @@ function initCloud(cloudOpt) {
     if (!cloudOpt.makeCallback)
       ref.cloud.makeCallback = (e, xyz) => {
         if (process.env.dev) consola.info(xyz)
-        cloud.controls.target.set(...xyz)
+        const controls = cloud.controls
+        const camera = cloud.camera
+        const move = [xyz[0] - controls.target.x, xyz[1] - controls.target.y, xyz[2] - controls.target.z]
+        const position = [camera.position.x + move[0], camera.position.y + move[1], camera.position.z + move[2]]
+        new TWEEN.Tween(camera.position)
+          .easing(TWEEN.Easing.Quintic.InOut)
+          .to(camera.position.clone().set(...position), 200)
+          .start()
+        new TWEEN.Tween(controls.target)
+          .easing(TWEEN.Easing.Quintic.InOut)
+          .to(controls.target.clone().set(...xyz), 200)
+          .start()
       }
 
     window.addEventListener('resize', onWindowResize, false)
@@ -76,19 +96,6 @@ function initCloud(cloudOpt) {
     cloud.id = animate()
     return cloud
   } else throw new Error('No Window or No #cloud')
-}
-
-function makeBackground(scene, renderer) {
-  const loader = new THREE.TextureLoader()
-  const texture = loader.load(
-    '/sky.jpg',
-    () => {
-      const rt = new THREE.WebGLCubeRenderTarget(texture.image.height)
-      rt.fromEquirectangularTexture(renderer, texture)
-      rt.rotation.x = Math.PI / 2
-      scene.background = rt
-    })
-
 }
 
 function purgeCloud(cloud) {
@@ -117,8 +124,10 @@ function makeCamera(el) {
    */
   const w = el.offsetWidth
   const h = el.offsetHeight
-  const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 10000)
-  camera.position.z = 3
+  const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 10000000)
+  camera.position.x = 64
+  camera.position.y = 86
+  camera.position.z = 50
   return camera
 }
 
@@ -152,6 +161,9 @@ function makeControls(camera, renderer) {
   controls.staticMoving = true
   controls.minDistance = 0.3
   controls.maxDistance = 0.3 * 5000
+  controls.target.x = 80
+  controls.target.y = 80
+  controls.target.z = 40
   return controls
 }
 
@@ -181,6 +193,7 @@ function animate() {
 
   cloud.renderer.clear()
   cloud.renderer.render(cloud.scene, cloud.camera)
+  TWEEN.update()
 
   return id
 }
@@ -200,6 +213,32 @@ function onDocumentMouseMove(event) {
   event.preventDefault()
   ref.cloud.mouse.x = (event.offsetX / ref.cloud.el.offsetWidth) * 2 - 1
   ref.cloud.mouse.y = -(event.offsetY / ref.cloud.el.offsetHeight) * 2 + 1
+}
+
+function loadSkybox(cloud, path) {
+  const scene = cloud.scene
+  let ext = 'jpg'
+  let urls = [
+    `${path}/px.${ext}`,
+    `${path}/nx.${ext}`,
+    `${path}/py.${ext}`,
+    `${path}/ny.${ext}`,
+    `${path}/pz.${ext}`,
+    `${path}/nz.${ext}`
+  ]
+  const materials = urls.map(url => {
+    const texture = new THREE.TextureLoader().load(url)
+    return new THREE.MeshBasicMaterial({
+      map: texture,
+      side: THREE.BackSide,
+      fog: false,
+      depthWrite: false
+    })
+  })
+  const skybox = new THREE.Mesh(new THREE.BoxBufferGeometry(1000000, 1000000, 1000000), materials)
+  scene.add(skybox)
+  skybox.rotation.x = Math.PI / 2
+  return skybox
 }
 
 export { initCloud, purgeCloud }
