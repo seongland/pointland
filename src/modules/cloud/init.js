@@ -5,7 +5,7 @@
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
-import { click3D } from './draw'
+import { click3D, tweenFocus } from './draw'
 import { makePointLayer } from './layer'
 import { Potree } from '@pnext/three-loader'
 import TWEEN from '@tweenjs/tween.js'
@@ -54,17 +54,7 @@ function initCloud(cloudOpt) {
         pco.material.maxSize = 40
         pco.material.size = 1
         pco.material.shape = 1
-        console.log(cloud.camera.position)
-        console.log(cloud.controls.target)
-
-        // new TWEEN.Tween(cloud.camera.position)
-        //   .easing(TWEEN.Easing.Quintic.InOut)
-        //   .to(cloud.camera.position.clone().set(64, 86, 40), 1000)
-        //   .start()
-        // new TWEEN.Tween(cloud.controls.target)
-        //   .easing(TWEEN.Easing.Quintic.InOut)
-        //   .to(cloud.controls.target.clone().set(80, 80, 40), 1000)
-        //   .start()
+        tweenFocus([80, 80, 40], 1000, [0, 160, 60])
       })
 
     ref.cloud = cloud
@@ -125,9 +115,7 @@ function makeCamera(el) {
   const w = el.offsetWidth
   const h = el.offsetHeight
   const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 10000000)
-  camera.position.x = 64
-  camera.position.y = 86
-  camera.position.z = 50
+  camera.up.set(0, 0, 1)
   return camera
 }
 
@@ -161,9 +149,6 @@ function makeControls(camera, renderer) {
   controls.staticMoving = true
   controls.minDistance = 0.3
   controls.maxDistance = 0.3 * 5000
-  controls.target.x = 80
-  controls.target.y = 80
-  controls.target.z = 40
   return controls
 }
 
