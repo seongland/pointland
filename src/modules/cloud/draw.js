@@ -5,8 +5,7 @@
 import * as THREE from 'three'
 import { ref } from './init'
 import consola from 'consola'
-
-const HOVER_COLOR = [0.8, 1, 1]
+import TWEEN from '@tweenjs/tween.js'
 
 export function drawXYZ(layer, xyz, focus, id) {
   /*
@@ -132,6 +131,22 @@ export function drawLine(xyzs, layer) {
   cloud.lines.push(line)
 }
 
+export function tweenFocus(xyz, time, camera) {
+  const ctrl = ref.cloud.controls
+  const cam = ref.cloud.camera
+  const move = [xyz[0] - ctrl.target.x, xyz[1] - ctrl.target.y, xyz[2] - ctrl.target.z]
+  let position = [cam.position.x + move[0], cam.position.y + move[1], cam.position.z + move[2]]
+  new TWEEN.Tween(ctrl.target)
+    .easing(TWEEN.Easing.Quintic.InOut)
+    .to(ctrl.target.clone().set(...xyz), time)
+    .start()
+  if (camera) position = camera
+  new TWEEN.Tween(cam.position)
+    .easing(TWEEN.Easing.Quintic.InOut)
+    .to(cam.position.clone().set(...position), time)
+    .start()
+}
+
 function click3D(e) {
   /*
    * @summary - double click cloud callback
@@ -154,7 +169,6 @@ function click3D(e) {
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
   let intersect = intersects[0]
   if (intersect) {
-    intersect = tuneIntersect(intersect)
     if (process.env.target === 'cloud') consola.info('3D Point', intersect)
     if (intersect.index === undefined) return
     return intersect.object.click(e, intersect)
@@ -162,45 +176,14 @@ function click3D(e) {
 
   // Make New
   if (cloud.pointclouds.length < 1) return
-  cloud.raycaster.params.Points.threshold = 0.03
-
-  const children = []
-  const getChildren = object => {
-    for (const child of object.children) {
-      children.push(...object.children)
-      getChildren(child)
-    }
-  }
-  for (const pointcloud of cloud.pointclouds) getChildren(pointcloud)
-  cloud.currentHover = cloud.raycaster.intersectObjects(children)[0]
+  cloud.raycaster.params.Points.threshold = 0.1
+  cloud.currentHover = cloud.raycaster.intersectObjects(cloud.pointclouds, true)[0]
 
   if (!cloud.currentHover) return
-  cloud.currentSelected = cloud.currentHover
-  const center = cloud.currentSelected.point
+  const clicked = cloud.currentHover
+  const center = clicked.point
   const xyz = [center.x, center.y, center.z]
   ref.cloud.makeCallback(e, xyz)
-}
-
-function tuneIntersect(intersect) {
-  const geometry = intersect.object.geometry
-  const index = checkIntersectIndex(intersect, geometry.indexes)
-  intersect.index = index
-  return intersect
-}
-
-function checkIntersectIndex(intersect, indexes) {
-  const geometry = intersect.object.geometry
-  const positions = geometry.attributes.position.array
-  const target = intersect.point
-  for (const i in indexes)
-    if (indexes[i]) {
-      const mhtD =
-        (Math.abs(target.x - positions[3 * i]) +
-          Math.abs(target.y - positions[3 * i + 1]) +
-          Math.abs(target.z - positions[3 * i + 2])) /
-        3
-      if (mhtD < intersect.distanceToRay) return Number(i)
-    }
 }
 
 export { click3D }
