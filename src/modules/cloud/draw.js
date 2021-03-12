@@ -6,8 +6,6 @@ import * as THREE from 'three'
 import { ref } from './init'
 import consola from 'consola'
 
-const HOVER_COLOR = [0.8, 1, 1]
-
 export function drawXYZ(layer, xyz, focus, id) {
   /*
    * <summary>index file from js</summary>
@@ -154,7 +152,6 @@ function click3D(e) {
   intersects.sort((a, b) => a.distanceToRay - b.distanceToRay)
   let intersect = intersects[0]
   if (intersect) {
-    intersect = tuneIntersect(intersect)
     if (process.env.target === 'cloud') consola.info('3D Point', intersect)
     if (intersect.index === undefined) return
     return intersect.object.click(e, intersect)
@@ -162,45 +159,14 @@ function click3D(e) {
 
   // Make New
   if (cloud.pointclouds.length < 1) return
-  cloud.raycaster.params.Points.threshold = 0.03
-
-  const children = []
-  const getChildren = object => {
-    for (const child of object.children) {
-      children.push(...object.children)
-      getChildren(child)
-    }
-  }
-  for (const pointcloud of cloud.pointclouds) getChildren(pointcloud)
-  cloud.currentHover = cloud.raycaster.intersectObjects(children)[0]
+  cloud.raycaster.params.Points.threshold = 0.1
+  cloud.currentHover = cloud.raycaster.intersectObjects(cloud.pointclouds, true)[0]
 
   if (!cloud.currentHover) return
-  cloud.currentSelected = cloud.currentHover
-  const center = cloud.currentSelected.point
+  const clicked = cloud.currentHover
+  const center = clicked.point
   const xyz = [center.x, center.y, center.z]
   ref.cloud.makeCallback(e, xyz)
-}
-
-function tuneIntersect(intersect) {
-  const geometry = intersect.object.geometry
-  const index = checkIntersectIndex(intersect, geometry.indexes)
-  intersect.index = index
-  return intersect
-}
-
-function checkIntersectIndex(intersect, indexes) {
-  const geometry = intersect.object.geometry
-  const positions = geometry.attributes.position.array
-  const target = intersect.point
-  for (const i in indexes)
-    if (indexes[i]) {
-      const mhtD =
-        (Math.abs(target.x - positions[3 * i]) +
-          Math.abs(target.y - positions[3 * i + 1]) +
-          Math.abs(target.z - positions[3 * i + 2])) /
-        3
-      if (mhtD < intersect.distanceToRay) return Number(i)
-    }
 }
 
 export { click3D }
