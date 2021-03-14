@@ -8,27 +8,97 @@
 </template>
 
 <script>
-import consola from 'consola'
 import nipplejs from 'nipplejs'
 
 export default {
-  data: () => ({ lasList: [], apiList: [], loading: false }),
+  data: () => ({
+    lasList: [],
+    apiList: [],
+    loading: false
+  }),
 
   computed: {},
 
   watch: {},
 
   methods: {
-    touchable: () => window.orientation !== undefined
+    touchable: () => true,
+
+    nippleEvent(manager, cloud) {
+      manager.on('added', (e, nipple) => {
+        if (nipple.position.y < window.innerHeight / 2) this.verticalNipple(nipple, cloud)
+        else if (nipple.position.x < window.innerWidth / 2) this.cameraNipple(nipple, cloud)
+        else this.targetNipple(nipple, cloud)
+      })
+    },
+
+    cameraNipple(nipple, cloud) {
+      let loop
+      let factor = 1
+      nipple.on('move', (event, data) => {
+        if (loop) clearInterval(loop)
+        loop = setInterval(() => {
+          cloud.camera.controls.truck((data.force * data.vector.x) / 10, 0, true)
+          cloud.camera.controls.forward((data.force * data.vector.y) / 10, true)
+          data.vector.x /= factor
+          data.vector.y /= factor
+        }, 10)
+      })
+      nipple.on('end', () => {
+        factor = 1.1
+      })
+      nipple.on('destroyed', () => {
+        if (loop) clearInterval(loop)
+      })
+    },
+
+    verticalNipple(nipple, cloud) {
+      let loop
+      let factor = 1
+      nipple.on('move', (event, data) => {
+        if (loop) clearInterval(loop)
+        loop = setInterval(() => {
+          cloud.camera.controls.truck(0, -(data.force * data.vector.y) / 10, true)
+          data.vector.x /= factor
+          data.vector.y /= factor
+        }, 10)
+      })
+      nipple.on('end', () => {
+        factor = 1.1
+      })
+      nipple.on('destroyed', () => {
+        if (loop) clearInterval(loop)
+      })
+    },
+
+    targetNipple(nipple, cloud) {
+      let loop
+      let factor = 1
+      nipple.on('move', (event, data) => {
+        if (loop) clearInterval(loop)
+        loop = setInterval(() => {
+          cloud.camera.controls.rotate(-(data.force * data.vector.x) / 200, (data.force * data.vector.y) / 200, true)
+          data.vector.x /= factor
+          data.vector.y /= factor
+        }, 10)
+      })
+      nipple.on('end', () => {
+        factor = 1.1
+      })
+      nipple.on('destroyed', () => {
+        if (loop) clearInterval(loop)
+      })
+    }
   },
 
   mounted() {
-    this.$root.cloud = this.initCloud(this.cloudOpt)
+    const cloud = this.initCloud(this.cloudOpt)
+    this.$root.cloud = cloud
     const zone = document.getElementById('nipple')
     if (!zone) return
     const options = { zone, multitouch: true, maxNumberOfNipples: 2 }
     const manager = nipplejs.create(options)
-    return manager
+    this.nippleEvent(manager, cloud)
   }
 }
 </script>
