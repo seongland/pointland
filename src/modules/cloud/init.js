@@ -3,15 +3,18 @@
  */
 
 import * as THREE from 'three'
-import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
-import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
-import { click3D, tweenFocus } from './draw'
+import CameraControls from 'camera-controls'
+import { click3D } from './draw'
 import { makePointLayer } from './layer'
 import { Potree } from '@pnext/three-loader'
 import TWEEN from '@tweenjs/tween.js'
-import consola from 'consola'
+import { KeyboardKeyHold } from 'hold-event'
 
+CameraControls.install({ THREE: THREE })
 export const ref = { cloud: null, cloudSize: 0.05, pointSize: 1, lineWidth: 0.01 }
+const KEYCODE = { W: 87, A: 65, S: 83, D: 68, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, E: 69, Q: 81 }
+const EPS = 1e-5
+const POSITION = [10, 130, 50]
 
 function initCloud(cloudOpt) {
   /**
@@ -25,21 +28,21 @@ function initCloud(cloudOpt) {
     // Make Space
     cloud.opt = cloudOpt
     cloud.camera = makeCamera(cloud.el)
+    cloud.camera.controls = makeCameraControls(cloud.camera, cloud.el)
     cloud.scene = makeScene(cloud.camera)
     cloud.renderer = makeRenderer(cloud.el)
     cloud.el.appendChild(cloud.renderer.domElement)
     cloud.el.cloud = cloud
-    cloud.controls = makeControls(cloud.camera, cloud.renderer)
-    cloud.transform = makeTransform(cloud.camera, cloud.renderer, cloud.scene)
     cloud.axis = true
     cloud.mouse = new THREE.Vector2()
     cloud.raycaster = new THREE.Raycaster()
     cloud.skybox = loadSkybox(cloud, '/skybox')
+    cloud.clock = new THREE.Clock()
 
     // potree
     cloud.potree = new Potree()
     cloud.pointclouds = []
-    cloud.potree.pointBudget = 1_000_000_000
+    cloud.potree.pointBudget = 500_000
     cloud.potree
       .loadPointCloud('cloud.json', url => `/potree/${url}`)
       .then(pco => {
@@ -49,32 +52,16 @@ function initCloud(cloudOpt) {
         pco.translateZ(-pco.position.z)
         cloud.pointclouds.push(pco)
         cloud.scene.add(pco)
-        if (process.env.dev) consola.info(pco)
         pco.material.intensityRange = [0, 255]
         pco.material.maxSize = 40
+        pco.material.minSize = 4
         pco.material.size = 1
         pco.material.shape = 1
-        tweenFocus([80, 80, 40], 1000, [0, 160, 60])
+        cloud.camera.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
       })
 
     ref.cloud = cloud
     ref.cloud.makeCallback = cloudOpt.makeCallback
-    if (!cloudOpt.makeCallback)
-      ref.cloud.makeCallback = (e, xyz) => {
-        if (process.env.dev) consola.info(xyz)
-        const controls = cloud.controls
-        const camera = cloud.camera
-        const move = [xyz[0] - controls.target.x, xyz[1] - controls.target.y, xyz[2] - controls.target.z]
-        const position = [camera.position.x + move[0], camera.position.y + move[1], camera.position.z + move[2]]
-        new TWEEN.Tween(camera.position)
-          .easing(TWEEN.Easing.Quintic.InOut)
-          .to(camera.position.clone().set(...position), 200)
-          .start()
-        new TWEEN.Tween(controls.target)
-          .easing(TWEEN.Easing.Quintic.InOut)
-          .to(controls.target.clone().set(...xyz), 200)
-          .start()
-      }
 
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
@@ -97,17 +84,6 @@ function purgeCloud(cloud) {
   return null
 }
 
-export function updateCtrl() {
-  /**
-   * @summary - Make Controls
-   */
-  if (ref.updated) return
-  const camera = ref.cloud.camera
-  const renderer = ref.cloud.renderer
-  ref.cloud.controls = makeControls(camera, renderer)
-  ref.updated = true
-}
-
 function makeCamera(el) {
   /**
    * @summary - Make Camera
@@ -116,7 +92,52 @@ function makeCamera(el) {
   const h = el.offsetHeight
   const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 10000000)
   camera.up.set(0, 0, 1)
+  camera.position.set(...POSITION)
   return camera
+}
+
+function makeCameraControls(camera, el) {
+  const cameraControls = new CameraControls(camera, el)
+  cameraControls.azimuthRotateSpeed = 0.3
+  cameraControls.polarRotateSpeed = 0.3
+  cameraControls.maxZoom = 4
+  cameraControls.minZoom = 0.5
+  cameraControls.truckSpeed = (1 / EPS) * 3
+  cameraControls.mouseButtons.wheel = CameraControls.ACTION.ZOOM
+  cameraControls.touches.two = CameraControls.ACTION.TOUCH_ZOOM_TRUCK
+  cameraControls.saveState()
+
+  // Add key event
+  const wKey = new KeyboardKeyHold(KEYCODE.W, 10)
+  const aKey = new KeyboardKeyHold(KEYCODE.A, 10)
+  const sKey = new KeyboardKeyHold(KEYCODE.S, 10)
+  const dKey = new KeyboardKeyHold(KEYCODE.D, 10)
+  const qKey = new KeyboardKeyHold(KEYCODE.Q, 10)
+  const eKey = new KeyboardKeyHold(KEYCODE.E, 10)
+  aKey.addEventListener('holding', event => cameraControls.truck(-0.05 * event.deltaTime, 0, true))
+  dKey.addEventListener('holding', event => cameraControls.truck(0.05 * event.deltaTime, 0, true))
+  wKey.addEventListener('holding', event => cameraControls.forward(0.05 * event.deltaTime, true))
+  sKey.addEventListener('holding', event => cameraControls.forward(-0.05 * event.deltaTime, true))
+  qKey.addEventListener('holding', event => cameraControls.truck(0, 0.05 * event.deltaTime, true))
+  eKey.addEventListener('holding', event => cameraControls.truck(0, -0.05 * event.deltaTime, true))
+  const leftKey = new KeyboardKeyHold(KEYCODE.LEFT, 10)
+  const rightKey = new KeyboardKeyHold(KEYCODE.RIGHT, 10)
+  const upKey = new KeyboardKeyHold(KEYCODE.UP, 10)
+  const downKey = new KeyboardKeyHold(KEYCODE.DOWN, 10)
+  leftKey.addEventListener('holding', event =>
+    cameraControls.rotate(-0.1 * THREE.MathUtils.DEG2RAD * event.deltaTime, 0, true)
+  )
+  rightKey.addEventListener('holding', event =>
+    cameraControls.rotate(0.1 * THREE.MathUtils.DEG2RAD * event.deltaTime, 0, true)
+  )
+  upKey.addEventListener('holding', event =>
+    cameraControls.rotate(0, -0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true)
+  )
+  downKey.addEventListener('holding', event =>
+    cameraControls.rotate(0, 0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true)
+  )
+
+  return cameraControls
 }
 
 function makeScene(cam) {
@@ -138,42 +159,18 @@ function makeRenderer(el) {
   return renderer
 }
 
-function makeControls(camera, renderer) {
-  /**
-   * @summary - Make Controls
-   */
-  const controls = new TrackballControls(camera, renderer.domElement)
-  controls.rotateSpeed = 2
-  controls.zoomSpeed = 2
-  controls.panSpeed = 2
-  controls.staticMoving = true
-  controls.minDistance = 0.3
-  controls.maxDistance = 0.3 * 5000
-  return controls
-}
-
-export function makeTransform(camera, renderer, scene) {
-  /**
-   * @summary - Make Controls
-   */
-  const transform = new TransformControls(camera, renderer.domElement)
-  transform.setMode('translate')
-  transform.setSize(0.2)
-  scene.add(transform)
-  return transform
-}
-
 function animate() {
   /**
    * @summary - Animate function for Point Cloud
    */
   if (!ref.cloud?.el) return
   const cloud = ref.cloud
+  const delta = cloud.clock.getDelta()
   const id = requestAnimationFrame(animate)
 
   cloud.raycaster.setFromCamera(cloud.mouse, cloud.camera)
 
-  cloud.controls.update()
+  cloud.camera.controls.update(delta)
   cloud.potree.updatePointClouds(cloud.pointclouds, cloud.camera, cloud.renderer)
 
   cloud.renderer.clear()
@@ -187,8 +184,8 @@ export function onWindowResize() {
   /**
    * @summary - Animate function for Point Cloud
    */
-  const width = ref.cloud.el.offsetWidth
-  const height = ref.cloud.el.children[0].offsetHeight ? ref.cloud.el.children[0].offsetHeight : ref.cloud.el.offsetHeight
+  const width = window.innerWidth
+  const height = window.innerHeight
   ref.cloud.camera.aspect = width / height
   ref.cloud.renderer.setSize(width, height)
   ref.cloud.camera.updateProjectionMatrix()
