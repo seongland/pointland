@@ -45,7 +45,7 @@ module.exports = {
   build: {
     maxChunkSize: 300000,
     transpile: ['three'],
-    extend() { }
+    extend() {}
   },
 
   // Header
@@ -62,7 +62,7 @@ module.exports = {
       {
         hid: 'og:image',
         name: 'og:image',
-        content: `https://point.seongland.com/pointland.png`
+        content: `https://point.seongland.com/pointland.jpg`
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]

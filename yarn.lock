@@ -2475,6 +2475,11 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
 
+camera-controls@^1.27.0:
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-1.27.0.tgz#b4fd5f9af7625bf4893fcf3e2522d687d8396ae5"
+  integrity sha512-AseZFx2QQRLOlyvJjX9zF/mzyqIzEQ5YNh78MQNTn/ccdv8g2NyuMxLpTldI2V24JvvLvcmDiYIzo5fe8A/VOw==
+
 caniuse-api@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/caniuse-api/-/caniuse-api-3.0.0.tgz#5e4d90e2274961d46291997df599e3ed008ee4c0"
@@ -4371,6 +4376,11 @@ hmac-drbg@^1.0.1:
     hash.js "^1.0.3"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
+
+hold-event@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/hold-event/-/hold-event-0.0.1.tgz#576f9b57fb2af7526029609adbd1089485ef7334"
+  integrity sha512-CB63bPcgMaierrHAGBnNaucJ1ZHVaPmtCKp1hsRc6nc66b5p+OM1n3MyExk1wtS5vrhCopP/lpUZ3kbwOxXmbQ==
 
 hsl-regex@^1.0.0:
   version "1.0.0"
