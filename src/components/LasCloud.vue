@@ -2,12 +2,14 @@
 
 <template>
   <div>
+    <div id="nipple" v-if="touchable()" />
     <div id="las" />
   </div>
 </template>
 
 <script>
 import consola from 'consola'
+import nipplejs from 'nipplejs'
 
 export default {
   data: () => ({ lasList: [], apiList: [], loading: false }),
@@ -16,17 +18,29 @@ export default {
 
   watch: {},
 
-  methods: {},
+  methods: {
+    touchable: () => window.orientation !== undefined
+  },
 
   mounted() {
     this.$root.cloud = this.initCloud(this.cloudOpt)
-    if (process.env.dev) consola.info(this.$root.cloud)
+    const zone = document.getElementById('nipple')
+    if (!zone) return
+    const options = { zone, multitouch: true, maxNumberOfNipples: 2 }
+    const manager = nipplejs.create(options)
+    return manager
   }
 }
 </script>
 
 <style>
-#las {
+#las,
+#nipple {
   height: 100%;
+  width: 100%;
+  position: absolute;
+}
+#nipple {
+  z-index: 1;
 }
 </style>
