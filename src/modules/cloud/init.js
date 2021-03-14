@@ -5,6 +5,7 @@
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
 import { click3D, tweenFocus } from './draw'
 import { makePointLayer } from './layer'
 import { Potree } from '@pnext/three-loader'
@@ -59,22 +60,7 @@ function initCloud(cloudOpt) {
 
     ref.cloud = cloud
     ref.cloud.makeCallback = cloudOpt.makeCallback
-    if (!cloudOpt.makeCallback)
-      ref.cloud.makeCallback = (e, xyz) => {
-        if (process.env.dev) consola.info(xyz)
-        const controls = cloud.controls
-        const camera = cloud.camera
-        const move = [xyz[0] - controls.target.x, xyz[1] - controls.target.y, xyz[2] - controls.target.z]
-        const position = [camera.position.x + move[0], camera.position.y + move[1], camera.position.z + move[2]]
-        new TWEEN.Tween(camera.position)
-          .easing(TWEEN.Easing.Quintic.InOut)
-          .to(camera.position.clone().set(...position), 200)
-          .start()
-        new TWEEN.Tween(controls.target)
-          .easing(TWEEN.Easing.Quintic.InOut)
-          .to(controls.target.clone().set(...xyz), 200)
-          .start()
-      }
+    if (!cloudOpt.makeCallback) ref.cloud.makeCallback = (e, xyz) => tweenFocus(xyz, 500)
 
     window.addEventListener('resize', onWindowResize, false)
     cloud.el.addEventListener('mousemove', onDocumentMouseMove, false)
@@ -187,8 +173,8 @@ export function onWindowResize() {
   /**
    * @summary - Animate function for Point Cloud
    */
-  const width = ref.cloud.el.offsetWidth
-  const height = ref.cloud.el.children[0].offsetHeight ? ref.cloud.el.children[0].offsetHeight : ref.cloud.el.offsetHeight
+  const width = window.innerWidth
+  const height = window.innerHeight
   ref.cloud.camera.aspect = width / height
   ref.cloud.renderer.setSize(width, height)
   ref.cloud.camera.updateProjectionMatrix()
