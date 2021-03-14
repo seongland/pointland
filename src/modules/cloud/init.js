@@ -5,7 +5,6 @@
 import * as THREE from 'three'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
 import { click3D, tweenFocus } from './draw'
 import { makePointLayer } from './layer'
 import { Potree } from '@pnext/three-loader'
