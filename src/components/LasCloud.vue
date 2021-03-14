@@ -14,7 +14,12 @@ export default {
   data: () => ({
     lasList: [],
     apiList: [],
-    loading: false
+    loading: false,
+    move: {
+      camera: false,
+      vertical: false,
+      target: false
+    }
   }),
 
   computed: {},
@@ -22,7 +27,7 @@ export default {
   watch: {},
 
   methods: {
-    touchable: () => true,
+    touchable: () => window.orientation !== undefined,
 
     nippleEvent(manager, cloud) {
       manager.on('added', (e, nipple) => {
@@ -35,11 +40,11 @@ export default {
     cameraNipple(nipple, cloud) {
       let loop
       let factor = 1
-      nipple.on('move', (event, data) => {
+      nipple.on('move', (_, data) => {
         if (loop) clearInterval(loop)
         loop = setInterval(() => {
-          cloud.camera.controls.truck((data.force * data.vector.x) / 10, 0, true)
-          cloud.camera.controls.forward((data.force * data.vector.y) / 10, true)
+          cloud.camera.controls.truck((data.force * data.vector.x) / 10, 0, false)
+          cloud.camera.controls.forward((data.force * data.vector.y) / 10, false)
           data.vector.x /= factor
           data.vector.y /= factor
         }, 10)
@@ -55,10 +60,10 @@ export default {
     verticalNipple(nipple, cloud) {
       let loop
       let factor = 1
-      nipple.on('move', (event, data) => {
+      nipple.on('move', (_, data) => {
         if (loop) clearInterval(loop)
         loop = setInterval(() => {
-          cloud.camera.controls.truck(0, -(data.force * data.vector.y) / 10, true)
+          cloud.camera.controls.truck(0, -(data.force * data.vector.y) / 10, false)
           data.vector.x /= factor
           data.vector.y /= factor
         }, 10)
@@ -74,10 +79,10 @@ export default {
     targetNipple(nipple, cloud) {
       let loop
       let factor = 1
-      nipple.on('move', (event, data) => {
+      nipple.on('move', (_, data) => {
         if (loop) clearInterval(loop)
         loop = setInterval(() => {
-          cloud.camera.controls.rotate(-(data.force * data.vector.x) / 200, (data.force * data.vector.y) / 200, true)
+          cloud.camera.controls.rotate(-(data.force * data.vector.x) / 200, (data.force * data.vector.y) / 200, false)
           data.vector.x /= factor
           data.vector.y /= factor
         }, 10)
