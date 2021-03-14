@@ -136,15 +136,23 @@ export function tweenFocus(xyz, time, camera) {
   const cam = ref.cloud.camera
   const move = [xyz[0] - ctrl.target.x, xyz[1] - ctrl.target.y, xyz[2] - ctrl.target.z]
   let position = [cam.position.x + move[0], cam.position.y + move[1], cam.position.z + move[2]]
-  new TWEEN.Tween(ctrl.target)
+  ctrl.enabled = false
+  if (ctrl.tween) ctrl.tween.stop()
+  ctrl.tween = new TWEEN.Tween(ctrl.target)
     .easing(TWEEN.Easing.Quintic.InOut)
     .to(ctrl.target.clone().set(...xyz), time)
     .start()
+    .onComplete(() => {
+      ctrl.enabled = true
+      ctrl.tween = null
+    })
   if (camera) position = camera
-  new TWEEN.Tween(cam.position)
+  if (cam.tween) cam.tween.stop()
+  cam.tween = new TWEEN.Tween(cam.position)
     .easing(TWEEN.Easing.Quintic.InOut)
     .to(cam.position.clone().set(...position), time)
     .start()
+    .onComplete(() => (cam.tween = null))
 }
 
 function click3D(e) {
