@@ -42,7 +42,7 @@ function initCloud(cloudOpt) {
     // potree
     cloud.potree = new Potree()
     cloud.pointclouds = []
-    cloud.potree.pointBudget = 1_000_000
+    cloud.potree.pointBudget = 500_000
     cloud.potree
       .loadPointCloud('cloud.json', url => `/potree/${url}`)
       .then(pco => {
