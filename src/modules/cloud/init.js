@@ -125,16 +125,16 @@ function makeCameraControls(camera, el) {
   const upKey = new KeyboardKeyHold(KEYCODE.UP, 10)
   const downKey = new KeyboardKeyHold(KEYCODE.DOWN, 10)
   leftKey.addEventListener('holding', event =>
-    cameraControls.rotate(-0.1 * THREE.MathUtils.DEG2RAD * event.deltaTime, 0, true)
-  )
-  rightKey.addEventListener('holding', event =>
     cameraControls.rotate(0.1 * THREE.MathUtils.DEG2RAD * event.deltaTime, 0, true)
   )
+  rightKey.addEventListener('holding', event =>
+    cameraControls.rotate(-0.1 * THREE.MathUtils.DEG2RAD * event.deltaTime, 0, true)
+  )
   upKey.addEventListener('holding', event =>
-    cameraControls.rotate(0, -0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true)
+    cameraControls.rotate(0, 0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true)
   )
   downKey.addEventListener('holding', event =>
-    cameraControls.rotate(0, 0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true)
+    cameraControls.rotate(0, -0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true)
   )
 
   return cameraControls

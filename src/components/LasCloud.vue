@@ -27,7 +27,7 @@ export default {
   watch: {},
 
   methods: {
-    touchable: () => false,
+    touchable: () => window.orientation !== undefined,
 
     nippleEvent(manager, cloud) {
       manager.on('added', (e, nipple) => {
