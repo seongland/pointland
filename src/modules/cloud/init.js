@@ -101,6 +101,7 @@ function makeCameraControls(camera, el) {
   cameraControls.azimuthRotateSpeed = 0.3
   cameraControls.polarRotateSpeed = 0.3
   cameraControls.maxZoom = 4
+  cameraControls.dollySpeed = 0.1
   cameraControls.minZoom = 0.5
   cameraControls.truckSpeed = (1 / EPS) * 3
   cameraControls.mouseButtons.wheel = CameraControls.ACTION.ZOOM
