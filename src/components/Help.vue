@@ -36,9 +36,9 @@
         <v-expansion-panel-content>
           <v-divider />
           <v-card-subtitle>Mobile Move</v-card-subtitle>
-          <v-card-text> <kbd>Left Bottom Nipple</kbd> - Move </v-card-text>
-          <v-card-text> <kbd>Right Bottom Nipple</kbd> - See </v-card-text>
-          <v-card-text> <kbd>Top Nipple</kbd> - Set Altitude </v-card-text>
+          <v-card-text> <kbd>Left Bottom Area</kbd> - Move </v-card-text>
+          <v-card-text> <kbd>Right Bottom Area</kbd> - See </v-card-text>
+          <v-card-text> <kbd>Top Half Area</kbd> - Set Altitude </v-card-text>
         </v-expansion-panel-content>
       </v-expansion-panel>
   </v-card>
