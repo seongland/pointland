@@ -14,14 +14,7 @@ export default {
   components: {
     LasCloud,
     HelpBtn
-  },
-  fetchOnServer: false,
-
-  async fetch() {},
-
-  async mounted() {},
-
-  computed: {}
+  }
 }
 </script>
 
