@@ -36,6 +36,7 @@
     "nuxt": "^2.0.0",
     "nuxt-vuex-localstorage": "^1.2.6",
     "three": "^0.126.1",
+    "v-snackbars": "^3.1.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
