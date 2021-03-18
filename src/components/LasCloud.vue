@@ -10,11 +10,11 @@
 <script>
 import nipplejs from 'nipplejs'
 
+const POSITION = [10, 130, 50]
+const EPS = 1e-5
+
 export default {
   data: () => ({
-    lasList: [],
-    apiList: [],
-    loading: false,
     move: {
       camera: false,
       vertical: false,
@@ -98,6 +98,26 @@ export default {
 
   mounted() {
     const cloud = this.initCloud(this.cloudOpt)
+    setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
+    setTimeout(() => this.$store.commit('snack', { message: 'You can see help in top left' }), 10000)
+
+    cloud.potree
+      .loadPointCloud('cloud.json', url => `/potree/${url}`)
+      .then(pco => {
+        this.$store.commit('setLoading', false)
+        cloud.offset = [pco.position.x, pco.position.y, pco.position.z]
+        pco.translateX(-pco.position.x)
+        pco.translateY(-pco.position.y)
+        pco.translateZ(-pco.position.z)
+        cloud.pointclouds.push(pco)
+        cloud.scene.add(pco)
+        pco.material.intensityRange = [0, 255]
+        pco.material.maxSize = 40
+        pco.material.minSize = 4
+        pco.material.size = 1
+        pco.material.shape = 1
+        cloud.camera.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
+      })
     this.$root.cloud = cloud
     const zone = document.getElementById('nipple')
     if (!zone) return
