@@ -6,9 +6,9 @@ import * as THREE from 'three'
 import CameraControls from 'camera-controls'
 import { click3D } from './draw'
 import { makePointLayer } from './layer'
-import { Potree } from '@pnext/three-loader'
 import TWEEN from '@tweenjs/tween.js'
 import { KeyboardKeyHold } from 'hold-event'
+import { Potree } from '@pnext/three-loader'
 
 CameraControls.install({ THREE: THREE })
 export const ref = { cloud: null, cloudSize: 0.05, pointSize: 1, lineWidth: 0.01 }
@@ -43,23 +43,6 @@ function initCloud(cloudOpt) {
     cloud.potree = new Potree()
     cloud.pointclouds = []
     cloud.potree.pointBudget = 500_000
-    cloud.potree
-      .loadPointCloud('cloud.json', url => `/potree/${url}`)
-      .then(pco => {
-        cloud.offset = [pco.position.x, pco.position.y, pco.position.z]
-        pco.translateX(-pco.position.x)
-        pco.translateY(-pco.position.y)
-        pco.translateZ(-pco.position.z)
-        cloud.pointclouds.push(pco)
-        cloud.scene.add(pco)
-        pco.material.intensityRange = [0, 255]
-        pco.material.maxSize = 40
-        pco.material.minSize = 4
-        pco.material.size = 1
-        pco.material.shape = 1
-        cloud.camera.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
-      })
-
     ref.cloud = cloud
     ref.cloud.makeCallback = cloudOpt.makeCallback
 
