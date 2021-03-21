@@ -47,6 +47,13 @@ module.exports = {
     transpile: ['three'],
     extend() {}
   },
+  
+  // Render
+  render: {
+    csp: {
+      addMeta: true
+    }
+  },
 
   // Header
   head: {
