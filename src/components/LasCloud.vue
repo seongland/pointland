@@ -99,7 +99,7 @@ export default {
   mounted() {
     const cloud = this.initCloud(this.cloudOpt)
     setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
-    setTimeout(() => this.$store.commit('snack', { message: 'You can see help in top left' }), 10000)
+    setTimeout(() => this.$store.commit('snack', { message: 'Clikc Top Left Button for Help', timeout: 10000 }), 10000)
 
     cloud.potree
       .loadPointCloud('cloud.json', url => `/potree/${url}`)
