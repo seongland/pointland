@@ -99,7 +99,6 @@ export default {
   mounted() {
     const cloud = this.initCloud(this.cloudOpt)
     setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
-    setTimeout(() => this.$store.commit('snack', { message: 'Clikc Top Left Button for Help', timeout: 10000 }), 10000)
 
     cloud.potree
       .loadPointCloud('cloud.json', url => `/potree/${url}`)
@@ -117,6 +116,7 @@ export default {
         pco.material.size = 1
         pco.material.shape = 1
         cloud.camera.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
+        setTimeout(() => this.$store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
       })
     this.$root.cloud = cloud
     const zone = document.getElementById('nipple')
