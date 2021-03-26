@@ -34,6 +34,16 @@ jobs:
           service_account_email: ${{ secrets.GKE_EMAIL }}
           service_account_key: ${{ secrets.GKE_KEY }}
 
+      - name: Cache potree
+        uses: actions/cache@v2
+        with:
+          path: src/static/potree
+          key: point.seongland.com/potree
+          restore-keys: point.seongland.com/potree
+
+      - name: Get potree files
+        run: if [ -d src/static/potree ]; then ls ; else gsutil -m cp -r gs://potree-architecture/potree src/static; fi
+
       - name: Run build task
         run: yarn build
 
