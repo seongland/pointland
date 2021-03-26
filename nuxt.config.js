@@ -79,6 +79,6 @@ module.exports = {
         content: `https://point.seongland.com/pointland.jpg`
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/seongland.svg' }]
   }
 }
