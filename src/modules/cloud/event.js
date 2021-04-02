@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { ref } from './init'
-import TWEEN from '@tweenjs/tween.js'
 
 export function resetPointLayer(layer) {
   const geometry = layer.geometry
