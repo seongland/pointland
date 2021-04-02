@@ -5,7 +5,6 @@
 import * as THREE from 'three'
 import { ref } from './init'
 import consola from 'consola'
-import TWEEN from '@tweenjs/tween.js'
 
 export function removePoint(layer, id) {
   const geometry = layer.geometry
