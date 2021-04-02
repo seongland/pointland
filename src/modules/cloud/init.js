@@ -6,7 +6,6 @@ import * as THREE from 'three'
 import CameraControls from 'camera-controls'
 import { click3D } from './draw'
 import { makePointLayer } from './layer'
-import TWEEN from '@tweenjs/tween.js'
 import { KeyboardKeyHold } from 'hold-event'
 import { Potree } from '@pnext/three-loader'
 
@@ -159,7 +158,6 @@ function animate() {
 
   cloud.renderer.clear()
   cloud.renderer.render(cloud.scene, cloud.camera)
-  TWEEN.update()
 
   return id
 }
