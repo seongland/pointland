@@ -10,7 +10,7 @@ export default ({ $axios }) => {
     data: () => ({
       title: process.env.title,
       meta: { version: undefined },
-      cloudOpt: { id: "pointland" }
+      spaceOpt: { id: 'pointland', layers: { point: [] } }
     })
   })
 }

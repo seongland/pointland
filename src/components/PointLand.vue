@@ -1,4 +1,4 @@
-/* * @summary - vue point cloud componen */
+/* * @summary - point land component */
 
 <template>
   <div>
@@ -24,55 +24,56 @@ export default {
   }),
 
   mounted() {
-    const openspace = new OpenSpace(this.cloudOpt)
-    const cloud = openspace.cloud
+    const openspace = new OpenSpace(this.spaceOpt)
+    const space = openspace.space
+    this.$root.$openspace = openspace
     setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
 
-    cloud.potree
+    space.potree
       .loadPointCloud('cloud.json', url => `/potree/${url}`)
       .then(pco => {
+        console.log(pco)
         this.$store.commit('setLoading', false)
-        cloud.offset = [pco.position.x, pco.position.y, pco.position.z]
+        space.offset = [pco.position.x, pco.position.y, pco.position.z]
         pco.translateX(-pco.position.x)
         pco.translateY(-pco.position.y)
         pco.translateZ(-pco.position.z)
-        cloud.pointclouds.push(pco)
-        cloud.scene.add(pco)
+        space.pointclouds.push(pco)
+        space.scene.add(pco)
         pco.material.intensityRange = [0, 255]
         pco.material.maxSize = 40
         pco.material.minSize = 4
         pco.material.size = 1
         pco.material.shape = 1
-        cloud.camera.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
+        space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
         setTimeout(() => this.$store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
       })
-    this.$root.cloud = cloud
     const zone = document.getElementById('nipple')
     if (!zone) return
     const options = { zone, multitouch: true, maxNumberOfNipples: 2 }
     const manager = nipplejs.create(options)
-    this.nippleEvent(manager, cloud)
+    this.nippleEvent(manager, space)
   },
 
   methods: {
     touchable: () => window.orientation !== undefined,
 
-    nippleEvent(manager, cloud) {
-      manager.on('added', (e, nipple) => {
-        if (nipple.position.y < window.innerHeight / 2) this.verticalNipple(nipple, cloud)
-        else if (nipple.position.x < window.innerWidth / 2) this.cameraNipple(nipple, cloud)
-        else this.targetNipple(nipple, cloud)
+    nippleEvent(manager, space) {
+      manager.on('added', (_, nipple) => {
+        if (nipple.position.y < window.innerHeight / 2) this.verticalNipple(nipple, space)
+        else if (nipple.position.x < window.innerWidth / 2) this.cameraNipple(nipple, space)
+        else this.targetNipple(nipple, space)
       })
     },
 
-    cameraNipple(nipple, cloud) {
+    cameraNipple(nipple, space) {
       let loop
       let factor = 1
       nipple.on('move', (_, data) => {
         if (loop) clearInterval(loop)
         loop = setInterval(() => {
-          cloud.camera.controls.truck((data.force * data.vector.x) / 10, 0, false)
-          cloud.camera.controls.forward((data.force * data.vector.y) / 10, false)
+          space.controls.truck((data.force * data.vector.x) / 10, 0, false)
+          space.controls.forward((data.force * data.vector.y) / 10, false)
           data.vector.x /= factor
           data.vector.y /= factor
         }, 10)
@@ -85,13 +86,13 @@ export default {
       })
     },
 
-    verticalNipple(nipple, cloud) {
+    verticalNipple(nipple, space) {
       let loop
       let factor = 1
       nipple.on('move', (_, data) => {
         if (loop) clearInterval(loop)
         loop = setInterval(() => {
-          cloud.camera.controls.truck(0, -(data.force * data.vector.y) / 10, false)
+          space.controls.truck(0, -(data.force * data.vector.y) / 10, false)
           data.vector.x /= factor
           data.vector.y /= factor
         }, 10)
@@ -104,13 +105,13 @@ export default {
       })
     },
 
-    targetNipple(nipple, cloud) {
+    targetNipple(nipple, space) {
       let loop
       let factor = 1
       nipple.on('move', (_, data) => {
         if (loop) clearInterval(loop)
         loop = setInterval(() => {
-          cloud.camera.controls.rotate(-(data.force * data.vector.x) / 200, (data.force * data.vector.y) / 200, false)
+          space.controls.rotate(-(data.force * data.vector.x) / 200, (data.force * data.vector.y) / 200, false)
           data.vector.x /= factor
           data.vector.y /= factor
         }, 10)
@@ -127,7 +128,7 @@ export default {
 </script>
 
 <style>
-#las,
+#pointland,
 #nipple {
   height: 100%;
   width: 100%;
