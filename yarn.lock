@@ -1259,10 +1259,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.11.tgz#aeb16f50649a91af79dbe36574b66d0f9e4d9f71"
   integrity sha512-3NsZsJIA/22P3QUyrEDNA2D133H4j224twJrdipXN38dpnIOzAbUDtOwkcJ5pXmn75w7LSQDjA4tO9dm1XlqlA==
 
-"@seongland/openspace@^0.1.5":
-  version "0.1.5"
-  resolved "https://npm.pkg.github.com/download/@seongland/openspace/0.1.5/35148e5da7a233570a373dde6e1cae1ecc8de87d9b2b678b967876072ea056f7#896dae7a89560c972beab221912141b357c4c3ed"
-  integrity sha512-qDqRNgJ4XEwP8KTwIUPLGBslL5eMrzi9nPctbxAOwDv89dZLxHunHJYuB1waogdJAweVQglPlTcFKHLXoOroKA==
+"@seongland/openspace@^0.1.6":
+  version "0.1.6"
+  resolved "https://npm.pkg.github.com/download/@seongland/openspace/0.1.6/cd69e6c7e20041d1a3c4feeca13a3559c2058bda085bdc8cc303a80e73d898db#5c0899d4ee4436c32415cc2dec056b83e0ad3a78"
+  integrity sha512-wxr0ypIdeOyy51mMHmeo/yhJpx8W6wSB4Lwvez76PbuhVZ/a36ClAZk8Bs3fS/q5A85lVj9Hfzk+nGsYctP7ag==
   dependencies:
     "@pnext/three-loader" "^0.2.3-beta.2"
     camera-controls "^1.28.0"
