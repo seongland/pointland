@@ -43,7 +43,7 @@ module.exports = {
   // WebPack Build configuration
   build: {
     maxChunkSize: 300000,
-    transpile: ['three'],
+    transpile: ['@seongland/openspace'],
     extend() {}
   },
 
