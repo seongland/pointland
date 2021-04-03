@@ -3,12 +3,13 @@
 <template>
   <div>
     <div id="nipple" v-if="touchable()" />
-    <div id="las" />
+    <div id="pointland" />
   </div>
 </template>
 
 <script>
 import nipplejs from 'nipplejs'
+import OpenSpace from '@seongland/openspace'
 
 const POSITION = [10, 130, 50]
 const EPS = 1e-5
@@ -22,9 +23,36 @@ export default {
     }
   }),
 
-  computed: {},
+  mounted() {
+    const openspace = new OpenSpace(this.cloudOpt)
+    const cloud = openspace.cloud
+    setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
 
-  watch: {},
+    cloud.potree
+      .loadPointCloud('cloud.json', url => `/potree/${url}`)
+      .then(pco => {
+        this.$store.commit('setLoading', false)
+        cloud.offset = [pco.position.x, pco.position.y, pco.position.z]
+        pco.translateX(-pco.position.x)
+        pco.translateY(-pco.position.y)
+        pco.translateZ(-pco.position.z)
+        cloud.pointclouds.push(pco)
+        cloud.scene.add(pco)
+        pco.material.intensityRange = [0, 255]
+        pco.material.maxSize = 40
+        pco.material.minSize = 4
+        pco.material.size = 1
+        pco.material.shape = 1
+        cloud.camera.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
+        setTimeout(() => this.$store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
+      })
+    this.$root.cloud = cloud
+    const zone = document.getElementById('nipple')
+    if (!zone) return
+    const options = { zone, multitouch: true, maxNumberOfNipples: 2 }
+    const manager = nipplejs.create(options)
+    this.nippleEvent(manager, cloud)
+  },
 
   methods: {
     touchable: () => window.orientation !== undefined,
@@ -94,36 +122,6 @@ export default {
         if (loop) clearInterval(loop)
       })
     }
-  },
-
-  mounted() {
-    const cloud = this.initCloud(this.cloudOpt)
-    setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
-
-    cloud.potree
-      .loadPointCloud('cloud.json', url => `/potree/${url}`)
-      .then(pco => {
-        this.$store.commit('setLoading', false)
-        cloud.offset = [pco.position.x, pco.position.y, pco.position.z]
-        pco.translateX(-pco.position.x)
-        pco.translateY(-pco.position.y)
-        pco.translateZ(-pco.position.z)
-        cloud.pointclouds.push(pco)
-        cloud.scene.add(pco)
-        pco.material.intensityRange = [0, 255]
-        pco.material.maxSize = 40
-        pco.material.minSize = 4
-        pco.material.size = 1
-        pco.material.shape = 1
-        cloud.camera.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
-        setTimeout(() => this.$store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
-      })
-    this.$root.cloud = cloud
-    const zone = document.getElementById('nipple')
-    if (!zone) return
-    const options = { zone, multitouch: true, maxNumberOfNipples: 2 }
-    const manager = nipplejs.create(options)
-    this.nippleEvent(manager, cloud)
   }
 }
 </script>

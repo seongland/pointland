@@ -1249,10 +1249,25 @@
     mustache "^2.3.0"
     stack-trace "0.0.10"
 
+"@pnext/three-loader@^0.2.3-beta.2":
+  version "0.2.3-beta.2"
+  resolved "https://registry.yarnpkg.com/@pnext/three-loader/-/three-loader-0.2.3-beta.2.tgz#23328b3ad1fd263d846a61e501000549f5dda2c2"
+  integrity sha512-B4cY1NyckK+z7ho5R27S36iM6v1f6Bh+ruCKGDCVKxL6iY9WV4tDjj+yagiHgR3tzRk1rfeCbNybSRI5iS200g==
+
 "@polka/url@^1.0.0-next.9":
   version "1.0.0-next.11"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.11.tgz#aeb16f50649a91af79dbe36574b66d0f9e4d9f71"
   integrity sha512-3NsZsJIA/22P3QUyrEDNA2D133H4j224twJrdipXN38dpnIOzAbUDtOwkcJ5pXmn75w7LSQDjA4tO9dm1XlqlA==
+
+"@seongland/openspace@^0.1.3":
+  version "0.1.3"
+  resolved "https://npm.pkg.github.com/download/@seongland/openspace/0.1.3/618830c144a5b5d6f030df666b855ae48bbd226415ab3ff4d0f5f6c1b752c433#9a7d491ea38b19ac6465d912ac60055963d0194d"
+  integrity sha512-QHMrN+EdeexfVwf6rngsMPBOMhpY6u/zT7wQ1NZwNFspzUvE7epNBPgJ086ZUOBNncg5w6eObbTdu+QYC77TLg==
+  dependencies:
+    "@pnext/three-loader" "^0.2.3-beta.2"
+    camera-controls "^1.28.0"
+    hold-event "^0.0.1"
+    three "0.120.1"
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -2247,6 +2262,11 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
+
+camera-controls@^1.28.0:
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-1.28.0.tgz#850af969edd5ef7d13c344d79bba9ce6c87f77b1"
+  integrity sha512-V9HIwjcdD843RpToJjW2fUZfZUQaFIA2/Wx87+zq781/tJGzjE1g1PBeMTOV8oTGl8cskS5yV8AqtBn9+HlrUQ==
 
 caniuse-api@^3.0.0:
   version "3.0.0"
@@ -3983,6 +4003,11 @@ hmac-drbg@^1.0.1:
     hash.js "^1.0.3"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
+
+hold-event@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/hold-event/-/hold-event-0.0.1.tgz#576f9b57fb2af7526029609adbd1089485ef7334"
+  integrity sha512-CB63bPcgMaierrHAGBnNaucJ1ZHVaPmtCKp1hsRc6nc66b5p+OM1n3MyExk1wtS5vrhCopP/lpUZ3kbwOxXmbQ==
 
 hsl-regex@^1.0.0:
   version "1.0.0"
@@ -7574,6 +7599,11 @@ thread-loader@^3.0.1:
     loader-runner "^4.1.0"
     loader-utils "^2.0.0"
     neo-async "^2.6.2"
+
+three@0.120.1:
+  version "0.120.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.120.1.tgz#dbd8894f8ab87c109f1602933e7c740c98137377"
+  integrity sha512-ktaCRFUR7JUZcKec+cBRz+oBex5pOVaJhrtxvFF2T7on53o9UkEux+/Nh1g/4zeb4t/pbxIFcADbn/ACu3LC1g==
 
 through2@^2.0.0:
   version "2.0.5"

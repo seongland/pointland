@@ -1,18 +1,18 @@
 <template>
   <div class="wrapper">
-    <las-cloud class="wrapper" />
+    <point-land class="wrapper" />
     <help-btn />
     <v-overlay :value="$store.state.loading"> <v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
   </div>
 </template>
 
 <script>
-import LasCloud from '~/components/LasCloud'
+import PointLand from '~/components/PointLand'
 import HelpBtn from '~/components/HelpBtn'
 
 export default {
   components: {
-    LasCloud,
+    PointLand,
     HelpBtn
   }
 }
