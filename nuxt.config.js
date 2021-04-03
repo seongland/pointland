@@ -25,7 +25,6 @@ module.exports = {
     port: process.env.PORT || 8080,
     host: '0.0.0.0'
   },
-  serverMiddleware: { '/api': '~/server/api/app' },
 
   // Loading Bar
   loading: { color: '#424242' },
