@@ -9,7 +9,7 @@
 
 <script>
 import nipplejs from 'nipplejs'
-import OpenSpace from '@seongland/openspace'
+import LayerSpace from 'layerspace'
 
 const POSITION = [10, 130, 50]
 const EPS = 1e-5
@@ -24,7 +24,7 @@ export default {
   }),
 
   mounted() {
-    const openspace = new OpenSpace(this.spaceOpt)
+    const openspace = new LayerSpace(this.spaceOpt)
     const space = openspace.space
     this.$root.$openspace = openspace
     setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)

@@ -1259,16 +1259,6 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.11.tgz#aeb16f50649a91af79dbe36574b66d0f9e4d9f71"
   integrity sha512-3NsZsJIA/22P3QUyrEDNA2D133H4j224twJrdipXN38dpnIOzAbUDtOwkcJ5pXmn75w7LSQDjA4tO9dm1XlqlA==
 
-"@seongland/openspace@^0.1.6":
-  version "0.1.6"
-  resolved "https://npm.pkg.github.com/download/@seongland/openspace/0.1.6/cd69e6c7e20041d1a3c4feeca13a3559c2058bda085bdc8cc303a80e73d898db#5c0899d4ee4436c32415cc2dec056b83e0ad3a78"
-  integrity sha512-wxr0ypIdeOyy51mMHmeo/yhJpx8W6wSB4Lwvez76PbuhVZ/a36ClAZk8Bs3fS/q5A85lVj9Hfzk+nGsYctP7ag==
-  dependencies:
-    "@pnext/three-loader" "^0.2.3-beta.2"
-    camera-controls "^1.28.0"
-    hold-event "^0.0.1"
-    three "0.120.1"
-
 "@types/anymatch@*":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
@@ -4730,6 +4720,16 @@ launch-editor@^2.2.1:
   dependencies:
     chalk "^2.3.0"
     shell-quote "^1.6.1"
+
+layerspace@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/layerspace/-/layerspace-0.1.8.tgz#b38dca880d7b77fd5de4855ae6f9234ce3747e6d"
+  integrity sha512-m4lJek/uFteaDR1rxAzkDgHgAtUB0vcNbjNNKQDX9CYcnBLDvl90E5KOFs9yKvWnq0j2DBTlrop3miCvz1ZWWQ==
+  dependencies:
+    "@pnext/three-loader" "^0.2.3-beta.2"
+    camera-controls "^1.28.0"
+    hold-event "^0.0.1"
+    three "0.120.1"
 
 loader-runner@^2.4.0:
   version "2.4.0"
