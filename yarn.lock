@@ -1249,10 +1249,10 @@
     mustache "^2.3.0"
     stack-trace "0.0.10"
 
-"@pnext/three-loader@^0.2.3-beta.2":
-  version "0.2.3-beta.2"
-  resolved "https://registry.yarnpkg.com/@pnext/three-loader/-/three-loader-0.2.3-beta.2.tgz#23328b3ad1fd263d846a61e501000549f5dda2c2"
-  integrity sha512-B4cY1NyckK+z7ho5R27S36iM6v1f6Bh+ruCKGDCVKxL6iY9WV4tDjj+yagiHgR3tzRk1rfeCbNybSRI5iS200g==
+"@pnext/three-loader@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@pnext/three-loader/-/three-loader-0.2.2.tgz#f6896a0e0ca4356ffdc5148710fcabc146172315"
+  integrity sha512-Gmg4/l/RZkBG8EZf9r96BJyZFGJZNjs5x8Z9ZqWLxu25SemZVzUcAwDQUzMQEgr1bqi9hIHCVYgI891rtuqI+A==
 
 "@polka/url@^1.0.0-next.9":
   version "1.0.0-next.11"
@@ -4721,12 +4721,12 @@ launch-editor@^2.2.1:
     chalk "^2.3.0"
     shell-quote "^1.6.1"
 
-layerspace@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/layerspace/-/layerspace-0.1.8.tgz#b38dca880d7b77fd5de4855ae6f9234ce3747e6d"
-  integrity sha512-m4lJek/uFteaDR1rxAzkDgHgAtUB0vcNbjNNKQDX9CYcnBLDvl90E5KOFs9yKvWnq0j2DBTlrop3miCvz1ZWWQ==
+layerspace@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/layerspace/-/layerspace-0.2.4.tgz#335b69f5a6bdc605ff71330e1056f10fc429d4f9"
+  integrity sha512-gqJ2+prTu68CAHwk7pZGVm/bGXmMhEJQiW6AgLl9iRtbkTNxnsS63che7YY/wNYZ6DAo9tiVqt1xgi5srU3FGg==
   dependencies:
-    "@pnext/three-loader" "^0.2.3-beta.2"
+    "@pnext/three-loader" "^0.2.2"
     camera-controls "^1.28.0"
     hold-event "^0.0.1"
     three "0.120.1"

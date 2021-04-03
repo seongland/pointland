@@ -28,7 +28,6 @@ export default {
   methods: {
     click() {
       this.fab = true
-      console.log('asdasd')
     }
   }
 }
