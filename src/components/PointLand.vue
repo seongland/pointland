@@ -24,15 +24,15 @@ export default {
   }),
 
   mounted() {
-    const openspace = new LayerSpace(this.spaceOpt)
-    const space = openspace.space
-    this.$root.$openspace = openspace
+    const target = document.getElementById('pointland')
+    const layerspace = new LayerSpace(target, this.spaceOpt)
+    const space = layerspace.space
+    this.$root.$layerspace = layerspace
     setTimeout(() => this.$store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
 
     space.potree
       .loadPointCloud('cloud.json', url => `/potree/${url}`)
       .then(pco => {
-        console.log(pco)
         this.$store.commit('setLoading', false)
         space.offset = [pco.position.x, pco.position.y, pco.position.z]
         pco.translateX(-pco.position.x)
