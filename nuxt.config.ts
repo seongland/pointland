@@ -14,8 +14,7 @@ const config: NuxtConfig = {
   target: 'static',
   env: { dev: process.env.dev, title: process.env.title },
   head: {
-    titleTemplate: '%s - point-land',
-    title: 'point-land',
+    title: process.env.title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
