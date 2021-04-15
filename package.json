@@ -1,6 +1,7 @@
 {
   "name": "pointland",
-  "version": "1.1.0",
+  "version": "1.2.0",
+  "private": true,
   "description": "Web Metaverse with Point Cloud",
   "author": "seonglae",
   "license": "MIT",
@@ -11,24 +12,39 @@
     "restart": "pm2 restart pointland",
     "stop": "pm2 delete pointland",
     "build": "cross-env NODE_ENV=production nuxt build",
-    "format": "prettier --write \"**/*.{js,jsx,json,md,vue}\"  --ignore-path .gitignore"
+    "lint": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
+    "format": "prettier --write \"**/*.{ts,json,md,vue}\"  --ignore-path .gitignore"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",
-    "@nuxtjs/axios": "^5.11.0",
-    "@nuxtjs/vuetify": "^1.0.0",
-    "layerspace": "^0.2.4",
+    "nuxt-vuex-localstorage": "^1.2.6",
+    "@nuxtjs/axios": "^5.13.1",
+    "v-snackbars": "^3.1.0",
+    "@nuxtjs/pwa": "^3.3.5",
+    "layerspace": "^0.2.5",
+    "vue-gtag": "^1.11.0",
     "consola": "^2.15.0",
     "nipplejs": "^0.9.0",
-    "nuxt": "^2.0.0",
-    "nuxt-vuex-localstorage": "^1.2.6",
-    "v-snackbars": "^3.1.0",
-    "vue-gtag": "^1.11.0"
+    "core-js": "^3.9.1",
+    "nuxt": "^2.15.3"
   },
   "devDependencies": {
-    "cross-env": "^5.2.0",
+    "@nuxt/types": "^2.15.4",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/eslint-config-typescript": "^6.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/vuetify": "^1.11.3",
+    "babel-core": "7.0.0-bridge.0",
+    "nodemon": "^1.18.9",
     "dotenv": "^8.2.0",
-    "nodemon": "^1.18.9"
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.7.0",
+    "prettier": "^2.2.1"
   },
   "config": {
     "nuxt": {
@@ -39,15 +55,12 @@
   "nodemonConfig": {
     "watch": [
       "server/*",
-      "addon/",
       "./*"
     ],
     "ignore": [
-      "build/*",
-      "log/*",
-      "cache/*"
+      "build/*"
     ],
-    "ext": "js,json,cc,hh, gyp",
+    "ext": "ts,json",
     "exec": "nuxt --optimize_for_size"
   }
 }
