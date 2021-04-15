@@ -7,15 +7,7 @@
 </template>
 
 <script>
-import PointLand from '~/components/PointLand'
-import HelpBtn from '~/components/HelpBtn'
-
-export default {
-  components: {
-    PointLand,
-    HelpBtn
-  }
-}
+export default {}
 </script>
 
-<style src="./index.css"></style>
+<style src="~/assets/style/index.css" />
