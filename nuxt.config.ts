@@ -8,7 +8,6 @@ process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.de
 process.env.title = 'Pointland'
 
 const config: NuxtConfig = {
-  ssr: false,
   srcDir: 'src/',
   vue: { config: { productionTip: false, devtools: Boolean(process.env.dev) } },
   target: 'static',
@@ -39,7 +38,6 @@ const config: NuxtConfig = {
   pwa: { manifest: { lang: 'en' } },
   vuetify: {
     defaultAssets: { icons: 'fa' },
-    customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {
