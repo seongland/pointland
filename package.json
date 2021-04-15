@@ -48,6 +48,6 @@
       "cache/*"
     ],
     "ext": "js,json,cc,hh, gyp",
-    "exec": "nuxt  --max_old_space_size=4096 --optimize_for_size"
+    "exec": "nuxt --optimize_for_size"
   }
 }
