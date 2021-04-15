@@ -42,9 +42,25 @@ module.exports = {
 
   // WebPack Build configuration
   build: {
+    devMiddleware: {
+      headers: {
+        'Cache-Control': 'no-store',
+        Vary: '*'
+      }
+    },
+    extractCSS: true,
+    minimize: !process.env.dev,
+    optimizeCSS: true,
+    splitChunks: {
+      chunks: 'all'
+    },
+    uglify: {
+      uglifyOptions: {
+        compress: !process.env.dev
+      }
+    },
     maxChunkSize: 300000,
-    transpile: ['@seongland/openspace'],
-    extend() {}
+    transpile: ['@seongland/openspace']
   },
 
   // Render
