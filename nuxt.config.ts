@@ -18,6 +18,11 @@ const config: NuxtConfig = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content: 'seongland, pointland, 3d, seonglae, metaverse, webtaverse, pointcloud, threejs, potree',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -30,12 +35,12 @@ const config: NuxtConfig = {
     port: process.env.PORT || 8080,
     host: '0.0.0.0',
   },
-  css: [],
   components: true,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify'],
-  modules: ['@nuxtjs/axios', '@nuxtjs/pwa', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }]],
-  axios: {},
+  modules: ['@nuxtjs/axios', '@nuxtjs/pwa', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }], '@nuxtjs/sitemap'],
   pwa: { manifest: { lang: 'en' } },
+
+  // Theme
   vuetify: {
     defaultAssets: { icons: 'fa' },
     theme: {
@@ -53,6 +58,8 @@ const config: NuxtConfig = {
       },
     },
   },
+
+  // Build
   build: {
     devMiddleware: {
       headers: {
