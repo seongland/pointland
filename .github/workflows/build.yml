@@ -28,7 +28,7 @@ jobs:
         run: yarn
 
       - name: Run build task
-        run: yarn build
+        run: yarn generate
 
       - uses: actions/upload-artifact@v2
         with:
