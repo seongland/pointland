@@ -50,7 +50,7 @@ jobs:
       - name: Depoly to Bucket
         run: gsutil -m cp -r dist/* gs://point.seongland.com
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2.2.3
         with:
           name: make artifact
           path: dist
