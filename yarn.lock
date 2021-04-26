@@ -9384,10 +9384,10 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-v-snackbars@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/v-snackbars/-/v-snackbars-3.2.0.tgz#85f4acd98f1b4fae61dbfd3c4aee788d36ce1ccf"
-  integrity sha512-YF1tnib+meykC94pjrmd4mekzBMk74XdR6xpmp9Q+w4WMEcxeiltubjYxow95zPoClaPUUR14YUY0r29dNW5tA==
+v-snackbars@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/v-snackbars/-/v-snackbars-3.2.3.tgz#b2f02d48b1ad2b1df39ca00904072f0204ba3dd6"
+  integrity sha512-PbPlSmBqqzlb+mQDTVIekxnN6b11LiS0yyMwpfhzor33phSPnG9HMlYooxM2k0CPMwpg3GlJpQslvw3MeOOfDw==
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"
