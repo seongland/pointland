@@ -10,3 +10,4 @@ log
 build
 package-lock.json
 potree
+sw.*
