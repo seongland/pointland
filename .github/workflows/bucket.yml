@@ -45,7 +45,7 @@ jobs:
         run: if [ -d src/static/potree ]; then ls ; else gsutil -m cp -r gs://potree-architecture/potree src/static; fi
 
       - name: Run build task
-        run: yarn build
+        run: yarn generate
 
       - name: Depoly to Bucket
         run: gsutil -m cp -r dist/* gs://point.seongland.com
