@@ -1,9 +1,10 @@
 {
   "name": "pointland",
-  "version": "1.0.8",
-  "description": "Geology Panorama Street View Map",
-  "author": "seonglae",
+  "version": "1.3.1",
   "private": true,
+  "description": "Web Metaverse with Point Cloud",
+  "author": "seonglae",
+  "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
     "start": "cross-env NODE_ENV=production nuxt",
@@ -11,34 +12,41 @@
     "restart": "pm2 restart pointland",
     "stop": "pm2 delete pointland",
     "build": "cross-env NODE_ENV=production nuxt build",
-    "format": "prettier --write \"**/*.{js,jsx,json,md,vue}\"  --ignore-path .gitignore"
+    "generate": "cross-env NODE_ENV=production nuxt generate",
+    "lint": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
+    "format": "prettier --write \"**/*.{ts,json,md,vue}\"  --ignore-path .gitignore"
   },
   "dependencies": {
-    "@feathersjs/authentication": "^4.5.11",
-    "@feathersjs/express": "^4.5.8",
-    "@feathersjs/feathers": "^4.5.8",
-    "@nuxtjs/axios": "^5.11.0",
-    "@pnext/three-loader": "^0.2.2",
-    "consola": "^2.15.0",
-    "cors": "^2.8.5",
-    "cross-env": "^5.2.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.16.4",
-    "feathers-hooks-common": "^5.0.3",
-    "feathers-mongoose": "^8.3.1",
-    "mongoose": "^5.10.1",
-    "nuxt": "^2.0.0",
-    "nuxt-vuex-localstorage": "^1.2.6",
-    "ol": "^6.2.1",
-    "proj4": "^2.6.2",
-    "three": "^0.125.0",
-    "@nuxtjs/vuetify": "^1.0.0",
-    "winston": "^3.3.3",
     "@fortawesome/fontawesome-free": "^5.13.1",
-    "winston-daily-rotate-file": "^4.5.0"
+    "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/pwa": "^3.3.5",
+    "@nuxtjs/sitemap": "^2.4.0",
+    "consola": "^2.15.0",
+    "core-js": "^3.9.1",
+    "layerspace": "^0.2.5",
+    "nipplejs": "^0.9.0",
+    "nuxt": "^2.15.3",
+    "nuxt-vuex-localstorage": "^1.2.6",
+    "v-snackbars": "^3.1.0",
+    "vue-gtag": "^1.11.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "@nuxt/types": "^2.15.4",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/eslint-config-typescript": "^6.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/vuetify": "^1.11.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.7.0",
+    "nodemon": "^1.18.9",
+    "prettier": "^2.2.1"
   },
   "config": {
     "nuxt": {
@@ -49,15 +57,12 @@
   "nodemonConfig": {
     "watch": [
       "server/*",
-      "addon/",
       "./*"
     ],
     "ignore": [
-      "build/*",
-      "log/*",
-      "cache/*"
+      "build/*"
     ],
-    "ext": "js,json,cc,hh, gyp",
-    "exec": "nuxt  --max_old_space_size=4096 --optimize_for_size"
+    "ext": "ts,json",
+    "exec": "nuxt --optimize_for_size"
   }
 }
