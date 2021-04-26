@@ -11,7 +11,10 @@ const config: NuxtConfig = {
   srcDir: 'src/',
   vue: { config: { productionTip: false, devtools: Boolean(process.env.dev) } },
   target: 'static',
-  hostname: 'point.seongland.com',
+  sitemap: {
+    hostname: 'https://point.seongland.com',
+    generate: true,
+  },
   env: { dev: process.env.dev, title: process.env.title },
   head: {
     title: process.env.title,
