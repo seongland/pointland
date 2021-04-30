@@ -38,8 +38,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: src/static/potree
-          key: point.seongland.com/potree
-          restore-keys: point.seongland.com/potree
+          key: point.seongland.com
+          restore-keys: point.seongland.com
 
       - name: Get potree files
         run: if [ -d src/static/potree ]; then ls ; else gsutil -m cp -r gs://potree-architecture/potree src/static; fi
