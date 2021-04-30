@@ -4,18 +4,17 @@ import dotenv from 'dotenv'
 import type { NuxtConfig } from '@nuxt/types'
 
 dotenv.config()
-process.env.NODE_ENV === 'production' ? (process.env.dev = '') : (process.env.dev = '1')
 process.env.title = 'Pointland'
 
 const config: NuxtConfig = {
   srcDir: 'src/',
-  vue: { config: { productionTip: false, devtools: Boolean(process.env.dev) } },
+  ssr: false,
+  vue: { config: { productionTip: false, devtools: process.env.NODE_ENV === 'production' } },
   target: 'static',
   sitemap: {
     hostname: 'https://point.seongland.com',
-    generate: true,
   },
-  env: { dev: process.env.dev, title: process.env.title },
+  env: { title: process.env.title },
   head: {
     title: process.env.title,
     meta: [
@@ -28,7 +27,7 @@ const config: NuxtConfig = {
         content: 'seongland, pointland, 3d, seonglae, metaverse, webtaverse, pointcloud, threejs, potree',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/seongland.svg' }],
   },
   plugins: [
     { src: '~/plugins/init/', ssr: false },
