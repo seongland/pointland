@@ -26,7 +26,7 @@ jobs:
             ${{ runner.OS }}-
 
       - name: Install npm dependencies
-        run: yarn
+        run: yarnc
 
       - name: Authenticate on GCS
         uses: google-github-actions/setup-gcloud@master
@@ -38,8 +38,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: src/static/potree
-          key: point.seongland.com
-          restore-keys: point.seongland.com
+          key: gs://potree-architecture/potree
+          restore-keys: gs://potree-architecture/potree
 
       - name: Get potree files
         run: if [ -d src/static/potree ]; then ls ; else gsutil -m cp -r gs://potree-architecture/potree src/static; fi
