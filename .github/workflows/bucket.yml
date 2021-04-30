@@ -42,7 +42,7 @@ jobs:
           restore-keys: gs://potree-architecture/potree
 
       - name: Get potree files
-        run: gsutil -m cp -r gs://potree-architecture/potree src/static -n
+        run: gsutil -m cp -r -n gs://potree-architecture/potree src/static
 
       - name: Run build task
         run: yarn generate
