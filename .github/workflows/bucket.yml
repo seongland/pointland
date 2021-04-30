@@ -54,3 +54,60 @@ jobs:
         with:
           name: make artifact
           path: dist
+=======
+name: CI/CD Bucket
+
+on:
+  push:
+    branches: [release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 14.x
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Install npm dependencies
+        run: yarn
+
+      - name: Authenticate on GCS
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_email: ${{ secrets.GKE_EMAIL }}
+          service_account_key: ${{ secrets.GKE_KEY }}
+
+      - name: Cache potree
+        uses: actions/cache@v2
+        with:
+          path: src/static/potree
+          key: point.seongland.com/potree
+          restore-keys: point.seongland.com/potree
+
+      - name: Get potree files
+        run: if [ -d src/static/potree ]; then ls ; else gsutil -m cp -r gs://potree-architecture/potree src/static; fi
+
+      - name: Run build task
+        run: yarn generate
+
+      - name: Depoly to Bucket
+        run: gsutil -m cp -r dist/* gs://point.seongland.com
+
+      - uses: actions/upload-artifact@v2.2.3
+        with:
+          name: make artifact
+          path: dist
