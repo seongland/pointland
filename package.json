@@ -27,7 +27,7 @@
     "nipplejs": "^0.9.0",
     "nuxt": "^2.15.6",
     "nuxt-vuex-localstorage": "^1.2.6",
-    "v-snackbars": "^3.1.0",
+    "v-snackbars": "^3.2.4",
     "vue-gtag": "^1.11.0"
   },
   "devDependencies": {
