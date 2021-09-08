@@ -15,7 +15,10 @@
 ## Get data
 ```bash
 mkdir src/static/potree
-gsutil -m cp -r -n gs://potree-architecture/potree src/static
+gsutil -m cp -r -n gs://potree-architecture src/static/potree
+mv src/static/potree/potree-architecture src/static/potre
+rm -r src/static/potree
+mv src/static/potre src/static/potree
 ```
 ## Build
 ```bash
