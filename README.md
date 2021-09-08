@@ -1,7 +1,14 @@
-# Service
+# Pointland
 - https://point.seongland.com
 
-## service setup
+![pointland](https://user-images.githubusercontent.com/27716524/115001273-794dc400-9ede-11eb-8309-964e22813215.png)
+
+## Made by
+- [Layerspace](https://github.com/seonglae/layerspace)
+- [nuxt-ts-template](https://github.com/seonglae/nuxt-ts-template)
+
+
+## Tech Stacks
 - cloudflare dns
 - gcp cloud run
 - docker, nuxt
@@ -21,38 +28,4 @@ yarn dev
 
 ```
  ./PotreeConverter.exe ./resources/*.las -o ./potree
-```
-
-## Dependancy
-
-- pull
-- push
-
-```bash
-git subtree pull --prefix src/modules/map easy-ol master
-git subtree push --prefix src/modules/cloud easy-three-js master
-```
-
-# Docker Build
-
-```bash
-# github
-docker build -t ghcr.io/seongland/pointland:{{VERSION}} .
-docker push ghcr.io/seongland/pointland:{{VERSION}}
-
-# gcp
-docker build -t asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}} .
-docker push asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}}
-
-# gcloud
-gcloud builds submit --tag asia.gcr.io/tokyo-guild-301215/pointland:{{VERSION}}
-```
-
-# Run
-
-# Docker Run
-
-```bash
-docker pull ghcr.io/seongland/pointland
-docker run   --name seongland -p 54321:8080 -d ghcr.io/sungle3737/portfolio-react
 ```
