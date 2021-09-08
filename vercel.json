@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/potree/:match*",
+      "destination": "https://storage.googleapis.com/potree-architecture/:match*"
+    }
+  ]
+}

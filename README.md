@@ -8,6 +8,15 @@
 - [nuxt-ts-template](https://github.com/seonglae/nuxt-ts-template)
 
 
+
+
+# Deployment
+
+## Get data
+```bash
+mkdir src/static/potree
+gsutil -m cp -r -n gs://potree-architecture/potree src/static
+```
 ## Build
 ```bash
 VERSION=1.3.2
