@@ -5,6 +5,10 @@
 			"path": ".."
 		},
 		{
+			"name": "src",
+			"path": "..\\src"
+		},
+		{
 			"name": "store",
 			"path": "..\\src\\store"
 		},
