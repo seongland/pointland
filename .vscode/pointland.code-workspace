@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"name": "3d-mapping",
+			"path": ".."
+		},
+		{
+			"name": "src",
+			"path": "..\\src"
+		},
+		{
+			"name": "store",
+			"path": "..\\src\\store"
+		},
+		{
+			"name": "plugins",
+			"path": "..\\src\\plugins"
+		},
+		{
+			"name": "components",
+			"path": "..\\src\\components"
+		},
+		{
+			"name": "pages",
+			"path": "..\\src\\pages"
+		},
+		{
+			"name": "static",
+			"path": "..\\src\\static"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

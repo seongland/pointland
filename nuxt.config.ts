@@ -39,7 +39,7 @@ const config: NuxtConfig = {
     host: '0.0.0.0',
   },
   components: true,
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/composition-api/module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }], '@nuxtjs/sitemap'],
   pwa: { manifest: { lang: 'en' } },
 
