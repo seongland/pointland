@@ -58,11 +58,9 @@ export default function useController() {
   function zNipple(nipple, space) {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
-    holder.addEventListener('holding', (event) => {
+    holder.addEventListener('holding', (event) =>
       space.controls.truck(0, -((zControl.force * zControl.vector.y) / 50) * event?.deltaTime, true)
-      nipple.el.style.left = `${mouse.x}px`
-      nipple.el.style.top = `${mouse.y}px`
-    })
+    )
     nipple.on('move', (_, data) => {
       zControl.force = data.force
       zControl.vector = data.vector
@@ -79,8 +77,6 @@ export default function useController() {
     holder.addEventListener('holding', (event) => {
       space.controls.truck(((xyControl.force * xyControl.vector.x) / 50) * event?.deltaTime, 0, true)
       space.controls.forward(((xyControl.force * xyControl.vector.y) / 50) * event?.deltaTime, true)
-      nipple.el.style.left = `${mouse.x}px`
-      nipple.el.style.top = `${mouse.y}px`
     })
     nipple.on('move', (_, data) => {
       xyControl.force = data.force
