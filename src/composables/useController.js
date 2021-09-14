@@ -39,8 +39,8 @@ export default function useController() {
     holder._holdStart()
     holder.addEventListener('holding', (event) => {
       space.controls.rotate(
-        (-(dirControl.force * dirControl.vector.x) * event?.deltaTime) / 1000,
-        (dirControl.force * dirControl.vector.y * event?.deltaTime) / 1000,
+        (-(dirControl.force * dirControl.vector.x) * event?.deltaTime) / 3000,
+        (dirControl.force * dirControl.vector.y * event?.deltaTime) / 3000,
         true
       )
     })
@@ -59,7 +59,7 @@ export default function useController() {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event) =>
-      space.controls.truck(0, -((zControl.force * zControl.vector.y) / 50) * event?.deltaTime, true)
+      space.controls.truck(0, -((zControl.force * zControl.vector.y) / 100) * event?.deltaTime, true)
     )
     nipple.on('move', (_, data) => {
       zControl.force = data.force
