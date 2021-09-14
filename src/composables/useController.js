@@ -36,7 +36,7 @@ export default function useController() {
 
   function dirNipple(nipple, space) {
     const holder = new ElementHold(nipple.el, 10)
-    nipple.el.addEventListener('mouseover', (e) => holder._holdStart(e), { once: true })
+    holder._holdStart()
     holder.addEventListener('holding', (event) => {
       space.controls.rotate(
         (-(dirControl.force * dirControl.vector.x) * event?.deltaTime) / 1000,
@@ -57,7 +57,7 @@ export default function useController() {
 
   function zNipple(nipple, space) {
     const holder = new ElementHold(nipple.el, 10)
-    nipple.el.addEventListener('mouseover', (e) => holder._holdStart(e), { once: true })
+    holder._holdStart()
     holder.addEventListener('holding', (event) => {
       space.controls.truck(0, -((zControl.force * zControl.vector.y) / 50) * event?.deltaTime, true)
       nipple.el.style.left = `${mouse.x}px`
@@ -75,7 +75,7 @@ export default function useController() {
   }
   function xyNipple(nipple, space) {
     const holder = new ElementHold(nipple.el, 10)
-    nipple.el.addEventListener('mouseover', (e) => holder._holdStart(e), { once: true })
+    holder._holdStart()
     holder.addEventListener('holding', (event) => {
       space.controls.truck(((xyControl.force * xyControl.vector.x) / 50) * event?.deltaTime, 0, true)
       space.controls.forward(((xyControl.force * xyControl.vector.y) / 50) * event?.deltaTime, true)
