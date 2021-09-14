@@ -39,8 +39,8 @@ export default function useController() {
     holder._holdStart()
     holder.addEventListener('holding', (event) => {
       space.controls.rotate(
-        (-(dirControl.force * dirControl.vector.x) * event?.deltaTime) / 3000,
-        (dirControl.force * dirControl.vector.y * event?.deltaTime) / 3000,
+        (-(dirControl.force * dirControl.vector.x) * event?.deltaTime) / 2000,
+        (dirControl.force * dirControl.vector.y * event?.deltaTime) / 2000,
         true
       )
     })
