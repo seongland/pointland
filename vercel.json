@@ -15,7 +15,7 @@
       ]
     },
     {
-      "source": "/potree/(.*)",
+      "source": "/potree/:match*",
       "headers": [
         {
           "key": "Cache-Control",
