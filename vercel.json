@@ -13,15 +13,6 @@
         { "key": "X-XSS-Protection", "value": "1" },
         { "key": "X-Content-Type-Options", "value": "nosniff" }
       ]
-    },
-    {
-      "source": "/potree/:match*",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31556952, immutable"
-        }
-      ]
     }
   ]
 }
