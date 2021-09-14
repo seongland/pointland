@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <div id="nipple" v-if="touchable" />
+    <div id="nipple" v-if="touchable" style="overflow: hidden" />
     <div id="pointland" />
   </div>
 </template>
