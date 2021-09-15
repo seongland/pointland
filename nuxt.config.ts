@@ -41,7 +41,7 @@ const config: NuxtConfig = {
   components: true,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/composition-api/module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }], '@nuxtjs/sitemap'],
-  pwa: { manifest: { lang: 'en', offline: false } },
+  pwa: { manifest: { lang: 'en', autoRegister: false } },
 
   // Theme
   vuetify: {
