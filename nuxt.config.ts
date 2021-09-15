@@ -41,7 +41,23 @@ const config: NuxtConfig = {
   components: true,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/composition-api/module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }], '@nuxtjs/sitemap'],
-  pwa: { manifest: { lang: 'en', autoRegister: false } },
+
+  // pwa
+  pwa: {
+    manifest: {
+      lang: 'en',
+      autoRegister: false,
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: 'https://storage.googleapis.com/potree-architecture/.*',
+            strategyOptions: { cacheName: 'potree' },
+            strategyPlugins: [{ use: 'Expiration', config: { maxEntries: 10000, maxAgeSeconds: 300000 } }],
+          },
+        ],
+      },
+    },
+  },
 
   // Theme
   vuetify: {
