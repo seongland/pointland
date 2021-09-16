@@ -11,3 +11,4 @@ build
 package-lock.json
 potree
 sw.*
+sw.js
