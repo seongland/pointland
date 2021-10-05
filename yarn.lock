@@ -5670,14 +5670,14 @@ eslint@^7.32.0:
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
-esno@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/esno/-/esno-0.9.1.tgz#106acb342a98b5e8d2a7cf528f6a149753a25e01"
-  integrity sha512-3pnZ7fI0+8R7kJSTwuOfzAvXNXun7eaZsTSE5avkNRrxTokq3Jm32gaah3Zgl5opHQ1K9SJasoQQySzmfN8alw==
+esno@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/esno/-/esno-0.10.1.tgz#28f9adb30fdcc5960475d034a4f22311d334d6cd"
+  integrity sha512-wsXUWZxI0O59bvOjggWOGDd6VSwPxG+37Np8aUI1LwORIONN3L2nOOJHT7jZ3xAGkfq/J3YcnZsx+Mmw6BQFmQ==
   dependencies:
     cross-spawn "^7.0.3"
-    esbuild "^0.12.20"
-    esbuild-node-loader "^0.3.1"
+    esbuild "^0.13.3"
+    esbuild-node-loader "^0.4.2"
     esbuild-register "^3.0.0"
 
 espree@^6.2.1:
