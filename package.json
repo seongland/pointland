@@ -46,7 +46,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^7.18.0",
     "nodemon": "^2.0.13",
-    "prettier": "^2.4.1"
+    "prettier": "^2.5.0"
   },
   "config": {
     "nuxt": {
