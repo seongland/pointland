@@ -36,7 +36,7 @@ const config: NuxtConfig = {
       },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
+      { rel: 'icon', type: 'image/x-icon', href: '/icon.png' },
       { rel: 'apple-touch-icon', sizes: '180x180', href: 'apple-touch-icon.png' },
     ],
   },
@@ -54,7 +54,84 @@ const config: NuxtConfig = {
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }], '@nuxtjs/sitemap'],
 
   // pwa
-  pwa: { manifest: { lang: 'en', autoRegister: false, display: 'fullscreen', orientation: 'landscape' } },
+  pwa: {
+    manifest: {
+      name: 'Pointland',
+      background_color: '#202229',
+      icons: [
+        {
+          "src": "/android-chrome-36x36.png",
+          "sizes": "36x36",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-48x48.png",
+          "sizes": "48x48",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-72x72.png",
+          "sizes": "72x72",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-144x144.png",
+          "sizes": "144x144",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-256x256.png",
+          "sizes": "256x256",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-384x384.png",
+          "sizes": "384x384",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/android-chrome-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          purpose: 'any'
+        },
+        {
+          "src": "/apple-touch-icon-1024x1024.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          purpose: 'maskable'
+        },
+        {
+          "src": "/apple-touch-icon-180x180.png",
+          "sizes": "180x180",
+          "type": "image/png",
+          purpose: 'maskable'
+        },
+      ],
+      lang: 'en', autoRegister: false, display: 'fullscreen', orientation: 'landscape'
+    },
+    meta: {
+      theme_color: '#202229'
+    }
+  },
 
   // Theme
   vuetify: {
