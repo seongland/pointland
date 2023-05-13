@@ -55,6 +55,9 @@ const config: NuxtConfig = {
 
   // pwa
   pwa: {
+    icon: {
+      purpose: ['any']
+    },
     manifest: {
       name: 'Pointland',
       background_color: '#202229',
