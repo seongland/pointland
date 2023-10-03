@@ -1,6 +1,8 @@
 # Pointland
 
 - https://point.seongland.com
+- Developed a touchscreen joystick that allows users to wander anywhere in 3D space.
+- Accomplished full screen web experience with pointcloud data served from Google Cloud Storage using [PWA](https://texonom.com/ce30bfc4fc164a59ac2ca0b01f23edf7).
 
 ![pointland](https://user-images.githubusercontent.com/27716524/115001273-794dc400-9ede-11eb-8309-964e22813215.png)
 
