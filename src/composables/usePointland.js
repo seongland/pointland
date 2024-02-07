@@ -20,6 +20,7 @@ export default function usePointland(store, root) {
     pco.translateX(-pco.position.x)
     pco.translateY(-pco.position.y)
     pco.translateZ(-pco.position.z)
+    pco.translateX(-200)
     space.pointclouds.push(pco)
     space.scene.add(pco)
     pco.material.intensityRange = [0, 255]
@@ -27,7 +28,7 @@ export default function usePointland(store, root) {
     pco.material.minSize = 4
     pco.material.size = 1
     pco.material.shape = 1
-    space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 5 * EPS, POSITION[2] - EPS, true)
+    space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, true)
     setTimeout(() => store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
   }
 
