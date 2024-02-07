@@ -4,6 +4,10 @@
   flex-flow: column;
 }
 
+body {
+  overflow: hidden;
+}
+
 .header {
   flex: 0 1 auto;
 }
