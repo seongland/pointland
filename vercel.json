@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/potree/:match*",
-      "destination": "https://storage.googleapis.com/potree-architecture/:match*"
+      "destination": "https://storage.googleapis.com/tokyo-potree/:match*"
     }
   ],
   "headers": [
