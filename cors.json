@@ -1,0 +1,9 @@
+[
+  {
+    "origin": ["https://point.seongland.com"],
+    "method": ["GET"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 86400
+  }
+]
+
