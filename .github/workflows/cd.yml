@@ -31,7 +31,7 @@ jobs:
       - name: Run build task
         run: yarn generate
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: make artifact
           path: dist
