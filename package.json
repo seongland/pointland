@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=production nuxt start",
     "favicon": "tsx scripts/build.ts",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider nuxt build",
-    "generate": "yarn favicon && cross-env NODE_ENV=production nuxt generate",
+    "generate": "yarn favicon && cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider nuxt generate",
     "lint": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
     "format": "prettier --write \"**/*.{ts,json,md,vue}\"  --ignore-path .gitignore"
   },
