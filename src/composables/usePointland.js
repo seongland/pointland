@@ -31,11 +31,11 @@ export default function usePointland(store, root) {
     pco.translateX(-pco.position.x)
     pco.translateY(-pco.position.y)
     pco.translateZ(-pco.position.z)
-    const initialPosition = [8784, 4000, 255]
+    const initialPosition = [8700, 3900, 255]
     pco.translateX(-initialPosition[0])
     pco.translateY(-initialPosition[1])
     pco.translateZ(-initialPosition[2])
-    const initialRotation = [3, 1.2]
+    const initialRotation = [3, 1.178]
     space.controls.rotateTo(initialRotation[0], initialRotation[1], true)
     space.pointclouds.push(pco)
     space.scene.add(pco)
@@ -47,7 +47,7 @@ export default function usePointland(store, root) {
     pco.material.rgbBrightness = 0.05
     pco.material.rgbContrast = 0.25
     space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, true)
-    setTimeout(() => store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
+    // setTimeout(() => store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
   }
 
   return { startLand }

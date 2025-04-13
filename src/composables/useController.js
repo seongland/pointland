@@ -97,8 +97,8 @@ export default function useController() {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event) => {
-      space.controls.truck(((xyControl.force * xyControl.vector.x) / 50) * event?.deltaTime, 0, true)
-      space.controls.forward(((xyControl.force * xyControl.vector.y) / 50) * event?.deltaTime, true)
+      space.controls.truck(((xyControl.force * xyControl.vector.x) / 10) * event?.deltaTime, 0, true)
+      space.controls.forward(((xyControl.force * xyControl.vector.y) / 10) * event?.deltaTime, true)
     })
     nipple.on('move', (_, data) => {
       xyControl.force = data.force
