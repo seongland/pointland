@@ -1,6 +1,7 @@
 // @ts-ignore
 import colors from 'vuetify/es5/util/colors'
 import dotenv from 'dotenv'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 
 import type { NuxtConfig } from '@nuxt/types'
 
@@ -49,6 +50,16 @@ const config: NuxtConfig = {
     port: process.env.PORT || 8080,
     host: '0.0.0.0',
   },
+  serverMiddleware: [
+    {
+      path: '/potree',
+      handler: createProxyMiddleware({
+        target: 'https://storage.googleapis.com/tokyo-potree/',
+        changeOrigin: true,
+        pathRewrite: { '^/potree': '/tokyo' }
+      })
+    }
+  ],
   components: true,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/composition-api/module'],
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', ['nuxt-vuex-localstorage', { localStorage: ['ls'] }], '@nuxtjs/sitemap'],
