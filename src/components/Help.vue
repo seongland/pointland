@@ -37,7 +37,8 @@
           <v-card-subtitle>Mobile Move</v-card-subtitle>
           <v-card-text> <kbd>Left Bottom Area</kbd> - XY Plane Movement </v-card-text>
           <v-card-text> <kbd>Right Bottom Area</kbd> - Rotate Camera </v-card-text>
-          <v-card-text> <kbd>Top Half Area</kbd> - XZ Plane Movement </v-card-text>
+          <v-card-text> <kbd>Top Left Area</kbd> - Fast XY Plane Movement </v-card-text>
+          <v-card-text> <kbd>Top Right Area</kbd> - XZ Plane Movement </v-card-text>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>

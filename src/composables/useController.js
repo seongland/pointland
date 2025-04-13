@@ -28,7 +28,8 @@ export default function useController() {
 
   function nippleEvent(manager, space) {
     manager.on('added', (_, nipple) => {
-      if (nipple.position.y < window.innerHeight / 2) zNipple(nipple, space)
+      if (nipple.position.x < window.innerWidth / 2 && nipple.position.y < window.innerHeight / 2) fastxyNipple(nipple, space)
+      else if (nipple.position.y < window.innerHeight / 2) zNipple(nipple, space)
       else if (nipple.position.x < window.innerWidth / 2) xyNipple(nipple, space)
       else dirNipple(nipple, space)
     })
@@ -52,6 +53,25 @@ export default function useController() {
       holder._holdEnd()
       dirControl.force = 0
       dirControl.vector = { x: 0, y: 0 }
+      console.debug(space.offset, space.camera.position)
+    })
+  }
+  
+  function fastxyNipple(nipple, space) {
+    const holder = new ElementHold(nipple.el, 10)
+    holder._holdStart()
+    holder.addEventListener('holding', (event) => {
+      space.controls.truck(((xyControl.force * xyControl.vector.x)) * event?.deltaTime, 0, true)
+      space.controls.forward(((xyControl.force * xyControl.vector.y)) * event?.deltaTime, true)
+    })
+    nipple.on('move', (_, data) => {
+      xyControl.force = data.force
+      xyControl.vector = data.vector
+    })
+    nipple.on('destroyed', () => {
+      holder._holdEnd()
+      xyControl.force = 0
+      xyControl.vector = { x: 0, y: 0 }
     })
   }
 
@@ -72,6 +92,7 @@ export default function useController() {
       zControl.vector = { x: 0, y: 0 }
     })
   }
+
   function xyNipple(nipple, space) {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
