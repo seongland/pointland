@@ -22,7 +22,7 @@
     "@nuxtjs/pwa": "3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
     "@vue/runtime-dom": "^3.2.37",
-    "consola": "^2.15.3",
+    "consola": "^3.4.2",
     "http-proxy-middleware": "^3.0.3",
     "layerspace": "0.2.7",
     "nipplejs": "^0.9.0",
