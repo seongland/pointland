@@ -21,7 +21,7 @@ export default function usePointland(store, root) {
     const space = layerspace.space
     root.$layerspace = layerspace
     setTimeout(() => store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
-    space.potree.loadPointCloud('cloud.js', (url) => `/potree/${url}`).then((pco) => loadPCO(pco, space))
+    space.potree.loadPointCloud('cloud.js', (url) => `https://storage.googleapis.com/tokyo-potree/${url}`).then((pco) => loadPCO(pco, space))
     return layerspace
   }
 
