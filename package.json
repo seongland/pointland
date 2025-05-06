@@ -40,7 +40,7 @@
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "^1.12.3",
     "@types/favicons": "^6.2.2",
-    "@types/node": "^22.15.3",
+    "@types/node": "^22.15.9",
     "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
     "eslint": "^8.14.0",
