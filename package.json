@@ -14,7 +14,7 @@
     "format": "prettier --write \"**/*.{ts,json,md,vue}\"  --ignore-path .gitignore"
   },
   "dependencies": {
-    "@babel/core": "^7.27.3",
+    "@babel/core": "^7.27.4",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@nuxt/vue-app": "^2.15.8",
     "@nuxtjs/axios": "^5.13.6",
