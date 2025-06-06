@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Help from '~/components/Help'
+import Help from '@/components/Help.vue'
 
 export default {
   components: {
