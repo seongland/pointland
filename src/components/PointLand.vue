@@ -7,17 +7,19 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, reactive, toRefs, onMounted } from '@vue/composition-api'
-import { useStore } from '@nuxtjs/composition-api'
+<script lang="ts">
+import { defineComponent, reactive, toRefs, onMounted, getCurrentInstance } from '@vue/composition-api'
+import { Store } from 'vuex'
+import Vue from 'vue'
 import usePointland from '@/composables/usePointland'
 import useController from '@/composables/useController'
 
 export default defineComponent({
-  setup(_, context) {
-    const store = useStore()
+  setup() {
+    const vm = getCurrentInstance()?.proxy as Vue & { $store: Store<any> }
+    const store = vm.$store
     const move = reactive({ move: { camera: false, vertical: false, target: false } })
-    const { startLand } = usePointland(store, context.root)
+    const { startLand } = usePointland(store, vm)
     const { checkTouchable, touchable } = useController()
 
     onMounted(() => {
