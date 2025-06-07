@@ -14,19 +14,19 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
-    "@vue/composition-api": "^1.7.2",
     "consola": "^3.4.2",
     "layerspace": "0.2.7",
     "nipplejs": "^0.10.2",
-    "v-snackbars": "^3.2.4",
-    "vue": "^2.7.14",
-    "vue-gtag": "1.16.1",
-    "vuex": "^3.6.2",
-    "vuetify": "^2.7.2"
+    "vue": "^3.5.0",
+    "vue-gtag": "^3.5.1",
+    "vue-router": "^4.5.1",
+    "vuex": "^4.1.0",
+    "vuetify": "^3.8.8"
   },
   "devDependencies": {
     "@types/node": "^22.15.30",
-    "@vitejs/plugin-vue2": "^2.3.3",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite-plugin-vuetify": "^2.1.1",
     "dotenv": "^16.5.0",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^10.1.5",
@@ -35,8 +35,7 @@
     "eslint-plugin-vue": "^9.4.0",
     "prettier": "^2.6.0",
     "typescript": "^4.8.2",
-    "vite": "^4.5.0",
-    "vue-template-compiler": "^2.7.14"
+    "vite": "^6.3.5"
   },
   "color": "#202229",
   "author": {
