@@ -8,16 +8,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted, getCurrentInstance } from '@vue/composition-api'
-import { Store } from 'vuex'
-import Vue from 'vue'
+import { defineComponent, reactive, toRefs, onMounted, getCurrentInstance } from 'vue'
+import { useStore } from 'vuex'
 import usePointland from '@/composables/usePointland'
 import useController from '@/composables/useController'
 
 export default defineComponent({
   setup() {
-    const vm = getCurrentInstance()?.proxy as Vue & { $store: Store<any> }
-    const store = vm.$store
+    const store = useStore()
+    const vm = getCurrentInstance()?.proxy as any
     const move = reactive({ move: { camera: false, vertical: false, target: false } })
     const { startLand } = usePointland(store, vm)
     const { checkTouchable, touchable } = useController()
