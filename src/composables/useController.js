@@ -1,4 +1,4 @@
-import { reactive, toRefs, ref } from '@vue/composition-api'
+import { reactive, toRefs, ref } from 'vue'
 import nipplejs from 'nipplejs'
 import { ElementHold } from 'hold-event'
 

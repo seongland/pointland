@@ -1,19 +1,18 @@
-import Vue from 'vue'
-import VueCompositionAPI from '@vue/composition-api'
-import Vuetify from 'vuetify'
-import VueGtag from 'vue-gtag'
+import { createApp } from 'vue'
+import { createVuetify } from 'vuetify'
+import 'vuetify/styles'
+import { createGtag } from 'vue-gtag'
 import App from './App.vue'
 import store from './store'
 
-import 'vuetify/dist/vuetify.min.css'
+const app = createApp(App)
+app.use(store)
+app.use(createVuetify())
+app.use(createGtag({
+  property: { id: 'G-G46T45L2RZ' },
+}))
 
-Vue.use(VueCompositionAPI)
-Vue.use(Vuetify)
-Vue.use(VueGtag, {
-  config: { id: 'G-G46T45L2RZ' },
-})
-
-Vue.mixin({
+app.mixin({
   data: () => ({
     title: 'Pointland',
     meta: { version: undefined },
@@ -26,10 +25,4 @@ Vue.mixin({
   }),
 })
 
-const vuetify = new Vuetify()
-
-new Vue({
-  store,
-  vuetify,
-  render: h => h(App),
-}).$mount('#app')
+app.mount('#app')
