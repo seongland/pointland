@@ -4,6 +4,7 @@
       <point-land class="wrapper" />
     </client-only>
     <help-btn />
+    <landmark-btns />
     <div class="source-info">
       This pointcloud source is from
       <a href="https://3dview.tokyo-digitaltwin.metro.tokyo.lg.jp/" target="_blank" rel="noopener noreferrer">City of Tokyo</a>
@@ -15,7 +16,8 @@
 </template>
 
 <script lang="ts">
-export default {}
+import LandmarkBtns from '~/components/LandmarkBtns.vue'
+export default { components: { LandmarkBtns } }
 </script>
 
 <style src="~/assets/style/index.css" />

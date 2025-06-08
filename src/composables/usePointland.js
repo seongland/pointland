@@ -1,4 +1,5 @@
 import LayerSpace from 'layerspace'
+import landmarks from '~/data/landmarks'
 
 const POSITION = [10, 130, 50]
 const EPS = 1e-5
@@ -21,11 +22,14 @@ export default function usePointland(store, root) {
     const space = layerspace.space
     root.$layerspace = layerspace
     setTimeout(() => store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
-    space.potree.loadPointCloud('cloud.js', (url) => `https://storage.googleapis.com/tokyo-potree/${url}`).then((pco) => loadPCO(pco, space))
+    space.potree
+      .loadPointCloud('cloud.js', (url) => `https://storage.googleapis.com/tokyo-potree/${url}`)
+      .then((pco) => loadPCO(pco, layerspace))
     return layerspace
   }
 
-  function loadPCO(pco, space) {
+  function loadPCO(pco, layerspace) {
+    const space = layerspace.space
     store.commit('setLoading', false)
     space.offset = [pco.position.x, pco.position.y, pco.position.z]
     pco.translateX(-pco.position.x)
@@ -47,6 +51,10 @@ export default function usePointland(store, root) {
     pco.material.rgbBrightness = 0.05
     pco.material.rgbContrast = 0.25
     space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, true)
+    const layer = layerspace.ref.landmarks
+    if (layer)
+      for (const lm of landmarks)
+        layerspace.drawXYZ(layer, lm.position, lm.name)
     // setTimeout(() => store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
   }
 

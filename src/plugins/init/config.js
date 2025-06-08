@@ -12,7 +12,11 @@ export default ({ $axios }) => {
       meta: { version: undefined },
       spaceOpt: {
         id: 'pointland',
-        layers: { point: [] },
+        layers: {
+          point: [
+            { name: 'landmarks', color: '#ffffff', size: 30, threshold: 2 },
+          ],
+        },
         box: 'skybox',
         position: [10, 130, 50],
       },
