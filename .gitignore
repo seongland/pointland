@@ -12,10 +12,3 @@ potree
 sw.*
 OneSignalSDK*
 sw.js
-manifest.json
-mstile*
-favicon-*.png
-favicon.ico
-browserconfig.xml
-apple-touch-*
-android-chrome-*
