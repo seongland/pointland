@@ -17,11 +17,15 @@ export default function usePointland(store, root) {
     root.spaceOpt.potree = {
       budget: 10000000,
     }
+    // @ts-ignore
     const layerspace = new LayerSpace(target, root.spaceOpt)
     const space = layerspace.space
     root.$layerspace = layerspace
     setTimeout(() => store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
-    space.potree.loadPointCloud('cloud.js', (url) => `https://storage.googleapis.com/tokyo-potree/${url}`).then((pco) => loadPCO(pco, space))
+    
+    // Use proxy URL in development, direct URL in production
+    const baseUrl = import.meta.env.DEV ? '' : 'https://storage.googleapis.com'
+    space.potree.loadPointCloud('cloud.js', (url) => `${baseUrl}/tokyo-potree/${url}`).then((pco) => loadPCO(pco, space))
     return layerspace
   }
 
