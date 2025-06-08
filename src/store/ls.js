@@ -2,6 +2,15 @@
  * @summary - Local Storage Module
  */
 
-export const state = () => ({})
+export const state = () => ({
+  camera: {
+    position: null,
+    target: null,
+  },
+})
 
-export const mutations = {}
+export const mutations = {
+  setCamera(state, { position, target }) {
+    state.camera = { position, target }
+  },
+}
