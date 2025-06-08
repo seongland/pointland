@@ -10,4 +10,4 @@ export const state = (): LSState => ({})
 
 export const mutations = {
   // Add mutations here as needed
-} 
+}
