@@ -49,25 +49,9 @@ kubectl config use-context docker-desktop
 - express
 - mongodb
 
-## Repository Summary
+## Repository Overview
 
-The codebase was analyzed using **Ranked Recursive Summarization (RRS)**. Files
-were divided into semantic chunks and ranked by importance. The top segments were
-then summarized from several architectural perspectives.
-
-### Architectural View
-- Nuxt single-page application built with TypeScript and Vuetify
-- Uses a point cloud engine for 3D rendering within a component
-- Plugins and composables provide input handling and initialization
-
-### Data Flow View
-- Point cloud data is fetched from Google Cloud Storage using runtime callbacks
-- User inputs from keyboard or touch controllers update camera controls
-- Vuex store manages application loading state and notifications
-
-### Security View
-- Authentication middleware restricts page access based on stored tokens
-- `cors.json` configures allowed origins for cloud resources
+This Nuxt-based application renders large point clouds inside the browser. The frontend is built with TypeScript and Vuetify and uses LayerSpace with Potree to display 3D data from Google Cloud Storage. Composables manage input controls and state is stored in Vuex. The project ships as a PWA and is typically deployed to Google Cloud Run. CORS rules for the viewer are defined in `cors.json`.
 
 # Build Setup
 
