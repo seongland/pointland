@@ -8,7 +8,6 @@
 
 ## Made by
 
-- [Layerspace](https://github.com/seonglae/layerspace)
 - [nuxt-ts-template](https://github.com/seonglae/nuxt-ts-template)
 
 # Deployment
@@ -49,6 +48,26 @@ kubectl config use-context docker-desktop
 - feathers
 - express
 - mongodb
+
+## Repository Summary
+
+The codebase was analyzed using **Ranked Recursive Summarization (RRS)**. Files
+were divided into semantic chunks and ranked by importance. The top segments were
+then summarized from several architectural perspectives.
+
+### Architectural View
+- Nuxt single-page application built with TypeScript and Vuetify
+- Uses a point cloud engine for 3D rendering within a component
+- Plugins and composables provide input handling and initialization
+
+### Data Flow View
+- Point cloud data is fetched from Google Cloud Storage using runtime callbacks
+- User inputs from keyboard or touch controllers update camera controls
+- Vuex store manages application loading state and notifications
+
+### Security View
+- Authentication middleware restricts page access based on stored tokens
+- `cors.json` configures allowed origins for cloud resources
 
 # Build Setup
 
