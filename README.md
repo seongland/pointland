@@ -1,8 +1,10 @@
 # Pointland
 
-- https://point.seongland.com
-- Developed a touchscreen joystick that allows users to wander anywhere in 3D space.
-- Accomplished full screen web experience with pointcloud data served from Google Cloud Storage using [PWA](https://texonom.com/ce30bfc4fc164a59ac2ca0b01f23edf7).
+Interactive point cloud viewer built with Nuxt and Potree.
+
+* Touchscreen joystick navigation lets users explore any point in 3D space.
+* Runs as a progressive web app that streams point clouds from Google Cloud Storage.
+* Online demo at https://point.seongland.com
 
 ![pointland](https://user-images.githubusercontent.com/27716524/115001273-794dc400-9ede-11eb-8309-964e22813215.png)
 
@@ -40,18 +42,33 @@ okteto stack deploy --wait
 kubectl config use-context docker-desktop
 ```
 
-## Tech Stacks
+## Tech Stack
 
-- cloudflare dns
-- gcp cloud run
-- docker, nuxt
-- feathers
-- express
-- mongodb
+- Cloudflare DNS
+- Google Cloud Run
+- Docker, Nuxt, and TypeScript
+- Feathers and Express backend
+- MongoDB database
 
-## Repository Overview
+## Repository Summary
 
-This Nuxt-based application renders large point clouds inside the browser. The frontend is built with TypeScript and Vuetify and uses LayerSpace with Potree to display 3D data from Google Cloud Storage. Composables manage input controls and state is stored in Vuex. The project ships as a PWA and is typically deployed to Google Cloud Run. CORS rules for the viewer are defined in `cors.json`.
+The codebase was explored using **Ranked Recursive Summarization** to provide a concise picture of how everything fits together.
+
+### Architectural View
+
+- `src/` holds Vue components, pages, and layouts used by Nuxt.
+- `nuxt.config.ts` configures modules and build options.
+- `docker-compose.yaml` and `Dockerfile` support local development and container builds.
+
+### Data Flow View
+
+- Static point clouds stored in Google Cloud Storage are served to the Potree viewer.
+- The client communicates with a Feathers API for additional data and authentication.
+
+### Security View
+
+- CORS settings live in `cors.json`.
+- The service runs behind Cloudflare with HTTPS enforced.
 
 # Build Setup
 
