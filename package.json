@@ -21,7 +21,7 @@
     "@nuxtjs/composition-api": "^0.32.0",
     "@nuxtjs/pwa": "3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
-    "@vue/runtime-dom": "^3.5.18",
+    "@vue/runtime-dom": "^3.5.19",
     "consola": "^3.4.2",
     "http-proxy-middleware": "^3.0.5",
     "layerspace": "0.2.7",
