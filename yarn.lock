@@ -12085,10 +12085,10 @@ vue-eslint-parser@^9.4.3:
     lodash "^4.17.21"
     semver "^7.3.6"
 
-vue-gtag@1.16.1:
-  version "1.16.1"
-  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-1.16.1.tgz#edb2f20ab4f6c4d4d372dfecf8c1fcc8ab890181"
-  integrity sha512-5vs0pSGxdqrfXqN1Qwt0ZFXG0iTYjRMu/saddc7QIC5yp+DKgjWQRpGYVa7Pq+KbThxwzzMfo0sGi7ISa6NowA==
+vue-gtag@3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-3.6.1.tgz#bb54ab32dce022d1dfb35b15a27ab22b0f440266"
+  integrity sha512-gsEt3vconVtZlYJTel9B/qVjdmW87XMl2KDrz0ds1sGSHjzqZ1c6KXl4M/Qjiem57FixQR8RDTDDX7MTKa3rFw==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"

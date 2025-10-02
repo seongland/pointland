@@ -31,7 +31,7 @@
     "ts-loader": "8.2.0",
     "v-snackbars": "^3.2.4",
     "vue": "2.6.12",
-    "vue-gtag": "1.16.1"
+    "vue-gtag": "3.6.1"
   },
   "devDependencies": {
     "@nuxt/types": "^2.18.1",
