@@ -21,7 +21,33 @@ export default function usePointland(store, root) {
     const space = layerspace.space
     root.$layerspace = layerspace
     setTimeout(() => store.commit('snack', { message: 'Welcome to Pointland' }), 1000)
-    space.potree.loadPointCloud('cloud.js', (url) => `https://storage.googleapis.com/tokyo-potree/${url}`).then((pco) => loadPCO(pco, space))
+    space.potree
+      .loadPointCloud('cloud.js', (url) => `https://storage.googleapis.com/tokyo-potree/${url}`)
+      .then((pco) => loadPCO(pco, space))
+      .then(() => {
+        const saved = store.state.ls.camera
+        if (saved && saved.position && saved.target) {
+          space.controls.setLookAt(
+            saved.position[0],
+            saved.position[1],
+            saved.position[2],
+            saved.target[0],
+            saved.target[1],
+            saved.target[2],
+            false
+          )
+        }
+      })
+
+    space.controls.addEventListener('update', () => {
+      const pos = space.controls.getPosition()
+      const target = space.controls.getTarget()
+      store.commit('ls/setCamera', {
+        position: [pos.x, pos.y, pos.z],
+        target: [target.x, target.y, target.z],
+      })
+    })
+
     return layerspace
   }
 
@@ -47,6 +73,18 @@ export default function usePointland(store, root) {
     pco.material.rgbBrightness = 0.05
     pco.material.rgbContrast = 0.25
     space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, true)
+    const saved = store.state.ls.camera
+    if (saved && saved.position && saved.target) {
+      space.controls.setLookAt(
+        saved.position[0],
+        saved.position[1],
+        saved.position[2],
+        saved.target[0],
+        saved.target[1],
+        saved.target[2],
+        false
+      )
+    }
     // setTimeout(() => store.commit('snack', { message: 'Click Top Left Button for Help', timeout: 10000 }), 10000)
   }
 
