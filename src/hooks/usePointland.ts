@@ -29,7 +29,8 @@ export const usePointland = () => {
     pco.translateX(-initialPosition[0])
     pco.translateY(-initialPosition[1])
     pco.translateZ(-initialPosition[2])
-    const initialRotation = [3, 1.178]
+    // Use actual production values: azimuth=1.3, polar=1.186, distance=9.2
+    const initialRotation = [1.3, 1.186]
     space.pointclouds.push(pco)
     space.scene.add(pco)
     pco.material.intensityRange = [0, 255]
@@ -39,9 +40,10 @@ export const usePointland = () => {
     pco.material.shape = 1
     pco.material.rgbBrightness = 0.05
     pco.material.rgbContrast = 0.25
-    // Set camera position immediately, then animate to final view
+    // Set target first (no animation), then rotate and dolly with animation
     space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, false)
     space.controls.rotateTo(initialRotation[0], initialRotation[1], true)
+    space.controls.dollyTo(9.2, true)  // Match production camera distance
     return space
   }, [])
 
