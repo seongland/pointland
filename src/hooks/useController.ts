@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import nipplejs, { JoystickManager, JoystickOutputData, EventData, JoystickManagerOptions } from 'nipplejs'
 import { ElementHold } from 'hold-event'
 
@@ -47,6 +47,16 @@ export const useController = () => {
   const [zControl, setZControl] = useState<Control>({ force: 0, vector: { x: 0, y: 0 } })
   const [mouse, setMouse] = useState<Vector>({ x: 0, y: 0 })
 
+  // Use refs to avoid stale closure issues in event listeners
+  const dirControlRef = useRef(dirControl)
+  const xyControlRef = useRef(xyControl)
+  const zControlRef = useRef(zControl)
+
+  // Keep refs in sync with state
+  useEffect(() => { dirControlRef.current = dirControl }, [dirControl])
+  useEffect(() => { xyControlRef.current = xyControl }, [xyControl])
+  useEffect(() => { zControlRef.current = zControl }, [zControl])
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMouse({ x: e.clientX, y: e.clientY })
@@ -76,9 +86,10 @@ export const useController = () => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
+      const ctrl = dirControlRef.current
       space.controls.rotate(
-        (-(dirControl.force * dirControl.vector.x) * event.deltaTime) / 2000,
-        (dirControl.force * dirControl.vector.y * event.deltaTime) / 2000,
+        (-(ctrl.force * ctrl.vector.x) * event.deltaTime) / 2000,
+        (ctrl.force * ctrl.vector.y * event.deltaTime) / 2000,
         true
       )
     })
@@ -90,14 +101,15 @@ export const useController = () => {
       setDirControl({ force: 0, vector: { x: 0, y: 0 } })
       console.debug(space.offset, space.camera.position)
     })
-  }, [dirControl])
+  }, [])
 
   const fastxyNipple = useCallback((nipple: NippleJoystick, space: Space) => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
-      space.controls.truck((xyControl.force * xyControl.vector.x) * event.deltaTime, 0, true)
-      space.controls.forward((xyControl.force * xyControl.vector.y) * event.deltaTime, true)
+      const ctrl = xyControlRef.current
+      space.controls.truck((ctrl.force * ctrl.vector.x) * event.deltaTime, 0, true)
+      space.controls.forward((ctrl.force * ctrl.vector.y) * event.deltaTime, true)
     })
     nipple.on('move', (_, data: JoystickOutputData) => {
       setXyControl({ force: data.force, vector: data.vector })
@@ -106,14 +118,15 @@ export const useController = () => {
       holder._holdEnd()
       setXyControl({ force: 0, vector: { x: 0, y: 0 } })
     })
-  }, [xyControl])
+  }, [])
 
   const zNipple = useCallback((nipple: NippleJoystick, space: Space) => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
-      space.controls.truck((zControl.force * zControl.vector.x / 100) * event.deltaTime, 0, true)
-      space.controls.truck(0, -(zControl.force * zControl.vector.y / 100) * event.deltaTime, true)
+      const ctrl = zControlRef.current
+      space.controls.truck((ctrl.force * ctrl.vector.x / 100) * event.deltaTime, 0, true)
+      space.controls.truck(0, -(ctrl.force * ctrl.vector.y / 100) * event.deltaTime, true)
     })
     nipple.on('move', (_, data: JoystickOutputData) => {
       setZControl({ force: data.force, vector: data.vector })
@@ -122,14 +135,15 @@ export const useController = () => {
       holder._holdEnd()
       setZControl({ force: 0, vector: { x: 0, y: 0 } })
     })
-  }, [zControl])
+  }, [])
 
   const xyNipple = useCallback((nipple: NippleJoystick, space: Space) => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
-      space.controls.truck((xyControl.force * xyControl.vector.x / 10) * event.deltaTime, 0, true)
-      space.controls.forward((xyControl.force * xyControl.vector.y / 10) * event.deltaTime, true)
+      const ctrl = xyControlRef.current
+      space.controls.truck((ctrl.force * ctrl.vector.x / 10) * event.deltaTime, 0, true)
+      space.controls.forward((ctrl.force * ctrl.vector.y / 10) * event.deltaTime, true)
     })
     nipple.on('move', (_, data: JoystickOutputData) => {
       setXyControl({ force: data.force, vector: data.vector })
@@ -138,7 +152,7 @@ export const useController = () => {
       holder._holdEnd()
       setXyControl({ force: 0, vector: { x: 0, y: 0 } })
     })
-  }, [xyControl])
+  }, [])
 
   const checkTouchable = useCallback((space: Space) => {
     setTouchable(true)
