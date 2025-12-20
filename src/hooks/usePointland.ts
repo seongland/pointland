@@ -20,6 +20,8 @@ export const usePointland = () => {
   const loading = useUnit($loading)
 
   const loadPCO = useCallback((pco: any, space: any) => {
+    // Match exact order from original Vue code
+    setLoading(false)
     space.offset = [pco.position.x, pco.position.y, pco.position.z]
     pco.translateX(-pco.position.x)
     pco.translateY(-pco.position.y)
@@ -29,6 +31,7 @@ export const usePointland = () => {
     pco.translateY(-initialPosition[1])
     pco.translateZ(-initialPosition[2])
     const initialRotation = [3, 1.178]
+    space.controls.rotateTo(initialRotation[0], initialRotation[1], true)
     space.pointclouds.push(pco)
     space.scene.add(pco)
     pco.material.intensityRange = [0, 255]
@@ -38,10 +41,7 @@ export const usePointland = () => {
     pco.material.shape = 1
     pco.material.rgbBrightness = 0.05
     pco.material.rgbContrast = 0.25
-    // Set target first, then rotate - without animation to ensure immediate positioning
-    space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, false)
-    space.controls.rotateTo(initialRotation[0], initialRotation[1], false)
-    setLoading(false)
+    space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, true)
     return space
   }, [])
 
