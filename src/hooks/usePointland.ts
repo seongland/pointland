@@ -70,9 +70,8 @@ export const usePointland = () => {
       showSnackbar({ message: 'Welcome to Pointland' })
     }, 1000)
     
-    // Use proxy URL in development, direct URL in production
-    const baseUrl = import.meta.env.DEV ? '' : 'https://storage.googleapis.com'
-    return space.potree.loadPointCloud('cloud.js', (url: string) => `${baseUrl}/tokyo-potree/${url}`)
+    // Always use relative path - Vite dev server and Vercel rewrites handle the proxy
+    return space.potree.loadPointCloud('cloud.js', (url: string) => `/tokyo-potree/${url}`)
       .then((pco) => loadPCO(pco, space))
       .then(() => {
         return layerspace
