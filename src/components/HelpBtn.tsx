@@ -1,36 +1,44 @@
 import { useState } from 'react'
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Help } from '@/components/Help'
 
 export const HelpBtn = () => {
-  const [showHelp, setShowHelp] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
-    <div className="fixed top-4 left-4 z-50">
-      <div className="bg-black bg-opacity-50 text-white p-4 rounded-lg">
-        <h2 className="text-xl mb-2">Pointland Usage</h2>
-        
-        <div className="mb-4">
-          <h3 className="text-lg mb-1">Desktop Move Shortcuts</h3>
-          <ul className="space-y-1">
-            <li>w - Move front</li>
-            <li>a - Move left</li>
-            <li>s - Move right</li>
-            <li>d - Move back</li>
-            <li>q - Move down</li>
-            <li>e - Move up</li>
-          </ul>
-        </div>
+    <>
+      {/* Help button */}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <button
+            className="fixed top-4 left-4 z-50 w-10 h-10 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-70 transition-all flex items-center justify-center text-xl font-bold cursor-pointer"
+            aria-label="Help"
+          >
+            ?
+          </button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md p-0 bg-transparent border-none">
+          <Help />
+        </DialogContent>
+      </Dialog>
 
-        <div>
-          <h3 className="text-lg mb-1">Desktop See Shortcuts</h3>
-          <ul className="space-y-1">
-            <li>↑ - See up</li>
-            <li>← - See left</li>
-            <li>↓ - See down</li>
-            <li>→ - See right</li>
-          </ul>
-        </div>
+      {/* Source info footer */}
+      <div className="fixed bottom-4 left-4 z-50 text-white text-sm">
+        <span>This pointcloud source is from </span>
+        <a
+          href="https://3dview.tokyo-digitaltwin.metro.tokyo.lg.jp/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-gray-300"
+        >
+          City of Tokyo
+        </a>
       </div>
-    </div>
+    </>
   )
 }
 
