@@ -3,5 +3,11 @@
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
   "installCommand": "pnpm install",
-  "framework": "vite"
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/tokyo-potree/:path*",
+      "destination": "https://storage.googleapis.com/tokyo-potree/:path*"
+    }
+  ]
 }

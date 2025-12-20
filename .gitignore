@@ -12,3 +12,8 @@ potree
 sw.*
 OneSignalSDK*
 sw.js
+
+# Playwright
+playwright-report/
+test-results/
+.playwright-mcp/
