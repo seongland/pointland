@@ -5,8 +5,8 @@ import { $loading, setLoading, showSnackbar } from '@/store/model'
 
 interface SpaceOptions {
   callback: {
-    click: (...args: any[]) => void
-    make: (...args: any[]) => void
+    click: (...args: unknown[]) => void
+    make: (...args: unknown[]) => void
   }
   potree: {
     budget: number
@@ -16,10 +16,38 @@ interface SpaceOptions {
 const POSITION = [10, 130, 50]
 const EPS = 1e-5
 
-export const usePointland = () => {
-  const loading = useUnit($loading)
+// PCO and Space types from layerspace library
+interface PCO {
+  position: { x: number; y: number; z: number }
+  translateX: (x: number) => void
+  translateY: (y: number) => void
+  translateZ: (z: number) => void
+  material: {
+    intensityRange: number[]
+    maxSize: number
+    minSize: number
+    size: number
+    shape: number
+    rgbBrightness: number
+    rgbContrast: number
+  }
+}
 
-  const loadPCO = useCallback((pco: any, space: any) => {
+interface Space {
+  offset: number[]
+  pointclouds: PCO[]
+  scene: { add: (pco: PCO) => void }
+  controls: {
+    setTarget: (x: number, y: number, z: number, animate: boolean) => void
+    rotateTo: (azimuth: number, polar: number, animate: boolean) => void
+    dollyTo: (distance: number, animate: boolean) => void
+  }
+}
+
+export const usePointland = () => {
+  useUnit($loading)
+
+  const loadPCO = useCallback((pco: PCO, space: Space) => {
     setLoading(false)
     space.offset = [pco.position.x, pco.position.y, pco.position.z]
     pco.translateX(-pco.position.x)
@@ -43,49 +71,52 @@ export const usePointland = () => {
     // Set target first (no animation), then rotate and dolly with animation
     space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, false)
     space.controls.rotateTo(initialRotation[0], initialRotation[1], true)
-    space.controls.dollyTo(9.2, true)  // Match production camera distance
+    space.controls.dollyTo(9.2, true) // Match production camera distance
     return space
   }, [])
 
-  const startLand = useCallback((target: HTMLElement) => {
-    if (!target) return null
-    
-    setLoading(true)
+  const startLand = useCallback(
+    (target: HTMLElement) => {
+      if (!target) return null
 
-    const spaceOpt: SpaceOptions = {
-      callback: {
-        click: (...args) => {
-          console.debug(args)
+      setLoading(true)
+
+      const spaceOpt: SpaceOptions = {
+        callback: {
+          click: (...args) => {
+            console.debug(args)
+          },
+          make: (...args) => {
+            console.debug(args)
+          },
         },
-        make: (...args) => {
-          console.debug(args)
+        potree: {
+          budget: 10000000,
         },
-      },
-      potree: {
-        budget: 10000000,
       }
-    }
-    
-    const layerspace = new LayerSpace(target, spaceOpt)
-    const space = layerspace.space
 
-    setTimeout(() => {
-      showSnackbar({ message: 'Welcome to Pointland' })
-    }, 1000)
-    
-    // Always use relative path - Vite dev server and Vercel rewrites handle the proxy
-    return space.potree.loadPointCloud('cloud.js', (url: string) => `/tokyo-potree/${url}`)
-      .then((pco) => loadPCO(pco, space))
-      .then(() => {
-        return layerspace
-      })
-      .catch((error) => {
-        console.error('Failed to load pointcloud:', error)
-        setLoading(false)
-        return null
-      })
+      const layerspace = new LayerSpace(target, spaceOpt)
+      const space = layerspace.space
 
-  }, [loadPCO])
+      setTimeout(() => {
+        showSnackbar({ message: 'Welcome to Pointland' })
+      }, 1000)
+
+      // Always use relative path - Vite dev server and Vercel rewrites handle the proxy
+      return space.potree
+        .loadPointCloud('cloud.js', (url: string) => `/tokyo-potree/${url}`)
+        .then((pco) => loadPCO(pco, space))
+        .then(() => {
+          return layerspace
+        })
+        .catch((error) => {
+          console.error('Failed to load pointcloud:', error)
+          setLoading(false)
+          return null
+        })
+    },
+    [loadPCO],
+  )
 
   return { startLand }
-} 
+}

@@ -17,7 +17,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     },
     "types": ["./src/types/hold-event.d.ts", "./src/types/layerspace.d.ts"]
   },

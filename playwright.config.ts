@@ -18,9 +18,11 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: process.env.BASE_URL ? undefined : {
-    command: 'pnpm preview',
-    url: 'http://localhost:4173',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.BASE_URL
+    ? undefined
+    : {
+        command: 'pnpm preview',
+        url: 'http://localhost:4173',
+        reuseExistingServer: !process.env.CI,
+      },
 })

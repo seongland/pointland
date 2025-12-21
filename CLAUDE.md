@@ -47,9 +47,11 @@ Note: Build uses `NODE_OPTIONS=--openssl-legacy-provider` for legacy Node compat
 ## Git Conventions
 
 **Branch naming**: `<type>/#<issue>-<description>`
+
 - Types: feature, bug, document, style, refactor, test, deps
 - Example: `feature/#123-add-dark-mode`
 
 **Commit format**: `<type>(<scope>): <subject>`
+
 - Types: feat, fix, docs, style, refactor, test, ci, cd, build, meta, pr, lint, typing, perf, deps, merge
 - Example: `feat(3d): add cloud point filtering`

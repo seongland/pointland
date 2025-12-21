@@ -3,9 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [
-    react()
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(process.cwd(), 'src'),
@@ -20,8 +18,8 @@ export default defineConfig({
       '/tokyo-potree': {
         target: 'https://storage.googleapis.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/tokyo-potree/, '/tokyo-potree')
-      }
-    }
-  }
+        rewrite: (path) => path.replace(/^\/tokyo-potree/, '/tokyo-potree'),
+      },
+    },
+  },
 })

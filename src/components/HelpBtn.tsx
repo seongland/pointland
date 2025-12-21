@@ -1,9 +1,5 @@
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Help } from '@/components/Help'
 
 export const HelpBtn = () => {

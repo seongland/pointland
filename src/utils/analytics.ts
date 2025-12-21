@@ -1,7 +1,7 @@
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void
+    dataLayer: unknown[]
   }
 }
 
@@ -14,8 +14,8 @@ export const initGA = () => {
   document.head.appendChild(script)
 
   window.dataLayer = window.dataLayer || []
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments)
+  window.gtag = function gtag(...args: unknown[]) {
+    window.dataLayer.push(args)
   }
   window.gtag('js', new Date())
   window.gtag('config', GA_TRACKING_ID)
@@ -27,7 +27,12 @@ export const pageview = (url: string) => {
   })
 }
 
-export const event = ({ action, category, label, value }: {
+export const event = ({
+  action,
+  category,
+  label,
+  value,
+}: {
   action: string
   category: string
   label: string
