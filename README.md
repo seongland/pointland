@@ -2,9 +2,9 @@
 
 Interactive point cloud viewer built with Nuxt and Potree.
 
-* Touchscreen joystick navigation lets users explore any point in 3D space.
-* Runs as a progressive web app that streams point clouds from Google Cloud Storage.
-* Online demo at https://point.seongland.com
+- Touchscreen joystick navigation lets users explore any point in 3D space.
+- Runs as a progressive web app that streams point clouds from Google Cloud Storage.
+- Online demo at https://point.seongland.com
 
 ![pointland](https://user-images.githubusercontent.com/27716524/115001273-794dc400-9ede-11eb-8309-964e22813215.png)
 

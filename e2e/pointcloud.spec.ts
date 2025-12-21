@@ -16,7 +16,7 @@ test.describe('Pointcloud Viewer', () => {
     const errors: string[] = []
 
     // Listen for console errors
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       if (msg.type() === 'error') {
         errors.push(msg.text())
       }
@@ -32,10 +32,8 @@ test.describe('Pointcloud Viewer', () => {
     await page.waitForTimeout(3000)
 
     // Check no CORS or fetch errors for pointcloud
-    const corsErrors = errors.filter(e =>
-      e.includes('CORS') ||
-      e.includes('Failed to fetch') ||
-      e.includes('tokyo-potree')
+    const corsErrors = errors.filter(
+      (e) => e.includes('CORS') || e.includes('Failed to fetch') || e.includes('tokyo-potree'),
     )
 
     expect(corsErrors).toHaveLength(0)
@@ -54,7 +52,7 @@ test.describe('Pointcloud Viewer', () => {
     // Take screenshot for visual verification
     await page.screenshot({
       path: 'e2e/screenshots/pointcloud.png',
-      fullPage: true
+      fullPage: true,
     })
 
     // Verify screenshot was created (test passes if no error)

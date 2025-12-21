@@ -1,8 +1,8 @@
 declare module 'layerspace' {
   interface LayerSpaceOptions {
     callback?: {
-      click?: (...args: any[]) => void
-      make?: (...args: any[]) => void
+      click?: (...args: unknown[]) => void
+      make?: (...args: unknown[]) => void
     }
     potree?: {
       budget?: number
@@ -11,7 +11,7 @@ declare module 'layerspace' {
 
   interface Space {
     potree: {
-      loadPointCloud: (path: string, urlResolver: (url: string) => string) => Promise<any>
+      loadPointCloud: (path: string, urlResolver: (url: string) => string) => Promise<unknown>
     }
     controls: {
       rotateTo: (x: number, y: number, animate: boolean) => void
@@ -20,9 +20,9 @@ declare module 'layerspace' {
       truck: (x: number, y: number, z: boolean) => void
       forward: (distance: number, animate: boolean) => void
     }
-    pointclouds: any[]
+    pointclouds: unknown[]
     scene: {
-      add: (object: any) => void
+      add: (object: unknown) => void
     }
     offset: number[]
     camera: {
@@ -36,4 +36,4 @@ declare module 'layerspace' {
   }
 
   export default LayerSpace
-} 
+}

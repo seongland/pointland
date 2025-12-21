@@ -6,4 +6,4 @@ declare module 'hold-event' {
     addEventListener(event: string, callback: (event: { deltaTime: number }) => void): void
     removeEventListener(event: string, callback: (event: { deltaTime: number }) => void): void
   }
-} 
+}
