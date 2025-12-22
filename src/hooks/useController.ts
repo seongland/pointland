@@ -168,27 +168,23 @@ export const useController = () => {
       let manager: JoystickManager | null = null
 
       // Wait for nipple element to be available
-      setTimeout(() => {
-        const zone = document.getElementById('nipple')
-        if (!zone) {
-          console.error('Nipple zone not found')
-          return
-        }
+      const zone = document.getElementById('nipple')
+      if (!zone) {
+        console.error('Nipple zone not found')
+        return
+      }
 
-        try {
-          const options: JoystickManagerOptions = {
-            zone,
-            multitouch: true,
-            maxNumberOfNipples: 2,
-            position: { top: '50%', left: '50%' },
-            mode: 'dynamic' as const,
-          }
-          manager = nipplejs.create(options)
-          nippleEvent(manager, space)
-        } catch (error) {
-          console.error('Failed to create nipple:', error)
+      try {
+        const options: JoystickManagerOptions = {
+          zone,
+          multitouch: true,
+          maxNumberOfNipples: 2,
         }
-      }, 100)
+        manager = nipplejs.create(options)
+        nippleEvent(manager, space)
+      } catch (error) {
+        console.error('Failed to create nipple:', error)
+      }
 
       // Cleanup function
       return () => {
