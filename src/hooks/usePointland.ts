@@ -4,6 +4,10 @@ import { useUnit } from 'effector-react'
 import { $loading, setLoading, showSnackbar } from '@/store/model'
 
 interface SpaceOptions {
+  id: string
+  layers: { point: unknown[] }
+  box: string
+  position: number[]
   callback: {
     click: (...args: unknown[]) => void
     make: (...args: unknown[]) => void
@@ -79,6 +83,10 @@ export const usePointland = () => {
       setLoading(true)
 
       const spaceOpt: SpaceOptions = {
+        id: 'pointland',
+        layers: { point: [] },
+        box: 'skybox',
+        position: POSITION,
         callback: {
           click: (...args) => {
             console.debug(args)
