@@ -11,7 +11,7 @@ export const HelpBtn = () => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <button
-            className="fixed top-4 left-4 z-50 w-10 h-10 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-70 transition-all flex items-center justify-center text-xl font-bold cursor-pointer"
+            className="fixed top-4 left-4 z-50 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white hover:scale-105 hover:shadow-lg transition-all duration-200 flex items-center justify-center text-lg font-medium cursor-pointer shadow-md border border-gray-200/50"
             aria-label="Help"
           >
             ?
