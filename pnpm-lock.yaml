@@ -114,6 +114,9 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^4.6.0
         version: 4.6.2(eslint@8.57.1)
+      husky:
+        specifier: ^9.1.7
+        version: 9.1.7
       postcss:
         specifier: ^8.4.35
         version: 8.5.4
@@ -1562,6 +1565,11 @@ packages:
 
   hold-event@1.1.0:
     resolution: {integrity: sha512-dBziMRU5X/wT6Wc8mRnvqtrkCzUtzCYKK1l/lnhy1o1SIvhh2juuNL1pCgVq9JsL60LVyDNjQ8axI6UkWNI+Tw==}
+
+  husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   ignore@5.2.0:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
@@ -3984,6 +3992,8 @@ snapshots:
   hold-event@0.1.0: {}
 
   hold-event@1.1.0: {}
+
+  husky@9.1.7: {}
 
   ignore@5.2.0: {}
 
