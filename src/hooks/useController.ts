@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import nipplejs, { JoystickManager, JoystickOutputData, EventData } from 'nipplejs'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import nipplejs, { JoystickManager, JoystickOutputData, EventData, JoystickManagerOptions } from 'nipplejs'
 import { ElementHold } from 'hold-event'
 
 interface Vector {
@@ -41,13 +41,26 @@ interface NippleJoystick extends JoystickOutputData {
 
 export const useController = () => {
   const [touchable, setTouchable] = useState(true)
+  const [dirControl, setDirControl] = useState<Control>({ force: 0, vector: { x: 0, y: 0 } })
+  const [xyControl, setXyControl] = useState<Control>({ force: 0, vector: { x: 0, y: 0 } })
+  const [zControl, setZControl] = useState<Control>({ force: 0, vector: { x: 0, y: 0 } })
   const [mouse, setMouse] = useState<Vector>({ x: 0, y: 0 })
 
-  // Use refs for control values to avoid stale closure issues
-  const dirControlRef = useRef<Control>({ force: 0, vector: { x: 0, y: 0 } })
-  const xyControlRef = useRef<Control>({ force: 0, vector: { x: 0, y: 0 } })
-  const zControlRef = useRef<Control>({ force: 0, vector: { x: 0, y: 0 } })
-  const managerRef = useRef<JoystickManager | null>(null)
+  // Use refs to avoid stale closure issues in event listeners
+  const dirControlRef = useRef(dirControl)
+  const xyControlRef = useRef(xyControl)
+  const zControlRef = useRef(zControl)
+
+  // Keep refs in sync with state
+  useEffect(() => {
+    dirControlRef.current = dirControl
+  }, [dirControl])
+  useEffect(() => {
+    xyControlRef.current = xyControl
+  }, [xyControl])
+  useEffect(() => {
+    zControlRef.current = zControl
+  }, [zControl])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -57,40 +70,7 @@ export const useController = () => {
     return () => document.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  const checkTouchable = (space: Space) => {
-    // Destroy existing manager if any
-    if (managerRef.current) {
-      managerRef.current.destroy()
-      managerRef.current = null
-    }
-
-    setTouchable(true)
-
-    const zone = document.getElementById('nipple')
-    if (!zone) return
-
-    // Exact same options as original Vue code
-    const options = { zone, multitouch: true, maxNumberOfNipples: 2 }
-    const manager = nipplejs.create(options)
-    managerRef.current = manager
-
-    manager.on('added', (_: EventData, data: JoystickOutputData) => {
-      const nipple = data as unknown as NippleJoystick
-      if (!nipple || !nipple.position) return
-
-      if (nipple.position.x < window.innerWidth / 2 && nipple.position.y < window.innerHeight / 2) {
-        fastxyNipple(nipple, space)
-      } else if (nipple.position.y < window.innerHeight / 2) {
-        zNipple(nipple, space)
-      } else if (nipple.position.x < window.innerWidth / 2) {
-        xyNipple(nipple, space)
-      } else {
-        dirNipple(nipple, space)
-      }
-    })
-  }
-
-  const dirNipple = (nipple: NippleJoystick, space: Space) => {
+  const dirNipple = useCallback((nipple: NippleJoystick, space: Space) => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
@@ -102,16 +82,16 @@ export const useController = () => {
       )
     })
     nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      dirControlRef.current = { force: data.force, vector: data.vector }
+      setDirControl({ force: data.force, vector: data.vector })
     })
     nipple.on('destroyed', () => {
       holder._holdEnd()
-      dirControlRef.current = { force: 0, vector: { x: 0, y: 0 } }
+      setDirControl({ force: 0, vector: { x: 0, y: 0 } })
       console.debug(space.offset, space.camera.position)
     })
-  }
+  }, [])
 
-  const fastxyNipple = (nipple: NippleJoystick, space: Space) => {
+  const fastxyNipple = useCallback((nipple: NippleJoystick, space: Space) => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
@@ -120,15 +100,15 @@ export const useController = () => {
       space.controls.forward(ctrl.force * ctrl.vector.y * event.deltaTime, true)
     })
     nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      xyControlRef.current = { force: data.force, vector: data.vector }
+      setXyControl({ force: data.force, vector: data.vector })
     })
     nipple.on('destroyed', () => {
       holder._holdEnd()
-      xyControlRef.current = { force: 0, vector: { x: 0, y: 0 } }
+      setXyControl({ force: 0, vector: { x: 0, y: 0 } })
     })
-  }
+  }, [])
 
-  const zNipple = (nipple: NippleJoystick, space: Space) => {
+  const zNipple = useCallback((nipple: NippleJoystick, space: Space) => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
@@ -137,15 +117,15 @@ export const useController = () => {
       space.controls.truck(0, -((ctrl.force * ctrl.vector.y) / 100) * event.deltaTime, true)
     })
     nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      zControlRef.current = { force: data.force, vector: data.vector }
+      setZControl({ force: data.force, vector: data.vector })
     })
     nipple.on('destroyed', () => {
       holder._holdEnd()
-      zControlRef.current = { force: 0, vector: { x: 0, y: 0 } }
+      setZControl({ force: 0, vector: { x: 0, y: 0 } })
     })
-  }
+  }, [])
 
-  const xyNipple = (nipple: NippleJoystick, space: Space) => {
+  const xyNipple = useCallback((nipple: NippleJoystick, space: Space) => {
     const holder = new ElementHold(nipple.el, 10)
     holder._holdStart()
     holder.addEventListener('holding', (event: HoldEvent) => {
@@ -154,19 +134,74 @@ export const useController = () => {
       space.controls.forward(((ctrl.force * ctrl.vector.y) / 10) * event.deltaTime, true)
     })
     nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      xyControlRef.current = { force: data.force, vector: data.vector }
+      setXyControl({ force: data.force, vector: data.vector })
     })
     nipple.on('destroyed', () => {
       holder._holdEnd()
-      xyControlRef.current = { force: 0, vector: { x: 0, y: 0 } }
+      setXyControl({ force: 0, vector: { x: 0, y: 0 } })
     })
-  }
+  }, [])
+
+  const nippleEvent = useCallback(
+    (manager: JoystickManager, space: Space) => {
+      manager.on('added', (_evt: EventData, data: JoystickOutputData) => {
+        const nipple = data as unknown as NippleJoystick
+        if (!nipple || !nipple.position) return
+
+        if (nipple.position.x < window.innerWidth / 2 && nipple.position.y < window.innerHeight / 2) {
+          fastxyNipple(nipple, space)
+        } else if (nipple.position.y < window.innerHeight / 2) {
+          zNipple(nipple, space)
+        } else if (nipple.position.x < window.innerWidth / 2) {
+          xyNipple(nipple, space)
+        } else {
+          dirNipple(nipple, space)
+        }
+      })
+    },
+    [dirNipple, fastxyNipple, xyNipple, zNipple],
+  )
+
+  const checkTouchable = useCallback(
+    (space: Space) => {
+      setTouchable(true)
+      let manager: JoystickManager | null = null
+
+      // Wait for nipple element to be available
+      const zone = document.getElementById('nipple')
+      if (!zone) {
+        console.error('Nipple zone not found')
+        return
+      }
+
+      try {
+        const options: JoystickManagerOptions = {
+          zone,
+          multitouch: true,
+          maxNumberOfNipples: 2,
+        }
+        manager = nipplejs.create(options)
+        nippleEvent(manager, space)
+      } catch (error) {
+        console.error('Failed to create nipple:', error)
+      }
+
+      // Cleanup function
+      return () => {
+        if (manager) {
+          manager.destroy()
+        }
+        setTouchable(false)
+      }
+    },
+    [nippleEvent],
+  )
 
   return {
     checkTouchable,
-    direction: dirControlRef.current,
-    xy: xyControlRef.current,
-    z: zControlRef.current,
+    direction: dirControl,
+    xy: xyControl,
+    z: zControl,
     touchable,
     mouse,
   }
