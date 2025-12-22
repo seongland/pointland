@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Help } from '@/components/Help'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 export const HelpBtn = () => {
   const [open, setOpen] = useState(false)
@@ -18,6 +19,10 @@ export const HelpBtn = () => {
           </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md p-0 bg-transparent border-none">
+          <VisuallyHidden>
+            <DialogTitle>Pointland Help</DialogTitle>
+            <DialogDescription>Navigation controls for Pointland</DialogDescription>
+          </VisuallyHidden>
           <Help />
         </DialogContent>
       </Dialog>
