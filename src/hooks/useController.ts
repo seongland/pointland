@@ -87,7 +87,6 @@ export const useController = () => {
     nipple.on('destroyed', () => {
       holder._holdEnd()
       setDirControl({ force: 0, vector: { x: 0, y: 0 } })
-      console.debug(space.offset, space.camera.position)
     })
   }, [])
 
@@ -177,10 +176,22 @@ export const useController = () => {
       try {
         const options: JoystickManagerOptions = {
           zone,
+          mode: 'dynamic',
           multitouch: true,
           maxNumberOfNipples: 2,
+          catchDistance: 150,
         }
         manager = nipplejs.create(options)
+        manager.on('end', () => {
+          // nipplejs doesn't properly clean up DOM in dynamic mode with React
+          // Remove all nipple elements that are not actively being used
+          setTimeout(() => {
+            const nippleElements = zone.querySelectorAll('.nipple')
+            nippleElements.forEach((el) => {
+              el.parentNode?.removeChild(el)
+            })
+          }, 100)
+        })
         nippleEvent(manager, space)
       } catch (error) {
         console.error('Failed to create nipple:', error)
