@@ -9,19 +9,13 @@ export const PointLand = () => {
   const nippleRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let cleanup: (() => void) | undefined
-
     if (pointlandRef.current) {
       // @ts-expect-error LayerSpace type mismatch
       startLand(pointlandRef.current).then((layerspace) => {
         if (layerspace) {
-          cleanup = checkTouchable(layerspace.space)
+          checkTouchable(layerspace.space)
         }
       })
-    }
-
-    return () => {
-      if (cleanup) cleanup()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
