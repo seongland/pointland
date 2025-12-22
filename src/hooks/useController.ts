@@ -179,6 +179,8 @@ export const useController = () => {
           zone,
           multitouch: true,
           maxNumberOfNipples: 2,
+          mode: 'dynamic',
+          fadeTime: 0,
         }
         manager = nipplejs.create(options)
         nippleEvent(manager, space)
