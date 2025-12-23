@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import LayerSpace from 'layerspace'
 import { useUnit } from 'effector-react'
 import { $loading, setLoading, showSnackbar } from '@/store/model'
+import { getStoredCamera, saveCamera } from '@/store/ls'
 
 interface SpaceOptions {
   id: string
@@ -17,11 +18,14 @@ interface SpaceOptions {
   }
 }
 
-// Tokyo Tower position - same as INITIAL in landmarks.ts
 const POSITION = [18.62, 128.11, 52.57]
 const TARGET = [18.53, 128.13, 52.54]
 
-// PCO and Space types from layerspace library
+export const DEFAULT_CAMERA = {
+  position: POSITION as [number, number, number],
+  target: TARGET as [number, number, number],
+}
+
 interface PCO {
   position: { x: number; y: number; z: number }
   translateX: (x: number) => void
@@ -38,14 +42,21 @@ interface PCO {
   }
 }
 
+interface Controls {
+  setTarget: (x: number, y: number, z: number, animate: boolean) => void
+  rotateTo: (azimuth: number, polar: number, animate: boolean) => void
+  setLookAt: (px: number, py: number, pz: number, tx: number, ty: number, tz: number, animate: boolean) => void
+  getPosition: () => { x: number; y: number; z: number }
+  getTarget: () => { x: number; y: number; z: number }
+  addEventListener: (event: string, callback: () => void) => void
+  removeEventListener: (event: string, callback: () => void) => void
+}
+
 interface Space {
   offset: number[]
   pointclouds: PCO[]
   scene: { add: (pco: PCO) => void }
-  controls: {
-    setTarget: (x: number, y: number, z: number, animate: boolean) => void
-    rotateTo: (azimuth: number, polar: number, animate: boolean) => void
-  }
+  controls: Controls
 }
 
 export const usePointland = () => {
@@ -70,7 +81,33 @@ export const usePointland = () => {
     pco.material.shape = 1
     pco.material.rgbBrightness = 0.05
     pco.material.rgbContrast = 0.25
-    space.controls.setTarget(TARGET[0], TARGET[1], TARGET[2], true)
+
+    const savedCamera = getStoredCamera()
+    if (savedCamera.position && savedCamera.target) {
+      space.controls.setLookAt(
+        savedCamera.position[0],
+        savedCamera.position[1],
+        savedCamera.position[2],
+        savedCamera.target[0],
+        savedCamera.target[1],
+        savedCamera.target[2],
+        false,
+      )
+    } else {
+      space.controls.setTarget(TARGET[0], TARGET[1], TARGET[2], true)
+    }
+
+    let saveTimeout: ReturnType<typeof setTimeout> | null = null
+    const handleControlUpdate = () => {
+      if (saveTimeout) clearTimeout(saveTimeout)
+      saveTimeout = setTimeout(() => {
+        const pos = space.controls.getPosition()
+        const target = space.controls.getTarget()
+        saveCamera([pos.x, pos.y, pos.z], [target.x, target.y, target.z])
+      }, 500)
+    }
+    space.controls.addEventListener('update', handleControlUpdate)
+
     return space
   }, [])
 
@@ -105,7 +142,6 @@ export const usePointland = () => {
         showSnackbar({ message: 'Welcome to Pointland' })
       }, 1000)
 
-      // Always use relative path - Vite dev server and Vercel rewrites handle the proxy
       return space.potree
         .loadPointCloud('cloud.js', (url: string) => `/tokyo-potree/${url}`)
         .then((pco) => loadPCO(pco, space))
