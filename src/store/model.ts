@@ -12,13 +12,30 @@ interface Snackbar {
   open: boolean
 }
 
+// Layerspace type
+export interface LayerSpaceInstance {
+  space: {
+    controls: {
+      setLookAt: (px: number, py: number, pz: number, tx: number, ty: number, tz: number, animate: boolean) => void
+      getPosition: () => { x: number; y: number; z: number }
+      getTarget: () => { x: number; y: number; z: number }
+      setTarget: (x: number, y: number, z: number, animate: boolean) => void
+      rotateTo: (azimuth: number, polar: number, animate: boolean) => void
+      addEventListener: (event: string, callback: () => void) => void
+      removeEventListener: (event: string, callback: () => void) => void
+    }
+  }
+}
+
 // Events
 export const setLoading = createEvent<boolean>()
 export const showSnackbar = createEvent<Partial<SnackbarMessage>>()
 export const setState = createEvent<{ props: string[]; value: unknown }>()
+export const setLayerspace = createEvent<LayerSpaceInstance | null>()
 
 // Stores
 export const $loading = createStore(false).on(setLoading, (_, value) => value)
+export const $layerspace = createStore<LayerSpaceInstance | null>(null).on(setLayerspace, (_, value) => value)
 
 export const $snackbar = createStore<Snackbar>({ messages: [], open: false }).on(showSnackbar, (state, payload) => {
   const msgObj: SnackbarMessage = {

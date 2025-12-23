@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { usePointland } from '@/hooks/usePointland'
 import { useController } from '@/hooks/useController'
+import { setLayerspace } from '@/store/model'
 
 export const PointLand = () => {
   const { touchable, checkTouchable } = useController()
@@ -15,6 +16,7 @@ export const PointLand = () => {
       // @ts-expect-error LayerSpace type mismatch
       startLand(pointlandRef.current).then((layerspace) => {
         if (layerspace) {
+          setLayerspace(layerspace)
           cleanup = checkTouchable(layerspace.space)
         }
       })
@@ -22,6 +24,7 @@ export const PointLand = () => {
 
     return () => {
       if (cleanup) cleanup()
+      setLayerspace(null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
