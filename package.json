@@ -28,7 +28,7 @@
     "consola": "^3.4.2",
     "effector": "^23.2.0",
     "effector-react": "^23.2.0",
-    "hold-event": "^1.1.0",
+    "hold-event": "^1.1.2",
     "layerspace": "0.2.7",
     "lucide-react": "^0.358.0",
     "nipplejs": "^0.10.2",
