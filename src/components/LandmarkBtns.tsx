@@ -89,24 +89,26 @@ export const LandmarkBtns = () => {
 
   return (
     <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-      {/* Debug button to print current position */}
-      <button
-        onClick={printCurrentPosition}
-        className="group relative flex items-center gap-3 px-4 py-2.5 rounded-2xl cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255,100,100,0.2) 0%, rgba(255,100,100,0.1) 100%)',
-          border: '1px solid rgba(255,100,100,0.3)',
-          boxShadow: `
-            0 8px 32px rgba(0,0,0,0.12),
-            inset 0 1px 0 rgba(255,255,255,0.2),
-            inset 0 -1px 0 rgba(0,0,0,0.1)
-          `,
-        }}
-        aria-label="Print current position (P)"
-      >
-        <Crosshair className="w-5 h-5 text-red-300" />
-        <span className="text-sm font-medium text-white/90">Print Pos (P)</span>
-      </button>
+      {/* Debug button to print current position - dev only */}
+      {import.meta.env.DEV && (
+        <button
+          onClick={printCurrentPosition}
+          className="group relative flex items-center gap-3 px-4 py-2.5 rounded-2xl cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,100,100,0.2) 0%, rgba(255,100,100,0.1) 100%)',
+            border: '1px solid rgba(255,100,100,0.3)',
+            boxShadow: `
+              0 8px 32px rgba(0,0,0,0.12),
+              inset 0 1px 0 rgba(255,255,255,0.2),
+              inset 0 -1px 0 rgba(0,0,0,0.1)
+            `,
+          }}
+          aria-label="Print current position (P)"
+        >
+          <Crosshair className="w-5 h-5 text-red-300" />
+          <span className="text-sm font-medium text-white/90">Print Pos (P)</span>
+        </button>
+      )}
 
       {landmarks.map((lm, i) => (
         <button

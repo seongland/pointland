@@ -5,34 +5,34 @@ export interface Landmark {
 }
 
 // Initial camera position (Space key returns here)
-// Position and target should be very close (~0.1 distance) for first-person view
-export const INITIAL_POSITION: [number, number, number] = [19, 129, 52]
-export const INITIAL_TARGET: [number, number, number] = [18.9, 129, 52]
+// Target = position + direction * 0.1
+export const INITIAL_POSITION: [number, number, number] = [18.62, 128.11, 52.57]
+export const INITIAL_TARGET: [number, number, number] = [18.53, 128.13, 52.54]
 
 export const landmarks: Landmark[] = [
   {
     name: 'Tokyo Tower',
-    position: [19, 129, 52],
-    target: [18.9, 129, 52],
+    position: [18.62, 128.11, 52.57],
+    target: [18.53, 128.13, 52.54],
   },
   {
     name: 'Tokyo Skytree',
-    position: [4800, -1200, 300],
-    target: [4799.9, -1200, 300],
+    position: [5637.2, 6134.95, 300.01],
+    target: [5637.11, 6134.91, 300.0],
   },
   {
     name: 'Shibuya',
-    position: [-2500, 5300, 150],
-    target: [-2500.1, 5300, 150],
+    position: [-4678.16, 167.57, -6.47],
+    target: [-4678.19, 167.66, -6.51],
   },
   {
     name: 'Shinjuku',
-    position: [-1880, 3453, 61],
-    target: [-1880.1, 3453, 61],
+    position: [-4292.97, 2976.89, 32.6],
+    target: [-4293.04, 2976.97, 32.59],
   },
   {
     name: 'Tokyo Station',
-    position: [1400, 2400, 150],
-    target: [1399.9, 2400, 150],
+    position: [922.11, 2830.73, -147.92],
+    target: [922.21, 2830.7, -147.93],
   },
 ]
