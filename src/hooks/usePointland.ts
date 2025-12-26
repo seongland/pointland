@@ -17,8 +17,9 @@ interface SpaceOptions {
   }
 }
 
-const POSITION = [10, 130, 50]
-const EPS = 1e-5
+// Tokyo Tower position - same as INITIAL in landmarks.ts
+const POSITION = [18.62, 128.11, 52.57]
+const TARGET = [18.53, 128.13, 52.54]
 
 // PCO and Space types from layerspace library
 interface PCO {
@@ -60,9 +61,6 @@ export const usePointland = () => {
     pco.translateX(-initialPosition[0])
     pco.translateY(-initialPosition[1])
     pco.translateZ(-initialPosition[2])
-    // Match main branch exactly: rotateTo first, then setTarget
-    const initialRotation = [3, 1.178]
-    space.controls.rotateTo(initialRotation[0], initialRotation[1], true)
     space.pointclouds.push(pco)
     space.scene.add(pco)
     pco.material.intensityRange = [0, 255]
@@ -72,7 +70,7 @@ export const usePointland = () => {
     pco.material.shape = 1
     pco.material.rgbBrightness = 0.05
     pco.material.rgbContrast = 0.25
-    space.controls.setTarget(POSITION[0] + 7 * EPS, POSITION[1] - 1 * EPS, POSITION[2] - EPS, true)
+    space.controls.setTarget(TARGET[0], TARGET[1], TARGET[2], true)
     return space
   }, [])
 
