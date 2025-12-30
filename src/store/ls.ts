@@ -2,9 +2,7 @@
  * @summary - Local Storage Module
  */
 
-interface LSState {
-  // Add state properties here as needed
-}
+type LSState = Record<string, never>
 
 export const state = (): LSState => ({})
 
