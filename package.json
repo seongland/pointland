@@ -4,7 +4,7 @@
   "private": true,
   "description": "Web Metaverse with Point Cloud",
   "license": "MIT",
-  "packageManager": "pnpm@10.26.2",
+  "packageManager": "pnpm@10.27.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
