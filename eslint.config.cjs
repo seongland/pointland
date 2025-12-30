@@ -57,11 +57,15 @@ module.exports = [
         HTMLElement: 'readonly',
         HTMLDivElement: 'readonly',
         HTMLCanvasElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLTextAreaElement: 'readonly',
         Element: 'readonly',
         Event: 'readonly',
         MouseEvent: 'readonly',
         KeyboardEvent: 'readonly',
         TouchEvent: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
         // React
         React: 'readonly',
         JSX: 'readonly'
