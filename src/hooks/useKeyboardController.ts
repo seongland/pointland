@@ -114,13 +114,13 @@ export const useKeyboardController = (space: Space | null) => {
         moveZ += right.z * MOVE_SPEED
       }
 
-      // E/Q: camera-relative up/down (not world Z!)
-      if (keys.has('KeyE')) {
+      // Q/E: camera-relative up/down (not world Z!)
+      if (keys.has('KeyQ')) {
         moveX += up.x * MOVE_SPEED
         moveY += up.y * MOVE_SPEED
         moveZ += up.z * MOVE_SPEED
       }
-      if (keys.has('KeyQ')) {
+      if (keys.has('KeyE')) {
         moveX -= up.x * MOVE_SPEED
         moveY -= up.y * MOVE_SPEED
         moveZ -= up.z * MOVE_SPEED
