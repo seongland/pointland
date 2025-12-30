@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePointland } from '@/hooks/usePointland'
 import { useController } from '@/hooks/useController'
+import { useKeyboardController } from '@/hooks/useKeyboardController'
 import { setLayerspace } from '@/store/model'
 
 interface LayerSpaceInstance {
@@ -17,6 +18,9 @@ export const PointLand = () => {
   const nippleRef = useRef<HTMLDivElement>(null)
   const layerspaceRef = useRef<LayerSpaceInstance | null>(null)
   const controllerCleanupRef = useRef<(() => void) | undefined>(undefined)
+  const [spaceForKeyboard, setSpaceForKeyboard] = useState<LayerSpaceInstance['space'] | null>(null)
+
+  useKeyboardController(spaceForKeyboard)
 
   useEffect(() => {
     let isMounted = true
@@ -38,6 +42,7 @@ export const PointLand = () => {
         if (layerspace) {
           layerspaceRef.current = layerspace
           setLayerspace(layerspace)
+          setSpaceForKeyboard(layerspace.space)
           controllerCleanupRef.current = checkTouchable(layerspace.space)
         }
       })
@@ -55,6 +60,7 @@ export const PointLand = () => {
         layerspaceRef.current = null
       }
       setLayerspace(null)
+      setSpaceForKeyboard(null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
