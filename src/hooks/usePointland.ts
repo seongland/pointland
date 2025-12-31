@@ -94,7 +94,7 @@ export const usePointland = () => {
         false,
       )
     } else {
-      space.controls.setTarget(TARGET[0], TARGET[1], TARGET[2], true)
+      space.controls.setLookAt(POSITION[0], POSITION[1], POSITION[2], TARGET[0], TARGET[1], TARGET[2], true)
     }
 
     let saveTimeout: ReturnType<typeof setTimeout> | null = null
