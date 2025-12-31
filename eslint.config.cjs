@@ -5,6 +5,7 @@ const react = require('eslint-plugin-react')
 const reactHooks = require('eslint-plugin-react-hooks')
 const prettier = require('eslint-plugin-prettier')
 const prettierConfig = require('eslint-config-prettier')
+const globals = require('globals')
 
 module.exports = [
   {
@@ -36,39 +37,9 @@ module.exports = [
         }
       },
       globals: {
-        // Node.js globals
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        // Browser globals
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        fetch: 'readonly',
-        setTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearTimeout: 'readonly',
-        clearInterval: 'readonly',
-        // DOM types
-        HTMLElement: 'readonly',
-        HTMLDivElement: 'readonly',
-        HTMLCanvasElement: 'readonly',
-        HTMLInputElement: 'readonly',
-        HTMLTextAreaElement: 'readonly',
-        Element: 'readonly',
-        Event: 'readonly',
-        MouseEvent: 'readonly',
-        KeyboardEvent: 'readonly',
-        TouchEvent: 'readonly',
-        requestAnimationFrame: 'readonly',
-        cancelAnimationFrame: 'readonly',
-        // React
-        React: 'readonly',
-        JSX: 'readonly'
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2022
       }
     },
     plugins: {
@@ -84,7 +55,8 @@ module.exports = [
       ...prettierConfig.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      'prettier/prettier': 'error'
+      'prettier/prettier': 'error',
+      'no-undef': 'off' // TypeScript handles this
     },
     settings: {
       react: {
