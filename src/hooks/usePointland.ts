@@ -83,7 +83,9 @@ export const usePointland = () => {
     pco.material.rgbContrast = 0.25
 
     const savedCamera = getStoredCamera()
+    console.log('Restoring camera:', savedCamera)
     if (savedCamera.position && savedCamera.target) {
+      console.log('Using saved position')
       space.controls.setLookAt(
         savedCamera.position[0],
         savedCamera.position[1],
@@ -94,6 +96,7 @@ export const usePointland = () => {
         false,
       )
     } else {
+      console.log('Using default position')
       space.controls.setLookAt(POSITION[0], POSITION[1], POSITION[2], TARGET[0], TARGET[1], TARGET[2], true)
     }
 
@@ -103,6 +106,7 @@ export const usePointland = () => {
       saveTimeout = setTimeout(() => {
         const pos = space.controls.getPosition()
         const target = space.controls.getTarget()
+        console.log('Saving camera:', { position: [pos.x, pos.y, pos.z], target: [target.x, target.y, target.z] })
         saveCamera([pos.x, pos.y, pos.z], [target.x, target.y, target.z])
       }, 500)
     }
