@@ -10,10 +10,15 @@ export interface CameraState {
 }
 
 export const getStoredCamera = (): CameraState => {
+  if (typeof window === 'undefined') {
+    return { position: null, target: null }
+  }
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
-      return JSON.parse(stored)
+      const parsed = JSON.parse(stored)
+      console.log('Retrieved from localStorage:', parsed)
+      return parsed
     }
   } catch (e) {
     console.warn('Failed to parse stored camera state:', e)
@@ -22,8 +27,11 @@ export const getStoredCamera = (): CameraState => {
 }
 
 export const saveCamera = (position: [number, number, number], target: [number, number, number]): void => {
+  if (typeof window === 'undefined') return
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ position, target }))
+    const data = { position, target }
+    console.log('Saving to localStorage:', data)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   } catch (e) {
     console.warn('Failed to save camera state:', e)
   }
