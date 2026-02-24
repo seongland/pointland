@@ -1,7 +1,6 @@
 const js = require('@eslint/js')
 const tseslint = require('@typescript-eslint/eslint-plugin')
 const tsparser = require('@typescript-eslint/parser')
-const react = require('eslint-plugin-react')
 const reactHooks = require('eslint-plugin-react-hooks')
 const prettier = require('eslint-plugin-prettier')
 const prettierConfig = require('eslint-config-prettier')
@@ -44,24 +43,14 @@ module.exports = [
     },
     plugins: {
       '@typescript-eslint': tseslint,
-      react: react,
       'react-hooks': reactHooks,
       prettier: prettier
     },
     rules: {
       ...tseslint.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
       ...prettierConfig.rules,
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
       'prettier/prettier': 'error',
       'no-undef': 'off' // TypeScript handles this
-    },
-    settings: {
-      react: {
-        version: 'detect'
-      }
     }
   }
 ]
