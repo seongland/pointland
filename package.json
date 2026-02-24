@@ -4,7 +4,7 @@
   "private": true,
   "description": "Web Metaverse with Point Cloud",
   "license": "MIT",
-  "packageManager": "pnpm@10.30.0",
+  "packageManager": "pnpm@10.30.2",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -45,7 +45,7 @@
     "@types/node": "^25.3.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "@vitejs/plugin-react": "^5.1.4",
     "autoprefixer": "^10.4.24",
