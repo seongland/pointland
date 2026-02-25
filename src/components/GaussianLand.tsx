@@ -1,84 +1,93 @@
-import { useEffect, useRef, useState } from 'react'
-import { useGaussianSplat, GaussianSpace } from '@/hooks/useGaussianSplat'
-import { useController } from '@/hooks/useController'
-import { useKeyboardController } from '@/hooks/useKeyboardController'
+import { useRef, useEffect } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Splat, OrbitControls } from '@react-three/drei'
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
+import * as THREE from 'three'
 
-export const GaussianLand = () => {
-  const { touchable, checkTouchable } = useController()
-  const { startGaussian } = useGaussianSplat()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const nippleRef = useRef<HTMLDivElement>(null)
-  const gaussianSpaceRef = useRef<GaussianSpace | null>(null)
-  const controllerCleanupRef = useRef<(() => void) | undefined>(undefined)
-  const [spaceForKeyboard, setSpaceForKeyboard] = useState<GaussianSpace | null>(null)
+const DEFAULT_SPLAT_URL = 'https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat'
 
-  // Adapt GaussianSpace controls to match the interface expected by useKeyboardController
-  const adaptedSpace = spaceForKeyboard
-    ? {
-        controls: {
-          rotate: spaceForKeyboard.controls.rotate,
-          truck: spaceForKeyboard.controls.truck,
-          forward: spaceForKeyboard.controls.forward,
-        },
-        offset: [0, 0, 0],
-        camera: {
-          position: {
-            x: spaceForKeyboard.camera.position.x,
-            y: spaceForKeyboard.camera.position.y,
-            z: spaceForKeyboard.camera.position.z,
-          },
-        },
-      }
-    : null
+interface GaussianLandProps {
+  splatUrl?: string
+}
 
-  useKeyboardController(adaptedSpace)
+// Camera-relative WASD movement controller with target tracking
+const KeyboardControls = ({ controlsRef }: { controlsRef: React.RefObject<OrbitControlsImpl | null> }) => {
+  const { camera } = useThree()
+  const keys = useRef<Set<string>>(new Set())
+  const MOVE_SPEED = 0.05
 
   useEffect(() => {
-    let isMounted = true
-
-    if (containerRef.current) {
-      startGaussian(containerRef.current).then((space) => {
-        if (!isMounted) {
-          if (space) {
-            space.dispose()
-          }
-          return
-        }
-        if (space) {
-          gaussianSpaceRef.current = space
-          setSpaceForKeyboard(space)
-          // Setup touch controls with adapted space interface
-          const adaptedForController = {
-            controls: space.controls,
-            offset: [0, 0, 0],
-            camera: {
-              position: {
-                x: space.camera.position.x,
-                y: space.camera.position.y,
-                z: space.camera.position.z,
-              },
-            },
-          }
-          controllerCleanupRef.current = checkTouchable(adaptedForController)
-        }
-      })
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+      keys.current.add(e.code)
     }
-
+    const onKeyUp = (e: KeyboardEvent) => {
+      keys.current.delete(e.code)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
     return () => {
-      isMounted = false
-      if (controllerCleanupRef.current) controllerCleanupRef.current()
-      if (gaussianSpaceRef.current) {
-        gaussianSpaceRef.current.dispose()
-        gaussianSpaceRef.current = null
-      }
-      setSpaceForKeyboard(null)
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
     }
   }, [])
 
+  useFrame(() => {
+    const k = keys.current
+    if (!k.has('KeyW') && !k.has('KeyS') && !k.has('KeyA') && !k.has('KeyD') && !k.has('KeyQ') && !k.has('KeyE')) return
+
+    // Get camera direction (forward vector) - includes Y for flying movement
+    const forward = new THREE.Vector3()
+    camera.getWorldDirection(forward)
+
+    // Right vector (perpendicular to forward)
+    const right = new THREE.Vector3()
+    right.crossVectors(forward, camera.up).normalize()
+
+    // Up vector (camera relative)
+    const up = new THREE.Vector3()
+    up.crossVectors(right, forward).normalize()
+
+    // Calculate movement delta
+    const delta = new THREE.Vector3()
+
+    if (k.has('KeyW')) delta.addScaledVector(forward, MOVE_SPEED)
+    if (k.has('KeyS')) delta.addScaledVector(forward, -MOVE_SPEED)
+    if (k.has('KeyA')) delta.addScaledVector(right, -MOVE_SPEED)
+    if (k.has('KeyD')) delta.addScaledVector(right, MOVE_SPEED)
+    if (k.has('KeyQ')) delta.addScaledVector(up, -MOVE_SPEED)
+    if (k.has('KeyE')) delta.addScaledVector(up, MOVE_SPEED)
+
+    // Move both camera and OrbitControls target
+    camera.position.add(delta)
+    if (controlsRef.current) {
+      controlsRef.current.target.add(delta)
+    }
+  })
+
+  return null
+}
+
+// Scene content with controls
+const GaussianScene = ({ splatUrl }: { splatUrl: string }) => {
+  const controlsRef = useRef<OrbitControlsImpl | null>(null)
+
   return (
-    <div>
-      {touchable && <div ref={nippleRef} id="nipple" className="absolute w-full h-full overflow-hidden z-10" />}
-      <div ref={containerRef} id="gaussianland" className="absolute w-full h-full" />
+    <>
+      <color attach="background" args={['#1a1a2e']} />
+      <Splat src={splatUrl} />
+      <OrbitControls ref={controlsRef} makeDefault enablePan enableZoom enableRotate enableDamping dampingFactor={0.05} />
+      <KeyboardControls controlsRef={controlsRef} />
+    </>
+  )
+}
+
+export const GaussianLand = ({ splatUrl = DEFAULT_SPLAT_URL }: GaussianLandProps) => {
+  return (
+    <div className="absolute inset-0 w-full h-full" style={{ background: '#1a1a2e' }}>
+      <Canvas camera={{ position: [0, 1.2, 2], fov: 60, near: 0.01, far: 100 }}>
+        <GaussianScene splatUrl={splatUrl} />
+      </Canvas>
     </div>
   )
 }
