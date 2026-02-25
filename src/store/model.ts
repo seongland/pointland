@@ -48,21 +48,6 @@ export const GAUSSIAN_SCENES: GaussianScene[] = [
     url: 'https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bicycle/bicycle-7k.splat',
     description: 'Outdoor bicycle scene',
   },
-  {
-    name: 'Garden',
-    url: 'https://antimatter15.com/splat/garden.splat',
-    description: 'Outdoor garden',
-  },
-  {
-    name: 'Treehill',
-    url: 'https://antimatter15.com/splat/treehill.splat',
-    description: 'Outdoor treehill landscape',
-  },
-  {
-    name: 'Stump',
-    url: 'https://antimatter15.com/splat/stump.splat',
-    description: 'Tree stump scene',
-  },
 ]
 
 // Events
@@ -72,12 +57,14 @@ export const setState = createEvent<{ props: string[]; value: unknown }>()
 export const setLayerspace = createEvent<LayerSpaceInstance | null>()
 export const setViewerMode = createEvent<ViewerMode>()
 export const setGaussianSceneIndex = createEvent<number>()
+export const setCustomSplatUrl = createEvent<string | null>()
 
 // Stores
 export const $loading = createStore(false).on(setLoading, (_, value) => value)
 export const $layerspace = createStore<LayerSpaceInstance | null>(null).on(setLayerspace, (_, value) => value)
 export const $viewerMode = createStore<ViewerMode>('pointcloud').on(setViewerMode, (_, value) => value)
 export const $gaussianSceneIndex = createStore<number>(0).on(setGaussianSceneIndex, (_, value) => value)
+export const $customSplatUrl = createStore<string | null>(null).on(setCustomSplatUrl, (_, value) => value)
 
 export const $snackbar = createStore<Snackbar>({ messages: [], open: false }).on(showSnackbar, (state, payload) => {
   const msgObj: SnackbarMessage = {

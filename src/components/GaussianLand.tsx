@@ -1,10 +1,16 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Splat, OrbitControls } from '@react-three/drei'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import * as THREE from 'three'
 import { useUnit } from 'effector-react'
-import { $gaussianSceneIndex, GAUSSIAN_SCENES, setGaussianSceneIndex } from '@/store/model'
+import {
+  $gaussianSceneIndex,
+  $customSplatUrl,
+  GAUSSIAN_SCENES,
+  setGaussianSceneIndex,
+  setCustomSplatUrl,
+} from '@/store/model'
 
 interface GaussianLandProps {
   splatUrl?: string
@@ -82,47 +88,116 @@ const GaussianScene = ({ splatUrl }: { splatUrl: string }) => {
   )
 }
 
-// Scene selector component
+// Scene selector component with file upload
 const SceneSelector = () => {
   const sceneIndex = useUnit($gaussianSceneIndex)
+  const customUrl = useUnit($customSplatUrl)
+  const [showUrlInput, setShowUrlInput] = useState(false)
+  const [urlInput, setUrlInput] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const url = URL.createObjectURL(file)
+      setCustomSplatUrl(url)
+      setGaussianSceneIndex(-1) // -1 means custom
+    }
+  }
+
+  const handleUrlSubmit = () => {
+    if (urlInput.trim()) {
+      setCustomSplatUrl(urlInput.trim())
+      setGaussianSceneIndex(-1)
+      setShowUrlInput(false)
+      setUrlInput('')
+    }
+  }
+
+  const glassStyle = {
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+    border: '1px solid rgba(255,255,255,0.2)',
+    boxShadow: `
+      0 8px 32px rgba(0,0,0,0.12),
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.1)
+    `,
+    backdropFilter: 'blur(20px)',
+  }
+
+  const activeStyle = {
+    background: 'linear-gradient(135deg, rgba(200,100,255,0.3) 0%, rgba(200,100,255,0.15) 100%)',
+    border: '1px solid rgba(200,100,255,0.4)',
+    boxShadow: `
+      0 8px 32px rgba(0,0,0,0.12),
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.1)
+    `,
+    backdropFilter: 'blur(20px)',
+  }
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex gap-2 flex-wrap justify-center max-w-[90vw]">
-      {GAUSSIAN_SCENES.map((scene, index) => (
-        <button
-          key={scene.name}
-          onClick={() => setGaussianSceneIndex(index)}
-          className="group relative flex items-center gap-1.5 px-3 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95"
-          style={{
-            background:
-              sceneIndex === index
-                ? 'linear-gradient(135deg, rgba(200,100,255,0.3) 0%, rgba(200,100,255,0.15) 100%)'
-                : 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
-            border: sceneIndex === index ? '1px solid rgba(200,100,255,0.4)' : '1px solid rgba(255,255,255,0.2)',
-            boxShadow: `
-              0 8px 32px rgba(0,0,0,0.12),
-              inset 0 1px 0 rgba(255,255,255,0.2),
-              inset 0 -1px 0 rgba(0,0,0,0.1)
-            `,
-            backdropFilter: 'blur(20px)',
-          }}
-        >
-          <span className="text-xs font-medium text-white/90">{scene.name}</span>
-          <div
-            className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
-            }}
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 items-center">
+      {showUrlInput && (
+        <div className="flex gap-2 items-center px-3 py-2 rounded-xl" style={glassStyle}>
+          <input
+            type="text"
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleUrlSubmit()}
+            placeholder="Enter .splat URL..."
+            className="bg-transparent text-white/90 text-xs outline-none w-48 placeholder:text-white/50"
           />
+          <button onClick={handleUrlSubmit} className="text-xs text-white/90 hover:text-white">
+            Load
+          </button>
+          <button onClick={() => setShowUrlInput(false)} className="text-xs text-white/50 hover:text-white">
+            Cancel
+          </button>
+        </div>
+      )}
+      <div className="flex gap-2 flex-wrap justify-center max-w-[90vw]">
+        {GAUSSIAN_SCENES.map((scene, index) => (
+          <button
+            key={scene.name}
+            onClick={() => {
+              setGaussianSceneIndex(index)
+              setCustomSplatUrl(null)
+            }}
+            className="group relative flex items-center gap-1.5 px-3 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95"
+            style={sceneIndex === index && !customUrl ? activeStyle : glassStyle}
+          >
+            <span className="text-xs font-medium text-white/90">{scene.name}</span>
+          </button>
+        ))}
+        {/* Custom URL/File button */}
+        <button
+          onClick={() => setShowUrlInput(!showUrlInput)}
+          className="group relative flex items-center gap-1.5 px-3 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95"
+          style={customUrl ? activeStyle : glassStyle}
+        >
+          <span className="text-xs font-medium text-white/90">URL</span>
         </button>
-      ))}
+        {/* File upload button */}
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="group relative flex items-center gap-1.5 px-3 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95"
+          style={glassStyle}
+        >
+          <span className="text-xs font-medium text-white/90">Upload</span>
+        </button>
+        <input ref={fileInputRef} type="file" accept=".splat,.ply" onChange={handleFileUpload} className="hidden" />
+      </div>
     </div>
   )
 }
 
 export const GaussianLand = ({ splatUrl }: GaussianLandProps) => {
   const sceneIndex = useUnit($gaussianSceneIndex)
-  const currentUrl = splatUrl || GAUSSIAN_SCENES[sceneIndex].url
+  const customUrl = useUnit($customSplatUrl)
+
+  // Priority: prop > custom URL > preset scene
+  const currentUrl = splatUrl || customUrl || GAUSSIAN_SCENES[Math.max(0, sceneIndex)]?.url || GAUSSIAN_SCENES[0].url
 
   return (
     <div className="absolute inset-0 w-full h-full" style={{ background: '#1a1a2e' }}>
