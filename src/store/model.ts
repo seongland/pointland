@@ -27,15 +27,20 @@ export interface LayerSpaceInstance {
   }
 }
 
+// Viewer mode type
+export type ViewerMode = 'pointcloud' | 'gaussian'
+
 // Events
 export const setLoading = createEvent<boolean>()
 export const showSnackbar = createEvent<Partial<SnackbarMessage>>()
 export const setState = createEvent<{ props: string[]; value: unknown }>()
 export const setLayerspace = createEvent<LayerSpaceInstance | null>()
+export const setViewerMode = createEvent<ViewerMode>()
 
 // Stores
 export const $loading = createStore(false).on(setLoading, (_, value) => value)
 export const $layerspace = createStore<LayerSpaceInstance | null>(null).on(setLayerspace, (_, value) => value)
+export const $viewerMode = createStore<ViewerMode>('pointcloud').on(setViewerMode, (_, value) => value)
 
 export const $snackbar = createStore<Snackbar>({ messages: [], open: false }).on(showSnackbar, (state, payload) => {
   const msgObj: SnackbarMessage = {
