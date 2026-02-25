@@ -84,21 +84,25 @@ export const usePointland = () => {
 
     const savedCamera = getStoredCamera()
     console.log('Restoring camera:', savedCamera)
-    if (savedCamera.position && savedCamera.target) {
-      console.log('Using saved position')
-      space.controls.setLookAt(
-        savedCamera.position[0],
-        savedCamera.position[1],
-        savedCamera.position[2],
-        savedCamera.target[0],
-        savedCamera.target[1],
-        savedCamera.target[2],
-        false,
-      )
-    } else {
-      console.log('Using default position')
-      space.controls.setLookAt(POSITION[0], POSITION[1], POSITION[2], TARGET[0], TARGET[1], TARGET[2], true)
-    }
+
+    // Use requestAnimationFrame to ensure controls are ready
+    requestAnimationFrame(() => {
+      if (savedCamera.position && savedCamera.target) {
+        console.log('Using saved position')
+        space.controls.setLookAt(
+          savedCamera.position[0],
+          savedCamera.position[1],
+          savedCamera.position[2],
+          savedCamera.target[0],
+          savedCamera.target[1],
+          savedCamera.target[2],
+          false,
+        )
+      } else {
+        console.log('Using default position')
+        space.controls.setLookAt(POSITION[0], POSITION[1], POSITION[2], TARGET[0], TARGET[1], TARGET[2], false)
+      }
+    })
 
     let saveTimeout: ReturnType<typeof setTimeout> | null = null
     const handleControlUpdate = () => {
@@ -121,11 +125,15 @@ export const usePointland = () => {
 
       setLoading(true)
 
+      // Get saved camera position before LayerSpace initialization
+      const savedCamera = getStoredCamera()
+      const initialPosition = savedCamera.position ?? POSITION
+
       const spaceOpt: SpaceOptions = {
         id: 'pointland',
         layers: { point: [] },
         box: 'skybox',
-        position: POSITION,
+        position: initialPosition,
         callback: {
           click: (...args) => {
             console.debug(args)
