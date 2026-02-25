@@ -57,14 +57,12 @@ export const setState = createEvent<{ props: string[]; value: unknown }>()
 export const setLayerspace = createEvent<LayerSpaceInstance | null>()
 export const setViewerMode = createEvent<ViewerMode>()
 export const setGaussianSceneIndex = createEvent<number>()
-export const setCustomSplatUrl = createEvent<string | null>()
 
 // Stores
 export const $loading = createStore(false).on(setLoading, (_, value) => value)
 export const $layerspace = createStore<LayerSpaceInstance | null>(null).on(setLayerspace, (_, value) => value)
 export const $viewerMode = createStore<ViewerMode>('pointcloud').on(setViewerMode, (_, value) => value)
 export const $gaussianSceneIndex = createStore<number>(0).on(setGaussianSceneIndex, (_, value) => value)
-export const $customSplatUrl = createStore<string | null>(null).on(setCustomSplatUrl, (_, value) => value)
 
 export const $snackbar = createStore<Snackbar>({ messages: [], open: false }).on(showSnackbar, (state, payload) => {
   const msgObj: SnackbarMessage = {
