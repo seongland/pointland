@@ -3,8 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Splat, OrbitControls } from '@react-three/drei'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import * as THREE from 'three'
-
-const DEFAULT_SPLAT_URL = 'https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat'
+import { useUnit } from 'effector-react'
+import { $gaussianSceneIndex, GAUSSIAN_SCENES, setGaussianSceneIndex } from '@/store/model'
 
 interface GaussianLandProps {
   splatUrl?: string
@@ -82,12 +82,54 @@ const GaussianScene = ({ splatUrl }: { splatUrl: string }) => {
   )
 }
 
-export const GaussianLand = ({ splatUrl = DEFAULT_SPLAT_URL }: GaussianLandProps) => {
+// Scene selector component
+const SceneSelector = () => {
+  const sceneIndex = useUnit($gaussianSceneIndex)
+
+  return (
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex gap-2 flex-wrap justify-center max-w-[90vw]">
+      {GAUSSIAN_SCENES.map((scene, index) => (
+        <button
+          key={scene.name}
+          onClick={() => setGaussianSceneIndex(index)}
+          className="group relative flex items-center gap-1.5 px-3 py-2 rounded-xl cursor-pointer transition-all duration-300 ease-out hover:scale-105 active:scale-95"
+          style={{
+            background:
+              sceneIndex === index
+                ? 'linear-gradient(135deg, rgba(200,100,255,0.3) 0%, rgba(200,100,255,0.15) 100%)'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+            border: sceneIndex === index ? '1px solid rgba(200,100,255,0.4)' : '1px solid rgba(255,255,255,0.2)',
+            boxShadow: `
+              0 8px 32px rgba(0,0,0,0.12),
+              inset 0 1px 0 rgba(255,255,255,0.2),
+              inset 0 -1px 0 rgba(0,0,0,0.1)
+            `,
+            backdropFilter: 'blur(20px)',
+          }}
+        >
+          <span className="text-xs font-medium text-white/90">{scene.name}</span>
+          <div
+            className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
+            }}
+          />
+        </button>
+      ))}
+    </div>
+  )
+}
+
+export const GaussianLand = ({ splatUrl }: GaussianLandProps) => {
+  const sceneIndex = useUnit($gaussianSceneIndex)
+  const currentUrl = splatUrl || GAUSSIAN_SCENES[sceneIndex].url
+
   return (
     <div className="absolute inset-0 w-full h-full" style={{ background: '#1a1a2e' }}>
       <Canvas camera={{ position: [0, 1.2, 2], fov: 60, near: 0.01, far: 100 }}>
-        <GaussianScene splatUrl={splatUrl} />
+        <GaussianScene splatUrl={currentUrl} />
       </Canvas>
+      <SceneSelector />
     </div>
   )
 }
