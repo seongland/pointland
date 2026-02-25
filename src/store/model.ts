@@ -27,15 +27,42 @@ export interface LayerSpaceInstance {
   }
 }
 
+// Viewer mode type
+export type ViewerMode = 'pointcloud' | 'gaussian'
+
+// Gaussian scene type
+export interface GaussianScene {
+  name: string
+  url: string
+  description?: string
+}
+
+export const GAUSSIAN_SCENES: GaussianScene[] = [
+  {
+    name: 'Bonsai',
+    url: 'https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat',
+    description: 'Indoor bonsai tree',
+  },
+  {
+    name: 'Bicycle',
+    url: 'https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bicycle/bicycle-7k.splat',
+    description: 'Outdoor bicycle scene',
+  },
+]
+
 // Events
 export const setLoading = createEvent<boolean>()
 export const showSnackbar = createEvent<Partial<SnackbarMessage>>()
 export const setState = createEvent<{ props: string[]; value: unknown }>()
 export const setLayerspace = createEvent<LayerSpaceInstance | null>()
+export const setViewerMode = createEvent<ViewerMode>()
+export const setGaussianSceneIndex = createEvent<number>()
 
 // Stores
 export const $loading = createStore(false).on(setLoading, (_, value) => value)
 export const $layerspace = createStore<LayerSpaceInstance | null>(null).on(setLayerspace, (_, value) => value)
+export const $viewerMode = createStore<ViewerMode>('pointcloud').on(setViewerMode, (_, value) => value)
+export const $gaussianSceneIndex = createStore<number>(0).on(setGaussianSceneIndex, (_, value) => value)
 
 export const $snackbar = createStore<Snackbar>({ messages: [], open: false }).on(showSnackbar, (state, payload) => {
   const msgObj: SnackbarMessage = {
