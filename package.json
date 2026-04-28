@@ -4,7 +4,7 @@
   "private": true,
   "description": "Web Metaverse with Point Cloud",
   "license": "MIT",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -30,7 +30,7 @@
     "effector-react": "^23.3.0",
     "hold-event": "^1.1.2",
     "layerspace": "0.2.7",
-    "lucide-react": "^1.8.0",
+    "lucide-react": "^1.12.0",
     "nipplejs": "^1.0.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -45,8 +45,8 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.59.0",
-    "@typescript-eslint/parser": "^8.59.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.1",
+    "@typescript-eslint/parser": "^8.59.1",
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.5.0",
     "eslint": "^10.2.1",
@@ -56,10 +56,10 @@
     "globals": "^17.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.12",
     "prettier": "^3.8.3",
     "typescript": "^6.0.3",
-    "vite": "^8.0.9"
+    "vite": "^8.0.10"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
