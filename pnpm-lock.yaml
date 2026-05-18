@@ -54,8 +54,8 @@ importers:
         specifier: ^1.14.0
         version: 1.14.0(react@19.2.6)
       nipplejs:
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^1.0.3
+        version: 1.0.3
       react:
         specifier: ^19.2.6
         version: 19.2.6
@@ -1537,8 +1537,8 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  nipplejs@1.0.2:
-    resolution: {integrity: sha512-/6gzGs1jJxtRC2i4kw6yAeMB7N0m5M+HSMmRdky8yoBUJOyNyDxsUves5DSgLGdhGE7IBsYCu1wY+dnJZz0yUQ==}
+  nipplejs@1.0.3:
+    resolution: {integrity: sha512-ZHVJxStXeau1UNFSbVs4RVHKQHwHyYjVt/9P2pfpeHV5NK1MtkJkCS4wLaoPq36f3VWvRh+APhsc0MSkamCyzg==}
 
   node-releases@2.0.37:
     resolution: {integrity: sha512-1h5gKZCF+pO/o3Iqt5Jp7wc9rH3eJJ0+nh/CIoiRwjRxde/hAHyLPXYN4V3CqKAbiZPSeJFSWHmJsbkicta0Eg==}
@@ -3121,7 +3121,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  nipplejs@1.0.2: {}
+  nipplejs@1.0.3: {}
 
   node-releases@2.0.37: {}
 
