@@ -4,7 +4,7 @@
   "private": true,
   "description": "Web Metaverse with Point Cloud",
   "license": "MIT",
-  "packageManager": "pnpm@11.22.0",
+  "packageManager": "pnpm@11.24.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -30,7 +30,7 @@
     "effector-react": "^23.3.0",
     "hold-event": "^1.1.2",
     "layerspace": "0.2.7",
-    "lucide-react": "^1.31.0",
+    "lucide-react": "^1.34.0",
     "nipplejs": "^1.0.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -42,14 +42,14 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.3.0",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
-    "@typescript-eslint/eslint-plugin": "^8.67.0",
-    "@typescript-eslint/parser": "^8.67.0",
-    "@vitejs/plugin-react": "^6.0.5",
+    "@types/react-dom": "^19.2.5",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
+    "@vitejs/plugin-react": "^6.1.0",
     "autoprefixer": "^10.5.4",
-    "eslint": "^10.8.1",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -59,7 +59,7 @@
     "postcss": "^8.5.26",
     "prettier": "^3.9.6",
     "typescript": "^6.0.3",
-    "vite": "^8.2.1"
+    "vite": "^8.2.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
