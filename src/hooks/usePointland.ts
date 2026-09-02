@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import type { PCO, Space } from 'layerspace'
 import LayerSpace from 'layerspace'
 import { useUnit } from 'effector-react'
 import { $loading, setLoading, showSnackbar } from '@/store/model'
@@ -24,39 +25,6 @@ const TARGET = [18.53, 128.13, 52.54]
 export const DEFAULT_CAMERA = {
   position: POSITION as [number, number, number],
   target: TARGET as [number, number, number],
-}
-
-interface PCO {
-  position: { x: number; y: number; z: number }
-  translateX: (x: number) => void
-  translateY: (y: number) => void
-  translateZ: (z: number) => void
-  material: {
-    intensityRange: number[]
-    maxSize: number
-    minSize: number
-    size: number
-    shape: number
-    rgbBrightness: number
-    rgbContrast: number
-  }
-}
-
-interface Controls {
-  setTarget: (x: number, y: number, z: number, animate: boolean) => void
-  rotateTo: (azimuth: number, polar: number, animate: boolean) => void
-  setLookAt: (px: number, py: number, pz: number, tx: number, ty: number, tz: number, animate: boolean) => void
-  getPosition: () => { x: number; y: number; z: number }
-  getTarget: () => { x: number; y: number; z: number }
-  addEventListener: (event: string, callback: () => void) => void
-  removeEventListener: (event: string, callback: () => void) => void
-}
-
-interface Space {
-  offset: number[]
-  pointclouds: PCO[]
-  scene: { add: (pco: PCO) => void }
-  controls: Controls
 }
 
 export const usePointland = () => {

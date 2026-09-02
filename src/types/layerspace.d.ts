@@ -9,9 +9,32 @@ declare module 'layerspace' {
     }
   }
 
-  interface Space {
+  export interface Vector3 {
+    x: number
+    y: number
+    z: number
+  }
+
+  /** A loaded point cloud object, as potree resolves it. */
+  export interface PCO {
+    position: Vector3
+    translateX: (x: number) => void
+    translateY: (y: number) => void
+    translateZ: (z: number) => void
+    material: {
+      intensityRange: number[]
+      maxSize: number
+      minSize: number
+      size: number
+      shape: number
+      rgbBrightness: number
+      rgbContrast: number
+    }
+  }
+
+  export interface Space {
     potree: {
-      loadPointCloud: (path: string, urlResolver: (url: string) => string) => Promise<unknown>
+      loadPointCloud: (path: string, urlResolver: (url: string) => string) => Promise<PCO>
     }
     controls: {
       rotateTo: (x: number, y: number, animate: boolean) => void
@@ -19,18 +42,25 @@ declare module 'layerspace' {
       rotate: (x: number, y: number, z: boolean) => void
       truck: (x: number, y: number, z: boolean) => void
       forward: (distance: number, animate: boolean) => void
+      setLookAt: (px: number, py: number, pz: number, tx: number, ty: number, tz: number, animate: boolean) => void
+      getPosition: () => Vector3
+      getTarget: () => Vector3
+      addEventListener: (event: string, callback: () => void) => void
+      removeEventListener: (event: string, callback: () => void) => void
     }
-    pointclouds: unknown[]
+    pointclouds: PCO[]
     scene: {
-      add: (object: unknown) => void
+      add: (object: PCO) => void
     }
     offset: number[]
     camera: {
-      position: { x: number; y: number; z: number }
+      position: Vector3
     }
+    renderer: { domElement: HTMLCanvasElement }
+    dispose: () => void
   }
 
-  class LayerSpace {
+  export class LayerSpace {
     constructor(target: HTMLElement, options?: LayerSpaceOptions)
     space: Space
   }

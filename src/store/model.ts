@@ -1,4 +1,5 @@
 import { createStore, createEvent, createEffect } from 'effector'
+import type LayerSpace from 'layerspace'
 
 // Types
 interface SnackbarMessage {
@@ -12,20 +13,10 @@ interface Snackbar {
   open: boolean
 }
 
-// Layerspace type
-export interface LayerSpaceInstance {
-  space: {
-    controls: {
-      setLookAt: (px: number, py: number, pz: number, tx: number, ty: number, tz: number, animate: boolean) => void
-      getPosition: () => { x: number; y: number; z: number }
-      getTarget: () => { x: number; y: number; z: number }
-      setTarget: (x: number, y: number, z: number, animate: boolean) => void
-      rotateTo: (azimuth: number, polar: number, animate: boolean) => void
-      addEventListener: (event: string, callback: () => void) => void
-      removeEventListener: (event: string, callback: () => void) => void
-    }
-  }
-}
+// The shape lives in src/types/layerspace.d.ts. It used to be re-declared here
+// and in PointLand.tsx, and the three copies disagreed about which methods a
+// Space has, which is what the casts and the ts-expect-error were papering over.
+export type LayerSpaceInstance = LayerSpace
 
 // Events
 export const setLoading = createEvent<boolean>()
