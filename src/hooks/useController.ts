@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import nipplejs, { JoystickManager, JoystickOutputData, EventData, JoystickManagerOptions } from 'nipplejs'
+import nipplejs from 'nipplejs'
 import { ElementHold } from 'hold-event'
 
 interface Vector {
@@ -28,14 +28,34 @@ interface HoldEvent {
   deltaTime: number
 }
 
-// Extend the nipplejs types since they're incomplete
-interface NippleJoystick extends JoystickOutputData {
-  on(event: 'move' | 'destroyed', callback: (evt: EventData, data: JoystickOutputData) => void): void
-  el: HTMLElement
-  position: {
-    x: number
-    y: number
-  }
+/**
+ * nipplejs 1.x hands every listener a single event object and nothing else.
+ * The 0.x signature this file was written against was `(evt, data)`, so the
+ * ported code read an argument that is now always undefined, and the guard in
+ * nippleEvent then returned before a joystick was ever wired up. nipplejs does
+ * not export its types, so the parts we touch are declared here.
+ */
+interface NippleEvent<T> {
+  type: string
+  data: T
+}
+
+/** `evt.data` on a 'move'. */
+interface JoystickMove {
+  force: number
+  vector: Vector
+}
+
+/** `evt.data` on 'added'. The element moved from `el` to `ui.el` in 1.x. */
+interface Joystick {
+  position: Vector
+  ui: { el: HTMLElement }
+  on(event: 'move', callback: (evt: NippleEvent<JoystickMove>) => void): void
+  on(event: 'removed', callback: (evt: NippleEvent<Joystick>) => void): void
+}
+
+interface JoystickManager {
+  on(event: 'added', callback: (evt: NippleEvent<Joystick>) => void): void
   destroy(): void
 }
 
@@ -46,21 +66,24 @@ export const useController = () => {
   const [zControl, setZControl] = useState<Control>({ force: 0, vector: { x: 0, y: 0 } })
   const [mouse, setMouse] = useState<Vector>({ x: 0, y: 0 })
 
-  // Use refs to avoid stale closure issues in event listeners
+  // The hold loop reads these every frame. React state is a render behind, so
+  // the value it steers by is written straight to a ref as the move arrives.
   const dirControlRef = useRef(dirControl)
   const xyControlRef = useRef(xyControl)
   const zControlRef = useRef(zControl)
 
-  // Keep refs in sync with state
-  useEffect(() => {
-    dirControlRef.current = dirControl
-  }, [dirControl])
-  useEffect(() => {
-    xyControlRef.current = xyControl
-  }, [xyControl])
-  useEffect(() => {
-    zControlRef.current = zControl
-  }, [zControl])
+  const setDir = useCallback((control: Control) => {
+    dirControlRef.current = control
+    setDirControl(control)
+  }, [])
+  const setXy = useCallback((control: Control) => {
+    xyControlRef.current = control
+    setXyControl(control)
+  }, [])
+  const setZ = useCallback((control: Control) => {
+    zControlRef.current = control
+    setZControl(control)
+  }, [])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -70,82 +93,86 @@ export const useController = () => {
     return () => document.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  const dirNipple = useCallback((nipple: NippleJoystick, space: Space) => {
-    const holder = new ElementHold(nipple.el, 10)
-    holder._holdStart()
-    holder.addEventListener('holding', (event: HoldEvent) => {
-      const ctrl = dirControlRef.current
-      space.controls.rotate(
-        (-(ctrl.force * ctrl.vector.x) * event.deltaTime) / 2000,
-        (ctrl.force * ctrl.vector.y * event.deltaTime) / 2000,
-        true,
-      )
-    })
-    nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      setDirControl({ force: data.force, vector: data.vector })
-    })
-    nipple.on('destroyed', () => {
-      holder._holdEnd()
-      setDirControl({ force: 0, vector: { x: 0, y: 0 } })
-    })
-  }, [])
+  const dirNipple = useCallback(
+    (nipple: Joystick, space: Space) => {
+      const holder = new ElementHold(nipple.ui.el, 10)
+      holder._holdStart()
+      holder.addEventListener('holding', (event: HoldEvent) => {
+        const ctrl = dirControlRef.current
+        space.controls.rotate(
+          (-(ctrl.force * ctrl.vector.x) * event.deltaTime) / 2000,
+          (ctrl.force * ctrl.vector.y * event.deltaTime) / 2000,
+          true,
+        )
+      })
+      nipple.on('move', (evt) => setDir({ force: evt.data.force, vector: evt.data.vector }))
+      nipple.on('removed', () => {
+        holder._holdEnd()
+        setDir({ force: 0, vector: { x: 0, y: 0 } })
+      })
+    },
+    [setDir],
+  )
 
-  const fastxyNipple = useCallback((nipple: NippleJoystick, space: Space) => {
-    const holder = new ElementHold(nipple.el, 10)
-    holder._holdStart()
-    holder.addEventListener('holding', (event: HoldEvent) => {
-      const ctrl = xyControlRef.current
-      space.controls.truck(ctrl.force * ctrl.vector.x * event.deltaTime, 0, true)
-      space.controls.forward(ctrl.force * ctrl.vector.y * event.deltaTime, true)
-    })
-    nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      setXyControl({ force: data.force, vector: data.vector })
-    })
-    nipple.on('destroyed', () => {
-      holder._holdEnd()
-      setXyControl({ force: 0, vector: { x: 0, y: 0 } })
-    })
-  }, [])
+  const fastxyNipple = useCallback(
+    (nipple: Joystick, space: Space) => {
+      const holder = new ElementHold(nipple.ui.el, 10)
+      holder._holdStart()
+      holder.addEventListener('holding', (event: HoldEvent) => {
+        const ctrl = xyControlRef.current
+        space.controls.truck(ctrl.force * ctrl.vector.x * event.deltaTime, 0, true)
+        space.controls.forward(ctrl.force * ctrl.vector.y * event.deltaTime, true)
+      })
+      nipple.on('move', (evt) => setXy({ force: evt.data.force, vector: evt.data.vector }))
+      nipple.on('removed', () => {
+        holder._holdEnd()
+        setXy({ force: 0, vector: { x: 0, y: 0 } })
+      })
+    },
+    [setXy],
+  )
 
-  const zNipple = useCallback((nipple: NippleJoystick, space: Space) => {
-    const holder = new ElementHold(nipple.el, 10)
-    holder._holdStart()
-    holder.addEventListener('holding', (event: HoldEvent) => {
-      const ctrl = zControlRef.current
-      space.controls.truck(((ctrl.force * ctrl.vector.x) / 100) * event.deltaTime, 0, true)
-      space.controls.truck(0, -((ctrl.force * ctrl.vector.y) / 100) * event.deltaTime, true)
-    })
-    nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      setZControl({ force: data.force, vector: data.vector })
-    })
-    nipple.on('destroyed', () => {
-      holder._holdEnd()
-      setZControl({ force: 0, vector: { x: 0, y: 0 } })
-    })
-  }, [])
+  const zNipple = useCallback(
+    (nipple: Joystick, space: Space) => {
+      const holder = new ElementHold(nipple.ui.el, 10)
+      holder._holdStart()
+      holder.addEventListener('holding', (event: HoldEvent) => {
+        const ctrl = zControlRef.current
+        space.controls.truck(((ctrl.force * ctrl.vector.x) / 100) * event.deltaTime, 0, true)
+        space.controls.truck(0, -((ctrl.force * ctrl.vector.y) / 100) * event.deltaTime, true)
+      })
+      nipple.on('move', (evt) => setZ({ force: evt.data.force, vector: evt.data.vector }))
+      nipple.on('removed', () => {
+        holder._holdEnd()
+        setZ({ force: 0, vector: { x: 0, y: 0 } })
+      })
+    },
+    [setZ],
+  )
 
-  const xyNipple = useCallback((nipple: NippleJoystick, space: Space) => {
-    const holder = new ElementHold(nipple.el, 10)
-    holder._holdStart()
-    holder.addEventListener('holding', (event: HoldEvent) => {
-      const ctrl = xyControlRef.current
-      space.controls.truck(((ctrl.force * ctrl.vector.x) / 10) * event.deltaTime, 0, true)
-      space.controls.forward(((ctrl.force * ctrl.vector.y) / 10) * event.deltaTime, true)
-    })
-    nipple.on('move', (_: EventData, data: JoystickOutputData) => {
-      setXyControl({ force: data.force, vector: data.vector })
-    })
-    nipple.on('destroyed', () => {
-      holder._holdEnd()
-      setXyControl({ force: 0, vector: { x: 0, y: 0 } })
-    })
-  }, [])
+  const xyNipple = useCallback(
+    (nipple: Joystick, space: Space) => {
+      const holder = new ElementHold(nipple.ui.el, 10)
+      holder._holdStart()
+      holder.addEventListener('holding', (event: HoldEvent) => {
+        const ctrl = xyControlRef.current
+        space.controls.truck(((ctrl.force * ctrl.vector.x) / 10) * event.deltaTime, 0, true)
+        space.controls.forward(((ctrl.force * ctrl.vector.y) / 10) * event.deltaTime, true)
+      })
+      nipple.on('move', (evt) => setXy({ force: evt.data.force, vector: evt.data.vector }))
+      nipple.on('removed', () => {
+        holder._holdEnd()
+        setXy({ force: 0, vector: { x: 0, y: 0 } })
+      })
+    },
+    [setXy],
+  )
 
   const nippleEvent = useCallback(
     (manager: JoystickManager, space: Space) => {
-      manager.on('added', (_evt: EventData, data: JoystickOutputData) => {
-        const nipple = data as unknown as NippleJoystick
-        if (!nipple || !nipple.position) return
+      manager.on('added', (evt) => {
+        const nipple = evt.data
+        if (!nipple?.position) return
 
         if (nipple.position.x < window.innerWidth / 2 && nipple.position.y < window.innerHeight / 2) {
           fastxyNipple(nipple, space)
@@ -166,7 +193,6 @@ export const useController = () => {
       setTouchable(true)
       let manager: JoystickManager | null = null
 
-      // Wait for nipple element to be available
       const zone = document.getElementById('nipple')
       if (!zone) {
         console.error('Nipple zone not found')
@@ -174,34 +200,21 @@ export const useController = () => {
       }
 
       try {
-        const options: JoystickManagerOptions = {
+        // maxNumberOfNipples was renamed in 1.x and the old key is ignored,
+        // which silently raises the cap to the default ten.
+        manager = nipplejs.create({
           zone,
           mode: 'dynamic',
           multitouch: true,
-          maxNumberOfNipples: 2,
-          catchDistance: 150,
-        }
-        manager = nipplejs.create(options)
-        manager.on('end', () => {
-          // nipplejs doesn't properly clean up DOM in dynamic mode with React
-          // Remove all nipple elements that are not actively being used
-          setTimeout(() => {
-            const nippleElements = zone.querySelectorAll('.nipple')
-            nippleElements.forEach((el) => {
-              el.parentNode?.removeChild(el)
-            })
-          }, 100)
-        })
+          maxNumberOfJoysticks: 2,
+        }) as unknown as JoystickManager
         nippleEvent(manager, space)
       } catch (error) {
         console.error('Failed to create nipple:', error)
       }
 
-      // Cleanup function
       return () => {
-        if (manager) {
-          manager.destroy()
-        }
+        if (manager) manager.destroy()
         setTouchable(false)
       }
     },
