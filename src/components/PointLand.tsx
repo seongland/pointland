@@ -3,22 +3,17 @@ import { usePointland } from '@/hooks/usePointland'
 import { useController } from '@/hooks/useController'
 import { useKeyboardController } from '@/hooks/useKeyboardController'
 import { setLayerspace } from '@/store/model'
-
-interface LayerSpaceInstance {
-  space: {
-    dispose: () => void
-    renderer: { domElement: HTMLCanvasElement }
-  }
-}
+import type LayerSpace from 'layerspace'
+import type { Space } from 'layerspace'
 
 export const PointLand = () => {
   const { touchable, checkTouchable } = useController()
   const { startLand } = usePointland()
   const pointlandRef = useRef<HTMLDivElement>(null)
   const nippleRef = useRef<HTMLDivElement>(null)
-  const layerspaceRef = useRef<LayerSpaceInstance | null>(null)
+  const layerspaceRef = useRef<LayerSpace | null>(null)
   const controllerCleanupRef = useRef<(() => void) | undefined>(undefined)
-  const [spaceForKeyboard, setSpaceForKeyboard] = useState<LayerSpaceInstance['space'] | null>(null)
+  const [spaceForKeyboard, setSpaceForKeyboard] = useState<Space | null>(null)
 
   useKeyboardController(spaceForKeyboard)
 
@@ -26,8 +21,7 @@ export const PointLand = () => {
     let isMounted = true
 
     if (pointlandRef.current) {
-      // @ts-expect-error LayerSpace type mismatch
-      startLand(pointlandRef.current).then((layerspace) => {
+      startLand(pointlandRef.current)?.then((layerspace) => {
         if (!isMounted) {
           // Component unmounted before promise resolved - clean up immediately
           if (layerspace) {
@@ -62,7 +56,6 @@ export const PointLand = () => {
       setLayerspace(null)
       setSpaceForKeyboard(null)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
