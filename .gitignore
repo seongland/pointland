@@ -17,3 +17,8 @@ sw.js
 playwright-report/
 test-results/
 .playwright-mcp/
+
+# Gaussian splats. NYC_004_final.splat alone is 72MB, which belongs in a bucket
+# next to the potree data (see the /tokyo-potree rewrite in vercel.json) rather
+# than in git history.
+*.splat
